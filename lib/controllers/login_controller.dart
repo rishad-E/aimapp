@@ -50,7 +50,7 @@ class LoginController extends GetxController {
 /*---------- Resend OTP ---------*/
   Future<void> resendOTPFunction({required String mobileNo}) async {
     OtpService().resendOTP(mobileNo: mobileNo).then((value) => {
-          if (value == true)
+          if (value == 'retry send successfully')
             {
               Get.showSnackbar(
                 const GetSnackBar(
@@ -65,11 +65,12 @@ class LoginController extends GetxController {
           else
             {
               Get.showSnackbar(
-                const GetSnackBar(
+                 GetSnackBar(
                   snackStyle: SnackStyle.FLOATING,
-                  message: 'Resend OTP failed',
+                  message: value,
+                  margin:const EdgeInsets.all(10),
                   backgroundColor: Colors.red,
-                  duration: Duration(seconds: 2),
+                  duration:const Duration(seconds: 2),
                 ),
               )
             }

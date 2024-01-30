@@ -1,10 +1,8 @@
-// ignore_for_file: must_be_immutable
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/common/widgets_common.dart';
 import 'package:aimshala/view/login/otp_screen.dart';
-import 'package:aimshala/view/login/widget/country_picker.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,15 +105,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                       prefixWidget: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          CountryPicker(
-                                            onCountrySelected:
-                                                (String countryCode) {
-                                              selectedCountryCode =
-                                                  countryCode;
-                                            },
+                                          Text(
+                                            '+91',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 17,
+                                                color: kblack.withOpacity(0.4)),
                                           ),
-                                          const Icon(
-                                              Icons.keyboard_arrow_down)
+                                         Icon(Icons.keyboard_arrow_down,size: 26,color: kblack.withOpacity(0.4),)
                                         ],
                                       ),
                                     ),
@@ -155,8 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               controller.sendOTPFunction(
                                   mobileNo:
                                       '91${controller.phoneController.text}');
-                              Get.to(() => OTPScreen(
-                                  mobileNo: controller.phoneController.text));
+                              Get.to(() => OTPScreen(mobileNo: controller.phoneController.text));
                             }
                           },
                         ),

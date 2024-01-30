@@ -3,7 +3,7 @@ import 'package:aimshala/controllers/signup_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/common/widgets_common.dart';
-import 'package:aimshala/view/home.dart';
+import 'package:aimshala/view/login/login_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
 import 'package:aimshala/view/signup/widget/bottomsheet.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
@@ -21,7 +21,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> formKey = GlobalKey();
-  bool isOk = true;
+  bool isOk = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: appbarContainer(onPressed: () {}),
+        title: appbarContainer(onPressed: () {
+          Get.offAll(() => const LoginScreen());
+        }),
       ),
       body: Container(
         height: double.infinity,
@@ -74,8 +76,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       // SizedBox(height: 200),
-                     SizedBox(
-                            // color: Colors.yellow,
+                      SizedBox(
+                        // color: Colors.yellow,
                         height: 51.h,
                         width: double.infinity,
                         child: signUPContainer(
@@ -124,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       showRoleBottomSheet(context, controller);
-                                      allfieldSelection(controller);
+                                      // allfieldSelection(controller);
                                     },
                                     child: AbsorbPointer(
                                       child: signupBox(
@@ -150,6 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             'Sign up',
                             style: TextStyle(
                               color: controller.buttonTextColor.value,
+                              // color: isOk ? kwhite :  const Color.fromARGB(255, 83, 83, 83)
                             ),
                           ),
                           style: ButtonStyle(
@@ -170,80 +173,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 controller.areAllFieldsSelected.value) {
                               log('entered :${controller.nameController.text + controller.emailController.text + widget.mobileNo + controller.roleController.text}');
 
-                              controller
-                                  .signUpUserFunction(
-                                      name: controller.nameController.text,
-                                      email: controller.emailController.text,
-                                      mobileNo: widget.mobileNo)
-                                  .then(
-                                    (value) => {
-                                      if (value == true)
-                                        {
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    CircleAvatar(
-                                                        radius: 60.sp,
-                                                        backgroundColor:
-                                                            Colors.transparent,
-                                                        child: Image.asset(
-                                                            'assets/images/profile.png',
-                                                            fit: BoxFit.cover)),
-                                                    hMBox,
-                                                    Text('Thank You!',
-                                                        style: TextStyle(
-                                                            fontSize: 15.sp,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: kpurple)),
-                                                    hMBox,
-                                                    primarytxt2(
-                                                        "For signing up! Welcom to AimShala",
-                                                        11.sp),
-                                                    hMBox,
-                                                    Container(
-                                                        width: 80.w,
-                                                        height: 6.h,
-                                                        decoration: const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            8))),
-                                                        child: ElevatedButton(
-                                                            style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          kpurple),
-                                                              shape: MaterialStateProperty.all<
-                                                                      RoundedRectangleBorder>(
-                                                                  RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              14))),
-                                                            ),
-                                                            onPressed: () {
-                                                              Get.offAll(() =>
-                                                                  const HomeScreen());
-                                                            },
-                                                            child: Text('OK',
-                                                                style: TextStyle(
-                                                                    color:
-                                                                        kwhite)))),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        }
-                                    },
-                                  );
+                              // controller
+                              //     .signUpUserFunction(
+                              //         name: controller.nameController.text,
+                              //         email: controller.emailController.text,
+                              //         mobileNo: widget.mobileNo)
+                              //     .then(
+                              //       (value) => {
+                              //         if (value == true)
+                              //           {
+                              //             showDialog(
+                              //               context: context,
+                              //               builder: (BuildContext context) {
+                              //                 return AlertDialog(
+                              //                   content: Column(
+                              //                     mainAxisSize:
+                              //                         MainAxisSize.min,
+                              //                     children: [
+                              //                       CircleAvatar(
+                              //                           radius: 60.sp,
+                              //                           backgroundColor:
+                              //                               Colors.transparent,
+                              //                           child: Image.asset(
+                              //                               'assets/images/profile.png',
+                              //                               fit: BoxFit.cover)),
+                              //                       hMBox,
+                              //                       Text('Thank You!',
+                              //                           style: TextStyle(
+                              //                               fontSize: 15.sp,
+                              //                               fontWeight:
+                              //                                   FontWeight.bold,
+                              //                               color: kpurple)),
+                              //                       hMBox,
+                              //                       primarytxt2(
+                              //                           "For signing up! Welcom to AimShala",
+                              //                           11.sp),
+                              //                       hMBox,
+                              //                       Container(
+                              //                           width: 80.w,
+                              //                           height: 6.h,
+                              //                           decoration: const BoxDecoration(
+                              //                               borderRadius:
+                              //                                   BorderRadius
+                              //                                       .all(Radius
+                              //                                           .circular(
+                              //                                               8))),
+                              //                           child: ElevatedButton(
+                              //                               style: ButtonStyle(
+                              //                                 backgroundColor:
+                              //                                     MaterialStateProperty
+                              //                                         .all(
+                              //                                             kpurple),
+                              //                                 shape: MaterialStateProperty.all<
+                              //                                         RoundedRectangleBorder>(
+                              //                                     RoundedRectangleBorder(
+                              //                                         borderRadius:
+                              //                                             BorderRadius.circular(
+                              //                                                 14))),
+                              //                               ),
+                              //                               onPressed: () {
+                              //                                 Get.offAll(() =>
+                              //                                     const HomeScreen());
+                              //                               },
+                              //                               child: Text('OK',
+                              //                                   style: TextStyle(
+                              //                                       color:
+                              //                                           kwhite)))),
+                              //                     ],
+                              //                   ),
+                              //                 );
+                              //               },
+                              //             )
+                              //           }
+                              //       },
+                              //     );
                             }
                           },
                         ),
@@ -261,7 +264,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void allfieldSelection(SignUpController controller) {
     return setState(() {
-      controller.allFieldsSelected();
+      controller.areAllFieldsSelected.value = controller.nameController.text.isNotEmpty &&
+          controller.emailController.text.isNotEmpty &&
+          controller.roleController.text.isNotEmpty;
     });
   }
 }

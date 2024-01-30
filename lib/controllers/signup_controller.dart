@@ -1,5 +1,4 @@
 import 'package:aimshala/services/signup_service/signup_service.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +8,7 @@ class SignUpController extends GetxController {
   TextEditingController roleController = TextEditingController();
   bool? signup;
   RxBool areAllFieldsSelected = false.obs;
-  Rx<Color> buttonTextColor = Rx<Color>(kwhite);
+  Rx<Color> buttonTextColor = Rx<Color>(const Color.fromARGB(255, 83, 83, 83));
   String selectedRole = 'Select your role';
 
   void selectRole(String role) {
@@ -43,25 +42,6 @@ class SignUpController extends GetxController {
       );
       return false;
     }
-    // SignUpService()
-    //     .signUpUser(email: email, mobile: mobileNo, name: name)
-    //     .then((value) => {
-    //           if (value == true)
-    //             {
-    //               signup = value,
-    //               Get.to(() => const HomeScreen()),
-    //             }
-    //           else
-    //             {
-    //               Get.snackbar(
-    //                 "Error",
-    //                 "Error in signup",
-    //                 snackPosition: SnackPosition.BOTTOM,
-    //                 backgroundColor: Colors.grey[800],
-    //                 colorText: Colors.red, // Customize the text color
-    //               )
-    //             }
-    //         });
   }
 
   void allFieldsSelected() {
@@ -70,6 +50,10 @@ class SignUpController extends GetxController {
         roleController.text.isNotEmpty;
     // Update the reactive variable
     areAllFieldsSelected.value = allFieldsSelected;
-    buttonTextColor.value = allFieldsSelected ? Colors.white : const Color.fromARGB(255, 83, 83, 83);
+    buttonTextColor.value = allFieldsSelected
+        ? Colors.white
+        : const Color.fromARGB(255, 83, 83, 83);
+
+    update();
   }
 }

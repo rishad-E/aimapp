@@ -89,7 +89,6 @@ class OTPTextField extends StatelessWidget {
         child: TextFormField(
           controller: controller,
           autofocus: true,
-
           onChanged: onChanged,
           showCursor: false,
           readOnly: false,

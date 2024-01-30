@@ -33,8 +33,7 @@ class OtpService {
   Future<bool?> validateOTP(
       {required String otp, required String mobileNo}) async {
     try {
-      log(otp);
-      log(mobileNo);
+    
       String path = '${Apis().baseUrlOtp}otp/verify';
       Response response = await dio.get(path, queryParameters: {
         'otp': otp,
@@ -55,7 +54,7 @@ class OtpService {
   }
 
 /*---------- validate otp serviece---------*/
-  Future<bool?> resendOTP({required String mobileNo}) async {
+  Future<String?> resendOTP({required String mobileNo}) async {
     try {
       String path = '${Apis().baseUrlOtp}otp/retry';
       Response response = await dio.get(path, queryParameters: {
@@ -65,11 +64,12 @@ class OtpService {
       });
       log(response.data.toString(), name: 'resend');
        String data = response.data['message'];
-       if (data =='retry send successfully') {
-         return true;
-       }else{
-        return false;
-       }
+       return data;
+      //  if (data =='retry send successfully') {
+      //    return true;
+      //  }else{
+      //   return false;
+      //  }
     } catch (e) {
       log(e.toString(), name: 'retry error');
     }
