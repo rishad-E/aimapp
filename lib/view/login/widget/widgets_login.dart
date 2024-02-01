@@ -1,19 +1,19 @@
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/widgets_common.dart';
+import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-Widget loginContainer(
-    {required BuildContext context,
-    required Widget textfield,
-    required void Function() onPressed,
-    required Widget twoText,
-    required Widget fieldText,
-    required Widget valText,
-    required Widget otpWidget,
-    ButtonStyle? style}) {
+Widget loginContainer({
+  required BuildContext context,
+  required Widget textfield,
+  // required void Function() onPressed,
+  required Widget twoText,
+  required Widget fieldText,
+  required Widget otpWidget,
+  Widget? button,
+}) {
   return Container(
     padding: const EdgeInsets.only(top: 8, bottom: 8),
     decoration: BoxDecoration(
@@ -33,7 +33,7 @@ Widget loginContainer(
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
-          child: TextButton(onPressed: onPressed, style: style, child: valText),
+          child: button,
         )
       ],
     ),

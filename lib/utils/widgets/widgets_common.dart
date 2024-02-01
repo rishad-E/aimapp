@@ -32,7 +32,7 @@ InputDecoration decorTextfield(
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(13),
-      borderSide:  BorderSide(color: mainPurple),
+      borderSide: BorderSide(color: mainPurple),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(13),
@@ -53,7 +53,7 @@ Widget appbarContainer({required void Function()? onPressed}) {
           color: Color.fromARGB(255, 234, 232, 232),
           spreadRadius: 0,
           blurRadius: 0,
-          offset: Offset(0,1),
+          offset: Offset(0, 1),
         ),
       ],
     ),
@@ -63,5 +63,13 @@ Widget appbarContainer({required void Function()? onPressed}) {
           Icons.arrow_back_rounded,
           color: kpurple,
         )),
+  );
+}
+
+MaterialStateProperty<OutlinedBorder?> buttonShape({required double round}) {
+  return MaterialStateProperty.all<RoundedRectangleBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(round),
+    ),
   );
 }

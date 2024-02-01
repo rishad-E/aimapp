@@ -1,3 +1,4 @@
+
 import 'package:aimshala/services/signup_service/signup_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,10 @@ class SignUpController extends GetxController {
 
   String? validation({String? word, String? field}) {
     if (word == null || word.isEmpty) {
+      // log(word! .isEmail.toString());
       return 'Please enter $field';
+    } else if (field == 'Email' && !word.isEmail) {
+      return 'Please enter a valid $field';
     }
     return null;
   }
@@ -53,7 +57,6 @@ class SignUpController extends GetxController {
     buttonTextColor.value = allFieldsSelected
         ? Colors.white
         : const Color.fromARGB(255, 83, 83, 83);
-
-    update();
+    update(['button-signup']);
   }
 }

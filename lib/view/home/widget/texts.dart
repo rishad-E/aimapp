@@ -1,0 +1,1 @@
+const String home2Ctext = 'Take the first step towards a fulfilling career with our career counsellor for a bright and successful future.';

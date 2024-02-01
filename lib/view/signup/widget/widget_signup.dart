@@ -5,18 +5,18 @@ import 'package:sizer/sizer.dart';
 Widget signUPContainer({
   required BuildContext context,
   required Widget textfield,
-  required void Function() onPressed,
   required Widget twoText,
   required Widget fieldText,
-  required Widget valText,
+  Widget? button,
   ButtonStyle? style,
 }) {
   return Container(
     padding: const EdgeInsets.only(top: 8, bottom: 8),
     decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-        color: kwhite),
+      borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+      color: kwhite,
+    ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -24,13 +24,15 @@ Widget signUPContainer({
         fieldText,
         textfield,
         Container(
-            width: 80.w,
-            height: 6.h,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+          width: 79.w,
+          height: 4.5.h,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
             ),
-            child:
-                TextButton(onPressed: onPressed, style: style, child: valText)),
+          ),
+          child: button,
+        ),
       ],
     ),
   );
