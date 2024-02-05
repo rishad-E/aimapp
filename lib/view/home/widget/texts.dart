@@ -1,1 +1,2 @@
 const String home2Ctext = 'Take the first step towards a fulfilling career with our career counsellor for a bright and successful future.';
+const String home3Ctext = "Understand your strengths, interests, and potential with our advanced AI test. Gain insights for informed decisions.";

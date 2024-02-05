@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:aimshala/services/signup_service/signup_service.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,27 @@ class SignUpController extends GetxController {
     update();
   }
 
-  String? validation({String? word, String? field}) {
+  String? emailValidation(String? word) {
     if (word == null || word.isEmpty) {
-      // log(word! .isEmail.toString());
-      return 'Please enter $field';
-    } else if (field == 'Email' && !word.isEmail) {
-      return 'Please enter a valid $field';
+      return 'Please enter Email';
+    } else if (!word.isEmail) {
+      return 'Please enter a valid Email';
     }
+    return null;
+  }
+
+  String? nameValidation(String? word) {
+    if (word == null || word.isEmpty) {
+      return 'Please enter Name';
+    }
+    List<String> nameWords = word.split(' ');
+
+    log(nameWords.toString());
+    // Check if there are at least two words
+    if (nameWords.length < 3) {
+      return 'Please enter full name';
+    }
+
     return null;
   }
 

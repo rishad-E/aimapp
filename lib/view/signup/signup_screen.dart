@@ -93,8 +93,8 @@ class SignUpScreen extends StatelessWidget {
                                 controller: signUp.nameController,
                                 decoration:
                                     roleContainer(hintText: 'Enter Name'),
-                                validator: (value) => signUp.validation(
-                                    word: value, field: 'Name'),
+                                validator: (value) =>
+                                    signUp.nameValidation(value),
                               ),
                             ),
                             signupBox(
@@ -105,8 +105,8 @@ class SignUpScreen extends StatelessWidget {
                                 controller: signUp.emailController,
                                 decoration:
                                     roleContainer(hintText: 'Enter Email'),
-                                validator: (value) => signUp.validation(
-                                    word: value, field: 'Email'),
+                                validator: (value) =>
+                                    signUp.emailValidation(value),
                                 keyboardType: TextInputType.emailAddress,
                               ),
                             ),
@@ -165,19 +165,19 @@ class SignUpScreen extends StatelessWidget {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
+                                                  backgroundColor: kwhite,
+                                                  surfaceTintColor: kwhite,
                                                   content: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.min,
                                                     children: [
                                                       CircleAvatar(
-                                                          radius: 60.sp,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          child: Image.asset(
-                                                              'assets/images/profile.png',
-                                                              fit: BoxFit
-                                                                  .cover)),
+                                                        radius: 55.sp,
+                                                        backgroundColor: kwhite,
+                                                        backgroundImage:
+                                                            const AssetImage(
+                                                                'assets/images/person.png'),
+                                                      ),
                                                       hMBox,
                                                       Text('Thank You!',
                                                           style: TextStyle(
@@ -192,21 +192,26 @@ class SignUpScreen extends StatelessWidget {
                                                           11.sp),
                                                       hMBox,
                                                       Container(
-                                                          width: 80.w,
-                                                          height: 6.h,
-                                                          decoration: const BoxDecoration(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          8))),
+                                                          width: 79.w,
+                                                          height: 4.5.h,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  15),
+                                                            ),
+                                                          ),
                                                           child: ElevatedButton(
                                                               style: ButtonStyle(
                                                                   backgroundColor:
                                                                       MaterialStateProperty
                                                                           .all(
                                                                               kpurple),
-                                                                  shape:
-                                                                      buttonShape(round: 10)),
+                                                                  shape: buttonShape(
+                                                                      round:
+                                                                          10)),
                                                               onPressed: () {
                                                                 Get.offAll(() =>
                                                                     const HomeScreen());

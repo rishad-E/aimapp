@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 
 void showRoleBottomSheet(BuildContext context, SignUpController controller) {
   showModalBottomSheet(
+    backgroundColor: kwhite,
     context: context,
     builder: (BuildContext context) {
       return Padding(
@@ -18,15 +19,17 @@ void showRoleBottomSheet(BuildContext context, SignUpController controller) {
             children: [
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    size: 30.sp,
-                    color: kblack,
+                trailing: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: SizedBox(
+                      height: 30,
+                      width: 30,
+                      // color: Colors.yellow,
+                      child: Image.asset('assets/images/close.png',fit: BoxFit.cover,)
+                    ),
                   ),
-                  onPressed: () {
-                    Get.back();
-                  },
                 ),
               ),
               ListTile(
@@ -131,5 +134,3 @@ Text bottomHeading(String text, double size) {
     ),
   );
 }
-
-
