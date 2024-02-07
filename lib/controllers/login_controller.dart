@@ -97,6 +97,7 @@ class LoginController extends GetxController {
       validationMessage.value = '';
       return '';
     }
+   
   }
 
   void updateButtonColor() {

@@ -2,7 +2,6 @@ import 'package:aimshala/controllers/signup_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 void showRoleBottomSheet(BuildContext context, SignUpController controller) {
   showModalBottomSheet(

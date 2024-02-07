@@ -82,8 +82,8 @@ class OTPTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 5.8.h,
-      width: 10.8.w,
+      height: 5.7.h,
+      width: 10.7.w,
       child: AspectRatio(
         aspectRatio: 1.0,
         child: TextFormField(
@@ -94,16 +94,20 @@ class OTPTextField extends StatelessWidget {
           readOnly: false,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: kblack,
-              height: 1),
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: kblack,
+            height: 0.8,
+          ),
           keyboardType: TextInputType.number,
           maxLength: 1,
           decoration: InputDecoration(
             counter: const Offstage(),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 1, color: kblack.withOpacity(0.2)),
+              borderSide:
+                  login.validationMessage.value == 'Please enter valid code'
+                      ? BorderSide(width: 1, color: kred)
+                      : BorderSide(width: 1, color: kblack.withOpacity(0.2)),
               borderRadius: BorderRadius.circular(10),
             ),
             errorBorder: OutlineInputBorder(

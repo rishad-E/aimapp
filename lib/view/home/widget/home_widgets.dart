@@ -1,3 +1,4 @@
+import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
@@ -13,37 +14,107 @@ ShapeBorder appBarBorder() {
 
 PreferredSizeWidget appbarc() {
   return AppBar(
-    toolbarHeight: 70,
+    // toolbarHeight: 70,
     // backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
     leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
     title: primarytxt3('Hi,Sachin', 14.sp),
+    titleSpacing: 0,
     actions: [
-      IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.notifications_active_outlined,
-            size: 19.sp,
-          )),
-      const SizedBox(
-        // color: Colors.yellow,
-        height: 26,
-        width: 26,
-        // child: SvgPicture.asset(
-        //   'assets/images/Vector.svg',
-        // ),
-        // child: Image.asset('assets/images/person.png',fit: BoxFit.cover,),
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Stack(
+          // alignment: AlignmentDirectional.topEnd,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.notifications_active_outlined,
+                size: 19.5.sp,
+              ),
+            ),
+            Positioned(
+              top: 12, // Adjust this value to position the red dot
+              right: 12, // Adjust this value to position the red dot
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       wBox,
-      const SizedBox(
-        height: 26,
-        width: 26,
-        // color: Colors.red,
-       
-        // child: SvgPicture.asset('assets/images/Vector.svg'),
+      Container(
+        width: 30,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+        ),
+        child: Image.asset('assets/images/appbarWomen2.png'),
+     
       ),
-      wMBox
+      // Stack(
+      //   alignment: AlignmentDirectional.topEnd,
+      //   children: [
+      //     Container(
+      //       decoration: BoxDecoration(
+      //         shape: BoxShape.circle,
+      //         border: Border.all(
+      //           color: const Color.fromARGB(255, 215, 211, 211),
+      //           width: 1,
+      //         ),
+      //       ),
+      //       child: CircleAvatar(
+      //         radius: 14,
+      //         backgroundColor: kwhite,
+      //         backgroundImage: const AssetImage(
+      //           'assets/images/appbarWomen.png',
+      //         ),
+      //       ),
+      //     ),
+      //     Container(
+      //       decoration: BoxDecoration(
+      //           borderRadius: BorderRadius.circular(4),
+      //           border: Border.all(
+      //             color: mainPurple,
+      //             width: 1,
+      //           ),
+      //           color: kwhite),
+      //       child: const Icon(
+      //         Icons.question_mark_sharp,
+      //         size: 12,
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      wMBox,
+      Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: Container(
+          // width: 30,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: const Color.fromARGB(255, 215, 211, 211),
+              width: 1,
+            ),
+          ),
+          // child: Image.asset('assets/images/appbarMen.png',fit: BoxFit.cover,),
+          child: CircleAvatar(
+            radius: 13,
+            backgroundColor: kwhite,
+            backgroundImage: const AssetImage(
+              'assets/images/appbarMen.png',
+            ),
+          ),
+        ),
+      ),
+      const SizedBox(width: 20)
     ],
   );
 }
@@ -79,7 +150,7 @@ Widget headersHome(
                   style: TextStyle(
                     color: textC ?? const Color.fromARGB(255, 30, 35, 44),
                     fontSize: 15.5.sp,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   )),
             ],
           ),
@@ -126,8 +197,8 @@ Widget headersHome2(
                     text: text2,
                     style: TextStyle(
                       color: textC ?? const Color.fromARGB(255, 30, 35, 44),
-                      fontSize:  15.5.sp,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 15.5.sp,
+                      fontWeight: FontWeight.w600,
                     )),
               ],
             ),
@@ -140,7 +211,7 @@ Widget headersHome2(
           ),
         ),
         wBox,
-         Text(
+        Text(
           "See All",
           style: TextStyle(
               fontSize: 9.5.sp,
