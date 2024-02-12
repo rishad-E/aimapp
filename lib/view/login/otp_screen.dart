@@ -101,9 +101,19 @@ class OTPScreen extends StatelessWidget {
                                       last: false,
                                       controller: otpController.otpController1,
                                       onChanged: (value) {
+                                        otpController.onchange.value = true;
                                         if (value.length == 1) {
                                           FocusScope.of(context).nextFocus();
                                         }
+                                        log(otpController
+                                            .validationMessage.value
+                                            .toString());
+                                        otpController.validationMessage.value =
+                                            'newvalue';
+
+                                        log(otpController
+                                            .validationMessage.value
+                                            .toString());
                                         onchangeButton(otpController);
                                       },
                                     ),
@@ -119,6 +129,7 @@ class OTPScreen extends StatelessWidget {
                                           FocusScope.of(context)
                                               .previousFocus();
                                         }
+
                                         onchangeButton(otpController);
                                       },
                                     ),
@@ -135,6 +146,7 @@ class OTPScreen extends StatelessWidget {
                                           FocusScope.of(context)
                                               .previousFocus();
                                         }
+
                                         onchangeButton(otpController);
                                       },
                                     ),
@@ -150,14 +162,19 @@ class OTPScreen extends StatelessWidget {
                                           FocusScope.of(context)
                                               .previousFocus();
                                         }
+
                                         onchangeButton(otpController);
                                       },
                                     ),
                                   ],
                                 ),
-                                Obx(() => Text(
-                                    otpController.validationMessage.value,
-                                    style: errorStyle())),
+                                Obx(() => otpController
+                                            .validationMessage.value ==
+                                        'Please enter valid code'
+                                    ? Text(
+                                        otpController.validationMessage.value,
+                                        style: errorStyle())
+                                    : const SizedBox.shrink()),
                               ],
                             ),
                           ),

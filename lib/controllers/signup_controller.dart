@@ -6,17 +6,14 @@ import 'package:get/get.dart';
 
 class SignUpController extends GetxController {
   TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   TextEditingController roleController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   bool? signup;
   RxBool areAllFieldsSelected = false.obs;
   Rx<Color> buttonTextColor = Rx<Color>(const Color.fromARGB(255, 83, 83, 83));
   String selectedRole = 'Select your role';
 
-  void selectRole(String role) {
-    selectedRole = role;
-    update();
-  }
+ 
 
   String? emailValidation(String? word) {
     if (word == null || word.isEmpty) {
@@ -33,12 +30,14 @@ class SignUpController extends GetxController {
     }
     List<String> nameWords = word.split(' ');
 
-    log(nameWords.toString());
-    // Check if there are at least two words
-    if (nameWords.length < 3) {
-      return 'Please enter full name';
+    log(nameWords.toString(), name: 'words');
+    // Check if there are at least two wsords
+    if (nameWords.length < 2) {
+      return 'Please enter First and Last name';
     }
-
+    if (nameWords.length >35) {
+      return 'Name should be less than 35 characters';
+    }
     return null;
   }
 

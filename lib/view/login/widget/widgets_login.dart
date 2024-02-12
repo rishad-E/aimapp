@@ -82,45 +82,53 @@ class OTPTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 5.7.h,
-      width: 10.7.w,
+      height: 5.8.h,
+      width: 10.6.w,
       child: AspectRatio(
         aspectRatio: 1.0,
-        child: TextFormField(
-          controller: controller,
-          autofocus: true,
-          onChanged: onChanged,
-          showCursor: false,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: kblack,
-            height: 0.8,
-          ),
-          keyboardType: TextInputType.number,
-          maxLength: 1,
-          decoration: InputDecoration(
-            counter: const Offstage(),
-            enabledBorder: OutlineInputBorder(
-              borderSide:
-                  login.validationMessage.value == 'Please enter valid code'
-                      ? BorderSide(width: 1, color: kred)
-                      : BorderSide(width: 1, color: kblack.withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(10),
+        child: Obx(
+          () => TextFormField(
+            controller: controller,
+            autofocus: true,
+            onChanged: onChanged,
+            showCursor: false,
+            readOnly: false,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: kblack,
             ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 1, color: kred),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 1, color: kred),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 1, color: mainPurple),
-              borderRadius: BorderRadius.circular(10),
+            keyboardType: TextInputType.number,
+            maxLength: 1,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              counter: const Offstage(),
+              enabledBorder: OutlineInputBorder(
+                borderSide:
+                    //  login.onchange.value
+                    //     ? BorderSide(width: 1, color: kblack.withOpacity(0.2))
+                    //     : login.validationMessage.value == 'Please enter valid code'
+                    //         ? BorderSide(width: 1, color: kred)
+                    //         : BorderSide(width: 1, color: kblack.withOpacity(0.2)),
+                    login.validationMessage.value == 'Please enter valid code'
+                        ? BorderSide(width: 1, color: kred)
+                        : BorderSide(width: 1, color: kblack.withOpacity(0.2)),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: kred),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: kred),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: mainPurple),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),

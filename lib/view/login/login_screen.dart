@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -23,7 +21,7 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: appbarContainer(onPressed: () {}),
+        // title: appbarContainer(onPressed: () {}),
       ),
       body: Container(
         height: double.infinity,
@@ -122,7 +120,7 @@ class LoginScreen extends StatelessWidget {
                     button: GetBuilder<LoginController>(
                       id: 'continue-button',
                       builder: (logincontroller) {
-                        log('rebuild');
+                        // log('rebuild');
                         return TextButton(
                           style: ButtonStyle(
                               backgroundColor:
@@ -140,6 +138,7 @@ class LoginScreen extends StatelessWidget {
                                       '91${controller.phoneController.text}');
                               Get.to(() => OTPScreen(
                                   mobileNo: controller.phoneController.text));
+                                 
                             }
                           },
                           child: Text(

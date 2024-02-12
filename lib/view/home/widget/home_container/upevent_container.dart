@@ -9,17 +9,19 @@ class UpcomingEventContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(right: 8),
       width: 46.w,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: kwhite,
-          border: Border.all(color: const Color.fromARGB(255, 236, 235, 235))),
+        borderRadius: BorderRadius.circular(12),
+        color: kwhite,
+        border: Border.all(color: const Color.fromARGB(255, 221, 220, 220)),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            // color: Colors.amber,
             height: 10.5.h,
-            width: 46.w,
+            width: double.infinity,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
@@ -29,40 +31,35 @@ class UpcomingEventContainer extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: const Color.fromARGB(255, 247, 247, 247),
-                    ),
-                    height: 2.4.h,
-                    width: 17.5.w,
-                    child: Center(
-                      child: Text(
-                        "SEP 13, 2023",
-                        style: TextStyle(
-                            fontSize: 7.7.sp,
-                            color: const Color.fromARGB(255, 116, 118, 119)),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "Virtual College Admissions Workshop",
-                    style: TextStyle(
-                      fontSize: 9.2.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
-                ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: const Color.fromARGB(255, 247, 247, 247),
+              ),
+              height: 2.4.h,
+              width: 17.5.w,
+              child: Center(
+                child: Text(
+                  "SEP 13, 2023",
+                  style: TextStyle(
+                      fontSize: 7.7.sp,
+                      color: const Color.fromARGB(255, 116, 118, 119)),
+                ),
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text(
+              "Virtual College Admissions Workshop",
+              style: TextStyle(
+                fontSize: 9.2.sp,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -15,6 +15,7 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> otpFormKey = GlobalKey();
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
+  RxBool onchange = false.obs;
   Rx<Color> buttonColor = Rx<Color>(bbColor);
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
   RxInt filledOtpFields = RxInt(0);
@@ -22,6 +23,7 @@ class LoginController extends GetxController {
 /*---------- sending OTP to Mobile Number ---------*/
   Future<void> sendOTPFunction({required String mobileNo}) async {
     OtpService().sendOTP(mobileNo: mobileNo);
+    clearotpControllers();
   }
 
 /*---------- verify OTP ---------*/
@@ -65,12 +67,12 @@ class LoginController extends GetxController {
           else
             {
               Get.showSnackbar(
-                 GetSnackBar(
+                GetSnackBar(
                   snackStyle: SnackStyle.FLOATING,
                   message: value,
-                  margin:const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   backgroundColor: Colors.red,
-                  duration:const Duration(seconds: 2),
+                  duration: const Duration(seconds: 2),
                 ),
               )
             }
@@ -97,7 +99,6 @@ class LoginController extends GetxController {
       validationMessage.value = '';
       return '';
     }
-   
   }
 
   void updateButtonColor() {
@@ -113,25 +114,26 @@ class LoginController extends GetxController {
     buttonColor.value = numberOfFilledFields == 4 ? kpurple : bbColor;
     buttonTextColor.value =
         numberOfFilledFields == 4 ? Colors.white : Colors.black;
+    onchange.value = true;
+
     update(['button-otp']);
   }
 
-  clearControllers() {
-    phoneController.dispose();
-    otpController1.dispose();
-    otpController2.dispose();
-    otpController3.dispose();
-    otpController4.dispose();
+  clearotpControllers() {
+    otpController1.clear();
+    otpController2.clear();
+    otpController3.clear();
+    otpController4.clear();
   }
 
-  @override
-  void dispose() {
-    phoneController.dispose();
-    otpController1.dispose();
-    otpController2.dispose();
-    otpController3.dispose();
-    otpController4.dispose();
+  // @override
+  // void dispose() {
+  //   phoneController.dispose();
+  //   otpController1.dispose();
+  //   otpController2.dispose();
+  //   otpController3.dispose();
+  //   otpController4.dispose();
 
-    super.dispose();
-  }
+  //   super.dispose();
+  // }
 }

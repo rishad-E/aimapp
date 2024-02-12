@@ -56,6 +56,7 @@ class OtpService {
 /*---------- validate otp serviece---------*/
   Future<String?> resendOTP({required String mobileNo}) async {
     try {
+      log(mobileNo.toString());
       String path = '${Apis().baseUrlOtp}otp/retry';
       Response response = await dio.get(path, queryParameters: {
         'authkey': authKey,

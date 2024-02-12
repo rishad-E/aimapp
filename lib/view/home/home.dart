@@ -13,7 +13,7 @@ import 'package:aimshala/view/home/widget/home_container/upsession_container.dar
 import 'package:aimshala/view/home/widget/home_container/yourjourney_container.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,219 +32,168 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appbarc(),
       body: SingleChildScrollView(
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            Positioned(
-              child: Image.asset('assets/images/homebg.png'),
-            ),
-            Positioned(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 130),
-                child: Column(
-                  children: [
-                    const YourJourneyContiner(),
-                    homeCHB,
-                    const TakeChargeC(),
-                    homeCHB,
-                    const AimcetContainer(),
-                    homeCHB,
-                    SizedBox(
-                      height: 30.5.h,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18),
-                            child: headersHome(
-                                text1: 'Best',
-                                text2: 'Courses',
-                                divColor:
-                                    const Color.fromARGB(255, 148, 39, 143)),
-                          ),
-                          hMBox,
-                          Expanded(
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  if (index == 0) {
-                                    return Row(
-                                      children: [
-                                        homeCWB,
-                                        const BestCourseContainer()
-                                      ],
-                                    );
-                                  } else {
-                                    return const BestCourseContainer();
-                                  }
-                                },
-                                separatorBuilder: (context, index) => homeCWBs),
-                          )
-                        ],
+            Image.asset('assets/images/homebg.png'),
+            Padding(
+              padding: const EdgeInsets.only(top: 130),
+              child: Column(
+                children: [
+                  const YourJourneyContiner(),
+                  homeCHB,
+                  const TakeChargeC(),
+                  homeCHB,
+                  const AimcetContainer(),
+                  homeCHB,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: headersHome(
+                        text1: 'Best',
+                        text2: 'Courses',
+                        divColor: const Color.fromARGB(255, 148, 39, 143)),
+                  ),
+                  hMBox,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(4, (index) {
+                        if (index == 0) {
+                          return Row(
+                            children: [homeCWB, const BestCourseContainer()],
+                          );
+                        } else {
+                          return const BestCourseContainer();
+                        }
+                      }),
+                    ),
+                  ),
+                  homeCHB,
+                  const ContributionContainer(),
+                  homeCHB,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: headersHome2(
+                        text1: 'Upcoming',
+                        text2: 'Events',
+                        divColor: const Color.fromARGB(255, 148, 39, 143)),
+                  ),
+                  hMBox,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        4,
+                        (index) {
+                          if (index == 0) {
+                            return Row(
+                              children: [
+                                homeCWB,
+                                UpcomingEventContainer(image: upEvent[index])
+                              ],
+                            );
+                          } else {
+                            return UpcomingEventContainer(
+                                image: upEvent[index]);
+                          }
+                        },
                       ),
                     ),
-                    homeCHB,
-                    const ContributionContainer(),
-                    homeCHB,
-                    SizedBox(
-                      // padding: const EdgeInsets.only(left: 24),
-                      height: 26.5.h,
-                      // color: Colors.blue,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18),
-                            child: headersHome2(
-                                text1: 'Upcoming',
-                                text2: 'Events',
-                                divColor:
-                                    const Color.fromARGB(255, 148, 39, 143)),
-                          ),
-                          hMBox,
-                          Expanded(
-                              child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return Row(
-                                  children: [
-                                    homeCWB,
-                                    UpcomingEventContainer(
-                                        image: upEvent[index])
-                                  ],
-                                );
-                              } else {
-                                return UpcomingEventContainer(
-                                    image: upEvent[index]);
-                              }
-                            },
-                            separatorBuilder: (context, index) => homeCWBs,
-                          ))
-                        ],
-                      ),
-                    ),
-                    homeCHB,
-                    Container(
-                      // height: 27.h,
-                      height: MediaQuery.of(context).size.height * 0.27,
-                      color: Colors.blue,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18),
-                            child: headersHome2(
-                                text1: 'Upcoming', 
-                                text2: 'Sessions',
-                                divColor:
-                                    const Color.fromARGB(255, 148, 39, 143)),
-                          ),
-                          hMBox,
-                          Expanded(
-                              child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return Row(
-                                  children: [
-                                    homeCWB,
-                                    UpcomingSessionContainer(
-                                      mainImage: upSession[index],
-                                      circleImage: upSessioncircle[index],
-                                    )
-                                  ],
-                                );
-                              } else {
-                                return UpcomingSessionContainer(
+                  ),
+                  homeCHB,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: headersHome2(
+                        text1: 'Upcoming',
+                        text2: 'Sessions',
+                        divColor: const Color.fromARGB(255, 148, 39, 143)),
+                  ),
+                  hMBox,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        4,
+                        (index) {
+                          if (index == 0) {
+                            return Row(
+                              children: [
+                                homeCWB,
+                                UpcomingSessionContainer(
                                   mainImage: upSession[index],
                                   circleImage: upSessioncircle[index],
-                                );
-                              }
-                            },
-                            separatorBuilder: (context, index) => homeCWBs,
-                          ))
-                        ],
+                                )
+                              ],
+                            );
+                          } else {
+                            return UpcomingSessionContainer(
+                              mainImage: upSession[index],
+                              circleImage: upSessioncircle[index],
+                            );
+                          }
+                        },
                       ),
                     ),
-                    homeCHB,
-                    SizedBox(
-                      // padding: const EdgeInsets.only(left: 24),
-                      height: 28.7.h,
-                      // height: MediaQuery.of(context).size.height * 0.3,
-                      // color: Colors.blue,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 24),
-                            child: headersHome2(
-                                text1: 'Latest',
-                                text2: 'Insights',
-                                divColor:
-                                    const Color.fromARGB(255, 148, 39, 143)),
-                          ),
-                          hMBox,
-                          Expanded(
-                              child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 4,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return Row(
-                                  children: [
-                                    homeCWB,
-                                    InsightsContainer(image: latestIn[index])
-                                  ],
-                                );
-                              } else {
-                                return InsightsContainer(
-                                    image: latestIn[index]);
-                              }
-                            },
-                            separatorBuilder: (context, index) => homeCWBs,
-                          ))
-                        ],
+                  ),
+                  homeCHB,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24),
+                    child: headersHome2(
+                        text1: 'Latest',
+                        text2: 'Insights',
+                        divColor: const Color.fromARGB(255, 148, 39, 143)),
+                  ),
+                  hMBox,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        4,
+                        (index) {
+                          if (index == 0) {
+                            return Row(
+                              children: [
+                                homeCWB,
+                                InsightsContainer(image: latestIn[index])
+                              ],
+                            );
+                          } else {
+                            return InsightsContainer(image: latestIn[index]);
+                          }
+                        },
                       ),
                     ),
-                    homeCHB,
-                    SizedBox(
-                      // padding: const EdgeInsets.only(left: 24),
-                      height: 29.h,
-                      // color: Colors.blue,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 18),
-                            child: headersHome2(
-                                text1: 'Near',
-                                text2: 'You',
-                                divColor:
-                                    const Color.fromARGB(255, 148, 39, 143)),
-                          ),
-                          hMBox,
-                          Expanded(
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 4,
-                                itemBuilder: (context, index) {
-                                  if (index == 0) {
-                                    return Row(
-                                      children: [
-                                        homeCWB,
-                                        NearYouContainer(image: nearYou[index])
-                                      ],
-                                    );
-                                  } else {
-                                    return NearYouContainer(
-                                        image: nearYou[index]);
-                                  }
-                                },
-                                separatorBuilder: (context, index) => homeCWBs),
-                          )
-                        ],
+                  ),
+                  homeCHB,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 18),
+                    child: headersHome2(
+                        text1: 'Near',
+                        text2: 'You',
+                        divColor: const Color.fromARGB(255, 148, 39, 143)),
+                  ),
+                  hMBox,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        4,
+                        (index) {
+                          if (index == 0) {
+                            return Row(
+                              children: [
+                                homeCWB,
+                                NearYouContainer(image: nearYou[index])
+                              ],
+                            );
+                          } else {
+                            return NearYouContainer(image: nearYou[index]);
+                          }
+                        },
                       ),
                     ),
-                    homeCHBs,
-                  ],
-                ),
+                  ),
+                  homeCHBs,
+                ],
               ),
             )
           ],
@@ -261,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // padding: EdgeInsets.only(right: 5),
           child: BottomNavigationBar(
             currentIndex: _currentStep,
+            type: BottomNavigationBarType.fixed,
             backgroundColor: kwhite,
             selectedItemColor: mainPurple,
             unselectedItemColor: Colors.grey,
@@ -270,27 +220,51 @@ class _HomeScreenState extends State<HomeScreen> {
             unselectedLabelStyle:
                 const TextStyle(color: Colors.grey, fontSize: 10),
             items: [
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.search),
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: SvgPicture.asset(
+                    "assets/images/search.svg",
+                    // color: Colors.purple,
+                  ),
+                ),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
                 icon: SizedBox(
                   height: 25,
                   width: 25,
-                  child: Image.asset("assets/images/prepare.png"),
+                  // child: SvgPicture.asset(
+                  //   "assets/images/prepare.svg",
+                  //   // color: Colors.purple,
+                  // ),
+                  child: Image.asset(
+                    "assets/images/prepare.png",
+                    // color: Colors.purple,
+                  ),
                 ),
                 label: 'Prepare',
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.volunteer_activism_outlined),
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: SvgPicture.asset(
+                    "assets/images/Contribute.svg",
+                    // color: Colors.purple,
+                  ),
+                ),
                 label: 'Contribute',
               ),
               BottomNavigationBarItem(
                 icon: SizedBox(
                   height: 25,
                   width: 25,
-                  child: Image.asset("assets/images/mentor.png"),
+                  child: SvgPicture.asset(
+                    "assets/images/mentorship.svg",
+                    // color: Colors.purple,
+                  ),
                 ),
                 label: 'Mentorship',
               ),
@@ -298,12 +272,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: SizedBox(
                   height: 25,
                   width: 25,
-                  child: Image.asset("assets/images/Engage.png"),
+                  child: SvgPicture.asset(
+                    "assets/images/Engage.svg",
+                    // color: Colors.purple,
+                  ),
                 ),
                 label: 'Engage',
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.near_me),
+              BottomNavigationBarItem(
+                icon: SizedBox(
+                  height: 25,
+                  width: 25,
+                  child: SvgPicture.asset(
+                    "assets/images/nearyou.svg",
+                    // color: Colors.purple,
+                  ),
+                ),
                 label: 'Near you',
               ),
             ],

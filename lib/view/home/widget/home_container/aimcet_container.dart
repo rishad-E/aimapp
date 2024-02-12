@@ -36,18 +36,24 @@ class AimcetContainer extends StatelessWidget {
             height: 23.h,
             child: Image.asset('assets/images/chip.png'),
           ),
-          SizedBox(
-            // color: Colors.yellow,
-            height: 5.8.h,
-            child: SvgPicture.asset('assets/images/AimCET_LOGO.svg'),
-          ),
-          Text(
-            home3Ctext,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: kwhite, fontSize: 9.8.sp),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: SizedBox(
+              // color: Colors.yellow,
+              height: 5.8.h,
+              child: SvgPicture.asset('assets/images/AimCET_LOGO.svg'),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+            child: Text(
+              home3Ctext,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: kwhite, fontSize: 9.8.sp),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 12,bottom: 8),
             child: SizedBox(
                 // color: Colors.yellow,
                 height: 4.2.h,
@@ -61,13 +67,13 @@ class AimcetContainer extends StatelessWidget {
                     "Take Psychometric Test",
                     style: TextStyle(
                         fontSize: 11.sp,
-                        color: Colors.blue,
+                        color: const Color.fromARGB(255, 147, 38, 143),
                         fontWeight: FontWeight.w600),
                   ),
                   label: Icon(
                     Icons.arrow_forward_ios_sharp,
                     size: 11.sp,
-                    color: Colors.blue,
+                    color:const Color.fromARGB(255, 147, 38, 143),
                   ),
                 )),
           )

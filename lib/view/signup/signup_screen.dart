@@ -118,14 +118,15 @@ class SignUpScreen extends StatelessWidget {
                                 child: signupBox(
                                   text: primarytxt3('I am', 9.5.sp),
                                   textField: TextFormField(
-                                      onChanged: (value) =>
-                                          signUp.allFieldsSelected(),
-                                      controller: signUp.roleController,
-                                      decoration: roleContainer(
-                                          hintText: 'Select your role',
-                                          suffixWidget: const Icon(
-                                              Icons.keyboard_arrow_down)),
-                                      readOnly: true),
+                                    onChanged: (value) =>
+                                        signUp.allFieldsSelected(),
+                                    controller: signUp.roleController,
+                                    decoration: roleContainer(
+                                        hintText: 'Select your role',
+                                        suffixWidget: const Icon(
+                                            Icons.keyboard_arrow_down)),
+                                    readOnly: true,
+                                  ),
                                 ),
                               ),
                             ),

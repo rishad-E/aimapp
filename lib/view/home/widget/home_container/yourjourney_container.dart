@@ -10,7 +10,7 @@ class YourJourneyContiner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       margin: const EdgeInsets.symmetric(horizontal: 18),
       // height: 26.h,
       // width: 40.h,
@@ -46,26 +46,58 @@ class YourJourneyContiner extends StatelessWidget {
                           size: 15,
                         )),
                     Expanded(
-                      child: Divider(
-                        thickness: 5,
-                        color: mainPurple,
+                      child: Container(
+                        height: 5,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 171, 44, 193),
+                              Color.fromARGB(255, 122, 10, 142),
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                        ),
                       ),
                     ),
-                    CircleAvatar(
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 255, 203, 7),
+                          width: 1.0,
+                        ),
+                      ),
+                      child: CircleAvatar(
                         backgroundColor: mainPurple,
                         radius: 14,
-                        child: Icon(
+                        child: const Icon(
                           Icons.done_sharp,
-                          color: kwhite,
-                          size: 16,
-                        )),
+                          // weight: 8,
+                          color: Color.fromARGB(255, 255, 203, 7),
+                          size: 17,
+                        ),
+                      ),
+                    ),
                     const Expanded(
                       child: Divider(
                         thickness: 5,
                         color: Color.fromARGB(255, 249, 242, 250),
                       ),
                     ),
-                    const CircleAvatar(radius: 17),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 201, 147, 199),
+                          width: 1.5, // Border width
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: 17,
+                        backgroundColor: kwhite,
+                      ),
+                    ),
                     const SizedBox(
                       width: 55,
                       child: Divider(
@@ -93,7 +125,8 @@ class YourJourneyContiner extends StatelessWidget {
                           ),
                           Text(
                             "2 Years ago",
-                            style: TextStyle(color: Colors.black, fontSize: 6),
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 6),
                           ),
                         ],
                       ),
@@ -106,12 +139,13 @@ class YourJourneyContiner extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 8),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 9),
                           ),
                           Text(
                             "1 Month ago",
-                            style: TextStyle(color: Colors.black, fontSize: 6),
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 6),
                           ),
                         ],
                       ),
@@ -129,7 +163,8 @@ class YourJourneyContiner extends StatelessWidget {
                           ),
                           Text(
                             "Upcoming",
-                            style: TextStyle(color: Colors.black, fontSize: 6),
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 6),
                           ),
                         ],
                       ),

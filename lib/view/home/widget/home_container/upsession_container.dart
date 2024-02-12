@@ -6,54 +6,59 @@ import 'package:sizer/sizer.dart';
 class UpcomingSessionContainer extends StatelessWidget {
   final String mainImage;
   final String circleImage;
-  const UpcomingSessionContainer(
-      {super.key, required this.mainImage, required this.circleImage});
+  const UpcomingSessionContainer({
+    super.key,
+    required this.mainImage,
+    required this.circleImage,
+  });
 
   @override
   Widget build(BuildContext context) {
+    double imageH = 10.9.h;
     return Container(
-      // height: 190,
-      width: 48.w,
+      margin: const EdgeInsets.only(right: 8),
+      width: 50.2.w,
+      // height: 195,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: kwhite,
-          border: Border.all(color: const Color.fromARGB(255, 221, 220, 220))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        borderRadius: BorderRadius.circular(12),
+        color: kwhite,
+        border: Border.all(color: const Color.fromARGB(255, 221, 220, 220)),
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topCenter,
-            children: [
-              SizedBox(
-                height: 10.9.h,
-                width: 47.5.w,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      topRight: Radius.circular(12)),
-                  child: Image.asset(
-                    mainImage,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          SizedBox(
+            height: imageH,
+            // width: 48.w,
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+              child: Image.asset(
+                mainImage,
+                fit: BoxFit.cover,
               ),
-              Positioned(
-                top: 80, // Adjust this value to position the CircleAvatar
-                left: 3,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage(circleImage),
-                ),
-              ),
-              Positioned(
-                top: 100, // Adjust this value to position the Row widget
-                right: 2,
-                // left: 10,
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.end,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: imageH + (-15),
+              left: 8,
+              right: 5,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              //  mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    CircleAvatar(
+                      radius: 22,
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(circleImage),
+                    ),
+                    // wBox,
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
@@ -89,14 +94,7 @@ class UpcomingSessionContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                hBox,
                 Text(
                   "Connect with Jane Smith",
                   style: TextStyle(
@@ -105,9 +103,13 @@ class UpcomingSessionContainer extends StatelessWidget {
                   ),
                 ),
                 hBox,
-                Text(
-                  "Career Strategist for Tech Industries",
-                  style: TextStyle(fontSize: 8.sp, overflow: TextOverflow.clip),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8, bottom: 8),
+                  child: Text(
+                    "Career Strategist for Tech Industries",
+                    style:
+                        TextStyle(fontSize: 8.sp, overflow: TextOverflow.clip),
+                  ),
                 ),
               ],
             ),

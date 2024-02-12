@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
@@ -48,9 +50,12 @@ class ContributionContainer extends StatelessWidget {
                         abouttext: "Trees         Saved  ",
                       ),
                       descriptionContainer(
-                        image: 'assets/images/1.svg',
+                        image: 'assets/images/co2.svg',
                         maintext: "15k (kg)",
                         abouttext: "Environment Saved",
+                        color: kwhite,
+                        height: 3.5.h,
+                        width: 7.w,
                       ),
                     ],
                   ),
@@ -186,13 +191,15 @@ class ContributionContainer extends StatelessWidget {
   }
 }
 
-Widget descriptionContainer({
-  required String image,
-  required String maintext,
-  required String abouttext,
-}) {
+Widget descriptionContainer(
+    {required String image,
+    required String maintext,
+    required String abouttext,
+    Color? color,
+    double? height,
+    double? width}) {
   return Container(
-    padding: const EdgeInsets.symmetric(vertical: 5),
+    padding: const EdgeInsets.symmetric(vertical: 6),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       color: const Color.fromARGB(255, 200, 193, 193).withOpacity(0.4),
@@ -201,7 +208,9 @@ Widget descriptionContainer({
     child: Column(
       children: [
         SizedBox(
-          child: SvgPicture.asset(image),
+          height: height,
+          width: width,
+          child: SvgPicture.asset(image, color: color),
         ),
         Text(
           maintext,

@@ -17,7 +17,7 @@ Text primarytxt2(String text, double size) {
   return Text(
     text,
     style: TextStyle(
-      color:const Color.fromARGB(255, 116, 118, 119),
+      color: const Color.fromARGB(255, 116, 118, 119),
       fontSize: size,
       fontWeight: FontWeight.w400,
     ),
@@ -41,3 +41,18 @@ TextStyle errorStyle() {
   return TextStyle(
       color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.w400);
 }
+
+Text boldText({required String text, required double size}) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: kblack,
+      fontSize: size,
+      fontWeight: FontWeight.bold,
+    ),
+    textAlign: TextAlign.center,
+  );
+}
+
+// const String mainText =
+//     'We envision a world where individuals are equipped to Take charge of their lives, realise their aspirations, and make meaningful contributions to society, fostering a future of limitless possibilities.';

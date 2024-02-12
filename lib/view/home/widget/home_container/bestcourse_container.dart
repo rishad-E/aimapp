@@ -9,17 +9,19 @@ class BestCourseContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(right: 8),
       width: 63.w,
-      // height: 24.5.h,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: kwhite,
-          border: Border.all(color: const Color.fromARGB(255, 236, 235, 235))),
+        borderRadius: BorderRadius.circular(12),
+        color: kwhite,
+        border: Border.all(color: const Color.fromARGB(255, 221, 220, 220)),
+      ),
+      // child: Text("afdafdddddddddddddddddddddd"),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: 63.w,
+            // width: 63.w,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
@@ -61,29 +63,28 @@ class BestCourseContainer extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(left: 10, right: 5),
-              // color: Colors.amber,
-              // height: 10.h,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Dynamic World education community",
-                      style: TextStyle(
-                        fontSize: 10.8.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+          Container(
+            padding: const EdgeInsets.only(left: 10, right: 5, bottom: 8),
+            // color: Colors.amber,
+            // height: 10.h,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "Dynamic World education community",
+                    style: TextStyle(
+                      fontSize: 10.8.sp,
+                      fontWeight: FontWeight.w600,
                     ),
-                    Text(
-                      "Skills you'll gain: Organizational Culture, Career Development, Strategic Thinking,Charming ",
-                      maxLines: 2,
-                      style: TextStyle(
-                          fontSize: 8.3.sp, overflow: TextOverflow.ellipsis),
-                    ),
-                  ]),
-            ),
+                  ),
+                  hBox,
+                  Text(
+                    "Skills you'll gain: Organizational Culture, Career Development, Strategic Thinking,Charming ",
+                    maxLines: 2,
+                    style: TextStyle(
+                        fontSize: 8.3.sp, overflow: TextOverflow.ellipsis),
+                  ),
+                ]),
           )
         ],
       ),
