@@ -102,8 +102,7 @@ class OTPTextField extends StatelessWidget {
             keyboardType: TextInputType.number,
             maxLength: 1,
             decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+              contentPadding: const EdgeInsets.fromLTRB(2, 0, 0, 0),
               counter: const Offstage(),
               enabledBorder: OutlineInputBorder(
                 borderSide:

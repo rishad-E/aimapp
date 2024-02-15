@@ -1,4 +1,4 @@
-
+import 'package:aimshala/view/Book_career_counsell/career_home_screen.dart';
 import 'package:aimshala/view/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             textSelectionTheme: const TextSelectionThemeData(
-                // cursorColor: Colors.transparent,
-                selectionColor: Colors.transparent,
-                selectionHandleColor: Colors.transparent),
+              // cursorColor: Colors.transparent,
+              selectionColor: Colors.transparent,
+              selectionHandleColor: Colors.transparent,
+            ),
           ),
-          home:  const LoginScreen(),
+          home: BookCareerHomePage(),
           debugShowCheckedModeBanner: false,
         );
       },

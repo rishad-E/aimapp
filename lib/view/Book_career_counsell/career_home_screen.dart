@@ -1,13 +1,11 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/Book_career_counsell/career_aim_screen.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_bottomsheet.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/career_home_bottomsheet.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_home_widgets.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -35,7 +33,7 @@ class BookCareerHomePage extends StatelessWidget {
         // height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/bg-image.png'),
+              image: AssetImage('assets/images/careerbgimage.png'),
               fit: BoxFit.cover),
         ),
         child: Center(
@@ -65,7 +63,7 @@ class BookCareerHomePage extends StatelessWidget {
                         validator: (value) =>
                             careerController.nameValidation(value),
                         onChanged: (value) {
-                          careerController.checkAllfield();
+                          careerController.checkAllfieldCareerHome();
                         },
                       ),
                     ),
@@ -86,7 +84,7 @@ class BookCareerHomePage extends StatelessWidget {
                                   const Icon(Icons.keyboard_arrow_down),
                             ),
                             onChanged: (value) {
-                              careerController.checkAllfield();
+                              careerController.checkAllfieldCareerHome();
                             },
                             controller: careerController.roleController,
                             readOnly: true,
@@ -106,9 +104,8 @@ class BookCareerHomePage extends StatelessWidget {
                             return TextButton(
                               onPressed: () {
                                 if (careerFormKey.currentState!.validate()) {
-                                  log(career.nameController.text +
-                                      careerController.roleController.text);
-                                  Get.to(() => const BookCareerAimPage());
+                                  // log(career.microaimRes.toString(),name: 'beforeaimscreen');
+                                  Get.to(() => BookCareerAimPage());
                                 }
                               },
                               style: ButtonStyle(
@@ -117,7 +114,7 @@ class BookCareerHomePage extends StatelessWidget {
                                     MaterialStateProperty.resolveWith<Color>(
                                   (states) {
                                     return career
-                                            .isAllCareerFieldsSelected.value
+                                            .isAllCareerHomeFieldsSelected.value
                                         ? kpurple
                                         : buttonColor;
                                   },
@@ -139,6 +136,17 @@ class BookCareerHomePage extends StatelessWidget {
           )),
         ),
       ),
+    );
+  }
+
+  void showCareerRoleBottomSheet(
+      BuildContext context, BookCareerCounsellController controller) {
+    showModalBottomSheet(
+      backgroundColor: kwhite,
+      context: context,
+      builder: (BuildContext context) {
+        return const CareerHomeBottomSheet();
+      },
     );
   }
 }
