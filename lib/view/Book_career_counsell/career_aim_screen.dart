@@ -3,11 +3,11 @@ import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_aim_bottomsheet.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_aim_bottomsheet.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_microaim_bottomsheet.dart';
-import 'package:aimshala/view/temp.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_microaim_bottomsheet.dart';
+import 'package:aimshala/view/date_time_Booking/date_time_booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -21,40 +21,21 @@ class BookCareerAimPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        title: const Text(
-          "Book Career Counselling Call",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-        ),
-        centerTitle: true,
-      ),
+      appBar: careerAppBar(),
       body: Container(
         height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/careerbgimage.png'),
-              fit: BoxFit.cover),
-        ),
+        decoration: careerMainContainerdecoration(),
         child: Center(
           child: SingleChildScrollView(
               child: Padding(
-            padding: const EdgeInsets.only(left: 17, right: 17, top: 15),
+            padding: careerContainerP,
             child: Form(
               key: careeraimFormKey,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 17, vertical: 24),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: kwhite,
-                ),
+              child: careerSecContainer(
                 child: Column(
                   children: [
                     boldText(text: "What is your Aim? ", size: 20),
-                    hLBox,
+                    hMBox,
                     careerHomeField(
                       text: primarytxt3('Your Aim', 11),
                       textField: TextFormField(
@@ -73,14 +54,15 @@ class BookCareerAimPage extends StatelessWidget {
                           }
                           return null;
                         },
-                        // onChanged: (value) =>
-                        //     careerController.checkAllfieldCareerAim(),
                         controller: careerController.aimController,
                         readOnly: true,
-                        onTap: () => showCareerAimBottomSheet(context),
+                        onTap: () {
+                          careerController.searchAimOptions(query: '');
+                          showCareerAimBottomSheet(context);
+                        },
                       ),
                     ),
-                    hLBox,
+                    hMBox,
                     careerHomeField(
                         text: primarytxt3('Your Micro Aim', 11),
                         textField: Obx(
@@ -101,13 +83,10 @@ class BookCareerAimPage extends StatelessWidget {
                                           color: kblack,
                                         ),
                                       ),
-                                      // onChanged: (value) => careerController
-                                      //     .checkAllfieldCareerAim(),
                                       readOnly: true,
-                                      onTap: () =>
-                                          showCareerMicroAimBottomSheet(
-                                              context),
-                                    )
+                                      onTap: () {
+                                        showCareerMicroAimBottomSheet(context);
+                                      })
                                   : Container(
                                       width: double.infinity,
                                       padding: const EdgeInsets.symmetric(
@@ -134,8 +113,6 @@ class BookCareerAimPage extends StatelessWidget {
                                                       onTap: () {
                                                         log("delte ontap");
                                                         data.removeAt(index);
-                                                        // careerController
-                                                        //     .checkAllfieldCareerAim();
                                                         careerController
                                                             .update([
                                                           'button-careerAim'
@@ -179,7 +156,7 @@ class BookCareerAimPage extends StatelessWidget {
                           : remindWidget(),
                     ),
                     hBox,
-                    hLBox,
+                    hMBox,
                     Container(
                       width: double.infinity,
                       height: 4.5.h,
@@ -189,11 +166,11 @@ class BookCareerAimPage extends StatelessWidget {
                         builder: (career) {
                           return TextButton(
                             onPressed: () {
-                              if (careeraimFormKey.currentState!.validate()) {
-                                
-                              }
+                              if (careeraimFormKey.currentState!.validate()) {}
                               log("fst ${careerController.aimController.text}+scnd${careerController.check.toString()}");
-                              Get.to(()=> TempScreen(microAim: careerController.check,));
+                              Get.to(() =>
+                                  // TempScreen( microAim: careerController.check)
+                                  const CareerDateTimeBookingScreen());
                             },
                             style: ButtonStyle(
                               shape: buttonShape(round: 8),
@@ -231,9 +208,16 @@ class BookCareerAimPage extends StatelessWidget {
   }
 
   void showCareerAimBottomSheet(BuildContext context) {
+    // Get.bottomSheet(
+    //     // ignoreSafeArea: false,
+    //     // isScrollControlled: true,
+    //     const CareerAimBottomsheet(),
+    //     backgroundColor: kwhite);
     showModalBottomSheet(
       backgroundColor: kwhite,
       context: context,
+      // isScrollControlled: true,
+      // useSafeArea: false,
       builder: (BuildContext context) {
         return const CareerAimBottomsheet();
       },

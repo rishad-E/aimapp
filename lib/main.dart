@@ -1,5 +1,8 @@
-import 'package:aimshala/view/Book_career_counsell/career_home_screen.dart';
+import 'package:aimshala/view/date_time_Booking/date_time_booking_screen.dart';
+import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/login/login_screen.dart';
+import 'package:aimshala/view/login/otp_screen.dart';
+import 'package:aimshala/view/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
               selectionHandleColor: Colors.transparent,
             ),
           ),
-          home: BookCareerHomePage(),
+          home:  const LoginScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

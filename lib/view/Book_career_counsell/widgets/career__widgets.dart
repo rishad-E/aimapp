@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -11,6 +11,18 @@ Decoration boxdecoration(double radius) {
     borderRadius: BorderRadius.all(
       Radius.circular(radius),
     ),
+  );
+}
+
+PreferredSizeWidget careerAppBar() {
+  return AppBar(
+    backgroundColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    title: const Text(
+      "Book Career Counselling Call",
+      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+    ),
+    centerTitle: true,
   );
 }
 
@@ -51,7 +63,7 @@ InputDecoration careerTextFiled(
   );
 }
 
-Widget aimInitialWidget() {
+Widget aimInitialWidget({Widget? textField}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
@@ -87,17 +99,14 @@ Widget aimInitialWidget() {
         contentPadding: EdgeInsets.zero,
         leading: bottomHeading('Select your Aim', 18, FontWeight.w700, kblack),
       ),
-      const Center(
-        child: CircularProgressIndicator(
-            color: Color.fromARGB(255, 188, 185, 188)),
-      )
+      Container(child: textField),
     ],
   );
 }
 
 Widget microaimListdata({required String microItem}) {
   return Container(
-    padding: const EdgeInsets.symmetric(vertical: 9,horizontal: 8),
+    padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 8),
     decoration: BoxDecoration(
       color: Colors.grey.withOpacity(0.2),
       borderRadius: BorderRadius.circular(16),
@@ -108,6 +117,7 @@ Widget microaimListdata({required String microItem}) {
     ),
   );
 }
+
 Widget remindWidget() {
   return Row(
     children: [
@@ -122,7 +132,6 @@ Widget remindWidget() {
     ],
   );
 }
-
 
 Widget checking({required String microAim, required Function()? onTap}) {
   return GestureDetector(
@@ -150,3 +159,29 @@ Widget checking({required String microAim, required Function()? onTap}) {
     ),
   );
 }
+
+BoxDecoration careerMainContainerdecoration() {
+  return const BoxDecoration(
+    image: DecorationImage(
+        image: AssetImage('assets/images/careerbgimage.png'),
+        fit: BoxFit.cover),
+  );
+}
+
+Widget careerSecContainer({required Widget child}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 24),
+    width: double.infinity,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: kwhite,
+    ),
+    child: child,
+  );
+}
+
+EdgeInsets careerContainerP = const EdgeInsets.only(
+  left: 17,
+  right: 17,
+  top: 15,
+);

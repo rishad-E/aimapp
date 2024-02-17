@@ -3,7 +3,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/Book_career_counsell/career_aim_screen.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
 import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
 import 'package:flutter/material.dart';
@@ -19,41 +19,20 @@ class BookCareerHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        // title: appbarContainer(onPressed: () {}),
-        title: const Text(
-          "Book Career Counselling Call",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-        ),
-        centerTitle: true,
-      ),
+      appBar: careerAppBar(),
       body: Container(
-        // height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/images/careerbgimage.png'),
-              fit: BoxFit.cover),
-        ),
+        decoration: careerMainContainerdecoration(),
         child: Center(
           child: SingleChildScrollView(
               child: Padding(
-            padding: const EdgeInsets.only(left: 17, right: 17, top: 15),
+            padding: careerContainerP,
             child: Form(
               key: careerFormKey,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 17, vertical: 24),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: kwhite,
-                ),
+              child: careerSecContainer(
                 child: Column(
                   children: [
                     boldText(text: "Who you are?", size: 20),
-                    hLBox,
+                    hMBox,
                     careerHomeField(
                       text: primarytxt3('Name', 11),
                       textField: TextFormField(
@@ -67,7 +46,7 @@ class BookCareerHomePage extends StatelessWidget {
                         },
                       ),
                     ),
-                    hLBox,
+                    hMBox,
                     GestureDetector(
                       onTap: () {
                         showCareerRoleBottomSheet(context, careerController);
@@ -93,7 +72,7 @@ class BookCareerHomePage extends StatelessWidget {
                       ),
                     ),
                     hBox,
-                    hLBox,
+                    hMBox,
                     Container(
                       width: double.infinity,
                       height: 4.5.h,
@@ -104,8 +83,8 @@ class BookCareerHomePage extends StatelessWidget {
                             return TextButton(
                               onPressed: () {
                                 if (careerFormKey.currentState!.validate()) {
-                                  // log(career.microaimRes.toString(),name: 'beforeaimscreen');
                                   Get.to(() => BookCareerAimPage());
+                                  career.searchAimOptions(query: '');
                                 }
                               },
                               style: ButtonStyle(
