@@ -1,6 +1,6 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/career_home_screen.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/career_home_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

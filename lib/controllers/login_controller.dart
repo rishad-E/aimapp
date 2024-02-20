@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> otpFormKey = GlobalKey();
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
-  RxBool onchange = false.obs;
+    // RxBool onchange = false.obs;
   Rx<Color> buttonColor = Rx<Color>(bbColor);
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
   RxInt filledOtpFields = RxInt(0);
@@ -27,9 +27,7 @@ class LoginController extends GetxController {
   }
 
 /*---------- verify OTP ---------*/
-  Future<void> verifyOTPFunction(
-      {required String mobileNo, required String otp}) async {
-    // isLoading = true;
+  Future<void> verifyOTPFunction({required String mobileNo, required String otp}) async {
     OtpService().validateOTP(mobileNo: '91$mobileNo', otp: otp).then((value) =>
         {
           if (value == true)
@@ -114,7 +112,7 @@ class LoginController extends GetxController {
     buttonColor.value = numberOfFilledFields == 4 ? kpurple : bbColor;
     buttonTextColor.value =
         numberOfFilledFields == 4 ? Colors.white : Colors.black;
-    onchange.value = true;
+    // onchange.value = true;
 
     update(['button-otp']);
   }

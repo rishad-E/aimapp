@@ -101,7 +101,7 @@ class OTPScreen extends StatelessWidget {
                                       last: false,
                                       controller: otpController.otpController1,
                                       onChanged: (value) {
-                                        otpController.onchange.value = true;
+                                        // otpController.onchange.value = true;
                                         if (value.length == 1) {
                                           FocusScope.of(context).nextFocus();
                                         }
@@ -188,7 +188,8 @@ class OTPScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     otpController.resendOTPFunction(
-                                        mobileNo: mobileNo);
+                                        mobileNo: '91$mobileNo');
+                                        //91${controller.phoneController.text}
                                   },
                                   child: Text(
                                     "Resend Code",

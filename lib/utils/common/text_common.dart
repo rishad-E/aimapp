@@ -53,6 +53,3 @@ Text boldText({required String text, required double size}) {
     textAlign: TextAlign.center,
   );
 }
-
-// const String mainText =
-//     'We envision a world where individuals are equipped to Take charge of their lives, realise their aspirations, and make meaningful contributions to society, fostering a future of limitless possibilities.';

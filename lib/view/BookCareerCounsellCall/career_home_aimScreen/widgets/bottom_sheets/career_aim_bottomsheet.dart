@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -32,7 +32,7 @@ class CareerAimBottomsheet extends StatelessWidget {
                     controller.searchAimOptions(query: searchController.text);
                   },
                   decoration: decorTextfield(
-                      prefixWidget: const Icon(Icons.search, size: 25),
+                      prefixWidget:  careerSearchIcon(leftP: 10,rightP: 0),
                       hintText: "Search"),
                 ),
               ),

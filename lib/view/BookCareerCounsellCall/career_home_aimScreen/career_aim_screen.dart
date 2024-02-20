@@ -3,11 +3,11 @@ import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_aim_bottomsheet.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_microaim_bottomsheet.dart';
-import 'package:aimshala/view/date_time_Booking/date_time_booking_screen.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_aim_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_microaim_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_date_time_Booking/career_date_time_booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -42,11 +42,7 @@ class BookCareerAimPage extends StatelessWidget {
                         style: TextStyle(fontSize: 14, color: textFieldColor),
                         decoration: careerTextFiled(
                           hintText: 'Tell us your Aim',
-                          prefixWidget: Icon(
-                            Icons.search_rounded,
-                            size: 20,
-                            color: kblack,
-                          ),
+                          prefixWidget: careerSearchIcon(leftP: 10, rightP: 10),
                         ),
                         validator: (value) {
                           if (careerController.aimController.text.isEmpty) {
@@ -77,11 +73,8 @@ class BookCareerAimPage extends StatelessWidget {
                                           fontSize: 14, color: textFieldColor),
                                       decoration: careerTextFiled(
                                         hintText: 'Tell us your Micro Aim',
-                                        prefixWidget: Icon(
-                                          Icons.search_rounded,
-                                          size: 20,
-                                          color: kblack,
-                                        ),
+                                        prefixWidget: careerSearchIcon(
+                                            leftP: 10, rightP: 10),
                                       ),
                                       readOnly: true,
                                       onTap: () {
@@ -99,7 +92,7 @@ class BookCareerAimPage extends StatelessWidget {
                                       ),
                                       child: Wrap(
                                         spacing: 5,
-                                        runSpacing: 2,
+                                        runSpacing: 4,
                                         children: List.generate(
                                           careerController.check.length,
                                           (index) {
@@ -107,34 +100,35 @@ class BookCareerAimPage extends StatelessWidget {
                                             if (index == data.length - 1) {
                                               return Row(
                                                 children: [
-                                                  checking(
+                                                  Flexible(
+                                                    child: checking(
                                                       microAim: data[index]
+                                                          .microAim
                                                           .toString(),
                                                       onTap: () {
-                                                        log("delte ontap");
+                                                        log("delete onTap");
                                                         data.removeAt(index);
                                                         careerController
                                                             .update([
                                                           'button-careerAim'
                                                         ]);
-                                                      }),
-                                                  const Expanded(
-                                                    child: Text(
-                                                      " Add more...",
-                                                      style: TextStyle(
-                                                        color: Color.fromARGB(
-                                                            255, 116, 118, 119),
-                                                      ),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      },
                                                     ),
+                                                  ),
+                                                  const Text(
+                                                    " Add more...",
+                                                    style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 116, 118, 119),
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   )
                                                 ],
                                               );
                                             } else {
                                               return checking(
-                                                microAim:
-                                                    data[index].toString(),
+                                                microAim: data[index].microAim,
                                                 onTap: () {
                                                   data.removeAt(index);
                                                   log("delte ontap");
@@ -167,10 +161,8 @@ class BookCareerAimPage extends StatelessWidget {
                           return TextButton(
                             onPressed: () {
                               if (careeraimFormKey.currentState!.validate()) {}
-                              log("fst ${careerController.aimController.text}+scnd${careerController.check.toString()}");
-                              Get.to(() =>
-                                  // TempScreen( microAim: careerController.check)
-                                  const CareerDateTimeBookingScreen());
+                              log("fst ${careerController.aimController.text}+name${careerController.roleController.text}");
+                              Get.to(() => const CareerDateTimeBookingScreen());
                             },
                             style: ButtonStyle(
                               shape: buttonShape(round: 8),
@@ -190,8 +182,7 @@ class BookCareerAimPage extends StatelessWidget {
                                   color: career.aimController.text.isNotEmpty &&
                                           career.check.isNotEmpty
                                       ? Colors.white
-                                      : const Color.fromARGB(
-                                          255, 116, 118, 119)),
+                                      : disableText),
                             ),
                           );
                         },

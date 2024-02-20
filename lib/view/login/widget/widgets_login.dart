@@ -48,7 +48,7 @@ Widget twoStyleTexts({required String text1, required String text2}) {
             text: text1,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              fontSize: 17.sp,
+              fontSize: 16.sp,
               color: const Color.fromARGB(255, 30, 35, 44),
             )),
         WidgetSpan(child: wBox),
@@ -56,7 +56,7 @@ Widget twoStyleTexts({required String text1, required String text2}) {
             text: text2,
             style: TextStyle(
               color: const Color.fromARGB(255, 147, 38, 143),
-              fontSize: 17.sp,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w600,
             )),
       ],

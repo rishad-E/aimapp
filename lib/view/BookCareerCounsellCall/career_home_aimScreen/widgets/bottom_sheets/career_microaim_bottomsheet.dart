@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/model/microaim_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -56,6 +57,9 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                             // 20,
                             (index) {
                               final data = controller.searchMicorAimRes[index];
+                              final model = MicroModel(
+                                  microAim: data.categoryName.toString(),
+                                  aimId: data.id.toString());
                               return ListTile(
                                 shape: const Border(
                                     bottom: BorderSide(
@@ -66,18 +70,17 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                                     style: optionText()),
                                 trailing: Checkbox(
                                   side: BorderSide.none,
-                                  value: controller.check
-                                      .contains(data.categoryName),
+                                  value: controller.check.any((item) => item.microAim == data.categoryName),
                                   onChanged: (value) {
                                     if (value != null && value) {
-                                      microaimSheetListValueChange(controller,
-                                          data.categoryName.toString());
+                                      microaimSheetListValueChange(
+                                          controller, model);
                                     }
                                   },
                                 ),
                                 onTap: () {
                                   microaimSheetListValueChange(
-                                      controller, data.categoryName.toString());
+                                      controller, model);
                                   log(controller.check.toString(),
                                       name: 'adding to list');
                                 },
@@ -96,11 +99,9 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
 }
 
 void microaimSheetListValueChange(
-    BookCareerCounsellController controller, String type) {
-  // Get.back();
-  // controller.careerMicroAimSelectedRole = type;
-  if (!controller.check.contains(type)) {
-    controller.check.add(type);
+    BookCareerCounsellController controller, MicroModel model) {
+  if (!controller.check.contains(model)) {
+    controller.check.add(model);
   }
   controller.update(['button-careerAim']);
 }

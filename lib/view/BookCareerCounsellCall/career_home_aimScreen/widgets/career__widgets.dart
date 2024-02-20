@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/bottom_sheets/career_home_bottomsheet.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -36,7 +36,9 @@ InputDecoration careerTextFiled(
     {String? hintText, Widget? suffixWidget, Widget? prefixWidget}) {
   return InputDecoration(
     hintText: hintText,
+    prefixIconConstraints: const BoxConstraints(minHeight: 25, minWidth: 25),
     suffixIcon: suffixWidget,
+    // prefix:prefixWidget ,
     prefixIcon: prefixWidget,
     contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
     hintStyle: TextStyle(
@@ -63,36 +65,35 @@ InputDecoration careerTextFiled(
   );
 }
 
+Widget careerSearchIcon({required double leftP, required double rightP}) {
+  return Container(
+    padding: EdgeInsets.only(left: leftP, right: rightP),
+    child: ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        kblack,
+        BlendMode.srcIn,
+      ),
+      child: SvgPicture.asset(
+        "assets/images/search.svg",
+        semanticsLabel: 'Search', // Add semantics label if required
+        fit: BoxFit.contain,
+      ),
+    ),
+  );
+}
+
 Widget aimInitialWidget({Widget? textField}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
       ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: GestureDetector(
+        contentPadding: const EdgeInsets.only(right: 7),
+        trailing: GestureDetector(
           onTap: () => Get.back(),
           child: SizedBox(
               height: 30,
               width: 30,
               child: Image.asset('assets/images/close.png', fit: BoxFit.cover)),
-        ),
-        trailing: Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: TextButton(
-            onPressed: () {},
-            style: ButtonStyle(
-              overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.pressed)) {
-                    return Colors.transparent;
-                  }
-                  return null;
-                },
-              ),
-            ),
-            child:
-                bottomHeading('Resend Code', 14, FontWeight.w600, mainPurple),
-          ),
         ),
       ),
       ListTile(
@@ -140,14 +141,21 @@ Widget checking({required String microAim, required Function()? onTap}) {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: textFieldColor.withOpacity(0.2),
+        color: textFieldColor.withOpacity(0.1),
+        
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            microAim,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          Flexible(
+            child: Text(
+              microAim,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           wBox,
           const Icon(

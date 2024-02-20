@@ -18,7 +18,7 @@ class CareerAimService {
     try {
       Response response = await dio.get(path);
       // log(response.data.toString(), name: 'get aim res');
-
+      
       List<dynamic> data = response.data['Categories'];
 
       final res = data.map((e) => Category.fromJson(e)).toList();

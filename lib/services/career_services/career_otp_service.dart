@@ -3,17 +3,17 @@ import 'dart:developer';
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:dio/dio.dart';
 
-class OtpService {
+class CareerOtpService {
   Dio dio = Dio();
   String templateId = '65af4634d6fc054da644a222';
   String authKey = '414267AspeU9svuZYb65aa6769P1';
   String retryType = 'text';
 
-/*---------- send otp service ---------*/
-  Future<void> sendOTP({required String mobileNo}) async {
+  /*---------- Career send otp service ---------*/
+  Future<void> careerSendOTP({required String mobileNo}) async {
     try {
       String path = '${Apis().baseUrlOtp}otp';
-      
+
       Response response = await dio.get(
         path,
         queryParameters: {
@@ -24,22 +24,21 @@ class OtpService {
       );
       log(response.data.toString());
     } catch (e) {
-      log(e.toString(), error: 'sendOtp error');
+      log(e.toString(), error: 'career sendOtp error');
     }
   }
 
-  /*---------- validate otp serviece---------*/
-  Future<bool?> validateOTP(
+  /*---------- Career validate otp serviece---------*/
+  Future<bool?> careerValidateOTP(
       {required String otp, required String mobileNo}) async {
     try {
-    
       String path = '${Apis().baseUrlOtp}otp/verify';
       Response response = await dio.get(path, queryParameters: {
         'otp': otp,
         'authkey': authKey,
         'mobile': mobileNo,
       });
-      log(response.data.toString(),name:'otp validation');
+      log(response.data.toString(), name: 'career otp validation');
       String data = response.data['message'];
       if (data == 'OTP verified success') {
         return true;
@@ -52,8 +51,8 @@ class OtpService {
     return null;
   }
 
-/*---------- validate otp serviece---------*/
-  Future<String?> resendOTP({required String mobileNo}) async {
+/*---------- Career validate otp serviece---------*/
+  Future<String?> careerResendOTP({required String mobileNo}) async {
     try {
       log(mobileNo.toString());
       String path = '${Apis().baseUrlOtp}otp/retry';
@@ -63,13 +62,8 @@ class OtpService {
         'retrytype': retryType,
       });
       log(response.data.toString(), name: 'resend');
-       String data = response.data['message'];
-       return data;
-      //  if (data =='retry send successfully') {
-      //    return true;
-      //  }else{
-      //   return false;
-      //  }
+      String data = response.data['message'];
+      return data;
     } catch (e) {
       log(e.toString(), name: 'retry error');
     }

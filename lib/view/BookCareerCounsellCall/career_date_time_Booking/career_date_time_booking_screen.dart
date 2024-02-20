@@ -5,10 +5,10 @@ import 'package:aimshala/services/career_services/get_booking_date_time_service.
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career__widgets.dart';
-import 'package:aimshala/view/Book_career_counsell/widgets/career_colors.dart';
-import 'package:aimshala/view/date_time_Booking/widgets/date_time_widgets.dart';
-import 'package:aimshala/view/temp.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_num_email_verification/career_verification_screen.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_date_time_Booking/widgets/date_time_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -176,19 +176,18 @@ class _CareerDateTimeBookingScreenState
                                   });
                                 },
                                 child: timeContainer(
-                                  timeData: convertToAMPM(
-                                      data.slotStartTime.toString()),
-                                  colortext: controller.selectedTime ==
-                                          data.slotStartTime
-                                      ? mainPurple
-                                      : kblack,
-                                  colorbb: controller.selectedTime ==
-                                          data.slotStartTime
-                                      ? mainPurple.withOpacity(0.1)
-                                      : kwhite,
-                                      select:  controller.selectedTime ==
-                                          data.slotStartTime
-                                ),
+                                    timeData: convertToAMPM(
+                                        data.slotStartTime.toString()),
+                                    colortext: controller.selectedTime ==
+                                            data.slotStartTime
+                                        ? mainPurple
+                                        : kblack,
+                                    colorbb: controller.selectedTime ==
+                                            data.slotStartTime
+                                        ? mainPurple.withOpacity(0.1)
+                                        : kwhite,
+                                    select: controller.selectedTime ==
+                                        data.slotStartTime),
                               );
                             },
                           ),
@@ -208,9 +207,7 @@ class _CareerDateTimeBookingScreenState
                           onPressed: () {
                             if (booking.selectedDate != null &&
                                 booking.selectedTime != null) {
-                              Get.to(() => TempScreen(
-                                  time: booking.selectedTime.toString(),
-                                  date: booking.selectedDate.toString()));
+                              Get.to(() => const CareerVerificationScreen());
                             }
                           },
                           style: ButtonStyle(
@@ -222,7 +219,7 @@ class _CareerDateTimeBookingScreenState
                                         booking.selectedTime != null
                                     ? mainPurple
                                     : buttonColor;
-                                // buttonColor;
+                                
                               },
                             ),
                           ),
@@ -232,7 +229,7 @@ class _CareerDateTimeBookingScreenState
                                 color: booking.selectedDate != null &&
                                         booking.selectedTime != null
                                     ? Colors.white
-                                    : const Color.fromARGB(255, 116, 118, 119)),
+                                    : disableText),
                           ),
                         );
                       },
