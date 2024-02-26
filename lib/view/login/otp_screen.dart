@@ -85,7 +85,7 @@ class OTPScreen extends StatelessWidget {
                             ],
                           ),
                           fieldText: primarytxt(
-                              "Please enter the Verification Code send to +91$mobileNo",
+                              "Please enter the Verification Code send to +$mobileNo",
                               10.7.sp),
                           context: context,
                           textfield: SizedBox(
@@ -188,7 +188,7 @@ class OTPScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     otpController.resendOTPFunction(
-                                        mobileNo: '91$mobileNo');
+                                        mobileNo: mobileNo);
                                         //91${controller.phoneController.text}
                                   },
                                   child: Text(
@@ -221,6 +221,7 @@ class OTPScreen extends StatelessWidget {
                                         String validationMessage =
                                             otp.validateOtp();
                                         if (validationMessage.isEmpty) {
+                                           
                                           String newOtp =
                                               otp.otpController1.text +
                                                   otp.otpController2.text +

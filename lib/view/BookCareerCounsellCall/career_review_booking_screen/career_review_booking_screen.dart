@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/career_booking_controller.dart';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
@@ -17,6 +19,11 @@ class CareerReviewBookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(BookCareerCounsellController());
+    final UserDataModel? userData = Get.find<LoginController>().userData;
+    if (userData != null) {
+      controller.emailController.text = userData.user?.email ?? '';
+      controller.mobNumberController.text = userData.user?.phone ?? '';
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: careerAppBar(),
@@ -41,7 +48,10 @@ class CareerReviewBookingScreen extends StatelessWidget {
                       color: kpurple,
                     ),
                     hBox,
-                    reviewRoleController(role: controller.roleController.text),
+                    reviewRoleController(
+                        role: controller.roleController.text == "Other"
+                            ? controller.otherRoleController.text
+                            : controller.roleController.text),
                     hBox,
                     reviewValContainer(
                       svg: "assets/images/Mail.svg",
@@ -105,6 +115,7 @@ class CareerReviewBookingScreen extends StatelessWidget {
                             List<String> selectedIds = controller.check
                                 .map((item) => item.aimId)
                                 .toList();
+                            log(controller.roleController.text);
                             controller
                                 .careerBokingSlotFucntion(
                                   name: controller.nameController.text,
@@ -127,13 +138,12 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                       else
                                         {
                                           Get.showSnackbar(
-                                            GetSnackBar(
+                                            const GetSnackBar(
                                               snackStyle: SnackStyle.FLOATING,
-                                              message: value,
-                                              margin: const EdgeInsets.all(10),
+                                              message: "Booking failed",
+                                              margin: EdgeInsets.all(10),
                                               backgroundColor: Colors.red,
-                                              duration:
-                                                  const Duration(seconds: 2),
+                                              duration: Duration(seconds: 2),
                                             ),
                                           )
                                         }

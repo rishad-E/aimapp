@@ -1,14 +1,11 @@
 import 'dart:developer';
-
 import 'package:aimshala/controllers/career_booking_controller.dart';
-import 'package:aimshala/services/career_services/get_booking_date_time_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_num_email_verification/career_verification_screen.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_date_time_Booking/widgets/date_time_widgets.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_review_booking_screen/career_review_booking_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -24,9 +21,6 @@ class CareerDateTimeBookingScreen extends StatefulWidget {
 
 class _CareerDateTimeBookingScreenState
     extends State<CareerDateTimeBookingScreen> {
-  // String? selectedDate;
-  // String? selectedTime;
-  bool selected = false;
   final controller = Get.put(BookCareerCounsellController());
   @override
   Widget build(BuildContext context) {
@@ -71,7 +65,7 @@ class _CareerDateTimeBookingScreenState
                         ),
                       ),
                       FutureBuilder(
-                        future: CareerBookingService().getBookingDate(),
+                        future: controller.fetchBookingDate(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -82,6 +76,12 @@ class _CareerDateTimeBookingScreenState
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
+                            // final List<dynamic>? dates = snapshot.data;
+                            // if (dates != null &&
+                            //     dates.isNotEmpty &&
+                            //     controller.selectedDate == null) {
+                            //   controller.selectedDate = dates[0].toString();
+                            // }
                             return SizedBox(
                               height: 5.9.h,
                               width: MediaQuery.of(context).size.width - 120,
@@ -93,10 +93,9 @@ class _CareerDateTimeBookingScreenState
                                   return GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        controller.selectedDate = date;
-                                        selected = true;
-                                        log(controller.selectedDate.toString(),
-                                            name: 'dateeeeeeee');
+                                        controller.selectedDate.value = date;
+                                        // log(controller.selectedDate.toString(),
+                                        //     name: 'dateeeeeeee');
                                         controller
                                             .update(['update-bookingButton']);
                                       });
@@ -138,62 +137,66 @@ class _CareerDateTimeBookingScreenState
                     ],
                   ),
                   hMBox,
-                  FutureBuilder(
-                    future: controller.fetchBookingTime(
-                        date: controller.selectedDate.toString()),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator(
-                            color: Color.fromARGB(255, 188, 185, 188));
-                      } else if (controller.selectedDate == null) {
-                        return const Center(
-                          child: Text('please select date'),
-                        );
-                      } else if (snapshot.data!.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'No avaliable slots for selected date',
-                            style: TextStyle(color: textFieldColor),
-                          ),
-                        );
-                      } else {
-                        return Wrap(
-                          spacing: 6,
-                          runSpacing: 8,
-                          alignment: WrapAlignment.center,
-                          children: List.generate(
-                            snapshot.data!.length,
-                            (index) {
-                              final data = snapshot.data![index];
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    controller.selectedTime =
-                                        data.slotStartTime.toString();
-                                    log('${controller.selectedTime} + $index',
-                                        name: 'timeeeeeeeeee');
-                                    controller.update(['update-bookingButton']);
-                                  });
-                                },
-                                child: timeContainer(
-                                    timeData: convertToAMPM(
-                                        data.slotStartTime.toString()),
-                                    colortext: controller.selectedTime ==
-                                            data.slotStartTime
-                                        ? mainPurple
-                                        : kblack,
-                                    colorbb: controller.selectedTime ==
-                                            data.slotStartTime
-                                        ? mainPurple.withOpacity(0.1)
-                                        : kwhite,
-                                    select: controller.selectedTime ==
-                                        data.slotStartTime),
-                              );
-                            },
-                          ),
-                        );
-                      }
-                    },
+                  Obx(
+                    () => FutureBuilder(
+                      future: controller.fetchBookingTime(
+                          date: controller.selectedDate.value.toString()),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator(
+                              color: Color.fromARGB(255, 188, 185, 188));
+                        } else if (controller.selectedDate.value.isEmpty) {
+                          return const Center(
+                            child: Text('please select date'),
+                          );
+                        } else if (snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No avaliable slots for selected date',
+                              style: TextStyle(color: textFieldColor),
+                            ),
+                          );
+                        } else {
+                          return Wrap(
+                            spacing: 6,
+                            runSpacing: 8,
+                            alignment: WrapAlignment.center,
+                            children: List.generate(
+                              snapshot.data!.length,
+                              (index) {
+                                final data = snapshot.data![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      controller.selectedTime =
+                                          data.slotStartTime.toString();
+                                      log('${controller.selectedTime} + $index',
+                                          name: 'timeeeeeeeeee');
+                                      controller
+                                          .update(['update-bookingButton']);
+                                    });
+                                  },
+                                  child: timeContainer(
+                                      timeData: convertToAMPM(
+                                          data.slotStartTime.toString()),
+                                      colortext: controller.selectedTime ==
+                                              data.slotStartTime
+                                          ? mainPurple
+                                          : kblack,
+                                      colorbb: controller.selectedTime ==
+                                              data.slotStartTime
+                                          ? mainPurple.withOpacity(0.1)
+                                          : kwhite,
+                                      select: controller.selectedTime ==
+                                          data.slotStartTime),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                   hLBox,
                   Container(
@@ -205,9 +208,9 @@ class _CareerDateTimeBookingScreenState
                       builder: (booking) {
                         return TextButton(
                           onPressed: () {
-                            if (booking.selectedDate != null &&
+                            if (booking.selectedDate.value.isNotEmpty &&
                                 booking.selectedTime != null) {
-                              Get.to(() => const CareerVerificationScreen());
+                              Get.to(() => const CareerReviewBookingScreen());
                             }
                           },
                           style: ButtonStyle(
@@ -215,18 +218,17 @@ class _CareerDateTimeBookingScreenState
                             backgroundColor:
                                 MaterialStateProperty.resolveWith<Color>(
                               (states) {
-                                return booking.selectedDate != null &&
+                                return booking.selectedDate.value.isNotEmpty &&
                                         booking.selectedTime != null
                                     ? mainPurple
                                     : buttonColor;
-                                
                               },
                             ),
                           ),
                           child: Text(
                             "Next",
                             style: TextStyle(
-                                color: booking.selectedDate != null &&
+                                color: booking.selectedDate.value.isNotEmpty &&
                                         booking.selectedTime != null
                                     ? Colors.white
                                     : disableText),
@@ -244,7 +246,6 @@ class _CareerDateTimeBookingScreenState
     );
   }
 
-  // String formatDateToTime(String dateString) {
   String convertToAMPM(String timeString) {
     DateTime dateTime = DateFormat('HH:mm').parse(timeString);
     String formattedTime = DateFormat('h:mm a').format(dateTime);

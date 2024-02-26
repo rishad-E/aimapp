@@ -1,6 +1,5 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -75,7 +74,7 @@ Widget careerSearchIcon({required double leftP, required double rightP}) {
       ),
       child: SvgPicture.asset(
         "assets/images/search.svg",
-        semanticsLabel: 'Search', // Add semantics label if required
+        semanticsLabel: 'Search',
         fit: BoxFit.contain,
       ),
     ),
@@ -138,11 +137,10 @@ Widget checking({required String microAim, required Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: textFieldColor.withOpacity(0.1),
-        
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -158,9 +156,10 @@ Widget checking({required String microAim, required Function()? onTap}) {
             ),
           ),
           wBox,
-          const Icon(
+          Icon(
             Icons.close_rounded,
             size: 16,
+            color: textFieldColor,
           )
         ],
       ),

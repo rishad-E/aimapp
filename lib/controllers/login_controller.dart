@@ -1,12 +1,15 @@
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/otp_service/otp_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/signup/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
+  final storage = const FlutterSecureStorage();
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController1 = TextEditingController();
   TextEditingController otpController2 = TextEditingController();
@@ -15,7 +18,8 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> otpFormKey = GlobalKey();
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
-    // RxBool onchange = false.obs;
+  UserDataModel? userData;
+  // RxBool onchange = false.obs;
   Rx<Color> buttonColor = Rx<Color>(bbColor);
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
   RxInt filledOtpFields = RxInt(0);
@@ -27,24 +31,23 @@ class LoginController extends GetxController {
   }
 
 /*---------- verify OTP ---------*/
-  Future<void> verifyOTPFunction({required String mobileNo, required String otp}) async {
-    OtpService().validateOTP(mobileNo: '91$mobileNo', otp: otp).then((value) =>
-        {
-          if (value == true)
-            {
-              LoginService()
-                  .verifyUserExist(mobileNo: mobileNo)
-                  .then((value) => {
-                        if (value == true)
-                          {Get.offAll(() => const HomeScreen())}
-                        else
-                          {Get.offAll(() => SignUpScreen(mobileNo: mobileNo))}
-                      })
-            }
-          else
-            {validationMessage.value = 'Please enter valid code'}
-        });
-    // isLoading = false;
+  Future<void> verifyOTPFunction(
+      {required String mobileNo, required String otp}) async {
+    bool? val =
+        await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
+    if (val == true) {
+       String mobileWithoutCountryCode = mobileNo.substring(2);
+      userData = await LoginService().verifyUserExist(mobileNo: mobileWithoutCountryCode);
+      if (userData?.token != null) {
+        storage.write(key: 'token', value: userData?.token.toString());
+        storage.write(key: 'phone', value:  userData?.user?.phone.toString());
+        Get.offAll(() => const HomeScreen());
+      } else {
+        Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
+      }
+    } else {
+      validationMessage.value = 'Please enter valid code';
+    }
   }
 
 /*---------- Resend OTP ---------*/
@@ -135,3 +138,25 @@ class LoginController extends GetxController {
   //   super.dispose();
   // }
 }
+
+
+
+
+
+  // OtpService().validateOTP(mobileNo: '91$mobileNo', otp: otp).then(
+    //       (value) => {
+    //         if (value == true)
+    //           {
+    //             LoginService()
+    //                 .verifyUserExist(mobileNo: mobileNo)
+    //                 .then((value) => {
+    //                       if (value?.token != null)
+    //                         {Get.offAll(() => const HomeScreen())}
+    //                       else
+    //                         {Get.offAll(() => SignUpScreen(mobileNo: mobileNo))}
+    //                     })
+    //           }
+    //         else
+    //           {validationMessage.value = 'Please enter valid code'}
+    //       },
+    //     );

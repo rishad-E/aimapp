@@ -137,7 +137,7 @@ class LoginScreen extends StatelessWidget {
                                   mobileNo:
                                       '91${controller.phoneController.text}');
                               Get.to(() => OTPScreen(
-                                  mobileNo: controller.phoneController.text));
+                                  mobileNo: '91${controller.phoneController.text}'));
                                  
                             }
                           },

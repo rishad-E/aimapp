@@ -1,8 +1,10 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AimcetContainer extends StatelessWidget {
@@ -53,7 +55,7 @@ class AimcetContainer extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 12,bottom: 8),
+            padding: const EdgeInsets.only(top: 12, bottom: 8),
             child: SizedBox(
                 // color: Colors.yellow,
                 height: 4.2.h,
@@ -62,7 +64,9 @@ class AimcetContainer extends StatelessWidget {
                   style: ButtonStyle(
                     shape: buttonShape(round: 8),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.to(() => AIMCETQualificationScreen());
+                  },
                   icon: Text(
                     "Take Psychometric Test",
                     style: TextStyle(
@@ -73,7 +77,7 @@ class AimcetContainer extends StatelessWidget {
                   label: Icon(
                     Icons.arrow_forward_ios_sharp,
                     size: 11.sp,
-                    color:const Color.fromARGB(255, 147, 38, 143),
+                    color: const Color.fromARGB(255, 147, 38, 143),
                   ),
                 )),
           )

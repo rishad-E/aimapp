@@ -12,7 +12,7 @@ class CareerBookingService {
     try {
       Response response = await dio.get(path);
       List<dynamic> data = response.data['sevendates'];
-      // log(data.toString(), name: 'booking res'); 
+      log(data.toString(), name: 'booking date res'); 
       // List<String> res = res.addAll(data);
       return data;
     } catch (e) {
@@ -25,7 +25,7 @@ class CareerBookingService {
     String path = Apis().aimUrl + Apis().getTime;
     try {
       Response response = await dio.post(path, data: {"date": date});
-      log(response.data.toString(), name: 'booking time res');
+      // log(response.data.toString(), name: 'booking time res');
       List<dynamic> data = response.data['slots'];
       final res = data.map((json) => Slot.fromJson(json)).toList();
       return res;

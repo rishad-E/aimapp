@@ -17,7 +17,14 @@ class SlotBookingService {
     required List<String> microAim,
   }) async {
     String path = Apis().aimUrl + Apis().saveSlote;
-
+    log(name +
+        email +
+        phoneNumber +
+        appointDate +
+        appointTime +
+        role +
+        aimId +
+        microAim.toString());
     try {
       Response response = await dio.post(
         path,

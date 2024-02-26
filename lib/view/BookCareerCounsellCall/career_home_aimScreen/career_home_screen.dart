@@ -1,10 +1,11 @@
 import 'package:aimshala/controllers/career_booking_controller.dart';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/career_aim_screen.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,10 @@ class BookCareerHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserDataModel? userData = Get.put(LoginController()).userData;
+    if (userData != null && careerController.nameController.text.isEmpty) {
+      careerController.nameController.text = userData.user?.name ?? '';
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: careerAppBar(),
@@ -44,6 +49,7 @@ class BookCareerHomePage extends StatelessWidget {
                         onChanged: (value) {
                           careerController.checkAllfieldCareerHome();
                         },
+                        readOnly: true,
                       ),
                     ),
                     hMBox,
@@ -71,7 +77,24 @@ class BookCareerHomePage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    hBox,
+                    hMBox,
+                    Obx(() => careerController.otherRole.value == 'Other'
+                        ? careerHomeField(
+                            text: const SizedBox.shrink(),
+                            textField: TextFormField(
+                              style: TextStyle(
+                                  fontSize: 14, color: textFieldColor),
+                              decoration: careerTextFiled(
+                                  hintText: 'Type your other role'),
+                              controller: careerController.otherRoleController,
+                              validator: (value) =>
+                                  careerController.otherRoleValidation(value),
+                              onChanged: (value) {
+                                careerController.checkAllfieldCareerHome();
+                              },
+                            ),
+                          )
+                        : const SizedBox.shrink()),
                     hMBox,
                     Container(
                       width: double.infinity,

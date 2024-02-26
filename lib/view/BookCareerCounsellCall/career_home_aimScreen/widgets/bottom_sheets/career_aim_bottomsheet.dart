@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/career_booking_controller.dart';
+import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +32,7 @@ class CareerAimBottomsheet extends StatelessWidget {
                     controller.searchAimOptions(query: searchController.text);
                   },
                   decoration: decorTextfield(
-                      prefixWidget:  careerSearchIcon(leftP: 10,rightP: 0),
+                      prefixWidget: careerSearchIcon(leftP: 10, rightP: 0),
                       hintText: "Search"),
                 ),
               ),
@@ -75,14 +75,13 @@ class CareerAimBottomsheet extends StatelessWidget {
                                     },
                                   ),
                                   onTap: () async {
-                                    aimBottomsheetListvaluechange(controller,
-                                        data.categoryName.toString());
+                                    aimBottomsheetListvaluechange(controller,data.categoryName.toString());
                                     controller.aimId = data.id.toString();
-                                    
                                     log(data.id.toString(), name: 'id');
-                                    controller.searchMicroAimOptions(
-                                        query: '',
-                                        parentId: data.id.toString());
+                                    controller.searchMicroAimOptions(query: '', parentId: data.id.toString());
+                                    controller.check.clear();
+                                    log(controller.check.toString(),name: 'list after aim change');
+                                    controller.update(['button-careerAim']);
                                   },
                                 );
                               },
@@ -99,8 +98,7 @@ class CareerAimBottomsheet extends StatelessWidget {
   }
 }
 
-void aimBottomsheetListvaluechange(
-    BookCareerCounsellController controller, String type) {
+void aimBottomsheetListvaluechange(BookCareerCounsellController controller, String type) {
   Get.back();
   controller.aimController.text = type;
   controller.careerAimSelectedRole.value = type;

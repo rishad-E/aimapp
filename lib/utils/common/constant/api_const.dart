@@ -9,6 +9,7 @@ class Apis{
   final String getDate = '/get-seven-dates';
   final String getTime = '/get-slots-and-booked';
   final String saveSlote = '/slot';
+  final String qualificationapi= "/get-qualification";
 }
 
 

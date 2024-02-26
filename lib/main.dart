@@ -1,4 +1,6 @@
 import 'package:aimshala/view/login/login_screen.dart';
+import 'package:aimshala/view/signup/signup_screen.dart';
+import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
               selectionHandleColor: Colors.transparent,
             ),
           ),
-          home:   LoginScreen(),
+          home:  SplashScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

@@ -3,10 +3,10 @@ import 'package:aimshala/controllers/signup_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/login/login_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
-import 'package:aimshala/view/signup/widget/bottomsheet.dart';
+import 'package:aimshala/view/signup/widget/signup_bottomsheet.dart';
+import 'package:aimshala/view/signup/widget/signup_dialoguebox.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -112,7 +112,7 @@ class SignUpScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showRoleBottomSheet(context, signUp);
+                                showSignUpBottomsheet(context);
                               },
                               child: AbsorbPointer(
                                 child: signupBox(
@@ -152,7 +152,10 @@ class SignUpScreen extends StatelessWidget {
                             onPressed: () {
                               if (formKey.currentState!.validate() &&
                                   signUp.areAllFieldsSelected.value) {
-                                log('entered :${signUp.nameController.text + signUp.emailController.text + mobileNo + signUp.roleController.text}');
+                                  String mobileWithoutCountryCode = mobileNo.substring(2);
+                                log(mobileWithoutCountryCode);
+                                log('entered :${signUp.nameController.text + signUp.emailController.text + mobileWithoutCountryCode + signUp.roleController.text}');
+
                                 signUp
                                     .signUpUserFunction(
                                         name: signUp.nameController.text,
@@ -161,72 +164,7 @@ class SignUpScreen extends StatelessWidget {
                                     .then(
                                       (value) => {
                                         if (value == true)
-                                          {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  backgroundColor: kwhite,
-                                                  surfaceTintColor: kwhite,
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 55.sp,
-                                                        backgroundColor: kwhite,
-                                                        backgroundImage:
-                                                            const AssetImage(
-                                                                'assets/images/person.png'),
-                                                      ),
-                                                      hMBox,
-                                                      Text('Thank You!',
-                                                          style: TextStyle(
-                                                              fontSize: 15.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: kpurple)),
-                                                      hMBox,
-                                                      primarytxt2(
-                                                          "For signing up! Welcom to AimShala",
-                                                          11.sp),
-                                                      hMBox,
-                                                      Container(
-                                                          width: 79.w,
-                                                          height: 4.5.h,
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  15),
-                                                            ),
-                                                          ),
-                                                          child: ElevatedButton(
-                                                              style: ButtonStyle(
-                                                                  backgroundColor:
-                                                                      MaterialStateProperty
-                                                                          .all(
-                                                                              kpurple),
-                                                                  shape: buttonShape(
-                                                                      round:
-                                                                          10)),
-                                                              onPressed: () {
-                                                                Get.offAll(() =>
-                                                                    const HomeScreen());
-                                                              },
-                                                              child: Text('OK',
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                          kwhite)))),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                          }
+                                          {showSignUpDialogueBox(context)}
                                       },
                                     );
                               }
@@ -248,4 +186,22 @@ class SignUpScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void showSignUpBottomsheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return const SingUpBottomSheet();
+    },
+  );
+}
+
+void showSignUpDialogueBox(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return const SignUpDialogueBox();
+    },
+  );
 }

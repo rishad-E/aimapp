@@ -12,14 +12,14 @@ ShapeBorder appBarBorder() {
   ));
 }
 
-PreferredSizeWidget appbarc() {
+PreferredSizeWidget appbarc({String? name}) {
   return AppBar(
     // toolbarHeight: 70,
     // backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
     leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-    title: primarytxt3('Hi,Sachin', 14.sp),
+    title: primarytxt3(name==null ? 'Hi,Sachin':'Hi, $name', 14.sp),
     titleSpacing: 0,
     actions: [
       Padding(

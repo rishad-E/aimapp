@@ -1,5 +1,7 @@
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class TempScreen extends StatelessWidget {
@@ -28,7 +30,10 @@ class TempScreen extends StatelessWidget {
                 child: Image.asset('assets/images/aimshala-logo.png'),
               ),
               const SizedBox(height: 12),
-              const Text("Slot Booked successfully")
+              const Text("Slot Booked successfully"),
+              ElevatedButton(
+                  onPressed: () => Get.offAll(() => const HomeScreen()),
+                  child: const Text("Go To Home"))
             ],
           ),
         )),

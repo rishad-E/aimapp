@@ -1,3 +1,5 @@
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/upcomingmodel/upcomingevent.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -14,6 +16,7 @@ import 'package:aimshala/view/home/widget/home_container/yourjourney_container.d
 import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,10 +29,15 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
+    String? name ;
+    final UserDataModel? userData = Get.put(LoginController()).userData;
+    if (userData != null ) {
+     name  = userData.user?.name ?? '';
+    }
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
-      appBar: appbarc(),
+      appBar: appbarc(name: name),
       body: SingleChildScrollView(
         child: Stack(
           clipBehavior: Clip.none,

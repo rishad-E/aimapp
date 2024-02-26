@@ -4,7 +4,6 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_aim_bottomsheet.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_microaim_bottomsheet.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_date_time_Booking/career_date_time_booking_screen.dart';
@@ -60,88 +59,107 @@ class BookCareerAimPage extends StatelessWidget {
                     ),
                     hMBox,
                     careerHomeField(
-                        text: primarytxt3('Your Micro Aim', 11),
-                        textField: Obx(
-                          () => GestureDetector(
-                              onTap: () {
-                                log('ontap');
-                                showCareerMicroAimBottomSheet(context);
-                              },
-                              child: careerController.check.isEmpty
-                                  ? TextFormField(
-                                      style: TextStyle(
-                                          fontSize: 14, color: textFieldColor),
-                                      decoration: careerTextFiled(
-                                        hintText: 'Tell us your Micro Aim',
-                                        prefixWidget: careerSearchIcon(
-                                            leftP: 10, rightP: 10),
-                                      ),
-                                      readOnly: true,
-                                      onTap: () {
-                                        showCareerMicroAimBottomSheet(context);
-                                      })
-                                  : Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 7, vertical: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 173, 174, 175)),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Wrap(
-                                        spacing: 5,
-                                        runSpacing: 4,
-                                        children: List.generate(
-                                          careerController.check.length,
-                                          (index) {
-                                            final data = careerController.check;
-                                            if (index == data.length - 1) {
-                                              return Row(
-                                                children: [
-                                                  Flexible(
-                                                    child: checking(
-                                                      microAim: data[index]
-                                                          .microAim
-                                                          .toString(),
-                                                      onTap: () {
-                                                        log("delete onTap");
-                                                        data.removeAt(index);
-                                                        careerController
-                                                            .update([
-                                                          'button-careerAim'
-                                                        ]);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    " Add more...",
-                                                    style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 116, 118, 119),
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  )
-                                                ],
-                                              );
-                                            } else {
-                                              return checking(
-                                                microAim: data[index].microAim,
-                                                onTap: () {
-                                                  data.removeAt(index);
-                                                  log("delte ontap");
-                                                  careerController.update(
-                                                      ['button-careerAim']);
-                                                },
-                                              );
-                                            }
-                                          },
+                      text: primarytxt3('Your Micro Aim', 11),
+                      textField: Obx(
+                        () => GestureDetector(
+                            onTap: () {
+                              showCareerMicroAimBottomSheet(
+                                  context, careerController);
+                            },
+                            child: careerController.check.isEmpty
+                                ? TextFormField(
+                                    style: TextStyle(
+                                        fontSize: 14, color: textFieldColor),
+                                    decoration: careerTextFiled(
+                                      hintText: 'Tell us your Micro Aim',
+                                      prefixWidget: careerSearchIcon(
+                                          leftP: 10, rightP: 10),
+                                      suffixWidget:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      showCareerMicroAimBottomSheet(
+                                          context, careerController);
+                                    })
+                                : Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 7, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: const Color.fromARGB(
+                                              255, 173, 174, 175)),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Wrap(
+                                            spacing: 5,
+                                            runSpacing: 4,
+                                            children: List.generate(
+                                              careerController.check.length,
+                                              (index) {
+                                                final data =
+                                                    careerController.check;
+                                                if (index == data.length - 1) {
+                                                  return Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: checking(
+                                                          microAim: data[index]
+                                                              .microAim
+                                                              .toString(),
+                                                          onTap: () {
+                                                            log("delete onTap");
+                                                            data.removeAt(
+                                                                index);
+                                                            careerController
+                                                                .update([
+                                                              'button-careerAim'
+                                                            ]);
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        " Add more...",
+                                                        style: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              116,
+                                                              118,
+                                                              119),
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    ],
+                                                  );
+                                                } else {
+                                                  return checking(
+                                                    microAim:
+                                                        data[index].microAim,
+                                                    onTap: () {
+                                                      data.removeAt(index);
+                                                      log("delte ontap");
+                                                      careerController.update(
+                                                          ['button-careerAim']);
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    )),
-                        )),
+                                        const Icon(Icons.keyboard_arrow_down),
+                                      ],
+                                    ),
+                                  )),
+                      ),
+                    ),
                     hBox,
                     Obx(
                       () => careerController.careerAimSelectedRole.value ==
@@ -207,21 +225,92 @@ class BookCareerAimPage extends StatelessWidget {
     showModalBottomSheet(
       backgroundColor: kwhite,
       context: context,
-      // isScrollControlled: true,
-      // useSafeArea: false,
+      isScrollControlled: true,
+      useSafeArea: false,
       builder: (BuildContext context) {
-        return const CareerAimBottomsheet();
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: const CareerAimBottomsheet(),
+        );
       },
     );
   }
 
-  void showCareerMicroAimBottomSheet(BuildContext context) {
+  void showCareerMicroAimBottomSheet(
+      BuildContext context, BookCareerCounsellController controller) {
     showModalBottomSheet(
       backgroundColor: kwhite,
       context: context,
+      isScrollControlled: true,
+      useSafeArea: false,
       builder: (BuildContext context) {
-        return const CareerMicroAimBottomsheet();
+        controller.searchMicroAimOptions(
+            query: '', parentId: controller.aimId.toString());
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: const CareerMicroAimBottomsheet(),
+        );
       },
     );
   }
 }
+   // : Container(
+                            //     width: double.infinity,
+                            //     padding: const EdgeInsets.symmetric(
+                            //         horizontal: 7, vertical: 10),
+                            //     decoration: BoxDecoration(
+                            //       border: Border.all(
+                            //           color: const Color.fromARGB(
+                            //               255, 173, 174, 175)),
+                            //       borderRadius: BorderRadius.circular(8),
+                            //     ),
+                            //     child: Wrap(
+                            //       spacing: 5,
+                            //       runSpacing: 4,
+                            //       children: List.generate(
+                            //         careerController.check.length,
+                            //         (index) {
+                            //           final data = careerController.check;
+                            //           if (index == data.length - 1) {
+                            //             return Row(
+                            //               children: [
+                            //                 Flexible(
+                            //                   child: checking(
+                            //                     microAim: data[index]
+                            //                         .microAim
+                            //                         .toString(),
+                            //                     onTap: () {
+                            //                       log("delete onTap");
+                            //                       data.removeAt(index);
+                            //                       careerController.update(
+                            //                           ['button-careerAim']);
+                            //                     },
+                            //                   ),
+                            //                 ),
+                            //                 const Text(
+                            //                   " Add more...",
+                            //                   style: TextStyle(
+                            //                     color: Color.fromARGB(
+                            //                         255, 116, 118, 119),
+                            //                   ),
+                            //                   overflow: TextOverflow.ellipsis,
+                            //                 )
+                            //               ],
+                            //             );
+                            //           } else {
+                            //             return checking(
+                            //               microAim: data[index].microAim,
+                            //               onTap: () {
+                            //                 data.removeAt(index);
+                            //                 log("delte ontap");
+                            //                 careerController
+                            //                     .update(['button-careerAim']);
+                            //               },
+                            //             );
+                            //           }
+                            //         },
+                            //       ),
+                            //     ),
+                            //   ),
