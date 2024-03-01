@@ -43,12 +43,8 @@ class BookCareerAimPage extends StatelessWidget {
                           hintText: 'Tell us your Aim',
                           prefixWidget: careerSearchIcon(leftP: 10, rightP: 10),
                         ),
-                        validator: (value) {
-                          if (careerController.aimController.text.isEmpty) {
-                            return 'Please select your aim';
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            careerController.aimValidation(value),
                         controller: careerController.aimController,
                         readOnly: true,
                         onTap: () {
@@ -68,6 +64,8 @@ class BookCareerAimPage extends StatelessWidget {
                             },
                             child: careerController.check.isEmpty
                                 ? TextFormField(
+                                    validator: (value) => careerController
+                                        .microAimValidation(value),
                                     style: TextStyle(
                                         fontSize: 14, color: textFieldColor),
                                     decoration: careerTextFiled(
@@ -178,9 +176,11 @@ class BookCareerAimPage extends StatelessWidget {
                         builder: (career) {
                           return TextButton(
                             onPressed: () {
-                              if (careeraimFormKey.currentState!.validate()) {}
-                              log("fst ${careerController.aimController.text}+name${careerController.roleController.text}");
-                              Get.to(() => const CareerDateTimeBookingScreen());
+                              if (careeraimFormKey.currentState!.validate()) {
+                                log("fst ${careerController.aimController.text}+name${careerController.roleController.text}");
+                                Get.to(
+                                    () => const CareerDateTimeBookingScreen());
+                              }
                             },
                             style: ButtonStyle(
                               shape: buttonShape(round: 8),
@@ -223,7 +223,7 @@ class BookCareerAimPage extends StatelessWidget {
     //     const CareerAimBottomsheet(),
     //     backgroundColor: kwhite);
     showModalBottomSheet(
-      backgroundColor: kwhite,
+      backgroundColor:kwhite,
       context: context,
       isScrollControlled: true,
       useSafeArea: false,

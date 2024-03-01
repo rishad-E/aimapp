@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,11 @@ class QualificationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String? uId;
+    final UserDataModel? userData = Get.put(LoginController()).userData;
+    if (userData != null) {
+      uId = userData.user?.id.toString() ?? '';
+    }
     final aimcetController = Get.put(AIMCETController());
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
@@ -65,7 +72,10 @@ class QualificationBottomSheet extends StatelessWidget {
                                         color: Color.fromARGB(
                                             255, 202, 201, 201))),
                                 contentPadding: EdgeInsets.zero,
-                                title: Text(data.title.toString()),
+                                title: Text(
+                                  data.title.toString(),
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                                 trailing: Checkbox(
                                   side: BorderSide.none,
                                   value: aimcetController.qualify.value ==
@@ -78,8 +88,15 @@ class QualificationBottomSheet extends StatelessWidget {
                                 onTap: () async {
                                   bottomSheetValueChange(
                                       aimcetController, data.title.toString());
-                                      aimcetController.qualifyId = data.id.toString();
-                                      log(aimcetController.qualifyId.toString(),name: 'c id');
+                                  aimcetController.qualifyId =
+                                      data.id.toString();
+                                  log('qualify ${aimcetController.qualifyId.toString()}''userId ${uId.toString()}',
+                                     );
+                                  aimcetController.fetchAllTestResults(
+                                      userId: uId.toString(),
+                                      qualifyId: aimcetController.qualifyId
+                                          .toString());
+                                          // aimcetController.secID.value = 1;
                                 },
                               );
                             },
@@ -111,4 +128,5 @@ void bottomSheetValueChange(AIMCETController aimcet, String type) {
   Get.back();
   aimcet.qualify.value = type;
   aimcet.qualificationController.text = type;
+  aimcet.update(['button-qualification']);
 }

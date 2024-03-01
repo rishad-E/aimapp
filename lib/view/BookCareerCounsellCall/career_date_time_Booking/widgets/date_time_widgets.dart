@@ -32,6 +32,8 @@ Widget dateFotmatBox(String inputDateString,
           Border.all(color: const Color.fromARGB(255, 247, 245, 245), width: 1),
     ),
     width: 10.5.w,
+    // height: 5.h,
+    // width: 41,
     margin: const EdgeInsets.symmetric(horizontal: 7),
     // padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Center(

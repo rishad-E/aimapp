@@ -10,6 +10,9 @@ class Apis{
   final String getTime = '/get-slots-and-booked';
   final String saveSlote = '/slot';
   final String qualificationapi= "/get-qualification";
+  final String aimcetTest ='/take-test';
+  final String sumbitTest = '/submit-test';
+  final String careerresultsubmit ='/career-result';
 }
 
 

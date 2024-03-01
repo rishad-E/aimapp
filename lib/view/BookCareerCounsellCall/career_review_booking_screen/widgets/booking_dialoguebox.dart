@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/temp.dart';
+import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -28,7 +28,7 @@ class BookingDialogueBox extends StatelessWidget {
                   fontSize: 15.sp,
                   fontWeight: FontWeight.bold,
                   color: kpurple)),
-          hMBox,
+          hBox,
           primarytxt2("For booking a counseling session!", 11.sp),
           hBox,
           Container(
@@ -47,9 +47,13 @@ class BookingDialogueBox extends StatelessWidget {
                   child: Image.asset('assets/images/AimCET_LOGO2.png'),
                 ),
                 hBox,
-                primarytxt2(
-                    'Enhance your experience by taking a suggested Aimshala Career explorer test',
-                    12)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  child: primarytxt2(
+                      'Enhance your experience by taking a suggested Aimshala Career explorer test',
+                      12),
+                )
               ],
             ),
           ),
@@ -66,15 +70,18 @@ class BookingDialogueBox extends StatelessWidget {
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
-              onPressed: () {Get.offAll(()=>const TempScreen());},
+              onPressed: () {
+                Get.offAll(() => const HomeScreen());
+              },
               child: Text(
-                'OK',
+                'Take Aim CET',
                 style: TextStyle(color: kwhite),
               ),
             ),
           ),
           hMBox,
-          Text('Not Now', style: TextStyle(color: kpurple,fontWeight: FontWeight.w600))
+          Text('Not Now',
+              style: TextStyle(color: kpurple, fontWeight: FontWeight.w600))
         ],
       ),
     );

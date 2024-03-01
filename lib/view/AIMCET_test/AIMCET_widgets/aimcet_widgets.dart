@@ -1,26 +1,21 @@
 import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 
 PreferredSizeWidget aimcetAppBar() {
   return AppBar(
-    backgroundColor: Colors.transparent,
-    surfaceTintColor: Colors.transparent,
+    // backgroundColor: Colors.yellow,
+    surfaceTintColor: Colors.white,
+    elevation: 7,
+    shadowColor: Colors.black.withOpacity(0.5),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+    ),
     title: const Text(
       "Aim CET",
       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
     ),
     centerTitle: true,
-    actions: [
-      TextButton(
-        onPressed: () {},
-        child: const Text(
-          "apply",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-        ),
-      ),
-      wBox,
-    ],
   );
 }
 

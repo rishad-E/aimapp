@@ -71,6 +71,7 @@ class BookCareerHomePage extends StatelessWidget {
                             onChanged: (value) {
                               careerController.checkAllfieldCareerHome();
                             },
+                            validator: (value) => careerController.roleValidation(value),
                             controller: careerController.roleController,
                             readOnly: true,
                           ),

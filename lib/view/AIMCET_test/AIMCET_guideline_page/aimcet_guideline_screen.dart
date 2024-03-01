@@ -1,6 +1,7 @@
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_texts.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
 import 'package:flutter/material.dart';
@@ -204,7 +205,7 @@ class AIMCETGuideLinePage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Container(
-                        height: 35,
+                        height: 4.h,
                         // width: 24,
                         decoration: BoxDecoration(
                           color: kwhite,
@@ -221,22 +222,31 @@ class AIMCETGuideLinePage extends StatelessWidget {
                     wMBox,
                     Obx(
                       () => Expanded(
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: controller.guidebutton.value
-                                ? mainPurple
-                                : buttonColor,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            if (controller.guideSelect == true) {
+                              // log("message");
+                              Get.to(() => const AIMCETTestPage());
+                            }
+                          },
+                          child: Container(
+                            height: 4.h,
+                            decoration: BoxDecoration(
+                              color: controller.guidebutton.value
+                                  ? mainPurple
+                                  : buttonColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
                               child: Text(
-                            "Proceed",
-                            style: TextStyle(
-                                color: controller.guidebutton.value
-                                    ? kwhite
-                                    : textFieldColor),
-                          )),
+                                "Proceed",
+                                style: TextStyle(
+                                    color: controller.guidebutton.value
+                                        ? kwhite
+                                        : textFieldColor),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     )

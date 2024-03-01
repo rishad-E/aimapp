@@ -23,6 +23,8 @@ class SignUpService {
           'phone': mobile,
           'name': name,
           'email': email,
+          "user_active": "1",
+          "referral_code": "AIM001"
         },
       );
       // log(response.data.toString(), name: 'signup');

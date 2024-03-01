@@ -22,7 +22,7 @@ class BookCareerCounsellController extends GetxController {
   RxList<Aim> searchAimRes = <Aim>[].obs;
   RxList<MicroAim> searchMicorAimRes = <MicroAim>[].obs;
   RxList<Slot> times = <Slot>[].obs;
- 
+
   RxString selectedDate = RxString('');
   String? selectedTime;
   RxBool isAllCareerHomeFieldsSelected = false.obs;
@@ -74,7 +74,6 @@ class BookCareerCounsellController extends GetxController {
     return times;
   }
 
-
   /*------------ save career counsill slot ---------*/
   Future<String?> careerBokingSlotFucntion({
     required String name,
@@ -103,7 +102,6 @@ class BookCareerCounsellController extends GetxController {
     }
   }
 
-
   /*------------ validation ---------*/
   String? nameValidation(String? word) {
     if (word == null || word.isEmpty) {
@@ -131,6 +129,26 @@ class BookCareerCounsellController extends GetxController {
     return null;
   }
 
+  String? roleValidation(String? word) {
+    if (word == null || word.isEmpty) {
+      return 'Please enter your role';
+    }
+    return null;
+  }
+
+  String? aimValidation(String? word) {
+    if (word == null || word.isEmpty) {
+      return 'Please enter your role';
+    }
+    return null;
+  }
+
+  String? microAimValidation(String? word) {
+    if (word == null || word.isEmpty) {
+      return 'Please enter your role';
+    }
+    return null;
+  }
   String? phoneValidation(String? word) {
     if (word == null || word.isEmpty || word.length < 10) {
       return 'Please enter a Valid Mobile Number';
@@ -147,7 +165,6 @@ class BookCareerCounsellController extends GetxController {
     return null;
   }
 
-
   /*------------ button color change ---------*/
   void checkAllfieldCareerHome() {
     bool allFieldsSelectedCareer = nameController.text.isNotEmpty &&
@@ -161,7 +178,6 @@ class BookCareerCounsellController extends GetxController {
         : const Color.fromARGB(255, 116, 118, 119);
     update(['button-careerHome']);
   }
-
 }
 
 

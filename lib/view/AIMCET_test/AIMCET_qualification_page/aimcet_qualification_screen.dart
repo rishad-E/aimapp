@@ -5,7 +5,7 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/qualification_bottomsheet.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_bottomsheet/qualification_bottomsheet.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,13 +84,14 @@ class AIMCETQualificationScreen extends StatelessWidget {
                                 controller:
                                     aimcetController.qualificationController,
                                 // readOnly: true,
+                                onChanged: (value) => aimcetController
+                                    .update(['button-qualification']),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please select your Qualification';
-                                  }else{
+                                  } else {
                                     return null;
                                   }
-                                  
                                 },
                               ),
                             ),
@@ -100,27 +101,45 @@ class AIMCETQualificationScreen extends StatelessWidget {
                               width: double.infinity,
                               height: 4.5.h,
                               decoration: boxdecoration(12),
-                              child: TextButton(
-                                onPressed: () {
-                                  if (aimcetFormKey.currentState!.validate()) {
-                                    log('${aimcetController.qualificationController.text}  ${aimcetController.qualifyId}');
-                                    Get.to(()=>const AIMCETGuideLinePage());
-                                  }
-                                },
-                                style: ButtonStyle(
-                                  shape: buttonShape(round: 8),
-                                  backgroundColor:
-                                      MaterialStateProperty.resolveWith<Color>(
-                                    (states) {
-                                      return buttonColor;
-                                    },
-                                  ),
-                                ),
-                                child: Text(
-                                  "Start Test Now!",
-                                  style: TextStyle(color: textFieldColor),
-                                ),
-                              )),
+                              child: GetBuilder<AIMCETController>(
+                                  id: 'button-qualification',
+                                  builder: (qualification) {
+                                    return TextButton(
+                                      onPressed: () {
+                                        if (aimcetFormKey.currentState!
+                                            .validate()) {
+                                          log('${qualification.qualificationController.text}  ${qualification.qualifyId}');
+                                          Get.to(() =>
+                                              const AIMCETGuideLinePage());
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                        shape: buttonShape(round: 8),
+                                        backgroundColor: MaterialStateProperty
+                                            .resolveWith<Color>(
+                                          (states) {
+                                            return qualification
+                                                    .qualificationController
+                                                    .text
+                                                    .isNotEmpty
+                                                ? kpurple
+                                                : buttonColor;
+                                          },
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "Start Test Now!",
+                                        style: TextStyle(
+                                          color: qualification
+                                                  .qualificationController
+                                                  .text
+                                                  .isNotEmpty
+                                              ? Colors.white
+                                              : disableText,
+                                        ),
+                                      ),
+                                    );
+                                  })),
                         ],
                       )
                     ],

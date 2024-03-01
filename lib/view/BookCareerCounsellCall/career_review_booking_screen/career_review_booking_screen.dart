@@ -194,6 +194,7 @@ class CareerReviewBookingScreen extends StatelessWidget {
 
 void showDialogBoxFunction(BuildContext context) {
   showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (context) {
       return const BookingDialogueBox();

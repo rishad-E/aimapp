@@ -42,6 +42,11 @@ class _CareerDateTimeBookingScreenState
                     child: boldText(
                         text: "Pick time to schedule the video Call", size: 20),
                   ),
+                  // Container(
+                  //   color: Colors.yellow,
+                  //   width: 10.5.w,
+                  //   height: 5.h,
+                  // ),
                   hLBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +58,7 @@ class _CareerDateTimeBookingScreenState
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: textFieldColor.withOpacity(0.3),
+                            color: const Color.fromARGB(255, 247, 245, 245),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           height: 25,
@@ -123,7 +128,7 @@ class _CareerDateTimeBookingScreenState
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            color: textFieldColor.withOpacity(0.3),
+                            color: const Color.fromARGB(255, 247, 245, 245),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           height: 25,
