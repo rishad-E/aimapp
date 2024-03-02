@@ -13,6 +13,7 @@ class Apis{
   final String aimcetTest ='/take-test';
   final String sumbitTest = '/submit-test';
   final String careerresultsubmit ='/career-result';
+  final String aimcetResult = '/test-result';
 }
 
 

@@ -33,6 +33,10 @@ class BookCareerAimPage extends StatelessWidget {
               child: careerSecContainer(
                 child: Column(
                   children: [
+                    // Container(
+                    //   color: Colors.yellow,
+                    //    height: 29.h,
+                    // ),
                     boldText(text: "What is your Aim? ", size: 20),
                     hMBox,
                     careerHomeField(
@@ -223,7 +227,7 @@ class BookCareerAimPage extends StatelessWidget {
     //     const CareerAimBottomsheet(),
     //     backgroundColor: kwhite);
     showModalBottomSheet(
-      backgroundColor:kwhite,
+      backgroundColor: kwhite,
       context: context,
       isScrollControlled: true,
       useSafeArea: false,

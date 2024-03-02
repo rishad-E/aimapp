@@ -17,6 +17,8 @@ class AIMCETController extends GetxController {
   String? submitRes;
   RxInt secID = RxInt(1);
   RxString end = 'no'.obs;
+  // RxInt attempt = RxInt(0);
+  // int? isSelected;
   // RxString testEnd = 'false'.obs;
 
   /* --------- get all qualifications-------*/
@@ -51,6 +53,7 @@ class AIMCETController extends GetxController {
       sectionId: sectionId,
       questionId: questionId,
     );
+
     if (submitRes == 'failed') {
       Get.showSnackbar(
         const GetSnackBar(
@@ -62,6 +65,7 @@ class AIMCETController extends GetxController {
         ),
       );
     }
+    update(['aimcet-test']);
   }
 
   Future<void> careerResultSubmittion(
@@ -69,6 +73,20 @@ class AIMCETController extends GetxController {
     await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
   }
 
+Future<void>aimcetTestResultFunction({required String userId,required String userName}) async{
+  await AIMCETTestService().aimcetTestResult(userId: userId, userName: userName);
+}
+  // checkAttempt() {
+  //   if (attempt.value >= 5) {
+  //     attempt.value = 1;
+  //   } else {
+  //     attempt.value++;
+  //   }
+  // }
+  // void toggleBorder(){
+  //   // isSelected = !isSelected;
+  //   update(['aimcet-test']);
+  // }
   void toggleSelection() {
     guideSelect = !guideSelect;
     // guidebutton.value = !guidebutton.value;

@@ -20,29 +20,33 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
     TextEditingController searchmicroController = TextEditingController();
     log('career microaim bottom sheet open');
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
-      child: SizedBox(
-        // height: 37.h,
+      // padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
+        decoration: bottomSheetDecoration(),
         height: 53.h,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              aimInitialWidget(
-                textField: TextFormField(
-                  controller: searchmicroController,
-                  onChanged: (query) {
-                    controller.searchMicroAimOptions(
-                        query: searchmicroController.text,
-                        parentId: controller.aimId.toString());
-                  },
-                  decoration: decorTextfield(
-                      prefixWidget: const Icon(Icons.search, size: 25),
-                      hintText: "Search"),
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            aimInitialWidget(
+              textField: TextFormField(
+                controller: searchmicroController,
+                onChanged: (query) {
+                  controller.searchMicroAimOptions(
+                      query: searchmicroController.text,
+                      parentId: controller.aimId.toString());
+                },
+                decoration: decorTextfield(
+                    prefixWidget: const Icon(Icons.search, size: 25),
+                    hintText: "Search"),
               ),
-              hMBox,
-              Obx(() {
+            ),
+            hMBox,
+            SizedBox(
+              // color: Colors.yellow,
+              height: 29.h,
+              child: Obx(() {
                 return controller.searchMicorAimRes.isEmpty
                     // ? const CircularProgressIndicator(
                     //     color: Color.fromARGB(255, 188, 185, 188))
@@ -50,9 +54,9 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                         "No Micro aims found to your query",
                         style: TextStyle(color: textFieldColor),
                       )
-                    : Column(
-                        children: [
-                          ...List.generate(
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: List.generate(
                             // snapshot.data!.length,
                             controller.searchMicorAimRes.length,
                             // 20,
@@ -61,41 +65,44 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                               final model = MicroModel(
                                   microAim: data.categoryName.toString(),
                                   aimId: data.id.toString());
-                              return ListTile(
-                                shape: const Border(
-                                    bottom: BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 202, 201, 201))),
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(data.categoryName.toString(),
-                                    style: optionText()),
-                                trailing: Checkbox(
-                                  side: BorderSide.none,
-                                  value: controller.check.any((item) =>
-                                      item.microAim == data.categoryName),
-                                  onChanged: (value) {
-                                    if (value != null && value) {
+                              return Column(
+                                children: [
+                                  ListTile(
+                                    dense: true,
+                                   
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(data.categoryName.toString(),
+                                        style: optionText()),
+                                    trailing: Checkbox(
+                                      side: BorderSide.none,
+                                      value: controller.check.any((item) =>
+                                          item.microAim == data.categoryName),
+                                      onChanged: (value) {
+                                        if (value != null && value) {
+                                          microaimSheetListValueChange(
+                                              controller, model);
+                                        }
+                                      },
+                                    ),
+                                    onTap: () {
                                       microaimSheetListValueChange(
                                           controller, model);
-                                    }
-                                  },
-                                ),
-                                onTap: () {
-                                  microaimSheetListValueChange(
-                                      controller, model);
-                                  // log(controller.check[index].microAim.toString(),
-                                  //     name: 'adding to list');
-                                  log(controller.check.toString(),
-                                      name: 'adding to list');
-                                },
+                                      // log(controller.check[index].microAim.toString(),
+                                      //     name: 'adding to list');
+                                      log(controller.check.toString(),
+                                          name: 'adding to list');
+                                    },
+                                  ),
+                                  const Divider(height: 4)
+                                ],
                               );
                             },
-                          )
-                        ],
+                          ),
+                        ),
                       );
               }),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

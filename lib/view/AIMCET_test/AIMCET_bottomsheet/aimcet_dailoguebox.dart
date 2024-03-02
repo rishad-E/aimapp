@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/temp.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -47,7 +47,7 @@ class AIMCETDialogueBox extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
               onPressed: () {
-                Get.offAll(() => const TempScreen());
+                Get.off(() => const AIMCETResultScreen());
               },
               child: Text(
                 'Click Here To Check Result',

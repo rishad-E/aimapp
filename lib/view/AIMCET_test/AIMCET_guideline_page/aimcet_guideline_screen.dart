@@ -227,6 +227,7 @@ class AIMCETGuideLinePage extends StatelessWidget {
                             if (controller.guideSelect == true) {
                               // log("message");
                               Get.to(() => const AIMCETTestPage());
+                              // controller.attempt.value = 0;
                             }
                           },
                           child: Container(

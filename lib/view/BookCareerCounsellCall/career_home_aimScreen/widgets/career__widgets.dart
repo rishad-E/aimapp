@@ -82,25 +82,32 @@ Widget careerSearchIcon({required double leftP, required double rightP}) {
 }
 
 Widget aimInitialWidget({Widget? textField}) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      ListTile(
-        contentPadding: const EdgeInsets.only(right: 7),
-        trailing: GestureDetector(
-          onTap: () => Get.back(),
-          child: SizedBox(
-              height: 30,
-              width: 30,
-              child: Image.asset('assets/images/close.png', fit: BoxFit.cover)),
+  return Container(
+    // width: double.infinity,
+    color: kwhite,
+    padding: const EdgeInsets.only(left: 0, right: 10),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ListTile(
+          contentPadding: const EdgeInsets.only(right: 7),
+          trailing: GestureDetector(
+            onTap: () => Get.back(),
+            child: SizedBox(
+                height: 30,
+                width: 30,
+                child:
+                    Image.asset('assets/images/close.png', fit: BoxFit.cover)),
+          ),
         ),
-      ),
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: bottomHeading('Select your Aim', 18, FontWeight.w700, kblack),
-      ),
-      Container(child: textField),
-    ],
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading:
+              bottomHeading('Select your Aim', 18, FontWeight.w700, kblack),
+        ),
+        Container(child: textField),
+      ],
+    ),
   );
 }
 
@@ -192,3 +199,13 @@ EdgeInsets careerContainerP = const EdgeInsets.only(
   right: 17,
   top: 15,
 );
+
+BoxDecoration bottomSheetDecoration() {
+  return BoxDecoration(
+    color: kwhite,
+    borderRadius: const BorderRadius.only(
+      topLeft: Radius.circular(27),
+      topRight: Radius.circular(27),
+    ),
+  );
+}

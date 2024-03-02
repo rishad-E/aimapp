@@ -72,4 +72,17 @@ class AIMCETTestService {
       log(e.toString(), name: 'career result submit error');
     }
   }
+  Future<void>aimcetTestResult({required String userId,required String userName}) async{
+    String path = Apis().aimUrl + Apis().aimcetResult;
+    log(userId + userName,name: 'cccccccccccccccccccccccccccc');
+    try {
+      Response response = await dio.post(path,data: {
+        "user_id":userId,
+        "username":userName
+      });
+      log(response.data.toString(),name: 'aimcet result submit');
+    } catch (e) {
+       log(e.toString(), name: 'aimcet result submit error');
+    }
+  }
 }

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
               selectionHandleColor: Colors.transparent,
             ),
           ),
-          home: SplashScreen(),
+          home: const SplashScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

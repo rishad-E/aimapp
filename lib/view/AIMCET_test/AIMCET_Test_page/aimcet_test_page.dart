@@ -18,9 +18,11 @@ class AIMCETTestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? uId;
+    String? uName;
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       uId = userData.user?.id.toString() ?? '';
+      uName = userData.user?.name ?? '';
     }
     final controller = Get.put(AIMCETController());
     PageController pageController = PageController();
@@ -35,10 +37,11 @@ class AIMCETTestPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 17, right: 17, top: 30),
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     // color: Colors.yellow,
                     height: 350,
                     child: PageView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.allQuestions?.length,
                       controller: pageController,
                       itemBuilder: (context, index) {
@@ -48,88 +51,103 @@ class AIMCETTestPage extends StatelessWidget {
                             .map((data) => data.trim())
                             .toList();
                         log(pageItems.toString());
-                        return SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(
-                              pageItems.length + 1,
-                              (pageIndex) {
-                                if (pageIndex == 0) {
-                                  return questionText(
-                                    controller.allQuestions![index].question,
-                                  );
-                                } else {
-                                  String answerText = pageItems[pageIndex - 1];
-                                  final data = controller.allQuestions![index];
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 5),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        // log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
-                                        log('${data.sectionId}',
-                                            name: 'cheeeeeeeeek');
-
-                                        controller.secID.value = data.sectionId;
-                                        // controller.submitAimTest(
-                                        //   userId: uId.toString(),
-                                        //   cAnswer: answerText,
-                                        //   sectionId: data.sectionId.toString(),
-                                        //   questionId: data.id.toString(),
-                                        // );
-                                        if (index <
-                                            controller.allQuestions!.length -
-                                                1) {
-                                          pageController.animateToPage(
-                                            index + 1,
-                                            duration: const Duration(
-                                                milliseconds: 500),
-                                            curve: Curves.ease,
-                                          );
-                                        }
-                                        // if (index == 39) {
-                                        //   log(
-                                        //       uId.toString() +
-                                        //           data.sectionId.toString(),
-                                        //       name: '40th index');
-                                        //   controller.careerResultSubmittion(
-                                        //       userId: uId.toString(),
-                                        //       secId: '1');
-                                        // }
-                                        // if (index == 54) {
-                                        //   log(
-                                        //       uId.toString() +
-                                        //           data.sectionId.toString(),
-                                        //       name: '55th index');
-                                        //   controller.careerResultSubmittion(
-                                        //       userId: uId.toString(),
-                                        //       secId: '3');
-                                        // }
-                                        if (index ==
-                                                controller
-                                                        .allQuestions!.length -
-                                                    1 ||
-                                            controller.submitRes == 'failed') {
-                                          showAIMCETDialogFunction(context);
-                                        }
-                                        if (controller.allQuestions!.length -
-                                                1 ==
-                                            index) {
-                                          log('${data.sectionId}   ind $index',
-                                              name: 'cheeeeeeeeek');
-                                          controller.end.value = 'yes';
-                                        } else {
-                                          controller.end.value = 'no';
-                                        }
-                                      },
-                                      child: answerContainer(
-                                          pageIndex.toString(), answerText),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                          ),
+                        int? isSelected;
+                        return GetBuilder<AIMCETController>(
+                          id: 'aimcet-test',
+                          builder: (c) {
+                            return SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  questionText(
+                                      controller.allQuestions![index].question),
+                                  ...List.generate(
+                                    pageItems.length,
+                                    (pageIndex) {
+                                      String answerText = pageItems[pageIndex];
+                                      final data =
+                                          controller.allQuestions![index];
+                                      final length =
+                                          controller.allQuestions!.length;
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 5),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            isSelected = pageIndex;
+                                            c.update(['aimcet-test']);
+                                            log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
+                                            log('${controller.secID}',name: 'cheeeeeeeeek');
+                                            controller.secID.value =
+                                                data.sectionId;
+                                            controller.submitAimTest(
+                                              userId: uId.toString(),
+                                              cAnswer: answerText,
+                                              sectionId:
+                                                  data.sectionId.toString(),
+                                              questionId: data.id.toString(),
+                                            );
+                                            if (index < length - 1) {
+                                              pageController.animateToPage(
+                                                index + 1,
+                                                duration: const Duration(
+                                                    milliseconds: 800),
+                                                curve: Curves.ease,
+                                              );
+                                            }
+                                            if (index == 39) {
+                                              log(
+                                                  uId.toString() +
+                                                      data.sectionId.toString(),
+                                                  name: '40th index');
+                                              controller.careerResultSubmittion(
+                                                  userId: uId.toString(),
+                                                  secId: '1');
+                                            }
+                                            if (index == 54) {
+                                              log(
+                                                  uId.toString() +
+                                                      data.sectionId.toString(),
+                                                  name: '55th index');
+                                              controller.careerResultSubmittion(
+                                                  userId: uId.toString(),
+                                                  secId: '3');
+                                            }
+                                            if (index == length - 1 ||
+                                                controller.submitRes ==
+                                                    'failed') {
+                                              showAIMCETDialogFunction(context);
+                                            }
+                                            if (index == length - 1) {
+                                              controller
+                                                  .aimcetTestResultFunction(
+                                                      userId: uId.toString(),
+                                                      userName:
+                                                          uName.toString());
+                                            }
+                                            if (length - 2 == index ||
+                                                length - 1 == index) {
+                                              log('${data.sectionId}   ind $index',
+                                                  name: 'cheeeeeeeeek');
+                                              controller.end.value = 'yes';
+                                            } else {
+                                              controller.end.value = 'no';
+                                            }
+                                          },
+                                          child: answerContainer(
+                                            pageIndex.toString(),
+                                            answerText,
+                                            isSelected == pageIndex,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
@@ -189,9 +207,6 @@ class AIMCETTestPage extends StatelessWidget {
                                       ? mainPurple
                                       : mainPurple.withOpacity(0.4),
                                 ),
-                                // child: Center(
-                                //   child: Text('$index'),
-                                // ),
                               );
                             }
                           } else {
@@ -206,12 +221,10 @@ class AIMCETTestPage extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4),
                                       color: controller.secID > index
+                                          // &&controller.attempt.value == 5
                                           ? mainPurple
                                           : mainPurple.withOpacity(0.4),
                                     ),
-                                    // child: Center(
-                                    //   child: Text('$index'),
-                                    // ),
                                   ),
                                   Container(
                                     height: 5,
@@ -220,12 +233,10 @@ class AIMCETTestPage extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(1),
                                       color: controller.secID > index
+                                          // &&controller.attempt.value == 5
                                           ? mainPurple.withOpacity(0.3)
                                           : mainPurple.withOpacity(0.1),
                                     ),
-                                    // child: Center(
-                                    //   child: Text('$index'),
-                                    // ),
                                   ),
                                 ],
                               );
@@ -259,9 +270,6 @@ class AIMCETTestPage extends StatelessWidget {
     );
   }
 }
-
-
-
 
 // Row(
 //   mainAxisSize: MainAxisSize.min,
@@ -297,7 +305,6 @@ class AIMCETTestPage extends StatelessWidget {
 //     },
 //   ),
 // )
-
 
 // class StepperExample extends StatelessWidget {
 //   const StepperExample({super.key});

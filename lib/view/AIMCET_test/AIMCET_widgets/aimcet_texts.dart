@@ -63,7 +63,7 @@ Widget questionText(String question) {
   );
 }
 
-Widget answerContainer(String index, String answer, {bool? sele}) {
+Widget answerContainer(String index, String answer, bool sele) {
   return Container(
     // height: 6.5.h,
     padding: const EdgeInsets.symmetric(vertical: 5),
@@ -71,7 +71,7 @@ Widget answerContainer(String index, String answer, {bool? sele}) {
       color: kwhite,
       border: Border.all(
         width: 1,
-        color: const Color.fromARGB(255, 227, 224, 224),
+        color: sele ? mainPurple : const Color.fromARGB(255, 227, 224, 224),
       ),
     ),
     child: Padding(
@@ -82,17 +82,18 @@ Widget answerContainer(String index, String answer, {bool? sele}) {
             height: 2.3.h,
             width: 5.3.w,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                width: 1,
-                color: mainPurple,
-              ),
-            ),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  width: 1,
+                  color: mainPurple,
+                ),
+                color: sele ? mainPurple : kwhite),
             child: Center(
               child: Text(
                 index,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 12),
+                style:
+                    TextStyle(fontSize: 12, color: sele ? kwhite : mainPurple),
               ),
             ),
           ),
