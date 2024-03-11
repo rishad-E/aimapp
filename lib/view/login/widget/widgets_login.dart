@@ -65,14 +65,10 @@ Widget twoStyleTexts({required String text1, required String text2}) {
 }
 
 class OTPTextField extends StatelessWidget {
-  final bool first;
-  final bool last;
   final TextEditingController controller;
   final Function(String)? onChanged;
   OTPTextField({
     super.key,
-    required this.first,
-    required this.last,
     required this.controller,
     this.onChanged,
   });
@@ -106,11 +102,6 @@ class OTPTextField extends StatelessWidget {
               counter: const Offstage(),
               enabledBorder: OutlineInputBorder(
                 borderSide:
-                    //  login.onchange.value
-                    //     ? BorderSide(width: 1, color: kblack.withOpacity(0.2))
-                    //     : login.validationMessage.value == 'Please enter valid code'
-                    //         ? BorderSide(width: 1, color: kred)
-                    //         : BorderSide(width: 1, color: kblack.withOpacity(0.2)),
                     login.validationMessage.value == 'Please enter valid code'
                         ? BorderSide(width: 1, color: kred)
                         : BorderSide(width: 1, color: kblack.withOpacity(0.2)),

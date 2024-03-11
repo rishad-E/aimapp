@@ -40,15 +40,19 @@ class AIMCETTestService {
     String path = Apis().aimUrl + Apis().sumbitTest;
     log(userId + cAnswer + sectionId + questionId);
     try {
-      Response response = await dio.post(path, data: {
-        "user_id": userId,
-        "c_answer": cAnswer,
-        "section_id": sectionId,
-        "question_id": questionId
-      },options: Options(validateStatus: (status) => status! < 500,));
+      Response response = await dio.post(path,
+          data: {
+            "user_id": userId,
+            "c_answer": cAnswer,
+            "section_id": sectionId,
+            "question_id": questionId
+          },
+          options: Options(
+            validateStatus: (status) => status! < 500,
+          ));
       if (response.statusCode == 200) {
         return 'success';
-      } else if(response.statusCode == 422){
+      } else if (response.statusCode == 422) {
         return 'failed';
       }
       log(response.data.toString(), name: 'aimcet sumbit');
@@ -66,23 +70,31 @@ class AIMCETTestService {
         path,
         data: {"user_id": userId, "secid": secId},
       );
-  log(response.data.toString(),name: 'career result submit');
-
+      log(response.data.toString(), name: 'career result submit');
     } catch (e) {
       log(e.toString(), name: 'career result submit error');
     }
   }
-  Future<void>aimcetTestResult({required String userId,required String userName}) async{
+
+  Future<dynamic> aimcetTestResult(
+      {required String userId, required String userName}) async {
     String path = Apis().aimUrl + Apis().aimcetResult;
-    log(userId + userName,name: 'cccccccccccccccccccccccccccc');
+    log(userId + userName, name: 'cccccccccccccccccccccccccccc');
     try {
-      Response response = await dio.post(path,data: {
-        "user_id":userId,
-        "username":userName
-      });
-      log(response.data.toString(),name: 'aimcet result submit');
+      Response response = await dio.post(path,
+          data: {"user_id": userId, "username": userName},
+          options: Options(
+            validateStatus: (status) => status! < 500,
+          ));
+      if (response.statusCode == 200) {
+        // log(response.data.toString(), name: 'aimcet result submit');
+        return response.data;
+      } else if (response.statusCode == 422) {
+        log(response.data.toString(), name: 'aimcet result submit');
+        return 'failed';
+      }
     } catch (e) {
-       log(e.toString(), name: 'aimcet result submit error');
+      log(e.toString(), name: 'aimcet result submit error');
     }
   }
 }

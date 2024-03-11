@@ -1,3 +1,4 @@
+
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
               selectionHandleColor: Colors.transparent,
             ),
           ),
-          home: const SplashScreen(),
+          home: SplashScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

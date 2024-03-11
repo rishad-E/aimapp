@@ -16,6 +16,33 @@ Text aimcetBoldText(
   );
 }
 
+Text personPlainText(
+    {required String text, required double size, TextAlign? textAlign}) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: textFieldColor,
+      fontSize: size,
+      fontWeight: FontWeight.w400,
+    ),
+    // overflow: TextOverflow.visible,
+    textAlign: textAlign,
+  );
+}
+
+Text personHeadingText(
+    {required String text, required double size, TextAlign? textAlign}) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: kblack,
+      fontSize: size,
+      fontWeight: FontWeight.w600,
+    ),
+    textAlign: textAlign,
+  );
+}
+
 Text welcomeText(
   String text,
   double size,

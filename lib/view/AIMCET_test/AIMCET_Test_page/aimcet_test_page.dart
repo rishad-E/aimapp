@@ -9,6 +9,7 @@ import 'package:aimshala/view/AIMCET_test/AIMCET_bottomsheet/test_bottomsheet.da
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_bottom_list.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_texts.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/completed_warning.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,131 +32,126 @@ class AIMCETTestPage extends StatelessWidget {
       appBar: aimcetAppBar(),
       body: Container(
         decoration: aimcetMainContainerdecoration(),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 17, right: 17, top: 30),
-              child: Column(
-                children: [
-                  SizedBox(
-                    // color: Colors.yellow,
-                    height: 350,
-                    child: PageView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.allQuestions?.length,
-                      controller: pageController,
-                      itemBuilder: (context, index) {
-                        String answer = controller.allQuestions![index].answers;
-                        List<String> pageItems = answer
-                            .split('|')
-                            .map((data) => data.trim())
-                            .toList();
-                        log(pageItems.toString());
-                        int? isSelected;
-                        return GetBuilder<AIMCETController>(
-                          id: 'aimcet-test',
-                          builder: (c) {
-                            return SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  questionText(
-                                      controller.allQuestions![index].question),
-                                  ...List.generate(
-                                    pageItems.length,
-                                    (pageIndex) {
-                                      String answerText = pageItems[pageIndex];
-                                      final data =
-                                          controller.allQuestions![index];
-                                      final length =
-                                          controller.allQuestions!.length;
-                                      return Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 5, bottom: 5),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            isSelected = pageIndex;
-                                            c.update(['aimcet-test']);
-                                            log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
-                                            log('${controller.secID}',name: 'cheeeeeeeeek');
-                                            controller.secID.value =
-                                                data.sectionId;
-                                            controller.submitAimTest(
-                                              userId: uId.toString(),
-                                              cAnswer: answerText,
-                                              sectionId:
-                                                  data.sectionId.toString(),
-                                              questionId: data.id.toString(),
-                                            );
-                                            if (index < length - 1) {
-                                              pageController.animateToPage(
-                                                index + 1,
-                                                duration: const Duration(
-                                                    milliseconds: 800),
-                                                curve: Curves.ease,
-                                              );
-                                            }
-                                            if (index == 39) {
-                                              log(
-                                                  uId.toString() +
-                                                      data.sectionId.toString(),
-                                                  name: '40th index');
-                                              controller.careerResultSubmittion(
-                                                  userId: uId.toString(),
-                                                  secId: '1');
-                                            }
-                                            if (index == 54) {
-                                              log(
-                                                  uId.toString() +
-                                                      data.sectionId.toString(),
-                                                  name: '55th index');
-                                              controller.careerResultSubmittion(
-                                                  userId: uId.toString(),
-                                                  secId: '3');
-                                            }
-                                            if (index == length - 1 ||
-                                                controller.submitRes ==
-                                                    'failed') {
-                                              showAIMCETDialogFunction(context);
-                                            }
-                                            if (index == length - 1) {
-                                              controller
-                                                  .aimcetTestResultFunction(
-                                                      userId: uId.toString(),
-                                                      userName:
-                                                          uName.toString());
-                                            }
-                                            if (length - 2 == index ||
-                                                length - 1 == index) {
-                                              log('${data.sectionId}   ind $index',
-                                                  name: 'cheeeeeeeeek');
-                                              controller.end.value = 'yes';
-                                            } else {
-                                              controller.end.value = 'no';
-                                            }
-                                          },
-                                          child: answerContainer(
-                                            pageIndex.toString(),
-                                            answerText,
-                                            isSelected == pageIndex,
-                                          ),
-                                        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 17, right: 17, top: 30),
+          child: controller.allQuestions?.isEmpty == true
+              ? Center(
+                child: CompletedWarningBox(
+                    uId: uId.toString(), uName: uName.toString()),
+              )
+              : PageView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.allQuestions?.length,
+                  controller: pageController,
+                  itemBuilder: (context, index) {
+                    String answer = controller.allQuestions![index].answers;
+                    List<String> pageItems =
+                        answer.split('|').map((data) => data.trim()).toList();
+                    log(pageItems.toString());
+                    int? isSelected;
+                    return GetBuilder<AIMCETController>(
+                      id: 'aimcet-test',
+                      builder: (c) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            questionText(c.allQuestions![index].question),
+                            ...List.generate(
+                              pageItems.length,
+                              (pageIndex) {
+                                String answerText = pageItems[pageIndex];
+                                final data = c.allQuestions![index];
+                                final length = c.allQuestions!.length;
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 5, bottom: 5),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      isSelected = pageIndex;
+                                      if (index == length - 1 ||
+                                          c.submitRes == 'failed') {
+                                        showAIMCETDialogFunction(
+                                            context: context,
+                                            userId: uId.toString(),
+                                            userName:
+                                                uName.toString());
+                                      }
+                                      c.update(['aimcet-test']);
+                                      log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
+                                      log('${c.secID}',
+                                          name: 'cheeeeeeeeek');
+                                      c.secID.value =
+                                          data.sectionId;
+                                      c.submitAimTest(
+                                        userId: uId.toString(),
+                                        cAnswer: answerText,
+                                        sectionId: data.sectionId
+                                            .toString(),
+                                        questionId:
+                                            data.id.toString(),
                                       );
+                                      if (index < length - 1) {
+                                        pageController.animateToPage(
+                                          index + 1,
+                                          duration: const Duration(
+                                              milliseconds: 800),
+                                          curve: Curves.ease,
+                                        );
+                                      }
+                                      if (index == 39) {
+                                        log(
+                                            uId.toString() +
+                                                data.sectionId
+                                                    .toString(),
+                                            name: '40th index');
+                                        c.careerResultSubmittion(
+                                            userId: uId.toString(),
+                                            secId: '1');
+                                      }
+                                      if (index == 54) {
+                                        log(
+                                            uId.toString() +
+                                                data.sectionId
+                                                    .toString(),
+                                            name: '55th index');
+                                        c.careerResultSubmittion(
+                                            userId: uId.toString(),
+                                            secId: '3');
+                                      }
+          
+                                      if (index == length - 1) {
+                                        c.aimcetTestResultFunction(
+                                          userId: uId.toString(),
+                                          userName:
+                                              uName.toString(),
+                                        );
+                                      }
+                                      if (length - 2 == index ||
+                                          length - 1 == index) {
+                                        log('${data.sectionId}   ind $index',
+                                            name: 'cheeeeeeeeek');
+                                        c.end.value = 'yes';
+                                      } else {
+                                        c.end.value = 'no';
+                                      }
                                     },
+                                    child: answerContainer(
+                                      (pageIndex + 1).toString(),
+                                      // pageIndex.toString(),
+                                      answerText,
+                                      isSelected == pageIndex,
+                                    ),
                                   ),
-                                ],
-                              ),
-                            );
-                          },
+                                );
+                              },
+                            ),
+                          ],
                         );
                       },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                    );
+                  },
+                ),
         ),
       ),
       bottomNavigationBar: GestureDetector(
@@ -175,11 +171,14 @@ class AIMCETTestPage extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          controller.end.value == 'yes'
+                          controller.end.value == 'done'
                               ? aimcetList[
-                                  int.parse(controller.secID.value.toString())]
-                              : aimcetList[
-                                  int.parse(controller.secID.value.toString()) -
+                                  int.parse((aimcetList.length - 1).toString())]
+                              : controller.end.value == 'yes'
+                                  ? aimcetList[int.parse(
+                                      controller.secID.value.toString())]
+                                  : aimcetList[int.parse(
+                                          controller.secID.value.toString()) -
                                       1],
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -203,7 +202,8 @@ class AIMCETTestPage extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: controller.secID.value == index &&
-                                          controller.end.value == 'yes'
+                                              controller.end.value == 'yes' ||
+                                          controller.end.value == 'done'
                                       ? mainPurple
                                       : mainPurple.withOpacity(0.4),
                                 ),
@@ -220,7 +220,8 @@ class AIMCETTestPage extends StatelessWidget {
                                     width: 11,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(4),
-                                      color: controller.secID > index
+                                      color: controller.secID > index ||
+                                              controller.end.value == 'done'
                                           // &&controller.attempt.value == 5
                                           ? mainPurple
                                           : mainPurple.withOpacity(0.4),
@@ -232,7 +233,8 @@ class AIMCETTestPage extends StatelessWidget {
                                     width: 18,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(1),
-                                      color: controller.secID > index
+                                      color: controller.secID > index ||
+                                              controller.end.value == 'done'
                                           // &&controller.attempt.value == 5
                                           ? mainPurple.withOpacity(0.3)
                                           : mainPurple.withOpacity(0.1),
@@ -260,12 +262,18 @@ class AIMCETTestPage extends StatelessWidget {
     );
   }
 
-  void showAIMCETDialogFunction(BuildContext context) {
+  void showAIMCETDialogFunction(
+      {required BuildContext context,
+      required String userId,
+      required String userName}) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const AIMCETDialogueBox();
+        return AIMCETDialogueBox(
+          userId: userId,
+          userName: userName,
+        );
       },
     );
   }

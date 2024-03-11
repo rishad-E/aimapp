@@ -1,12 +1,17 @@
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/Personality-Report/personality_report_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PersonalityContainer extends StatelessWidget {
-  const PersonalityContainer({super.key});
+  final String userName;
+  const PersonalityContainer({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AIMCETController());
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -38,7 +43,7 @@ class PersonalityContainer extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "You're a Philosopher",
+                    "You're a ${controller.personality[0]}",
                     style: TextStyle(
                         color: kwhite,
                         fontSize: 18,
@@ -53,7 +58,7 @@ class PersonalityContainer extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    "For Neeraj",
+                    'For $userName',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -70,21 +75,46 @@ class PersonalityContainer extends StatelessWidget {
             style: TextStyle(color: textFieldColor),
           ),
           hMBox,
-          Row(
-            children: [
-              Text(
-                "VIEW REPORT",
-                style: TextStyle(
-                    color: mainPurple,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
-              ),
-              Icon(
-                Icons.arrow_forward,
-                color: mainPurple,
-                size: 19,
-              )
-            ],
+          Obx(
+            () => controller.gp.value == 'wait'
+                ? Text(
+                    "REPORT is processing",
+                    style: TextStyle(
+                        color: mainPurple,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16),
+                  )
+                : controller.gp.value == "sucess"
+                    ? GestureDetector(
+                        onTap: () {
+                          Get.to(() => PersonalityReportPage(userName: userName));
+                          // log(controller.gp.value,name: 'gp');
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "VIEW REPORT",
+                              style: TextStyle(
+                                  color: mainPurple,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: mainPurple,
+                              size: 19,
+                            )
+                          ],
+                        ),
+                      )
+                    : Text(
+                        "REPORT Fetch failed...",
+                        style: TextStyle(
+                          color: textFieldColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
           )
         ],
       ),

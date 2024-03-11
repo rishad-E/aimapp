@@ -2,27 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class DiscoveryContainer extends StatelessWidget {
-  const DiscoveryContainer({super.key});
+  final String personality;
+  final String image;
+  const DiscoveryContainer({
+    super.key,
+    required this.personality,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-      width: 38.w,
-      // height: 72,
+      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 5),
+      width: 39.5.w,
       decoration: BoxDecoration(
-        image: const DecorationImage(
-            image: AssetImage('assets/images/aimcetReport.png'),
-            fit: BoxFit.fill),
-        borderRadius: BorderRadius.circular(12),
-        // color: Colors.yellow,
-        border: Border.all(color: const Color.fromARGB(255, 221, 220, 220)),
+        image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill),
+        // borderRadius: BorderRadius.circular(12),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
-          "Finance and Investment Banking",
-          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          personality,
+          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
           textAlign: TextAlign.center,
         ),
       ),

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -7,10 +10,14 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETDialogueBox extends StatelessWidget {
-  const AIMCETDialogueBox({super.key});
+  final String userId;
+  final String userName;
+  const AIMCETDialogueBox(
+      {super.key, required this.userId, required this.userName});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AIMCETController());
     return AlertDialog(
       backgroundColor: kwhite,
       surfaceTintColor: kwhite,
@@ -23,11 +30,11 @@ class AIMCETDialogueBox extends StatelessWidget {
             backgroundImage: const AssetImage('assets/images/person.png'),
           ),
           hMBox,
-          Text('Thank You!',
-              style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold,
-                  color: kpurple)),
+          Text(
+            'Thank You!',
+            style: TextStyle(
+                fontSize: 15.sp, fontWeight: FontWeight.bold, color: kpurple),
+          ),
           hMBox,
           primarytxt2(
               "For taking the time to complete our Aim CET Your responses will help us tailor Aimshala's offerings to best suit your needs and aspirations.",
@@ -47,11 +54,46 @@ class AIMCETDialogueBox extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
               onPressed: () {
-                Get.off(() => const AIMCETResultScreen());
+                // Get.off(() => const AIMCETResultScreen());
+                controller.aimcetTestResultFunction(
+                    userId: userId, userName: userName);
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: kwhite,
+                      surfaceTintColor: kwhite,
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(
+                            color: mainPurple,
+                          ),
+                          hLBox,
+                          primarytxt2(
+                            "Your result is being processed...",
+                            11.sp,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+                
+                Future.delayed(const Duration(seconds: 4), () {
+                  log(controller.personality[0]+controller.traitType.toString()+controller.gp.value,name: 'traaaaaaaaaaaai');
+                  controller.gpReportSubmitFunction(uId: userId, personality: controller.personality[0], trait: controller.traitType.toString()).then((_) {
+                    controller.fetchPersonalityReport(userId: userId);
+                    controller.fetchTraitReport(userId:userId);
+                  });
+                  Get.off(() =>  AIMCETResultScreen(userName: userName,));
+                });
               },
               child: Text(
                 'Click Here To Check Result',
-                style: TextStyle(color: kwhite,fontWeight: FontWeight.w600,fontSize: 14),
+                style: TextStyle(
+                    color: kwhite, fontWeight: FontWeight.w600, fontSize: 14),
               ),
             ),
           ),

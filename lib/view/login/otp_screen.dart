@@ -97,14 +97,12 @@ class OTPScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     OTPTextField(
-                                      first: true,
-                                      last: false,
                                       controller: otpController.otpController1,
                                       onChanged: (value) {
-                                        // otpController.onchange.value = true;
                                         if (value.length == 1) {
                                           FocusScope.of(context).nextFocus();
                                         }
+
                                         log(otpController
                                             .validationMessage.value
                                             .toString());
@@ -118,8 +116,6 @@ class OTPScreen extends StatelessWidget {
                                       },
                                     ),
                                     OTPTextField(
-                                      first: false,
-                                      last: false,
                                       controller: otpController.otpController2,
                                       onChanged: (value) {
                                         if (value.length == 1) {
@@ -129,13 +125,10 @@ class OTPScreen extends StatelessWidget {
                                           FocusScope.of(context)
                                               .previousFocus();
                                         }
-
                                         onchangeButton(otpController);
                                       },
                                     ),
                                     OTPTextField(
-                                      first: false,
-                                      last: false,
                                       controller: otpController.otpController3,
                                       onChanged: (value) {
                                         if (value.length == 1) {
@@ -151,8 +144,6 @@ class OTPScreen extends StatelessWidget {
                                       },
                                     ),
                                     OTPTextField(
-                                      first: false,
-                                      last: true,
                                       controller: otpController.otpController4,
                                       onChanged: (value) {
                                         if (value.length == 1) {
@@ -162,7 +153,6 @@ class OTPScreen extends StatelessWidget {
                                           FocusScope.of(context)
                                               .previousFocus();
                                         }
-
                                         onchangeButton(otpController);
                                       },
                                     ),
@@ -189,7 +179,7 @@ class OTPScreen extends StatelessWidget {
                                   onTap: () {
                                     otpController.resendOTPFunction(
                                         mobileNo: mobileNo);
-                                        //91${controller.phoneController.text}
+                                    //91${controller.phoneController.text}
                                   },
                                   child: Text(
                                     "Resend Code",
@@ -221,7 +211,6 @@ class OTPScreen extends StatelessWidget {
                                         String validationMessage =
                                             otp.validateOtp();
                                         if (validationMessage.isEmpty) {
-                                           
                                           String newOtp =
                                               otp.otpController1.text +
                                                   otp.otpController2.text +

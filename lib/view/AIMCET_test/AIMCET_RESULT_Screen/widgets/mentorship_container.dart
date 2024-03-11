@@ -11,8 +11,8 @@ class MentorshipContainer extends StatelessWidget {
     double imageH = 10.9.h;
 
     return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.only(bottom: 5),
+      // margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(bottom: 15),
       width: 60.w,
       // height: 195,
       decoration: BoxDecoration(

@@ -1,12 +1,13 @@
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/result_images.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/discovery_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/mentorship_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/personality_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topcareer_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topdegree_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/trait_container.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_images.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/home/widget/const.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
@@ -15,10 +16,12 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETResultScreen extends StatelessWidget {
-  const AIMCETResultScreen({super.key});
+  final String userName;
+  const AIMCETResultScreen({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AIMCETController());
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -30,10 +33,6 @@ class AIMCETResultScreen extends StatelessWidget {
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10)),
         ),
-        // leading: IconButton(
-        //   onPressed: () {},
-        //   icon: Icon(Icons.arrow_back, color: mainPurple),
-        // ),
         title: const Text(
           "Aim CET Results",
           style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
@@ -66,9 +65,16 @@ class AIMCETResultScreen extends StatelessWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: List.generate(2, (index) {
+                  children:
+                      List.generate(controller.personality.length, (index) {
                     return Row(
-                      children: [homeCWB, const DiscoveryContainer()],
+                      children: [
+                        homeCWB,
+                        DiscoveryContainer(
+                          personality: controller.personality[index],
+                          image: discoveryImages[index],
+                        )
+                      ],
                     );
                   }),
                 ),
@@ -82,34 +88,47 @@ class AIMCETResultScreen extends StatelessWidget {
                     divColor: const Color.fromARGB(255, 148, 39, 143)),
               ),
               hMBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(4, (index) {
-                    return Row(
-                      children: [
-                        homeCWB,
-                        TopCareerContainer(bgImage: topCareer[index])
-                      ],
-                    );
-                  }),
-                ),
-              ),
-              hBox,
-              hBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(4, (index) {
-                    return Row(
-                      children: [
-                        homeCWB,
-                        TopCareerContainer(bgImage: topCareerSec[index])
-                      ],
-                    );
-                  }),
-                ),
-              ),
+              controller.careers.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Your career result is not processed',
+                        style: TextStyle(color: textFieldColor, fontSize: 12),
+                      ),
+                    )
+                  : Container(
+                      height: 160,
+                      padding: const EdgeInsets.only(left: 15),
+                      child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 110,
+                          childAspectRatio: 2 / 4.5,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 3,
+                        ),
+                        itemCount: controller.careers.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          int careerImageIndex = index % topCareer.length;
+                          List<String> careersType = [];
+                          List<String> salaryRanges = [];
+                          for (var item in controller.careers) {
+                            List<String> parts =
+                                item.split(" - Salary range: ");
+                            if (parts.length == 2) {
+                              careersType.add(parts[0]);
+                              salaryRanges.add(parts[1]);
+                            }
+                          }
+                          return TopCareerContainer(
+                            bgImage: topCareer[careerImageIndex],
+                            // bgImage: 'assets/images/topcareer9.png',
+                            careersType: careersType[index],
+                            salary: salaryRanges[index],
+                          );
+                        },
+                      ),
+                    ),
               hLBox,
               Container(
                 height: 35.h,
@@ -132,41 +151,37 @@ class AIMCETResultScreen extends StatelessWidget {
                     divColor: const Color.fromARGB(255, 148, 39, 143)),
               ),
               hMBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(4, (index) {
-                    return Row(
-                      children: [
-                        homeCWB,
-                        const TopDegreeContainer(
-                          degreeImage: 'assets/images/topdegree1.png',
-                          degree: "Bachelor of Arts",
-                          degreeCap: 'assets/images/degree-cap 1.svg',
-                        )
-                      ],
-                    );
-                  }),
-                ),
-              ),
-              hMBox,
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(4, (index) {
-                    return Row(
-                      children: [
-                        homeCWB,
-                        const TopDegreeContainer(
-                          degreeImage: 'assets/images/topdegree1.png',
-                          degree: "Bachelor of Science in Computer Engineering",
-                          degreeCap: 'assets/images/degree-cap 1.svg',
-                        )
-                      ],
-                    );
-                  }),
-                ),
-              ),
+              controller.degrees.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Your career result is not processed',
+                        style: TextStyle(color: textFieldColor, fontSize: 12),
+                      ),
+                    )
+                  : Container(
+                      height: 150,
+                      padding: const EdgeInsets.only(left: 15),
+                      child: GridView.builder(
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 110,
+                          childAspectRatio: 2 / 6.5,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 3,
+                        ),
+                        itemCount: controller.degrees.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          int degreeImageIndex = index % topDegree.length;
+                          return TopDegreeContainer(
+                            degreeImage: topDegree[degreeImageIndex],
+                            degree: controller.degrees[index],
+                            // degreeCap: 'assets/images/cap icon.svg',
+                            degreeCap: 'assets/images/degree-cap 1.png',
+                          );
+                        },
+                      ),
+                    ),
               hLBox,
               Padding(
                 padding: const EdgeInsets.only(left: 18, top: 25),
@@ -191,9 +206,9 @@ class AIMCETResultScreen extends StatelessWidget {
               ),
               hLBox,
               hLBox,
-              const PersonalityContainer(),
+              PersonalityContainer(userName: userName),
               hMBox,
-              const TraitContainer(),
+              TraitContainer(userName: userName),
               hMBox,
               Align(
                 alignment: Alignment.center,
@@ -208,7 +223,7 @@ class AIMCETResultScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    onPressed: () => Get.offAll(()=>const HomeScreen()),
+                    onPressed: () => Get.offAll(() => const HomeScreen()),
                     icon: Text(
                       "Go to Home",
                       style: TextStyle(
@@ -232,3 +247,39 @@ class AIMCETResultScreen extends StatelessWidget {
     );
   }
 }
+ // hMBox,
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+              //     children: List.generate(controller.degrees.length, (index) {
+              //       int degreeImageIndex = index % topDegree.length;
+              //       return Row(
+              //         children: [
+              //           homeCWB,
+              //           TopDegreeContainer(
+              //             degreeImage: topDegree[degreeImageIndex],
+              //             degree: controller.degrees[index],
+              //             // degreeCap: 'assets/images/cap icon.svg',
+              //             degreeCap: 'assets/images/degree-cap 1.png',
+              //           )
+              //         ],
+              //       );
+              //     }),
+              //   ),
+              // ),
+
+                 // hBox,
+              // hBox,
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+              //     children: List.generate(4, (index) {
+              //       return Row(
+              //         children: [
+              //           homeCWB,
+              //           TopCareerContainer(bgImage: topCareerSec[index])
+              //         ],
+              //       );
+              //     }),
+              //   ),
+              // ),

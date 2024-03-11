@@ -11,7 +11,7 @@ class LoginService {
       Response response = await dio.post(path,
           data: {'phone': mobileNo},
           options: Options(
-            validateStatus: (status) => status! < 400,
+            validateStatus: (status) => status! < 500,
           ));
 
       log(response.data.toString(), name: 'userverify');
@@ -19,9 +19,9 @@ class LoginService {
         return UserDataModel.fromJson(response.data);
         // return true;
       }
-      //  else if (response.statusCode == 300) {
-      //   return false;
-      // }
+       else if (response.statusCode == 422) {
+        return UserDataModel.fromJson(response.data);
+      }
     } catch (e) {
       log(e.toString(), name: 'verifyusererror');
     }

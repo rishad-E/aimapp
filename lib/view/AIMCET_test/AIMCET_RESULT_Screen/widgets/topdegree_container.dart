@@ -1,7 +1,5 @@
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sizer/sizer.dart';
 
 class TopDegreeContainer extends StatelessWidget {
   final String degreeImage;
@@ -13,7 +11,7 @@ class TopDegreeContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
-      width: 53.w,
+      // width: 53.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
@@ -37,7 +35,8 @@ class TopDegreeContainer extends StatelessWidget {
               child: CircleAvatar(
                 radius: 17,
                 backgroundColor: const Color.fromARGB(255, 231, 230, 240),
-                child: SvgPicture.asset(degreeCap),
+                // child: SvgPicture.asset(degreeCap,color: Colors.red,fit: BoxFit.fill,),
+                child: Image.asset(degreeCap),
               ),
             ),
           ),

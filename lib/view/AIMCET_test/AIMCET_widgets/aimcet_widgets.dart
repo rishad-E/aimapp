@@ -1,5 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 PreferredSizeWidget aimcetAppBar() {
   return AppBar(
@@ -79,15 +81,57 @@ Decoration guidelineSecContainerDecoration() {
   );
 }
 
-// Widget guidelineConformContainer() {
-//   return Container(
-//     height: 24,
-//     width: 24,
-//     decoration: BoxDecoration(
-//       color: kwhite,
-//       border:
-//           Border.all(width: 1, color: const Color.fromARGB(255, 195, 197, 198)),
-//       borderRadius: BorderRadius.circular(6),
-//     ),
-//   );
-// }
+PreferredSizeWidget aimcetResultAppBar() {
+  return AppBar(
+    surfaceTintColor: Colors.white,
+    elevation: 7,
+    shadowColor: Colors.black.withOpacity(0.5),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+    ),
+    title: const Text(
+      "Aim CET Results",
+      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+    ),
+    centerTitle: true,
+  );
+}
+
+Widget personalityTwoText({required String text1, required String text2}) {
+  return RichText(
+    text: TextSpan(
+      children: [
+        TextSpan(
+            text: text1,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 15.4.sp,
+              color: const Color.fromARGB(255, 30, 35, 44),
+            )),
+        WidgetSpan(child: wBox),
+        TextSpan(
+            text: text2,
+            style: TextStyle(
+              color: const Color.fromARGB(255, 147, 38, 143),
+              fontSize: 15.4.sp,
+              fontWeight: FontWeight.w600,
+            )),
+      ],
+    ),
+  );
+}
+
+BoxDecoration report3Container() {
+  return const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color.fromRGBO(255, 245, 255, 1.0),
+        Color.fromRGBO(241, 248, 248, 1.0),
+      ],
+      stops: [0.0, 1.0],
+    ),
+  );
+}
