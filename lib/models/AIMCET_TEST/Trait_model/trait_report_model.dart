@@ -8,6 +8,8 @@
 
 // String traitReportModelToJson(TraitReportModel data) => json.encode(data.toJson());
 
+// ignore_for_file: constant_identifier_names
+
 class TraitReportModel {
     String? userId;
     String? username;

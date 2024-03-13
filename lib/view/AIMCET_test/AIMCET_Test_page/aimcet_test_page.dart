@@ -36,9 +36,9 @@ class AIMCETTestPage extends StatelessWidget {
           padding: const EdgeInsets.only(left: 17, right: 17, top: 30),
           child: controller.allQuestions?.isEmpty == true
               ? Center(
-                child: CompletedWarningBox(
-                    uId: uId.toString(), uName: uName.toString()),
-              )
+                  child: CompletedWarningBox(
+                      uId: uId.toString(), uName: uName.toString()),
+                )
               : PageView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.allQuestions?.length,
@@ -64,67 +64,62 @@ class AIMCETTestPage extends StatelessWidget {
                                 final data = c.allQuestions![index];
                                 final length = c.allQuestions!.length;
                                 return Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 5, bottom: 5),
+                                  padding:
+                                      const EdgeInsets.only(top: 5, bottom: 5),
                                   child: GestureDetector(
                                     onTap: () {
                                       isSelected = pageIndex;
+                                      c.totalQuestionNumber(data.sectionId);
                                       if (index == length - 1 ||
                                           c.submitRes == 'failed') {
                                         showAIMCETDialogFunction(
                                             context: context,
                                             userId: uId.toString(),
-                                            userName:
-                                                uName.toString());
+                                            userName: uName.toString());
                                       }
+                                      c.secID.value = data.sectionId;
                                       c.update(['aimcet-test']);
                                       log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
-                                      log('${c.secID}',
-                                          name: 'cheeeeeeeeek');
-                                      c.secID.value =
-                                          data.sectionId;
+                                      log('${c.secID}', name: 'section');
+                                      log('${c.secQuestion}',
+                                          name: 'sectionquestion num');
+                                      log('${c.totalQ}',
+                                          name: 'total question num');
                                       c.submitAimTest(
-                                        userId: uId.toString(),
-                                        cAnswer: answerText,
-                                        sectionId: data.sectionId
-                                            .toString(),
-                                        questionId:
-                                            data.id.toString(),
-                                      );
+                                          userId: uId.toString(),
+                                          cAnswer: answerText,
+                                          sectionId: data.sectionId.toString(),
+                                          questionId: data.id.toString(),
+                                          secQues: c.secQuestion.toString(),
+                                          totalQues: c.totalQ.toString());
                                       if (index < length - 1) {
                                         pageController.animateToPage(
                                           index + 1,
-                                          duration: const Duration(
-                                              milliseconds: 800),
+                                          duration:
+                                              const Duration(milliseconds: 800),
                                           curve: Curves.ease,
                                         );
                                       }
                                       if (index == 39) {
                                         log(
                                             uId.toString() +
-                                                data.sectionId
-                                                    .toString(),
+                                                data.sectionId.toString(),
                                             name: '40th index');
                                         c.careerResultSubmittion(
-                                            userId: uId.toString(),
-                                            secId: '1');
+                                            userId: uId.toString(), secId: '1');
                                       }
                                       if (index == 54) {
                                         log(
                                             uId.toString() +
-                                                data.sectionId
-                                                    .toString(),
+                                                data.sectionId.toString(),
                                             name: '55th index');
                                         c.careerResultSubmittion(
-                                            userId: uId.toString(),
-                                            secId: '3');
+                                            userId: uId.toString(), secId: '3');
                                       }
-          
                                       if (index == length - 1) {
                                         c.aimcetTestResultFunction(
                                           userId: uId.toString(),
-                                          userName:
-                                              uName.toString(),
+                                          userName: uName.toString(),
                                         );
                                       }
                                       if (length - 2 == index ||

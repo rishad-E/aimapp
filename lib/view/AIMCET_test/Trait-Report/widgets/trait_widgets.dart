@@ -198,3 +198,17 @@ BoxDecoration reportDecoration() {
     borderRadius: BorderRadius.circular(8),
   );
 }
+
+Widget dataContainer({required String data}) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(2),
+      color: const Color.fromARGB(76, 216, 216, 216),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+    child: Text(
+      data,
+      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+    ),
+  );
+}

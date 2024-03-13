@@ -21,9 +21,7 @@ class PersonalityReportPage extends StatelessWidget {
       data.showSkills.toString(),
       data.showStrengths.toString(),
     ];
-    String value = data.valueOfPersonalityReport.toString();
-    List<String> valueItems =
-        value.split('.').map((data) => data.trim()).toList();
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: aimcetResultAppBar(),
@@ -31,7 +29,6 @@ class PersonalityReportPage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 85),
         child: SingleChildScrollView(
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               personReportImageContainer(
                 userName: userName,
@@ -259,7 +256,7 @@ class PersonalityReportPage extends StatelessWidget {
                       listGenerate: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: List.generate(
-                          valueItems.length - 1,
+                          data.valueOfPersonalityReport!.length,
                           (index) {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +266,7 @@ class PersonalityReportPage extends StatelessWidget {
                                 wBox,
                                 Expanded(
                                     child: personPlainText(
-                                        text: valueItems[index], size: 12))
+                                        text: data.valueOfPersonalityReport![index], size: 12))
                               ],
                             );
                           },

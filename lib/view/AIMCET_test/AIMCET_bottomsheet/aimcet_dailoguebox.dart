@@ -81,7 +81,7 @@ class AIMCETDialogueBox extends StatelessWidget {
                   },
                 );
                 
-                Future.delayed(const Duration(seconds: 4), () {
+                Future.delayed(const Duration(seconds: 5), () {
                   log(controller.personality[0]+controller.traitType.toString()+controller.gp.value,name: 'traaaaaaaaaaaai');
                   controller.gpReportSubmitFunction(uId: userId, personality: controller.personality[0], trait: controller.traitType.toString()).then((_) {
                     controller.fetchPersonalityReport(userId: userId);

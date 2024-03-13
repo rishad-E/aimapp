@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_Test_model/test_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_qualification/qualification_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Personality_model/personality_report_model.dart';
@@ -25,6 +24,8 @@ class AIMCETController extends GetxController {
   RxInt secID = RxInt(1);
   RxString end = 'no'.obs;
   RxString gp = 'wait'.obs;
+  int? totalQ;
+  int? secQuestion;
 
   List<String> personality = [];
   String? traitType;
@@ -40,24 +41,42 @@ class AIMCETController extends GetxController {
   Future<void> getQualifications() async {
     qualificationList.value =
         await AIMCETQualificationService().fetchQualification();
-    // update();
   }
 
   Future<void> fetchAllTestResults(
       {required String userId, required String qualifyId}) async {
-    testRes = await AIMCETTestService()
+    Map<String, dynamic>? data = await AIMCETTestService()
         .getTestResult(userId: userId, qualifyId: qualifyId);
 
-    if (testRes != null) {
-      // Merge all lists of questions into a single list
-      allQuestions = [];
-      for (var questions in testRes!.values) {
-        allQuestions!.addAll(questions);
+    if (data != null) {
+      Map<String, dynamic>? questionData = data['data'];
+      if (data['indexval'] == null || data['question_attempt'] == null) {
+        totalQ = 0;
+        secQuestion = 0;
+      } else {
+        totalQ = data['indexval'];
+        secQuestion = data['question_attempt'];
       }
-      if (allQuestions!.isEmpty) {
-        end.value = 'done';
+      if (questionData != null) {
+        Map<String, List<Question>> res = {};
+        questionData.forEach((key, value) {
+          res[key] =
+              List<Question>.from(value.map((x) => Question.fromJson(x)));
+        });
+        testRes = res;
+        // Merge all lists of questions into a single list
+        allQuestions = [];
+        for (var questions in testRes!.values) {
+          allQuestions!.addAll(questions);
+        }
+
+        if (allQuestions!.isEmpty) {
+          end.value = 'done';
+        }
       }
     }
+
+    log(allQuestions.toString(), name: 'contorleeeereeeeeeee');
   }
 
   Future<void> submitAimTest({
@@ -65,13 +84,16 @@ class AIMCETController extends GetxController {
     required String cAnswer,
     required String sectionId,
     required String questionId,
+    required String secQues,
+    required String totalQues,
   }) async {
     submitRes = await AIMCETTestService().sumbitAIMTest(
-      userId: userId,
-      cAnswer: cAnswer,
-      sectionId: sectionId,
-      questionId: questionId,
-    );
+        userId: userId,
+        cAnswer: cAnswer,
+        sectionId: sectionId,
+        questionId: questionId,
+        secQues: secQues,
+        totalQues: totalQues);
 
     if (submitRes == 'failed') {
       end.value = 'done';
@@ -178,5 +200,30 @@ class AIMCETController extends GetxController {
     // guidebutton.value = !guidebutton.value;
     guidebutton.value = guideSelect;
     update(['button-proceed']);
+  }
+
+  void totalQuestionNumber(int secID) {
+    if (secID <= 8) {
+      if (secQuestion! < 5) {
+        secQuestion = secQuestion! + 1;
+      } else if (secQuestion! == 5) {
+        secQuestion = 1;
+      }
+    } else if (secID == 9 || secID == 10) {
+      if (secQuestion! < 15) {
+        secQuestion = secQuestion! + 1;
+      } else if (secQuestion! == 15) {
+        secQuestion = 1;
+      }
+    }
+    if (totalQ == 40) {
+      secQuestion = 1;
+    }
+    if (totalQ! < 70) {
+      totalQ = totalQ! + 1;
+    } else if (totalQ == 70) {
+      totalQ = 1;
+    }
+    update(['aimcet-test']);
   }
 }

@@ -90,7 +90,7 @@ class QualificationBottomSheet extends StatelessWidget {
                                       aimcetController, data.title.toString());
                                   aimcetController.qualifyId =
                                       data.id.toString();
-                                  log('qualify ${aimcetController.qualifyId.toString()}''userId ${uId.toString()}',
+                                  log('qualify ${aimcetController.qualifyId.toString()} ' 'userId${uId.toString()}',
                                      );
                                   aimcetController.fetchAllTestResults(
                                       userId: uId.toString(),

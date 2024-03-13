@@ -48,6 +48,7 @@ class TraitContainer extends StatelessWidget {
                         color: kwhite,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                   ),
                   Text(
                     "In fact, you're more artistic than 86% of the population.",

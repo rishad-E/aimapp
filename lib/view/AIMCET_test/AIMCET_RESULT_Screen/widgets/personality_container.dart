@@ -18,7 +18,6 @@ class PersonalityContainer extends StatelessWidget {
         border: Border.all(color: const Color.fromARGB(255, 230, 228, 228)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      // height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
       child: Column(
         children: [
@@ -48,6 +47,7 @@ class PersonalityContainer extends StatelessWidget {
                         color: kwhite,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                   ),
                   Text(
                     "You're a unique blend of artistic and investigative types.",
@@ -87,8 +87,8 @@ class PersonalityContainer extends StatelessWidget {
                 : controller.gp.value == "sucess"
                     ? GestureDetector(
                         onTap: () {
-                          Get.to(() => PersonalityReportPage(userName: userName));
-                          // log(controller.gp.value,name: 'gp');
+                          Get.to(
+                              () => PersonalityReportPage(userName: userName));
                         },
                         child: Row(
                           children: [

@@ -3,6 +3,9 @@ import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_images.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
 import 'package:aimshala/view/AIMCET_test/Personality-Report/widgets/personality_widgets.dart';
+import 'package:aimshala/view/AIMCET_test/Trait-Report/widgets/broad_percentage_indicator.dart';
+import 'package:aimshala/view/AIMCET_test/Trait-Report/widgets/detailed_percentage_indicator.dart';
+import 'package:aimshala/view/AIMCET_test/Trait-Report/widgets/pie_chart_page.dart';
 import 'package:aimshala/view/AIMCET_test/Trait-Report/widgets/trait_widgets.dart';
 import 'package:aimshala/view/home/widget/const.dart';
 import 'package:flutter/material.dart';
@@ -81,16 +84,16 @@ class TraitReportScreen extends StatelessWidget {
                             'Detailed interests are work activities that tend to cluster together. They are more specific than Holland codes, allowing for finer distinctions between areas of interest. A career can usually be described by a small number of basic interests. Showing nterestin the activities that best describe a career is an excellent indicator of a match with that career.',
                         size: 12),
                     hBox,
-                    Container(
+                    SizedBox(
                       height: 200,
-                      color: Colors.yellow,
+                      child: TraitPieChart(riasec: data.riasec),
                     ),
                     hBox,
                     piechartTexts(
-                      color1: const Color.fromARGB(255, 46, 147, 250),
-                      text1: 'Artistic',
-                      color2: const Color.fromARGB(255, 2, 213, 255),
-                      text2: 'Realistic',
+                      color1: const Color.fromARGB(255, 2, 213, 255),
+                      text1: 'Realistic',
+                      color2: const Color.fromARGB(255, 181, 23, 158),
+                      text2: 'Social',
                     ),
                     hBox,
                     piechartTexts(
@@ -101,10 +104,10 @@ class TraitReportScreen extends StatelessWidget {
                     ),
                     hBox,
                     piechartTexts(
-                      color1: const Color.fromARGB(255, 144, 9, 183),
-                      text1: 'Conventional',
-                      color2: const Color.fromARGB(255, 181, 23, 158),
-                      text2: 'Social',
+                      color1: const Color.fromARGB(255, 46, 147, 250),
+                      text1: 'Artistic',
+                      color2: const Color.fromARGB(255, 144, 9, 183),
+                      text2: 'Conventional',
                     ),
                     hMBox,
                     traitHeadingText(text: 'Your Detailed Interests', size: 14),
@@ -319,7 +322,7 @@ class TraitReportScreen extends StatelessWidget {
                                 data.dislikeWorkEnvDontMindIt!.length,
                                 (index) {
                                   return traitListContainer(
-                                    data:data.dislikeWorkEnvDontMindIt![index],
+                                    data: data.dislikeWorkEnvDontMindIt![index],
                                     bgColor:
                                         const Color.fromARGB(255, 59, 0, 154)
                                             .withOpacity(0.1),
@@ -396,20 +399,19 @@ class TraitReportScreen extends StatelessWidget {
                             "Your personality is comprised of several factors ranging from how independent you are to how much of a leader you are. Below is a more in-depth look at your personality.",
                         size: 12),
                     hMBox,
-                    Container(
-                      color: Colors.yellow,
-                      height: 126,
+                    TraitPercentageIndicatorBroad(
+                      broadPersonality: data.broadPersonality,
                     ),
                     hMBox,
-                    traitHeadingText(text: "Your Broad Personality", size: 14),
+                    traitHeadingText(
+                        text: "Your Detailed Personality", size: 14),
                     traitPlainText(
                         text:
                             "Your personality is comprised of several factors ranging from how independent you are to how much of a leader you are. Below is a more in-depth look at your personality.",
                         size: 12),
                     hMBox,
-                    Container(
-                      color: Colors.yellow,
-                      height: 126,
+                    TraitPercentageIndicatorDetailed(
+                      detailedPersonality: data.detailedPersonality,
                     ),
                     hLBox,
                   ],
