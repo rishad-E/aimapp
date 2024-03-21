@@ -42,6 +42,7 @@ class LoginController extends GetxController {
         storage.write(key: 'token', value: userData?.token.toString());
         storage.write(key: 'phone', value:  userData?.user?.phone.toString());
         Get.offAll(() => const HomeScreen());
+        phoneController.clear();
       } else {
         Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
       }
@@ -82,9 +83,12 @@ class LoginController extends GetxController {
 
 /*----------validation message---------*/
   String? phoneValidation(String? word) {
-    if (word == null || word.isEmpty || word.length < 10 || word.length > 10) {
+    if (word == null || word.isEmpty || word.length < 10 || word.length > 10|| !word.isNumericOnly) {
       return 'Please enter a Valid Mobile Number';
     }
+    // if (!word.isNumericOnly) {
+    //   log("messageeeeee");
+    // }
     return null;
   }
 

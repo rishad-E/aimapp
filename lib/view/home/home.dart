@@ -14,7 +14,9 @@ import 'package:aimshala/view/home/widget/home_container/upevent_container.dart'
 import 'package:aimshala/view/home/widget/home_container/upsession_container.dart';
 import 'package:aimshala/view/home/widget/home_container/yourjourney_container.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
+import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -29,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
+  const storage = FlutterSecureStorage();
+
     String? name ;
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null ) {
@@ -37,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
-      appBar: appbarc(name: name),
+      appBar: appbarHome(name: name),
       body: SingleChildScrollView(
         child: Stack(
           clipBehavior: Clip.none,
@@ -201,6 +205,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   homeCHBs,
+                  ElevatedButton(
+                  onPressed: () {
+                    storage.deleteAll();
+                    Get.offAll(() => const SplashScreen());
+                  },
+                  child: const Text("Logout")),
+                  homeCHBs
                 ],
               ),
             )

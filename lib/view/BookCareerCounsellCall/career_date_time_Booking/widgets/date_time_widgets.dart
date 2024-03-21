@@ -32,24 +32,18 @@ Widget dateFotmatBox(String inputDateString,
           Border.all(color: const Color.fromARGB(255, 247, 245, 245), width: 1),
     ),
     width: 10.5.w,
-    // height: 5.h,
-    // width: 41,
     margin: const EdgeInsets.symmetric(horizontal: 7),
-    // padding: const EdgeInsets.symmetric(horizontal: 8),
     child: Center(
         child: Column(
-      // crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           dayOfWeek,
           style: dayOfWeekStyle,
-          // textAlign: TextAlign.center,
         ),
         Text(
           '$dayOfMonth',
           style: dayOfMonthStyle,
-          // textAlign: TextAlign.center,
         ),
       ],
     )),
@@ -78,5 +72,17 @@ Widget timeContainer(
       textAlign: TextAlign.center,
       style: TextStyle(fontSize: 12, color: colortext),
     ),
+  );
+}
+
+Widget backForth(Icon icon) {
+  return Container(
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 247, 245, 245),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    height: 25,
+    width: 25,
+    child:icon
   );
 }

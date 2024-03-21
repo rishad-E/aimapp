@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/chatbot/amy_chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 ShapeBorder appBarBorder() {
@@ -12,14 +16,14 @@ ShapeBorder appBarBorder() {
   ));
 }
 
-PreferredSizeWidget appbarc({String? name}) {
+PreferredSizeWidget appbarHome({String? name}) {
   return AppBar(
     // toolbarHeight: 70,
     // backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
     leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-    title: primarytxt3(name==null ? 'Hi,Sachin':'Hi, $name', 14.sp),
+    title: primarytxt3(name == null ? 'Hi,Sachin' : 'Hi, $name', 14.sp),
     titleSpacing: 0,
     actions: [
       Padding(
@@ -35,8 +39,8 @@ PreferredSizeWidget appbarc({String? name}) {
               ),
             ),
             Positioned(
-              top: 12, // Adjust this value to position the red dot
-              right: 12, // Adjust this value to position the red dot
+              top: 12,
+              right: 12,
               child: Container(
                 width: 12,
                 height: 12,
@@ -50,13 +54,18 @@ PreferredSizeWidget appbarc({String? name}) {
         ),
       ),
       wBox,
-      Container(
-        width: 30,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
+      GestureDetector(
+        onTap: () {
+          log('talk to amy',name: 'chat screen');
+          Get.to(()=>const AmyChatBotScreen());
+        },
+        child: Container(
+          width: 30,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Image.asset('assets/images/appbarWomen2.png'),
         ),
-        child: Image.asset('assets/images/appbarWomen2.png'),
-     
       ),
       // Stack(
       //   alignment: AlignmentDirectional.topEnd,

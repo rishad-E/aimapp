@@ -33,9 +33,6 @@ class AIMCETController extends GetxController {
   List<String> careers = [];
   PersonalityReportModel? personalityReport;
   TraitReportModel? traitReport;
-  // RxInt attempt = RxInt(0);
-  // int? isSelected;
-  // RxString testEnd = 'false'.obs;
 
   /* --------- get all qualifications-------*/
   Future<void> getQualifications() async {
@@ -95,18 +92,18 @@ class AIMCETController extends GetxController {
         secQues: secQues,
         totalQues: totalQues);
 
-    if (submitRes == 'failed') {
-      end.value = 'done';
-      Get.showSnackbar(
-        const GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: 'You have already submitted this answer',
-          margin: EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
+    // if (submitRes == 'failed') {
+    //   end.value = 'done';
+    //   Get.showSnackbar(
+    //     const GetSnackBar(
+    //       snackStyle: SnackStyle.FLOATING,
+    //       message: 'You have already submitted this answer',
+    //       margin: EdgeInsets.all(10),
+    //       backgroundColor: Colors.red,
+    //       duration: Duration(seconds: 2),
+    //     ),
+    //   );
+    // }
     update(['aimcet-test']);
   }
 

@@ -348,6 +348,7 @@ class TraitReportScreen extends StatelessWidget {
                       decoration: reportDecoration(),
                       width: double.infinity,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),

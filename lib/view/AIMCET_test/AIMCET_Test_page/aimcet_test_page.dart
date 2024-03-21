@@ -70,8 +70,7 @@ class AIMCETTestPage extends StatelessWidget {
                                     onTap: () {
                                       isSelected = pageIndex;
                                       c.totalQuestionNumber(data.sectionId);
-                                      if (index == length - 1 ||
-                                          c.submitRes == 'failed') {
+                                      if (index == length - 1) {
                                         showAIMCETDialogFunction(
                                             context: context,
                                             userId: uId.toString(),

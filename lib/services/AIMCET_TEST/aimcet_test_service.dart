@@ -51,7 +51,7 @@ class AIMCETTestService {
             "total_question": totalQues
           },
           options: Options(
-            validateStatus: (status) => status! < 500,
+            validateStatus: (status) => status! < 599,
           ));
       log(response.data.toString(), name: 'aimcet sumbit');
       if (response.statusCode == 200) {

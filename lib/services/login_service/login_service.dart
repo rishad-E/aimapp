@@ -17,14 +17,17 @@ class LoginService {
       log(response.data.toString(), name: 'userverify');
       if (response.statusCode == 200) {
         return UserDataModel.fromJson(response.data);
-        // return true;
-      }
-       else if (response.statusCode == 422) {
+      } else if (response.statusCode == 422) {
         return UserDataModel.fromJson(response.data);
       }
-    } catch (e) {
-      log(e.toString(), name: 'verifyusererror');
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}', name: 'verifyusererror');
     }
     return null;
   }
 }
+   // on SocketException catch (e) {
+    //   // Handle SocketException
+    //   log('SocketException: ${e.message}', name: 'socket');
+    // } 

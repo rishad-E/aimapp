@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (context, orientation, deviceType) {
         return GetMaterialApp(
-          title: 'Flutter Demo',
+          title: 'AIMSHALA APP',
           theme: ThemeData(
             useMaterial3: true,
             textSelectionTheme: const TextSelectionThemeData(

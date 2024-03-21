@@ -156,6 +156,7 @@ class TraitPercentageIndicatorDetailed extends StatelessWidget {
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 13),
+                  // color: Colors.yellow,
                   color:
                       const Color.fromARGB(76, 216, 216, 216).withOpacity(0.2),
                   child: SizedBox(
@@ -167,9 +168,10 @@ class TraitPercentageIndicatorDetailed extends StatelessWidget {
                           child: Text(
                             '${detailedPersonality!.toleranceOfStressAndCriticism.toString()}%',
                             style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
-                                color: kwhite),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: kwhite,
+                            ),
                           ),
                         ),
                       ),

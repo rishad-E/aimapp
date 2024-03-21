@@ -109,6 +109,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                               onChanged: (value) {
                                 onchanged(controller, value);
+                                // controller.update(['continue-button']);
                               },
                               validator: (value) =>
                                   controller.phoneValidation(value),
