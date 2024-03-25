@@ -47,7 +47,7 @@ class PersonalityContainer extends StatelessWidget {
                         color: kwhite,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     "You're a unique blend of artistic and investigative types.",
@@ -77,12 +77,15 @@ class PersonalityContainer extends StatelessWidget {
           hMBox,
           Obx(
             () => controller.gp.value == 'wait'
-                ? Text(
-                    "REPORT is processing",
-                    style: TextStyle(
-                        color: mainPurple,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16),
+                ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "REPORT is processing",
+                      style: TextStyle(
+                          color: mainPurple,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
                   )
                 : controller.gp.value == "sucess"
                     ? GestureDetector(
@@ -107,12 +110,15 @@ class PersonalityContainer extends StatelessWidget {
                           ],
                         ),
                       )
-                    : Text(
-                        "REPORT Fetch failed...",
-                        style: TextStyle(
-                          color: textFieldColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "REPORT Fetch failed...",
+                          style: TextStyle(
+                            color: textFieldColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
           )

@@ -48,7 +48,7 @@ class TraitContainer extends StatelessWidget {
                         color: kwhite,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     "In fact, you're more artistic than 86% of the population.",
@@ -78,18 +78,23 @@ class TraitContainer extends StatelessWidget {
           hMBox,
           Obx(
             () => controller.gp.value == 'wait'
-                ? Text(
-                    "REPORT is processing",
-                    style: TextStyle(
+                ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "REPORT is processing",
+                      style: TextStyle(
                         color: mainPurple,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16),
+                        fontSize: 16,
+                      ),
+                    ),
                   )
                 : controller.gp.value == "sucess"
                     ? GestureDetector(
                         onTap: () {
-                          Get.to(
-                              () => TraitReportScreen(userName: userName,));
+                          Get.to(() => TraitReportScreen(
+                                userName: userName,
+                              ));
                           // log(controller.gp.value,name: 'gp');
                         },
                         child: Row(
@@ -108,31 +113,18 @@ class TraitContainer extends StatelessWidget {
                             )
                           ],
                         ))
-                    : Text(
-                        "REPORT Fetch failed...",
-                        style: TextStyle(
-                          color: textFieldColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "REPORT Fetch failed...",
+                          style: TextStyle(
+                            color: textFieldColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
           )
-          // Row(
-          //   children: [
-          //     Text(
-          //       "VIEW REPORT",
-          //       style: TextStyle(
-          //           color: mainPurple,
-          //           fontWeight: FontWeight.w600,
-          //           fontSize: 16),
-          //     ),
-          //     Icon(
-          //       Icons.arrow_forward,
-          //       color: mainPurple,
-          //       size: 19,
-          //     )
-          //   ],
-          // )
         ],
       ),
     );

@@ -51,7 +51,7 @@ Widget personSkillContainer(
     {required String image, required String text, required String text2}) {
   return Container(
     margin: const EdgeInsets.only(right: 8),
-    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    padding: const EdgeInsets.fromLTRB(20, 7, 20, 10),
     width: 228,
     // height: 168,
     decoration: BoxDecoration(
@@ -62,8 +62,6 @@ Widget personSkillContainer(
         ),
         borderRadius: BorderRadius.circular(8)),
     child: Column(
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(
           image,
@@ -76,12 +74,12 @@ Widget personSkillContainer(
   );
 }
 
-Widget personReportImageContainer({required String userName,required String image}) {
+Widget personReportImageContainer(
+    {required String userName, required String image}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 35),
-    decoration:  BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage(image), fit: BoxFit.cover),
+    decoration: BoxDecoration(
+      image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
     ),
     // height: 100,
     width: double.infinity,

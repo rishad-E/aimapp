@@ -2,8 +2,8 @@ import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/otp_service/otp_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/signup/signup_screen.dart';
+import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -41,7 +41,7 @@ class LoginController extends GetxController {
       if (userData?.token != null) {
         storage.write(key: 'token', value: userData?.token.toString());
         storage.write(key: 'phone', value:  userData?.user?.phone.toString());
-        Get.offAll(() => const HomeScreen());
+        Get.offAll(() => const SplashScreen());
         phoneController.clear();
       } else {
         Get.offAll(() => SignUpScreen(mobileNo: mobileNo));

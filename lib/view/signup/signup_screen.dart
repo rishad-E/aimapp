@@ -136,14 +136,14 @@ class SignUpScreen extends StatelessWidget {
                     ),
                     button: GetBuilder<SignUpController>(
                         id: 'button-signup',
-                        builder: (signupController) {
-                          log("signup");
+                        builder: (c) {
+                          // log("signup");
                           return TextButton(
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.resolveWith<Color>(
                                   (states) {
-                                    return signUp.areAllFieldsSelected.value
+                                    return c.areAllFieldsSelected.value
                                         ? kpurple
                                         : bbColor;
                                   },
@@ -151,16 +151,17 @@ class SignUpScreen extends StatelessWidget {
                                 shape: buttonShape(round: 10)),
                             onPressed: () {
                               if (formKey.currentState!.validate() &&
-                                  signUp.areAllFieldsSelected.value) {
-                                  String mobileWithoutCountryCode = mobileNo.substring(2);
+                                  c.areAllFieldsSelected.value) {
+                                String mobileWithoutCountryCode =
+                                    mobileNo.substring(2);
                                 log(mobileWithoutCountryCode);
-                                log('entered :${signUp.nameController.text + signUp.emailController.text + mobileWithoutCountryCode + signUp.roleController.text}');
+                                log('entered :${c.nameController.text + c.emailController.text + mobileWithoutCountryCode + c.roleController.text}');
 
-                                signUp
-                                    .signUpUserFunction(
-                                        name: signUp.nameController.text,
-                                        email: signUp.emailController.text,
-                                        mobileNo: mobileNo)
+                                c.signUpUserFunction(
+                                      name: c.nameController.text,
+                                      email: c.emailController.text,
+                                      mobileNo: mobileWithoutCountryCode,
+                                    )
                                     .then(
                                       (value) => {
                                         if (value == true)
@@ -172,7 +173,7 @@ class SignUpScreen extends StatelessWidget {
                             child: Text(
                               'Sign up',
                               style: TextStyle(
-                                color: signUp.buttonTextColor.value,
+                                color: c.buttonTextColor.value,
                               ),
                             ),
                           );
@@ -200,6 +201,7 @@ void showSignUpBottomsheet(BuildContext context) {
 void showSignUpDialogueBox(BuildContext context) {
   showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (context) {
       return const SignUpDialogueBox();
     },

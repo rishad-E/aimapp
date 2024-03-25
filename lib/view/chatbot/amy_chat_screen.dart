@@ -20,7 +20,21 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
   TextEditingController chatController = TextEditingController();
   ScrollController scrollController = ScrollController();
   List<ChatMessage> msgs = [];
+  // ChatMessage(
+  //     false, 'Hi I am Amy Your AI Career Guide How can i help you?', '')
   bool isTyping = false;
+  @override
+  void initState() {
+    super.initState();
+    addDefaultMessage();
+  }
+
+  void addDefaultMessage() {
+    DateTime now = DateTime.now();
+    String currentTime = DateFormat('h:mm a').format(now);
+    String defaultMsg = "Hi I am Amy Your AI Career Guide How can i help you?";
+    msgs.add(ChatMessage(false, defaultMsg, currentTime));
+  }
 
   void sendMsg() async {
     DateTime now = DateTime.now();
@@ -60,6 +74,7 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
   @override
   Widget build(BuildContext context) {
     // final controller = Get.put(ChatBotAmyController());
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -77,27 +92,44 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
         child: Column(
           children: [
             Container(
-              height: 11.5.h,
-              width: 25.5.w,
+              height: 108,
+              width: 168,
+              padding: const EdgeInsets.symmetric(vertical: 3),
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                // borderRadius: BorderRadius.circular(144),
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [
+                    // kwhite.withOpacity(0.3),
+                    kwhite.withOpacity(0.4),
                     const Color.fromARGB(255, 170, 229, 232).withOpacity(0.1),
                     const Color.fromARGB(255, 15, 187, 195).withOpacity(0.1),
+                    kwhite.withOpacity(0.1),
                     const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
-                    const Color.fromARGB(255, 170, 229, 232).withOpacity(0.1),
+                    const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
+                    const Color.fromARGB(255, 147, 38, 143).withOpacity(0.0),
+                    // kwhite.withOpacity(0.0),
                   ],
                 ),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/person.png'),
-                  fit: BoxFit.cover,
+              ),
+              child: Container(
+                height: 11.5.h,
+                width: 25.5.w,
+                // height: 108,
+                // width: 108,
+                // color: Colors.yellow,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: kwhite,
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/person.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

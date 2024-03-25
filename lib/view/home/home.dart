@@ -4,6 +4,7 @@ import 'package:aimshala/models/upcomingmodel/upcomingevent.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/widget/const.dart';
+import 'package:aimshala/view/home/widget/drawer_home.dart';
 import 'package:aimshala/view/home/widget/home_container/aimcet_container.dart';
 import 'package:aimshala/view/home/widget/home_container/bestcourse_container.dart';
 import 'package:aimshala/view/home/widget/home_container/contribution_container.dart';
@@ -31,15 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
-  const storage = FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
 
-    String? name ;
+    String? name;
+    String? id;
     final UserDataModel? userData = Get.put(LoginController()).userData;
-    if (userData != null ) {
-     name  = userData.user?.name ?? '';
+    if (userData != null) {
+      name = userData.user?.name ?? '';
+      id = userData.user?.id.toString();
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
+      drawer: const HomeDrawer(),
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
       appBar: appbarHome(name: name),
       body: SingleChildScrollView(
@@ -55,7 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   homeCHB,
                   const TakeChargeC(),
                   homeCHB,
-                  const AimcetContainer(),
+                  AimcetContainer(
+                    userName: name.toString(),
+                    id: id.toString(),
+                  ),
                   homeCHB,
                   Padding(
                     padding: const EdgeInsets.only(left: 18),
@@ -205,13 +212,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   homeCHBs,
-                  ElevatedButton(
-                  onPressed: () {
-                    storage.deleteAll();
-                    Get.offAll(() => const SplashScreen());
-                  },
-                  child: const Text("Logout")),
-                  homeCHBs
                 ],
               ),
             )

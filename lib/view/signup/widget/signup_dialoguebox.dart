@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/home/home.dart';
+import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -44,7 +44,7 @@ class SignUpDialogueBox extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(kpurple),
                       shape: buttonShape(round: 10)),
                   onPressed: () {
-                    Get.offAll(() => const HomeScreen());
+                    Get.offAll(() => const SplashScreen());
                   },
                   child: Text('OK', style: TextStyle(color: kwhite)))),
         ],

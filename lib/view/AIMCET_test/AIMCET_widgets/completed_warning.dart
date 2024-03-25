@@ -86,7 +86,7 @@ class CompletedWarningBox extends StatelessWidget {
                     controller.fetchPersonalityReport(userId: uId);
                     controller.fetchTraitReport(userId:uId);
                   });
-                  Get.off(() =>  AIMCETResultScreen(userName: uName,));
+                  Get.off(() =>  AIMCETResultScreen(userName: uName,uId: uId));
                 });
             },
             child: Text(

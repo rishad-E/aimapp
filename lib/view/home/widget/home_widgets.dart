@@ -22,7 +22,11 @@ PreferredSizeWidget appbarHome({String? name}) {
     // backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
-    leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+    leading: Builder(
+        builder: (context) => IconButton(
+              onPressed: () =>Scaffold.of(context).openDrawer(),
+              icon: const Icon(Icons.menu),
+            )),
     title: primarytxt3(name == null ? 'Hi,Sachin' : 'Hi, $name', 14.sp),
     titleSpacing: 0,
     actions: [
@@ -56,8 +60,8 @@ PreferredSizeWidget appbarHome({String? name}) {
       wBox,
       GestureDetector(
         onTap: () {
-          log('talk to amy',name: 'chat screen');
-          Get.to(()=>const AmyChatBotScreen());
+          log('talk to amy', name: 'chat screen');
+          Get.to(() => const AmyChatBotScreen());
         },
         child: Container(
           width: 30,

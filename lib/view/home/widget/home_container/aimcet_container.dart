@@ -1,5 +1,7 @@
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +10,13 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AimcetContainer extends StatelessWidget {
-  const AimcetContainer({super.key});
+  final String userName;
+  final String id;
+  const AimcetContainer({super.key, required this.userName, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AIMCETController());
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -42,8 +47,9 @@ class AimcetContainer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(
               // color: Colors.yellow,
-              height: 5.8.h,
-              child: SvgPicture.asset('assets/images/AimCET_LOGO.svg'),
+              height: 5.5.h,
+              // child: SvgPicture.asset('assets/images/ACETEST_LOGO.svg'),
+              child: Image.asset('assets/images/acecet-home.png'),
             ),
           ),
           Padding(
@@ -57,29 +63,83 @@ class AimcetContainer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 8),
             child: SizedBox(
-                // color: Colors.yellow,
-                height: 4.2.h,
-                // width: 113,
-                child: ElevatedButton.icon(
-                  style: ButtonStyle(
-                    shape: buttonShape(round: 8),
-                  ),
-                  onPressed: () {
-                    Get.to(() => AIMCETQualificationScreen());
-                  },
-                  icon: Text(
-                    "Take Psychometric Test",
-                    style: TextStyle(
-                        fontSize: 11.sp,
-                        color: const Color.fromARGB(255, 147, 38, 143),
-                        fontWeight: FontWeight.w600),
-                  ),
-                  label: Icon(
-                    Icons.arrow_forward_ios_sharp,
-                    size: 11.sp,
-                    color: const Color.fromARGB(255, 147, 38, 143),
-                  ),
-                )),
+              // color: Colors.yellow,
+              height: 4.2.h,
+              child: Obx(
+                () => controller.testDone.value == 'done'
+                    ? ElevatedButton.icon(
+                        style: ButtonStyle(
+                          shape: buttonShape(round: 8),
+                        ),
+                        icon: Text(
+                          "Check AIMCET Result",
+                          style: TextStyle(
+                              fontSize: 11.sp,
+                              color: const Color.fromARGB(255, 147, 38, 143),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        label: Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          size: 11.sp,
+                          color: const Color.fromARGB(255, 147, 38, 143),
+                        ),
+                        onPressed: () {
+                          // Get.to(() => AIMCETQualificationScreen());
+                          Get.to(() => AIMCETResultScreen(userName: userName,uId: id,));
+                          controller
+                              .gpReportSubmitFunction(
+                                  uId: id,
+                                  personality: controller.personality[0],
+                                  trait: controller.traitType.toString())
+                              .then((_) {
+                            controller.fetchPersonalityReport(userId: id);
+                            controller.fetchTraitReport(userId: id);
+                          });
+                        },
+                      )
+                    : controller.testDone.value == 'continue'
+                        ? ElevatedButton.icon(
+                            style: ButtonStyle(
+                              shape: buttonShape(round: 8),
+                            ),
+                            onPressed: () =>
+                                Get.to(() => AIMCETQualificationScreen()),
+                            icon: Text(
+                              "Continue Psychometric Test",
+                              style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color:
+                                      const Color.fromARGB(255, 147, 38, 143),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              size: 11.sp,
+                              color: const Color.fromARGB(255, 147, 38, 143),
+                            ),
+                          )
+                        : ElevatedButton.icon(
+                            style: ButtonStyle(
+                              shape: buttonShape(round: 8),
+                            ),
+                            onPressed: () =>
+                                Get.to(() => AIMCETQualificationScreen()),
+                            icon: Text(
+                              "Take Psychometric Test",
+                              style: TextStyle(
+                                  fontSize: 11.sp,
+                                  color:
+                                      const Color.fromARGB(255, 147, 38, 143),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            label: Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              size: 11.sp,
+                              color: const Color.fromARGB(255, 147, 38, 143),
+                            ),
+                          ),
+              ),
+            ),
           )
         ],
       ),

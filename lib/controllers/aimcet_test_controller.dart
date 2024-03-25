@@ -23,7 +23,8 @@ class AIMCETController extends GetxController {
   String? submitRes;
   RxInt secID = RxInt(1);
   RxString end = 'no'.obs;
-  RxString gp = 'wait'.obs;
+  RxString gp = ''.obs;
+  RxString testDone = 'no'.obs;
   int? totalQ;
   int? secQuestion;
 
@@ -40,7 +41,7 @@ class AIMCETController extends GetxController {
         await AIMCETQualificationService().fetchQualification();
   }
 
-  Future<void> fetchAllTestResults(
+  Future<void> fetchAllTestQuestions(
       {required String userId, required String qualifyId}) async {
     Map<String, dynamic>? data = await AIMCETTestService()
         .getTestResult(userId: userId, qualifyId: qualifyId);
@@ -69,6 +70,11 @@ class AIMCETController extends GetxController {
 
         if (allQuestions!.isEmpty) {
           end.value = 'done';
+          testDone.value = 'done';
+        } else if (allQuestions!.isNotEmpty && allQuestions!.length < 70) {
+          testDone.value = 'continue';
+        } else if (allQuestions!.length == 70) {
+          testDone.value = 'no';
         }
       }
     }
@@ -91,19 +97,6 @@ class AIMCETController extends GetxController {
         questionId: questionId,
         secQues: secQues,
         totalQues: totalQues);
-
-    // if (submitRes == 'failed') {
-    //   end.value = 'done';
-    //   Get.showSnackbar(
-    //     const GetSnackBar(
-    //       snackStyle: SnackStyle.FLOATING,
-    //       message: 'You have already submitted this answer',
-    //       margin: EdgeInsets.all(10),
-    //       backgroundColor: Colors.red,
-    //       duration: Duration(seconds: 2),
-    //     ),
-    //   );
-    // }
     update(['aimcet-test']);
   }
 
@@ -116,55 +109,56 @@ class AIMCETController extends GetxController {
       {required String userId, required String userName}) async {
     dynamic result = await AIMCETTestService()
         .aimcetTestResult(userId: userId, userName: userName);
+
     if (result is Map<String, dynamic>) {
       //extracting personality types
-      List<dynamic> resultData = result['result'];
+      if (result.isNotEmpty) {
+        List<dynamic> resultData = result['result'];
 
-      for (String item in resultData) {
-        if (item.startsWith('Personality Type')) {
-          if (!personality.contains(item.split(': ')[1])) {
-            personality.add(item.split(': ')[1]);
+        for (String item in resultData) {
+          if (item.startsWith('Personality Type')) {
+            if (!personality.contains(item.split(': ')[1])) {
+              personality.add(item.split(': ')[1]);
+            }
+          }
+          if (item.startsWith('Trait Type')) {
+            traitType = item.split(': ')[1];
           }
         }
-        if (item.startsWith('Trait Type')) {
-          traitType = item.split(': ')[1];
-        }
-      }
-      // Extracting degrees
-      List<dynamic> degreeData = result['degree'];
+        // Extracting degrees
+        List<dynamic> degreeData = result['degree'];
 
-      for (String item in degreeData) {
-        if (!degrees.contains(item.split('. ')[1])) {
-          degrees.add(item.split('. ')[1]);
+        for (String item in degreeData) {
+          if (!degrees.contains(item.split('. ')[1])) {
+            degrees.add(item.split('. ')[1]);
+          }
         }
-      }
-      // Extract careers
-      List<dynamic> data = result['career'];
-      List<dynamic> careerData = [];
-      // List<dynamic> careerData = data.removeAt(0);
-      for (int i = 2; i < data.length; i++) {
-        if (i != 0 || i != 1) {
-          careerData.add(data[i]);
+        // Extract careers
+        List<dynamic> data = result['career'];
+        List<dynamic> careerData = [];
+        // List<dynamic> careerData = data.removeAt(0);
+        for (int i = 2; i < data.length; i++) {
+          if (i != 0 || i != 1) {
+            careerData.add(data[i]);
+          }
         }
-      }
-      for (String item in careerData) {
-        if (!careers.contains(item.split('. ')[1])) {
-          careers.add(item.split('. ')[1]);
+        for (String item in careerData) {
+          if (!careers.contains(item.split('. ')[1])) {
+            careers.add(item.split('. ')[1]);
+          }
         }
-      }
 
-      log(personality.toString(), name: 'personality');
-      log(degrees.toString(), name: 'degree');
-      log(careers.toString(), name: 'careers');
+        log(personality.toString(), name: 'personality');
+        log(degrees.toString(), name: 'degree');
+        log(careers.toString(), name: 'careers');
+      }
     } else if (result is String) {
       log('result is string');
     }
   }
 
-  Future<void> gpReportSubmitFunction(
-      {required String uId,
-      required String personality,
-      required String trait}) async {
+  Future<void> gpReportSubmitFunction({required String uId,required String personality,required String trait}) async {
+    gp.value = 'wait';
     String? value = await GPReportService()
         .gpReportSubmit(uId: uId, personality: personality, trait: trait);
     if (value == 'sucess') {

@@ -1,8 +1,11 @@
 import 'package:aimshala/services/signup_service/signup_service.dart';
+import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class SignUpController extends GetxController {
+  final storage = const FlutterSecureStorage();
   TextEditingController nameController = TextEditingController();
   TextEditingController roleController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -49,13 +52,15 @@ class SignUpController extends GetxController {
     signup = await SignUpService()
         .signUpUser(email: email, mobile: mobileNo, name: name);
     if (signup == true) {
+      storage.write(key: 'phone', value: mobileNo);
       return true;
     } else {
       Get.snackbar(
         "Error",
         "Error in signup",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: kblack.withOpacity(0.7),
+        margin: const EdgeInsets.all(8),
         colorText: Colors.red,
       );
       return false;

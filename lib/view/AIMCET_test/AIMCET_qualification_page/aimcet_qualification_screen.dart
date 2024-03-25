@@ -46,10 +46,15 @@ class AIMCETQualificationScreen extends StatelessWidget {
                             TextStyle(color: Color.fromARGB(255, 111, 29, 107)),
                       ),
                       hBox,
-                      SizedBox(
+                      Container(
                         // color: Colors.yellow,
-                        height: 4.2.h,
-                        child: Image.asset('assets/images/AimCET_LOGO2.png'),
+                        height: 4.h,
+                        width: 35.5.w,
+                        child: Image.asset('assets/images/acecet.png',),
+                        // child: SvgPicture.asset(
+                        //   'assets/images/ACETEST_LOGO.svg',
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                       hLBox,
                       const Padding(

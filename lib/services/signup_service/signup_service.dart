@@ -6,11 +6,8 @@ class SignUpService {
   Dio dio = Dio();
   String path = 'http://154.26.130.161/elearning/api/user-registeration';
 
-  Future<bool?> signUpUser({
-    required String email,
-    required String mobile,
-    required String name,
-  }) async {
+  Future<bool?> signUpUser({required String email,required String mobile,required String name}) async {
+    log(email + mobile + name,name: 'service');
     try {
       Response response = await dio.post(
         path,
@@ -27,7 +24,7 @@ class SignUpService {
           "referral_code": "AIM001"
         },
       );
-      // log(response.data.toString(), name: 'signup');
+      log(response.data.toString(), name: 'signup');
 
       if (response.statusCode == 200) {
         return true;

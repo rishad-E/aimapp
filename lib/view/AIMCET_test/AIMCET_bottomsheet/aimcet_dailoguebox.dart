@@ -87,7 +87,7 @@ class AIMCETDialogueBox extends StatelessWidget {
                     controller.fetchPersonalityReport(userId: userId);
                     controller.fetchTraitReport(userId:userId);
                   });
-                  Get.off(() =>  AIMCETResultScreen(userName: userName,));
+                  Get.off(() =>  AIMCETResultScreen(userName: userName,uId: userId));
                 });
               },
               child: Text(
