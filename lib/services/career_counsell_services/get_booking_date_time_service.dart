@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:aimshala/models/career_aim_model/career_bookingtime_model.dart';
+import 'package:aimshala/models/career_counsel_model/career_bookingtime_model.dart';
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:dio/dio.dart';
 

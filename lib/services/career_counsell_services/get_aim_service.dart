@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:aimshala/models/career_aim_model/aim_model.dart';
-import 'package:aimshala/models/career_aim_model/micro_aim_model.dart';
-import 'package:aimshala/models/career_aim_model/search_aim_res_model.dart';
-import 'package:aimshala/models/career_aim_model/search_microaim_res_model.dart';
+import 'package:aimshala/models/career_counsel_model/aim_model.dart';
+import 'package:aimshala/models/career_counsel_model/micro_aim_model.dart';
+import 'package:aimshala/models/career_counsel_model/search_aim_res_model.dart';
+import 'package:aimshala/models/career_counsel_model/search_microaim_res_model.dart';
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:dio/dio.dart';
 

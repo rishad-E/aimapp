@@ -20,9 +20,11 @@ class CareerReviewBookingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(BookCareerCounsellController());
     final UserDataModel? userData = Get.find<LoginController>().userData;
+    String? userId;
     if (userData != null) {
       controller.emailController.text = userData.user?.email ?? '';
       controller.mobNumberController.text = userData.user?.phone ?? '';
+      userId = userData.user?.id.toString();
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -133,7 +135,7 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                 .then((value) => {
                                       if (value == 'True')
                                         {
-                                          showDialogBoxFunction(context),
+                                          showDialogBoxFunction(context,userId.toString(),controller),
                                         }
                                       else
                                         {
@@ -192,12 +194,13 @@ class CareerReviewBookingScreen extends StatelessWidget {
   }
 }
 
-void showDialogBoxFunction(BuildContext context) {
+void showDialogBoxFunction(BuildContext context,String userId,BookCareerCounsellController controller) {
   showDialog(
     barrierDismissible: false,
     context: context,
     builder: (context) {
-      return const BookingDialogueBox();
+       controller.checkCounsellcallBookingFuntion(userId: userId);
+      return  const BookingDialogueBox();
     },
   );
 }

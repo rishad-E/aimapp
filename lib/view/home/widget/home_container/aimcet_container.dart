@@ -5,7 +5,6 @@ import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_pag
 import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,7 +15,9 @@ class AimcetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // log("aimcet build",name: 'dddddddddddddd');
     final controller = Get.put(AIMCETController());
+    controller.aimcetTestResultFunction(userId: id, userName: userName);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -85,7 +86,6 @@ class AimcetContainer extends StatelessWidget {
                         ),
                         onPressed: () {
                           // Get.to(() => AIMCETQualificationScreen());
-                          Get.to(() => AIMCETResultScreen(userName: userName,uId: id,));
                           controller
                               .gpReportSubmitFunction(
                                   uId: id,
@@ -95,6 +95,10 @@ class AimcetContainer extends StatelessWidget {
                             controller.fetchPersonalityReport(userId: id);
                             controller.fetchTraitReport(userId: id);
                           });
+                          Get.to(() => AIMCETResultScreen(
+                                userName: userName,
+                                uId: id,
+                              ));
                         },
                       )
                     : controller.testDone.value == 'continue'

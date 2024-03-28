@@ -1,10 +1,12 @@
 import 'dart:developer';
-import 'package:aimshala/models/career_aim_model/career_bookingtime_model.dart';
-import 'package:aimshala/models/career_aim_model/search_aim_res_model.dart';
-import 'package:aimshala/models/career_aim_model/search_microaim_res_model.dart';
-import 'package:aimshala/services/career_services/get_aim_service.dart';
-import 'package:aimshala/services/career_services/get_booking_date_time_service.dart';
-import 'package:aimshala/services/career_services/slot_booking_save_service.dart';
+import 'package:aimshala/models/career_counsel_model/career_bookingtime_model.dart';
+import 'package:aimshala/models/career_counsel_model/counsel_booking_check_model.dart';
+import 'package:aimshala/models/career_counsel_model/search_aim_res_model.dart';
+import 'package:aimshala/models/career_counsel_model/search_microaim_res_model.dart';
+import 'package:aimshala/services/career_counsell_services/check_counsell_booking_service.dart';
+import 'package:aimshala/services/career_counsell_services/get_aim_service.dart';
+import 'package:aimshala/services/career_counsell_services/get_booking_date_time_service.dart';
+import 'package:aimshala/services/career_counsell_services/slot_booking_save_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/model/microaim_model.dart';
 import 'package:flutter/material.dart';
@@ -34,10 +36,11 @@ class BookCareerCounsellController extends GetxController {
   RxString careerAimSelectedRole = 'Your aim'.obs;
   String careerMicroAimSelectedRole = 'Your Micro aim';
   String? aimId;
-  // RxString validationMessage = ''.obs;
   RxInt filledOtpFields = RxInt(0);
   Rx<Color> careerbuttonColor = Rx<Color>(bbColor);
   Rx<Color> careerBTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
+  RxString isBooked = ''.obs;
+  CounselCallBookedModel? counselBookedModel;
 
   /*------------ Get Aim option search result ---------*/
   Future<List<Aim>?> searchAimOptions({required String query}) async {
@@ -102,6 +105,20 @@ class BookCareerCounsellController extends GetxController {
     }
   }
 
+  Future<void> checkCounsellcallBookingFuntion({required String userId}) async {
+    Map<String, dynamic>? data = await CheckCounsellBookingService().checkCounsellcallBooking(userId: userId);
+      log(data.toString(), name: 'check counsell booking taken');
+    if (data != null) {
+      if (data['Booking Status'] == 'Not Booked') {
+        isBooked.value = 'no';
+        log(isBooked.value, name: 'iscounsell booked');
+      } else if (data['Booking Status'] == 'Upcoming') {
+        isBooked.value = 'yes';
+        counselBookedModel = CounselCallBookedModel.fromJson(data);
+      }
+    }
+  }
+
   /*------------ validation ---------*/
   String? nameValidation(String? word) {
     if (word == null || word.isEmpty) {
@@ -149,6 +166,7 @@ class BookCareerCounsellController extends GetxController {
     }
     return null;
   }
+
   String? phoneValidation(String? word) {
     if (word == null || word.isEmpty || word.length < 10) {
       return 'Please enter a Valid Mobile Number';

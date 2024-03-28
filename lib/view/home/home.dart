@@ -15,9 +15,7 @@ import 'package:aimshala/view/home/widget/home_container/upevent_container.dart'
 import 'package:aimshala/view/home/widget/home_container/upsession_container.dart';
 import 'package:aimshala/view/home/widget/home_container/yourjourney_container.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
-import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -32,8 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
-    const storage = FlutterSecureStorage();
-
     String? name;
     String? id;
     final UserDataModel? userData = Get.put(LoginController()).userData;

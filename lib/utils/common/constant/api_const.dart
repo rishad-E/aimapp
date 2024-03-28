@@ -17,4 +17,6 @@ class Apis {
   final String gpReport = '/gp-report';
   final String personalityReport = '/personality-report';
   final String traitReport = '/trait-report';
+  final String checkAimcet = '/test-check';
+  final String checkCounsellcall = '/slot-check';
 }

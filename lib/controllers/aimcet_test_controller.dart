@@ -70,12 +70,13 @@ class AIMCETController extends GetxController {
 
         if (allQuestions!.isEmpty) {
           end.value = 'done';
-          testDone.value = 'done';
-        } else if (allQuestions!.isNotEmpty && allQuestions!.length < 70) {
-          testDone.value = 'continue';
-        } else if (allQuestions!.length == 70) {
-          testDone.value = 'no';
+          // testDone.value = 'done';
         }
+        // else if (allQuestions!.isNotEmpty && allQuestions!.length < 70) {
+        //   testDone.value = 'continue';
+        // } else if (allQuestions!.length == 70) {
+        //   testDone.value = 'no';
+        // }
       }
     }
 
@@ -157,7 +158,10 @@ class AIMCETController extends GetxController {
     }
   }
 
-  Future<void> gpReportSubmitFunction({required String uId,required String personality,required String trait}) async {
+  Future<void> gpReportSubmitFunction(
+      {required String uId,
+      required String personality,
+      required String trait}) async {
     gp.value = 'wait';
     String? value = await GPReportService()
         .gpReportSubmit(uId: uId, personality: personality, trait: trait);
@@ -185,6 +189,24 @@ class AIMCETController extends GetxController {
       update();
     }
   }
+
+  Future<void> checkAimcetTestTakenFunction({required String userId}) async {
+    Map<String, dynamic>? data =
+        await AIMCETTestService().checkAimcetTestTaken(userId: userId);
+    if (data != null) {
+      if (data['Test Status'] == 'Not Given') {
+        testDone.value = 'no';
+        // log(data['Test Status']);
+      } else if (data['Test Status'] == 'Continue Test') {
+        testDone.value = 'continue';
+      } else if (data['Test Status'] == 'Test Given') {
+        testDone.value = 'done';
+      }
+    }
+  }
+  // == 'Not Given' && data['status'] == '0'
+  //  == 'Continue Test' && data['status'] == '2'
+  //  == 'Test Given' && data['status'] == '1'
 
   void toggleSelection() {
     guideSelect = !guideSelect;

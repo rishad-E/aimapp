@@ -13,11 +13,11 @@ import 'package:sizer/sizer.dart';
 
 class BookCareerHomePage extends StatelessWidget {
   BookCareerHomePage({super.key});
-  final careerController = Get.put(BookCareerCounsellController());
   final GlobalKey<FormState> careerFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+    final careerController = Get.put(BookCareerCounsellController());
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null && careerController.nameController.text.isEmpty) {
       careerController.nameController.text = userData.user?.name ?? '';
@@ -71,7 +71,8 @@ class BookCareerHomePage extends StatelessWidget {
                             onChanged: (value) {
                               careerController.checkAllfieldCareerHome();
                             },
-                            validator: (value) => careerController.roleValidation(value),
+                            validator: (value) =>
+                                careerController.roleValidation(value),
                             controller: careerController.roleController,
                             readOnly: true,
                           ),

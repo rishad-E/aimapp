@@ -7,10 +7,12 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class BookingDialogueBox extends StatelessWidget {
+  
   const BookingDialogueBox({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // final bookingController = Get.put(BookCareerCounsellController());
     return AlertDialog(
       backgroundColor: kwhite,
       surfaceTintColor: kwhite,
@@ -71,6 +73,7 @@ class BookingDialogueBox extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
               onPressed: () {
+                
                 Get.offAll(() => const HomeScreen());
               },
               child: Text(
@@ -80,8 +83,11 @@ class BookingDialogueBox extends StatelessWidget {
             ),
           ),
           hMBox,
-          Text('Not Now',
-              style: TextStyle(color: kpurple, fontWeight: FontWeight.w600))
+          GestureDetector(
+            onTap: () => Get.offAll(() => const HomeScreen()),
+            child: Text('Not Now',
+                style: TextStyle(color: kpurple, fontWeight: FontWeight.w600)),
+          )
         ],
       ),
     );

@@ -54,7 +54,7 @@ class SplashController extends GetxController {
       log('signup $checkSignup....login $checkLogin');
       // log('date ${bookingController.selectedDate}....time ${bookingController.selectedTime}');
 
-      Timer(const Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 2), () {
         if (checkSignup == null && checkLogin == null) {
           Get.off(() => const LoginScreen());
         } else {
@@ -62,7 +62,18 @@ class SplashController extends GetxController {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();
             log('uid $id....quaId 1...uName $uName');
-            fetchFunctions(uId: id.toString(), uName: uName.toString());
+            bookingController.checkCounsellcallBookingFuntion(
+                userId: id.toString());
+            aimtestController
+                .checkAimcetTestTakenFunction(userId: id.toString())
+                .then((value) {
+              if (aimtestController.testDone.value == 'done') {
+                log('aimcet test done', name: 'spalsh done');
+                aimtestController.aimcetTestResultFunction(
+                    userId: id.toString(), userName: uName.toString());
+              }
+            });
+            // fetchFunctions(uId: id.toString(), uName: uName.toString());
           }
           Get.off(() => const HomeScreen());
         }
@@ -70,12 +81,13 @@ class SplashController extends GetxController {
     }
   }
 
-  void fetchFunctions({required String uId, required String uName}) {
-    aimtestController.fetchAllTestQuestions(userId: uId, qualifyId: '1').then((value) => {
-      if(aimtestController.allQuestions?.isEmpty == true){
-        log("delaaaaaaayerrrrr"),
-        aimtestController.aimcetTestResultFunction(userId: uId,userName: uName)
-      }
-    });
-  }
+  // void fetchFunctions({required String uId, required String uName}) {
+    // bookingController.checkCounsellcallBookingFuntion(userId: uId);
+    // aimtestController.checkAimcetTestTakenFunction(userId: uId).then((value) {
+    //   if (aimtestController.testDone.value == 'done') {
+    //     log('aimcet test done',name: 'spalsh done');
+    //      aimtestController.aimcetTestResultFunction(userId: uId,userName: uName);
+    //   }
+    // });
+  // }
 }

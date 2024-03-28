@@ -39,7 +39,8 @@ class AIMCETTestService {
     required String totalQues,
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log(userId + questionId + sectionId + cAnswer + secQues + totalQues ,name: 'serviceeeeeee');
+    log(userId + questionId + sectionId + cAnswer + secQues + totalQues,
+        name: 'serviceeeeeee');
     try {
       Response response = await dio.post(path,
           data: {
@@ -99,5 +100,24 @@ class AIMCETTestService {
     } catch (e) {
       log(e.toString(), name: 'aimcet result submit error');
     }
+  }
+
+  Future<Map<String, dynamic>?> checkAimcetTestTaken(
+      {required String userId}) async {
+    String path = Apis().aimUrl + Apis().checkAimcet;
+    try {
+      Response response = await dio.get(
+        path,
+        queryParameters: {"user_id": userId},
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> res = response.data;
+        // log(res.toString(), name: 'check aimcet test');
+        return res;
+      }
+    } catch (e) {
+      log(e.toString(), name: 'check aimcet test taken error');
+    }
+    return null;
   }
 }

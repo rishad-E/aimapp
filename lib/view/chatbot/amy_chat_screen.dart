@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:aimshala/services/AMY_chat_bot/chat_bot_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/chatbot/widgets/amy_chat_widgets.dart';
+import 'package:aimshala/view/chatbot/widgets/amy_radial_gradient.dart';
 import 'package:aimshala/view/chatbot/widgets/chat_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -74,7 +75,6 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
   @override
   Widget build(BuildContext context) {
     // final controller = Get.put(ChatBotAmyController());
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -92,46 +92,12 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 12, 8, 8),
+        padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
         child: Column(
           children: [
-            Container(
-              height: 108,
-              width: 168,
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(144),
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    // kwhite.withOpacity(0.3),
-                    kwhite.withOpacity(0.4),
-                    const Color.fromARGB(255, 170, 229, 232).withOpacity(0.1),
-                    const Color.fromARGB(255, 15, 187, 195).withOpacity(0.1),
-                    kwhite.withOpacity(0.1),
-                    const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
-                    const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
-                    const Color.fromARGB(255, 147, 38, 143).withOpacity(0.0),
-                    // kwhite.withOpacity(0.0),
-                  ],
-                ),
-              ),
-              child: Container(
-                height: 11.5.h,
-                width: 25.5.w,
-                // height: 108,
-                // width: 108,
-                // color: Colors.yellow,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: kwhite,
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/person.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            const Padding(
+              padding: EdgeInsets.only(right: 25),
+              child: AmyBotRadialColor(),
             ),
             Expanded(
               child: Padding(
@@ -237,3 +203,55 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
     );
   }
 }
+
+
+
+
+
+
+            // Container(
+            //   height: 108,
+            //   width: 168,
+            //   padding: const EdgeInsets.symmetric(vertical: 3),
+            // decoration: BoxDecoration(
+            // shape: BoxShape.circle,
+            // borderRadius: BorderRadius.circular(144),
+            // gradient: LinearGradient(
+            //   begin: Alignment.centerLeft,
+            //   end: Alignment.centerRight,
+            //   colors: [
+            //     // kwhite.withOpacity(0.3),
+            //     kwhite.withOpacity(0.4),
+            //     const Color.fromARGB(255, 170, 229, 232).withOpacity(0.1),
+            //     const Color.fromARGB(255, 15, 187, 195).withOpacity(0.1),
+            //     kwhite.withOpacity(0.1),
+            //     const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
+            //     const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
+            //     const Color.fromARGB(255, 147, 38, 143).withOpacity(0.0),
+            //     // kwhite.withOpacity(0.0),
+            //   ],
+            // ),
+            //     gradient: RadialGradient(
+            //       // radius: 0.8,
+            //   colors: [
+            //     const Color.fromARGB(255, 15, 187, 195).withOpacity(0.1),
+            //     // kwhite.withOpacity(0.1),
+            //     const Color.fromARGB(255, 147, 38, 143).withOpacity(0.1),
+            //   ],
+            // )),
+            //   child: Container(
+            //     height: 11.5.h,
+            //     width: 25.5.w,
+            //     // height: 108,
+            //     // width: 108,
+            //     // color: Colors.yellow,
+            //     decoration: BoxDecoration(
+            //       shape: BoxShape.circle,
+            //       color: kwhite,
+            //       image: const DecorationImage(
+            //         image: AssetImage('assets/images/person.png'),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //   ),
+            // ),
