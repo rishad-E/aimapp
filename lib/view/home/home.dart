@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const YourJourneyContiner(),
                   homeCHB,
-                  const TakeChargeC(),
+                  TakeChargeC(userName: name.toString()),
                   homeCHB,
                   AimcetContainer(
                     userName: name.toString(),

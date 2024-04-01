@@ -11,18 +11,13 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   final storage = const FlutterSecureStorage();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController otpController1 = TextEditingController();
-  TextEditingController otpController2 = TextEditingController();
-  TextEditingController otpController3 = TextEditingController();
-  TextEditingController otpController4 = TextEditingController();
-  final GlobalKey<FormState> otpFormKey = GlobalKey();
+  TextEditingController otpController = TextEditingController();
+  
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
   UserDataModel? userData;
-  // RxBool onchange = false.obs;
   Rx<Color> buttonColor = Rx<Color>(bbColor);
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
-  RxInt filledOtpFields = RxInt(0);
 
 /*---------- sending OTP to Mobile Number ---------*/
   Future<void> sendOTPFunction({required String mobileNo}) async {
@@ -33,14 +28,14 @@ class LoginController extends GetxController {
 /*---------- verify OTP ---------*/
   Future<void> verifyOTPFunction(
       {required String mobileNo, required String otp}) async {
-    bool? val =
-        await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
+    bool? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
     if (val == true) {
-       String mobileWithoutCountryCode = mobileNo.substring(2);
-      userData = await LoginService().verifyUserExist(mobileNo: mobileWithoutCountryCode);
+      String mobileWithoutCountryCode = mobileNo.substring(2);
+      userData = await LoginService()
+          .verifyUserExist(mobileNo: mobileWithoutCountryCode);
       if (userData?.token != null) {
         storage.write(key: 'token', value: userData?.token.toString());
-        storage.write(key: 'phone', value:  userData?.user?.phone.toString());
+        storage.write(key: 'phone', value: userData?.user?.phone.toString());
         Get.offAll(() => const SplashScreen());
         phoneController.clear();
       } else {
@@ -83,7 +78,11 @@ class LoginController extends GetxController {
 
 /*----------validation message---------*/
   String? phoneValidation(String? word) {
-    if (word == null || word.isEmpty || word.length < 10 || word.length > 10|| !word.isNumericOnly) {
+    if (word == null ||
+        word.isEmpty ||
+        word.length < 10 ||
+        word.length > 10 ||
+        !word.isNumericOnly) {
       return 'Please enter a Valid Mobile Number';
     }
     // if (!word.isNumericOnly) {
@@ -93,11 +92,7 @@ class LoginController extends GetxController {
   }
 
   String validateOtp() {
-    String otp = otpController1.text +
-        otpController2.text +
-        otpController3.text +
-        otpController4.text;
-    if (otp.isEmpty || otp.length < 4) {
+    if (otpController.text.isEmpty || otpController.text.length < 4) {
       validationMessage.value = 'Please enter valid code';
       return 'Please enter valid code';
     } else {
@@ -107,28 +102,30 @@ class LoginController extends GetxController {
   }
 
   void updateButtonColor() {
-    int numberOfFilledFields = 0;
+    // int numberOfFilledFields = 0;
 
-    if (otpController1.text.isNotEmpty) numberOfFilledFields++;
-    if (otpController2.text.isNotEmpty) numberOfFilledFields++;
-    if (otpController3.text.isNotEmpty) numberOfFilledFields++;
-    if (otpController4.text.isNotEmpty) numberOfFilledFields++;
+    // if (otpController1.text.isNotEmpty) numberOfFilledFields++;
+    // if (otpController2.text.isNotEmpty) numberOfFilledFields++;
+    // if (otpController3.text.isNotEmpty) numberOfFilledFields++;
+    // if (otpController4.text.isNotEmpty) numberOfFilledFields++;
 
-    filledOtpFields.value = numberOfFilledFields;
+    // filledOtpFields.value = numberOfFilledFields;
 
-    buttonColor.value = numberOfFilledFields == 4 ? kpurple : bbColor;
-    buttonTextColor.value =
-        numberOfFilledFields == 4 ? Colors.white : Colors.black;
-    // onchange.value = true;
+    // buttonColor.value = numberOfFilledFields == 4 ? kpurple : bbColor;
+    // buttonTextColor.value =
+    //     numberOfFilledFields == 4 ? Colors.white : Colors.black;
+
+    buttonColor.value = otpController.text.length == 4 ? kpurple : bbColor;
+    buttonTextColor.value = otpController.text.length == 4 ? kwhite : kblack;
 
     update(['button-otp']);
   }
 
   clearotpControllers() {
-    otpController1.clear();
-    otpController2.clear();
-    otpController3.clear();
-    otpController4.clear();
+    otpController.clear();
+    // otpController2.clear();
+    // otpController3.clear();
+    // otpController4.clear();
   }
 
   // @override

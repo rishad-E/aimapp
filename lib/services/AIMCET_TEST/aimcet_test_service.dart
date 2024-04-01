@@ -112,7 +112,7 @@ class AIMCETTestService {
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> res = response.data;
-        // log(res.toString(), name: 'check aimcet test');
+        log(res.toString(), name: 'check aimcet test');
         return res;
       }
     } catch (e) {

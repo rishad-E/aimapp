@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class TakeChargeC extends StatelessWidget {
-  const TakeChargeC({super.key});
+  final String userName;
+  const TakeChargeC({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,9 @@ class TakeChargeC extends StatelessWidget {
                                     height: 4.2.h,
                                     child: ElevatedButton.icon(
                                       style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 15)),
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.symmetric(
+                                                horizontal: 15)),
                                         shape: buttonShape(round: 8),
                                       ),
                                       onPressed: () {
@@ -189,7 +192,9 @@ class TakeChargeC extends StatelessWidget {
                                     height: 4.2.h,
                                     child: ElevatedButton.icon(
                                       style: ButtonStyle(
-                                        padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 15)),
+                                        padding: const MaterialStatePropertyAll(
+                                            EdgeInsets.symmetric(
+                                                horizontal: 15)),
                                         shape: buttonShape(round: 8),
                                       ),
                                       onPressed: () {
@@ -224,6 +229,7 @@ class TakeChargeC extends StatelessWidget {
   }
 }
 
+  
 /*-------------not booked----------*/
 //         Column(
 //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

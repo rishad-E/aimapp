@@ -16,12 +16,6 @@ class PersonalityReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AIMCETController());
     final data = controller.personalityReport;
-    List<String> personalityexplanation = [
-      data!.learnExplanation.toString(),
-      data.showSkills.toString(),
-      data.showStrengths.toString(),
-    ];
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: aimcetResultAppBar(),
@@ -44,6 +38,11 @@ class PersonalityReportPage extends StatelessWidget {
                       children: List.generate(
                         reportImages.length,
                         (index) {
+                          List<String> personalityexplanation = [
+                            data!.learnExplanation.toString(),
+                            data.showSkills.toString(),
+                            data.showStrengths.toString(),
+                          ];
                           if (index == 0) {
                             return Row(
                               children: [
@@ -79,7 +78,7 @@ class PersonalityReportPage extends StatelessWidget {
                   children: [
                     personalityTwoText(
                         text1: "You are a",
-                        text2: data.personalityType.toString()),
+                        text2: data!.personalityType.toString()),
                     hBox,
                     personPlainText(
                       text: data.personalityDescription.toString(),
@@ -266,7 +265,9 @@ class PersonalityReportPage extends StatelessWidget {
                                 wBox,
                                 Expanded(
                                     child: personPlainText(
-                                        text: data.valueOfPersonalityReport![index], size: 12))
+                                        text: data
+                                            .valueOfPersonalityReport![index],
+                                        size: 12))
                               ],
                             );
                           },

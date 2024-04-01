@@ -1,18 +1,22 @@
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class BookingDialogueBox extends StatelessWidget {
-  
-  const BookingDialogueBox({super.key});
+  final String userName;
+  final String id;
+  const BookingDialogueBox({super.key, required this.userName, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    // final bookingController = Get.put(BookCareerCounsellController());
+    final controller = Get.put(AIMCETController());
     return AlertDialog(
       backgroundColor: kwhite,
       surfaceTintColor: kwhite,
@@ -68,19 +72,96 @@ class BookingDialogueBox extends StatelessWidget {
                 Radius.circular(15),
               ),
             ),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kpurple),
-                  shape: buttonShape(round: 10)),
-              onPressed: () {
-                
-                Get.offAll(() => const HomeScreen());
+            child: Obx(
+              () {
+                if (controller.testDone.value == 'done') {
+                  return ElevatedButton.icon(
+                    style: ButtonStyle(
+                      shape: buttonShape(round: 8),
+                    ),
+                    icon: Text(
+                      "Check AIMCET Result",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: const Color.fromARGB(255, 147, 38, 143),
+                          fontWeight: FontWeight.w600),
+                    ),
+                    label: Icon(
+                      Icons.arrow_forward_ios_sharp,
+                      size: 11.sp,
+                      color: const Color.fromARGB(255, 147, 38, 143),
+                    ),
+                    onPressed: () {
+                      // Get.to(() => AIMCETQualificationScreen());
+                      controller
+                          .gpReportSubmitFunction(
+                              uId: id,
+                              personality: controller.personality[0],
+                              trait: controller.traitType.toString())
+                          .then((_) {
+                        controller.fetchPersonalityReport(userId: id);
+                        controller.fetchTraitReport(userId: id);
+                      });
+                      Get.to(() => AIMCETResultScreen(
+                            userName: userName,
+                            uId: id,
+                          ));
+                    },
+                  );
+                } else if (controller.testDone.value == 'continue') {
+                  return ElevatedButton.icon(
+                    style: ButtonStyle(
+                      shape: buttonShape(round: 8),
+                    ),
+                    onPressed: () => Get.to(() => AIMCETQualificationScreen()),
+                    icon: Text(
+                      "Continue Psychometric Test",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: const Color.fromARGB(255, 147, 38, 143),
+                          fontWeight: FontWeight.w600),
+                    ),
+                    label: Icon(
+                      Icons.arrow_forward_ios_sharp,
+                      size: 11.sp,
+                      color: const Color.fromARGB(255, 147, 38, 143),
+                    ),
+                  );
+                } else {
+                  return ElevatedButton.icon(
+                    style: ButtonStyle(
+                      shape: buttonShape(round: 8),
+                    ),
+                    onPressed: () => Get.to(() => AIMCETQualificationScreen()),
+                    icon: Text(
+                      "Take Psychometric Test",
+                      style: TextStyle(
+                          fontSize: 11.sp,
+                          color: const Color.fromARGB(255, 147, 38, 143),
+                          fontWeight: FontWeight.w600),
+                    ),
+                    label: Icon(
+                      Icons.arrow_forward_ios_sharp,
+                      size: 11.sp,
+                      color: const Color.fromARGB(255, 147, 38, 143),
+                    ),
+                  );
+                }
               },
-              child: Text(
-                'Take Aim CET',
-                style: TextStyle(color: kwhite),
-              ),
             ),
+            //  ElevatedButton(
+            //   style: ButtonStyle(
+            //       backgroundColor: MaterialStateProperty.all(kpurple),
+            //       shape: buttonShape(round: 10)),
+            //   onPressed: () {
+
+            //     Get.offAll(() => const HomeScreen());
+            //   },
+            //   child: Text(
+            //     'Take Aim CET',
+            //     style: TextStyle(color: kwhite),
+            //   ),
+            // ),
           ),
           hMBox,
           GestureDetector(

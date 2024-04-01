@@ -21,10 +21,12 @@ class CareerReviewBookingScreen extends StatelessWidget {
     final controller = Get.put(BookCareerCounsellController());
     final UserDataModel? userData = Get.find<LoginController>().userData;
     String? userId;
+    String? name;
     if (userData != null) {
       controller.emailController.text = userData.user?.email ?? '';
       controller.mobNumberController.text = userData.user?.phone ?? '';
       userId = userData.user?.id.toString();
+      name = userData.user?.name ?? '';
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -135,7 +137,11 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                 .then((value) => {
                                       if (value == 'True')
                                         {
-                                          showDialogBoxFunction(context,userId.toString(),controller),
+                                          showDialogBoxFunction(
+                                              context,
+                                              userId.toString(),
+                                              controller,
+                                              name.toString()),
                                         }
                                       else
                                         {
@@ -194,13 +200,17 @@ class CareerReviewBookingScreen extends StatelessWidget {
   }
 }
 
-void showDialogBoxFunction(BuildContext context,String userId,BookCareerCounsellController controller) {
+void showDialogBoxFunction(BuildContext context, String userId,
+    BookCareerCounsellController controller, String name) {
   showDialog(
     barrierDismissible: false,
     context: context,
     builder: (context) {
-       controller.checkCounsellcallBookingFuntion(userId: userId);
-      return  const BookingDialogueBox();
+      controller.checkCounsellcallBookingFuntion(userId: userId);
+      return BookingDialogueBox(
+        id: userId,
+        userName: name,
+      );
     },
   );
 }

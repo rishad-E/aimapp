@@ -31,8 +31,7 @@ class AIMCETTestPage extends StatelessWidget {
     return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
-          controller.fetchAllTestQuestions(
-              userId: uId.toString(), qualifyId: controller.qualifyId.toString());
+          controller.checkAimcetTestTakenFunction(userId: uId.toString());
           Get.offAll(() => const HomeScreen());
         });
       },

@@ -67,81 +67,83 @@ class AimcetContainer extends StatelessWidget {
               // color: Colors.yellow,
               height: 4.2.h,
               child: Obx(
-                () => controller.testDone.value == 'done'
-                    ? ElevatedButton.icon(
-                        style: ButtonStyle(
-                          shape: buttonShape(round: 8),
-                        ),
-                        icon: Text(
-                          "Check AIMCET Result",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              color: const Color.fromARGB(255, 147, 38, 143),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        label: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                          size: 11.sp,
-                          color: const Color.fromARGB(255, 147, 38, 143),
-                        ),
-                        onPressed: () {
-                          // Get.to(() => AIMCETQualificationScreen());
-                          controller
-                              .gpReportSubmitFunction(
-                                  uId: id,
-                                  personality: controller.personality[0],
-                                  trait: controller.traitType.toString())
-                              .then((_) {
-                            controller.fetchPersonalityReport(userId: id);
-                            controller.fetchTraitReport(userId: id);
-                          });
-                          Get.to(() => AIMCETResultScreen(
-                                userName: userName,
+                () {
+                  if (controller.testDone.value == 'done') {
+                    return ElevatedButton.icon(
+                      style: ButtonStyle(
+                        shape: buttonShape(round: 8),
+                      ),
+                      icon: Text(
+                        "Check AIMCET Result",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: const Color.fromARGB(255, 147, 38, 143),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      label: Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        size: 11.sp,
+                        color: const Color.fromARGB(255, 147, 38, 143),
+                      ),
+                      onPressed: () {
+                        // Get.to(() => AIMCETQualificationScreen());
+                        controller
+                            .gpReportSubmitFunction(
                                 uId: id,
-                              ));
-                        },
-                      )
-                    : controller.testDone.value == 'continue'
-                        ? ElevatedButton.icon(
-                            style: ButtonStyle(
-                              shape: buttonShape(round: 8),
-                            ),
-                            onPressed: () =>
-                                Get.to(() => AIMCETQualificationScreen()),
-                            icon: Text(
-                              "Continue Psychometric Test",
-                              style: TextStyle(
-                                  fontSize: 11.sp,
-                                  color:
-                                      const Color.fromARGB(255, 147, 38, 143),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: Icon(
-                              Icons.arrow_forward_ios_sharp,
-                              size: 11.sp,
-                              color: const Color.fromARGB(255, 147, 38, 143),
-                            ),
-                          )
-                        : ElevatedButton.icon(
-                            style: ButtonStyle(
-                              shape: buttonShape(round: 8),
-                            ),
-                            onPressed: () =>
-                                Get.to(() => AIMCETQualificationScreen()),
-                            icon: Text(
-                              "Take Psychometric Test",
-                              style: TextStyle(
-                                  fontSize: 11.sp,
-                                  color:
-                                      const Color.fromARGB(255, 147, 38, 143),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: Icon(
-                              Icons.arrow_forward_ios_sharp,
-                              size: 11.sp,
-                              color: const Color.fromARGB(255, 147, 38, 143),
-                            ),
-                          ),
+                                personality: controller.personality[0],
+                                trait: controller.traitType.toString())
+                            .then((_) {
+                          controller.fetchPersonalityReport(userId: id);
+                          controller.fetchTraitReport(userId: id);
+                        });
+                        Get.to(() => AIMCETResultScreen(
+                              userName: userName,
+                              uId: id,
+                            ));
+                      },
+                    );
+                  } else if (controller.testDone.value == 'continue') {
+                    return ElevatedButton.icon(
+                      style: ButtonStyle(
+                        shape: buttonShape(round: 8),
+                      ),
+                      onPressed: () =>
+                          Get.to(() => AIMCETQualificationScreen()),
+                      icon: Text(
+                        "Continue Psychometric Test",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: const Color.fromARGB(255, 147, 38, 143),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      label: Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        size: 11.sp,
+                        color: const Color.fromARGB(255, 147, 38, 143),
+                      ),
+                    );
+                  } else {
+                    return ElevatedButton.icon(
+                      style: ButtonStyle(
+                        shape: buttonShape(round: 8),
+                      ),
+                      onPressed: () =>
+                          Get.to(() => AIMCETQualificationScreen()),
+                      icon: Text(
+                        "Take Psychometric Test",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            color: const Color.fromARGB(255, 147, 38, 143),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      label: Icon(
+                        Icons.arrow_forward_ios_sharp,
+                        size: 11.sp,
+                        color: const Color.fromARGB(255, 147, 38, 143),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           )
@@ -150,3 +152,83 @@ class AimcetContainer extends StatelessWidget {
     );
   }
 }
+
+
+ // return controller.testDone.value == 'done'
+                  //   ?
+                  // ElevatedButton.icon(
+                  //       style: ButtonStyle(
+                  //         shape: buttonShape(round: 8),
+                  //       ),
+                  //       icon: Text(
+                  //         "Check AIMCET Result",
+                  //         style: TextStyle(
+                  //             fontSize: 11.sp,
+                  //             color: const Color.fromARGB(255, 147, 38, 143),
+                  //             fontWeight: FontWeight.w600),
+                  //       ),
+                  //       label: Icon(
+                  //         Icons.arrow_forward_ios_sharp,
+                  //         size: 11.sp,
+                  //         color: const Color.fromARGB(255, 147, 38, 143),
+                  //       ),
+                  //       onPressed: () {
+                  //         // Get.to(() => AIMCETQualificationScreen());
+                  //         controller
+                  //             .gpReportSubmitFunction(
+                  //                 uId: id,
+                  //                 personality: controller.personality[0],
+                  //                 trait: controller.traitType.toString())
+                  //             .then((_) {
+                  //           controller.fetchPersonalityReport(userId: id);
+                  //           controller.fetchTraitReport(userId: id);
+                  //         });
+                  //         Get.to(() => AIMCETResultScreen(
+                  //               userName: userName,
+                  //               uId: id,
+                  //             ));
+                  //       },
+                  //     )
+                  //   : controller.testDone.value == 'continue'
+                  //       ?
+                  // ElevatedButton.icon(
+                  //           style: ButtonStyle(
+                  //             shape: buttonShape(round: 8),
+                  //           ),
+                  //           onPressed: () =>
+                  //               Get.to(() => AIMCETQualificationScreen()),
+                  //           icon: Text(
+                  //             "Continue Psychometric Test",
+                  //             style: TextStyle(
+                  //                 fontSize: 11.sp,
+                  //                 color:
+                  //                     const Color.fromARGB(255, 147, 38, 143),
+                  //                 fontWeight: FontWeight.w600),
+                  //           ),
+                  //           label: Icon(
+                  //             Icons.arrow_forward_ios_sharp,
+                  //             size: 11.sp,
+                  //             color: const Color.fromARGB(255, 147, 38, 143),
+                  //           ),
+                  //         )
+                  //       :
+                  // ElevatedButton.icon(
+                  //           style: ButtonStyle(
+                  //             shape: buttonShape(round: 8),
+                  //           ),
+                  //           onPressed: () =>
+                  //               Get.to(() => AIMCETQualificationScreen()),
+                  //           icon: Text(
+                  //             "Take Psychometric Test",
+                  //             style: TextStyle(
+                  //                 fontSize: 11.sp,
+                  //                 color:
+                  //                     const Color.fromARGB(255, 147, 38, 143),
+                  //                 fontWeight: FontWeight.w600),
+                  //           ),
+                  //           label: Icon(
+                  //             Icons.arrow_forward_ios_sharp,
+                  //             size: 11.sp,
+                  //             color: const Color.fromARGB(255, 147, 38, 143),
+                  //           ),
+                  //         );

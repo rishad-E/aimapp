@@ -1,4 +1,5 @@
 import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,7 +10,6 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
     return Drawer(
       backgroundColor: kwhite,
       child: SingleChildScrollView(
@@ -23,57 +23,12 @@ class HomeDrawer extends StatelessWidget {
                     child: Image.asset('assets/images/aimshala-logo.png'),
                   ),
                   DrawerTile(
-                    ontap1: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              // backgroundColor:
-                              // const Color.fromARGB(223, 43, 9, 53),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              title: Text(
-                                'SIGN OUT',
-                                style: TextStyle(
-                                    color: kblack.withOpacity(0.6),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              content: Text(
-                                'Are You Sure Want To Sign Out',
-                                style: TextStyle(
-                                    color: textFieldColor, fontSize: 16),
-                              ),
-                              actions: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    TextButton(
-                                        onPressed: () async {
-                                          storage.deleteAll();
-                                          Get.offAll(
-                                              () => const SplashScreen());
-                                        },
-                                        child: Text(
-                                          'Sign Out',
-                                          style:
-                                              TextStyle(color: kpurple),
-                                        )),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(color: kpurple),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            );
-                          });
-                    },
+                    ontap1: () => Get.to(() => const ProfileHomeScreen()),
+                    icon1: Icons.person_2_outlined,
+                    text1: "Your Profile",
+                  ),
+                  DrawerTile(
+                    ontap1: () => showDrawerDialogue(context),
                     icon1: Icons.logout_outlined,
                     text1: "Sign Out",
                   ),
@@ -83,6 +38,15 @@ class HomeDrawer extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void showDrawerDialogue(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return const SignoutDialogue();
+      },
     );
   }
 }
@@ -100,16 +64,17 @@ class DrawerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white24,
+          borderRadius: BorderRadius.circular(18),
+          color: textFieldColor.withOpacity(0.1),
         ),
-        height: MediaQuery.of(context).size.height * 0.07,
+        height: MediaQuery.of(context).size.height * 0.06,
         width: double.infinity,
         child: ListTile(
-          iconColor: kblack,
+          dense: true,
+          iconColor: kblack, 
           textColor: textFieldColor,
           leading: Icon(icon1),
           title: Text(
@@ -118,6 +83,55 @@ class DrawerTile extends StatelessWidget {
           onTap: ontap1,
         ),
       ),
+    );
+  }
+}
+
+class SignoutDialogue extends StatelessWidget {
+  const SignoutDialogue({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      title: Text(
+        'SIGN OUT',
+        style: TextStyle(
+            color: kblack.withOpacity(0.6),
+            fontWeight: FontWeight.bold,
+            fontSize: 20),
+      ),
+      content: Text(
+        'Are You Sure Want To Sign Out',
+        style: TextStyle(color: textFieldColor, fontSize: 16),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+                onPressed: () async {
+                  storage.deleteAll();
+                  Get.offAll(() => const SplashScreen());
+                },
+                child: Text(
+                  'Sign Out',
+                  style: TextStyle(color: kpurple),
+                )),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: kpurple),
+              ),
+            )
+          ],
+        )
+      ],
     );
   }
 }

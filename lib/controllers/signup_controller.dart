@@ -14,6 +14,29 @@ class SignUpController extends GetxController {
   Rx<Color> buttonTextColor = Rx<Color>(const Color.fromARGB(255, 83, 83, 83));
   String selectedRole = 'Select your role';
 
+
+  Future<bool> signUpUserFunction({
+    required String name,
+    required String email,
+    required String mobileNo,
+  }) async {
+    signup = await SignUpService()
+        .signUpUser(email: email, mobile: mobileNo, name: name);
+    if (signup == true) {
+      storage.write(key: 'phone', value: mobileNo);
+      return true;
+    } else {
+      Get.snackbar(
+        "Error",
+        "Error in signup",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: kblack.withOpacity(0.7),
+        margin: const EdgeInsets.all(8),
+        colorText: Colors.red,
+      );
+      return false;
+    }
+  }
   String? emailValidation(String? word) {
     if (word == null || word.isEmpty) {
       return 'Please enter Email';
@@ -44,28 +67,6 @@ class SignUpController extends GetxController {
     return null;
   }
 
-  Future<bool> signUpUserFunction({
-    required String name,
-    required String email,
-    required String mobileNo,
-  }) async {
-    signup = await SignUpService()
-        .signUpUser(email: email, mobile: mobileNo, name: name);
-    if (signup == true) {
-      storage.write(key: 'phone', value: mobileNo);
-      return true;
-    } else {
-      Get.snackbar(
-        "Error",
-        "Error in signup",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: kblack.withOpacity(0.7),
-        margin: const EdgeInsets.all(8),
-        colorText: Colors.red,
-      );
-      return false;
-    }
-  }
 
   void allFieldsSelected() {
     bool allFieldsSelected = nameController.text.isNotEmpty &&

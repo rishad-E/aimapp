@@ -6,6 +6,7 @@ import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:sizer/sizer.dart';
 
 class OTPScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class OTPScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final otpController = Get.put(LoginController());
-    // final GlobalKey<FormState> otpFormKey = GlobalKey();
+    final GlobalKey<FormState> otpFormKey = GlobalKey();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -41,7 +42,7 @@ class OTPScreen extends StatelessWidget {
             child: Column(
               children: [
                 Form(
-                  key: otpController.otpFormKey,
+                  key: otpFormKey,
                   child: Column(
                     children: [
                       Container(
@@ -92,72 +93,49 @@ class OTPScreen extends StatelessWidget {
                             width: 50.8.w,
                             child: Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    OTPTextField(
-                                      controller: otpController.otpController1,
+                                Obx(
+                                  () {
+                                    final defaultpin = PinTheme(
+                                      height: 5.2.h,
+                                      width: 11.w,
+                                      textStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: kblack,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            color: otpController
+                                                        .validationMessage
+                                                        .value ==
+                                                    'Please enter valid code'
+                                                ? kred
+                                                : kblack.withOpacity(0.2)),
+                                      ),
+                                    );
+                                    return Pinput(
+                                      defaultPinTheme: defaultpin,
+                                      focusedPinTheme: defaultpin.copyWith(
+                                        decoration:
+                                            defaultpin.decoration!.copyWith(
+                                          border: Border.all(color: kpurple),
+                                        ),
+                                      ),
+                                      onCompleted: (value) => log(value),
                                       onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-
-                                        log(otpController
-                                            .validationMessage.value
-                                            .toString());
                                         otpController.validationMessage.value =
                                             'newvalue';
-
                                         log(otpController
                                             .validationMessage.value
                                             .toString());
                                         onchangeButton(otpController);
                                       },
-                                    ),
-                                    OTPTextField(
-                                      controller: otpController.otpController2,
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-                                        if (value.isEmpty) {
-                                          FocusScope.of(context)
-                                              .previousFocus();
-                                        }
-                                        onchangeButton(otpController);
-                                      },
-                                    ),
-                                    OTPTextField(
-                                      controller: otpController.otpController3,
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).nextFocus();
-                                        }
-
-                                        if (value.isEmpty) {
-                                          FocusScope.of(context)
-                                              .previousFocus();
-                                        }
-
-                                        onchangeButton(otpController);
-                                      },
-                                    ),
-                                    OTPTextField(
-                                      controller: otpController.otpController4,
-                                      onChanged: (value) {
-                                        if (value.length == 1) {
-                                          FocusScope.of(context).unfocus();
-                                        }
-                                        if (value.isEmpty) {
-                                          FocusScope.of(context)
-                                              .previousFocus();
-                                        }
-                                        onchangeButton(otpController);
-                                      },
-                                    ),
-                                  ],
+                                      controller: otpController.otpController,
+                                    );
+                                  },
                                 ),
+                               
                                 Obx(() => otpController
                                             .validationMessage.value ==
                                         'Please enter valid code'
@@ -206,18 +184,15 @@ class OTPScreen extends StatelessWidget {
                                       shape: buttonShape(round: 10),
                                     ),
                                     onPressed: () {
-                                      if (otp.otpFormKey.currentState!
+                                      if (otpFormKey.currentState!
                                           .validate()) {
                                         String validationMessage =
                                             otp.validateOtp();
                                         if (validationMessage.isEmpty) {
-                                          String newOtp =
-                                              otp.otpController1.text +
-                                                  otp.otpController2.text +
-                                                  otp.otpController3.text +
-                                                  otp.otpController4.text;
+                                          log(otpController.otpController.text,
+                                              name: 'pinput otp');
                                           otp.verifyOTPFunction(
-                                              mobileNo: mobileNo, otp: newOtp);
+                                              mobileNo: mobileNo, otp: otpController.otpController.text);
                                         } else {
                                           log(validationMessage);
                                         }
@@ -246,3 +221,71 @@ class OTPScreen extends StatelessWidget {
     data.updateButtonColor();
   }
 }
+
+
+                                //Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceEvenly,
+                                //   children: [
+                                //     OTPTextField(
+                                //       controller: otpController.otpController1,
+                                //       onChanged: (value) {
+                                //         if (value.length == 1) {
+                                //           FocusScope.of(context).nextFocus();
+                                //         }
+
+                                //         log(otpController
+                                //             .validationMessage.value
+                                //             .toString());
+                                //         otpController.validationMessage.value =
+                                //             'newvalue';
+
+                                //         log(otpController
+                                //             .validationMessage.value
+                                //             .toString());
+                                //         onchangeButton(otpController);
+                                //       },
+                                //     ),
+                                //     OTPTextField(
+                                //       controller: otpController.otpController2,
+                                //       onChanged: (value) {
+                                //         if (value.length == 1) {
+                                //           FocusScope.of(context).nextFocus();
+                                //         }
+                                //         if (value.isEmpty) {
+                                //           FocusScope.of(context)
+                                //               .previousFocus();
+                                //         }
+                                //         onchangeButton(otpController);
+                                //       },
+                                //     ),
+                                //     OTPTextField(
+                                //       controller: otpController.otpController3,
+                                //       onChanged: (value) {
+                                //         if (value.length == 1) {
+                                //           FocusScope.of(context).nextFocus();
+                                //         }
+
+                                //         if (value.isEmpty) {
+                                //           FocusScope.of(context)
+                                //               .previousFocus();
+                                //         }
+
+                                //         onchangeButton(otpController);
+                                //       },
+                                //     ),
+                                //     OTPTextField(
+                                //       controller: otpController.otpController4,
+                                //       onChanged: (value) {
+                                //         if (value.length == 1) {
+                                //           FocusScope.of(context).unfocus();
+                                //         }
+                                //         if (value.isEmpty) {
+                                //           FocusScope.of(context)
+                                //               .previousFocus();
+                                //         }
+                                //         onchangeButton(otpController);
+                                //       },
+                                //     ),
+                                //   ],
+                                // ),

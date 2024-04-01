@@ -46,7 +46,7 @@ class AIMCETQualificationScreen extends StatelessWidget {
                             TextStyle(color: Color.fromARGB(255, 111, 29, 107)),
                       ),
                       hBox,
-                      Container(
+                      SizedBox(
                         // color: Colors.yellow,
                         height: 4.h,
                         width: 35.5.w,

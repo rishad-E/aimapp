@@ -19,11 +19,6 @@ class TraitReportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AIMCETController());
     final data = controller.traitReport;
-    List<String> traitContainer = [
-      'You are a ${data!.traitType}. Your strongest trait is ${data.topRiasec![0]}, and second strongest trait is ${data.topRiasec![1]}.',
-      data.detailedInterests.toString(),
-      data.yourMustHavesSentence.toString(),
-    ];
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: aimcetResultAppBar(),
@@ -47,6 +42,11 @@ class TraitReportScreen extends StatelessWidget {
                       children: List.generate(
                         reportImages.length,
                         (index) {
+                          List<String> traitContainer = [
+                            'You are a ${data!.traitType}. Your strongest trait is ${data.topRiasec![0]}, and second strongest trait is ${data.topRiasec![1]}.',
+                            data.detailedInterests.toString(),
+                            data.yourMustHavesSentence.toString(),
+                          ];
                           if (index == 0) {
                             return Row(
                               children: [
@@ -86,7 +86,7 @@ class TraitReportScreen extends StatelessWidget {
                     hBox,
                     SizedBox(
                       height: 200,
-                      child: TraitPieChart(riasec: data.riasec),
+                      child: TraitPieChart(riasec: data!.riasec),
                     ),
                     hBox,
                     piechartTexts(
