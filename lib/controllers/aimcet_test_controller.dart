@@ -127,26 +127,35 @@ class AIMCETController extends GetxController {
           }
         }
         // Extracting degrees
-        List<dynamic> degreeData = result['degree'];
+        if (result['degree'] != null) {
+          List<dynamic> degreeData = result['degree'];
 
-        for (String item in degreeData) {
-          if (!degrees.contains(item.split('. ')[1])) {
-            degrees.add(item.split('. ')[1]);
+          for (String item in degreeData) {
+            if (!degrees.contains(item.split('. ')[1])) {
+              degrees.add(item.split('. ')[1]);
+            }
           }
+        } else {
+          degrees = [];
         }
+
         // Extract careers
-        List<dynamic> data = result['career'];
-        List<dynamic> careerData = [];
-        // List<dynamic> careerData = data.removeAt(0);
-        for (int i = 2; i < data.length; i++) {
-          if (i != 0 || i != 1) {
-            careerData.add(data[i]);
+        if (result['career'] != null) {
+          List<dynamic> data = result['career'];
+          List<dynamic> careerData = [];
+          // List<dynamic> careerData = data.removeAt(0);
+          for (int i = 2; i < data.length; i++) {
+            if (i != 0 || i != 1) {
+              careerData.add(data[i]);
+            }
           }
-        }
-        for (String item in careerData) {
-          if (!careers.contains(item.split('. ')[1])) {
-            careers.add(item.split('. ')[1]);
+          for (String item in careerData) {
+            if (!careers.contains(item.split('. ')[1])) {
+              careers.add(item.split('. ')[1]);
+            }
           }
+        } else {
+          careers = [];
         }
 
         log(personality.toString(), name: 'personality');

@@ -45,7 +45,7 @@ dependencies:
   percent_indicator: ^4.2.3
   connectivity_plus: ^5.0.2
   pinput: ^4.0.0
-  font_awesome_flutter: ^10.7.0
+  image_picker: ^1.0.7
 
 
 dev_dependencies:

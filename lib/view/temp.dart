@@ -1,76 +1,54 @@
-import 'dart:developer';
 
-import 'package:aimshala/utils/common/colors_common.dart';
+
 import 'package:flutter/material.dart';
-import 'package:pinput/pinput.dart';
-import 'package:sizer/sizer.dart';
 
-class TempScreen extends StatelessWidget {
-  const TempScreen({
-    super.key,
-  });
+class SampleDate extends StatefulWidget {
+  const SampleDate({super.key});
+
+  @override
+  State<SampleDate> createState() => _SampleDateState();
+}
+
+class _SampleDateState extends State<SampleDate> {
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: const Text("Temp Screen"),
-          centerTitle: true,
-        ),
-        body: Padding(padding: const EdgeInsets.all(8.0), child: SampleOTP()));
-  }
-}
-
-class SampleOTP extends StatelessWidget {
-  // final TextEditingController controller;
-  // final Function(String)? onChanged;
-
-  SampleOTP({
-    Key? key,
-    // required this.controller,
-    // this.onChanged,
-  }) : super(key: key);
-
-  // final login = Get.put(LoginController());
-  // TextEditingController otpController = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      // height: 5.8.h,
-      // width: 10.6.w,
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: Pinput(
-          length: 4,
-          onChanged: (value) {
-           
-          },
-          // controller: controller,
-          // onChanged: onChanged,
-          defaultPinTheme: defaultpin,
-          focusedPinTheme: defaultpin.copyWith(
-            decoration: defaultpin.decoration!.copyWith(
-              border: Border.all(color: kpurple),
+      appBar: AppBar(
+        title: const Text('Date Picker Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
+              // selectedDate.toString().split(" ")[0],
+              style: const TextStyle(fontSize: 24),
             ),
-          ),
-          onCompleted: (value) => log(value),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => selectDate(context),
+              child: const Text('Select date'),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  final defaultpin = PinTheme(
-    height: 5.2.h,
-    width: 11.2.w,
-    textStyle: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w600,
-      color: kblack,
-    ),
-    decoration: BoxDecoration(
-        // color: kblack.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: kblack.withOpacity(0.2))),
-  );
 }

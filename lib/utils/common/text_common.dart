@@ -53,3 +53,15 @@ Text boldText({required String text, required double size}) {
     textAlign: TextAlign.center,
   );
 }
+
+
+Text redularText(String text, double size,{TextAlign? textAlign}) {
+  return Text(
+    text,
+    style: TextStyle(
+        color: const Color.fromARGB(255, 132, 131, 131),
+        fontSize: size,
+        fontWeight: FontWeight.w400),
+    textAlign:textAlign ,
+  );
+}

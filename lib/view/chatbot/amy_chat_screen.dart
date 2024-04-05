@@ -21,8 +21,6 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
   TextEditingController chatController = TextEditingController();
   ScrollController scrollController = ScrollController();
   List<ChatMessage> msgs = [];
-  // ChatMessage(
-  //     false, 'Hi I am Amy Your AI Career Guide How can i help you?', '')
   bool isTyping = false;
   @override
   void initState() {
@@ -37,6 +35,40 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
     msgs.add(ChatMessage(false, defaultMsg, currentTime));
   }
 
+  // void sendMsg() async {
+  //   DateTime now = DateTime.now();
+  //   String currentTime = DateFormat('h:mm a').format(now);
+  //   log(currentTime);
+  //   String text = chatController.text;
+  //   chatController.clear();
+  //   if (text.isNotEmpty) {
+  //     setState(() {
+  //       msgs.insert(0, ChatMessage(true, text, currentTime));
+  //       isTyping = true;
+  //     });
+  //     scrollController.animateTo(0.0,
+  //         duration: const Duration(seconds: 1), curve: Curves.easeOut);
+  //     String? res = await ChatBotService().sendMessageFunction(text);
+  //     if (res != null) {
+  //       setState(() {
+  //         isTyping = false;
+  //         msgs.insert(0, ChatMessage(false, res, currentTime));
+  //       });
+  //       scrollController.animateTo(0.0,
+  //           duration: const Duration(seconds: 1), curve: Curves.easeOut);
+  //     } else {
+  //       Get.showSnackbar(
+  //         const GetSnackBar(
+  //           snackStyle: SnackStyle.FLOATING,
+  //           message: 'Some error occurred, please try again!',
+  //           margin: EdgeInsets.all(10),
+  //           backgroundColor: Colors.red,
+  //           duration: Duration(seconds: 2),
+  //         ),
+  //       );
+  //     }
+  //   }
+  // }
   void sendMsg() async {
     DateTime now = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(now);
@@ -44,6 +76,7 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
     String text = chatController.text;
     chatController.clear();
     if (text.isNotEmpty) {
+      if (!mounted) return; // Check if the widget is still mounted
       setState(() {
         msgs.insert(0, ChatMessage(true, text, currentTime));
         isTyping = true;
@@ -51,6 +84,7 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
       scrollController.animateTo(0.0,
           duration: const Duration(seconds: 1), curve: Curves.easeOut);
       String? res = await ChatBotService().sendMessageFunction(text);
+      if (!mounted) return; // Check if the widget is still mounted
       if (res != null) {
         setState(() {
           isTyping = false;
@@ -59,6 +93,7 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
         scrollController.animateTo(0.0,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
       } else {
+        if (!mounted) return; // Check if the widget is still mounted
         Get.showSnackbar(
           const GetSnackBar(
             snackStyle: SnackStyle.FLOATING,

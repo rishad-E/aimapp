@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/utils/common/constant/api_const.dart';
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
 
 class AIMCETTestService {
@@ -23,10 +24,20 @@ class AIMCETTestService {
         // });
         // log(data.toString(), name: 'aimcet res');
         return data;
+      } else if (response.statusCode == 500) {
+        SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
       }
-    } catch (e) {
-      log(e.toString(), name: 'aimcet test error');
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}', name: 'aimcet test error');
+      throw SnackbarPopUps.popUpB(
+          'Error fetching data...Please try after sometime');
     }
+
+    // catch (e) {
+    //   log(e.toString(), name: 'aimcet test error');
+    // }
     return null;
   }
 
@@ -59,9 +70,15 @@ class AIMCETTestService {
         return 'success';
       } else if (response.statusCode == 422) {
         return 'failed';
+      } else if (response.statusCode == 500) {
+        SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
       }
-    } catch (e) {
-      log(e.toString(), name: 'aimcet submit error');
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}', name: 'aimcet submit error');
+      throw SnackbarPopUps.popUpB(
+          'Error fetching data...Please try after sometime');
     }
     return null;
   }
@@ -75,7 +92,8 @@ class AIMCETTestService {
         data: {"user_id": userId, "secid": secId},
       );
       log(response.data.toString(), name: 'career result submit');
-    } catch (e) {
+    } 
+    catch (e) {
       log(e.toString(), name: 'career result submit error');
     }
   }
@@ -94,11 +112,17 @@ class AIMCETTestService {
         // log(response.data.toString(), name: 'aimcet result submit');
         return response.data;
       } else if (response.statusCode == 422) {
-        log(response.data.toString(), name: 'aimcet result submit');
+        log(response.data.toString(), name: 'aimcet test result');
         return 'failed';
+      } else if (response.statusCode == 500) {
+        SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
       }
-    } catch (e) {
-      log(e.toString(), name: 'aimcet result submit error');
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}', name: 'aimcet test result error');
+      throw SnackbarPopUps.popUpB(
+          'Error fetching data...Please try after sometime');
     }
   }
 
@@ -114,10 +138,17 @@ class AIMCETTestService {
         Map<String, dynamic> res = response.data;
         log(res.toString(), name: 'check aimcet test');
         return res;
+      } else if (response.statusCode == 500) {
+        SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
       }
-    } catch (e) {
-      log(e.toString(), name: 'check aimcet test taken error');
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}', name: 'check aimcet test taken error');
+      throw SnackbarPopUps.popUpB(
+          'Error fetching data...Please try after sometime');
     }
+
     return null;
   }
 }

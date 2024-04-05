@@ -7,6 +7,7 @@ import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widge
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/bottom_sheets/career_microaim_bottomsheet.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_date_time_Booking/career_date_time_booking_screen.dart';
+import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -33,10 +34,6 @@ class BookCareerAimPage extends StatelessWidget {
               child: careerSecContainer(
                 child: Column(
                   children: [
-                    // Container(
-                    //   color: Colors.yellow,
-                    //    height: 29.h,
-                    // ),
                     boldText(text: "What is your Aim? ", size: 20),
                     hMBox,
                     careerHomeField(
@@ -126,18 +123,7 @@ class BookCareerAimPage extends StatelessWidget {
                                                           },
                                                         ),
                                                       ),
-                                                      const Text(
-                                                        " Add more...",
-                                                        style: TextStyle(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              116,
-                                                              118,
-                                                              119),
-                                                        ),
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      )
+                                                      addmoreText()
                                                     ],
                                                   );
                                                 } else {
@@ -221,11 +207,6 @@ class BookCareerAimPage extends StatelessWidget {
   }
 
   void showCareerAimBottomSheet(BuildContext context) {
-    // Get.bottomSheet(
-    //     // ignoreSafeArea: false,
-    //     // isScrollControlled: true,
-    //     const CareerAimBottomsheet(),
-    //     backgroundColor: kwhite);
     showModalBottomSheet(
       backgroundColor: kwhite,
       context: context,
@@ -260,61 +241,3 @@ class BookCareerAimPage extends StatelessWidget {
     );
   }
 }
-   // : Container(
-                            //     width: double.infinity,
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: 7, vertical: 10),
-                            //     decoration: BoxDecoration(
-                            //       border: Border.all(
-                            //           color: const Color.fromARGB(
-                            //               255, 173, 174, 175)),
-                            //       borderRadius: BorderRadius.circular(8),
-                            //     ),
-                            //     child: Wrap(
-                            //       spacing: 5,
-                            //       runSpacing: 4,
-                            //       children: List.generate(
-                            //         careerController.check.length,
-                            //         (index) {
-                            //           final data = careerController.check;
-                            //           if (index == data.length - 1) {
-                            //             return Row(
-                            //               children: [
-                            //                 Flexible(
-                            //                   child: checking(
-                            //                     microAim: data[index]
-                            //                         .microAim
-                            //                         .toString(),
-                            //                     onTap: () {
-                            //                       log("delete onTap");
-                            //                       data.removeAt(index);
-                            //                       careerController.update(
-                            //                           ['button-careerAim']);
-                            //                     },
-                            //                   ),
-                            //                 ),
-                            //                 const Text(
-                            //                   " Add more...",
-                            //                   style: TextStyle(
-                            //                     color: Color.fromARGB(
-                            //                         255, 116, 118, 119),
-                            //                   ),
-                            //                   overflow: TextOverflow.ellipsis,
-                            //                 )
-                            //               ],
-                            //             );
-                            //           } else {
-                            //             return checking(
-                            //               microAim: data[index].microAim,
-                            //               onTap: () {
-                            //                 data.removeAt(index);
-                            //                 log("delte ontap");
-                            //                 careerController
-                            //                     .update(['button-careerAim']);
-                            //               },
-                            //             );
-                            //           }
-                            //         },
-                            //       ),
-                            //     ),
-                            //   ),

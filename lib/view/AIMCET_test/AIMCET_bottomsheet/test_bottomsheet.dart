@@ -5,8 +5,8 @@ import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_bottom_list.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Bottoooommmmm extends StatelessWidget {
-  const Bottoooommmmm({super.key});
+class AimcetTestBottomsheet extends StatelessWidget {
+  const AimcetTestBottomsheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,6 @@ class Bottoooommmmm extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(left: 10),
-                              // padding: EdgeInsets.only(left: 15),
                               width: 5,
                               height: 25,
                               color: textFieldColor.withOpacity(0.1),

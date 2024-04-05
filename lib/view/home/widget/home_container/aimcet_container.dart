@@ -2,6 +2,7 @@ import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,9 @@ class AimcetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // log("aimcet build",name: 'dddddddddddddd');
     final controller = Get.put(AIMCETController());
+    controller.fetchAllTestQuestions(
+        userId: id, qualifyId: controller.qualifyId.toString());
     controller.aimcetTestResultFunction(userId: id, userName: userName);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
@@ -107,8 +109,11 @@ class AimcetContainer extends StatelessWidget {
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
                       ),
-                      onPressed: () =>
-                          Get.to(() => AIMCETQualificationScreen()),
+                      onPressed: () {
+                        controller.secID.value =
+                            controller.allQuestions![0].sectionId;
+                        Get.to(() => const AIMCETTestPage());
+                      },
                       icon: Text(
                         "Continue Psychometric Test",
                         style: TextStyle(
