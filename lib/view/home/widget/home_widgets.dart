@@ -4,6 +4,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/chatbot/amy_chat_screen.dart';
+import 'package:aimshala/view/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -27,7 +28,7 @@ PreferredSizeWidget appbarHome({String? name}) {
               onPressed: () =>Scaffold.of(context).openDrawer(),
               icon: const Icon(Icons.menu),
             )),
-    title: primarytxt3(name == null ? 'Hi,Sachin' : 'Hi, $name', 14.sp),
+    title: primarytxt3(name == null ? 'Hi, ' : 'Hi, $name', 14.sp),
     titleSpacing: 0,
     actions: [
       Padding(
@@ -108,21 +109,27 @@ PreferredSizeWidget appbarHome({String? name}) {
       wMBox,
       Padding(
         padding: const EdgeInsets.only(top: 5),
-        child: Container(
-          // width: 30,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: const Color.fromARGB(255, 215, 211, 211),
-              width: 1,
+        child: GestureDetector(
+          onTap: () {
+             log('temp screen', name: 'temp screen');
+             Get.to(() => const TempScreen());
+          },
+          child: Container(
+            // width: 30,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: const Color.fromARGB(255, 215, 211, 211),
+                width: 1,
+              ),
             ),
-          ),
-          // child: Image.asset('assets/images/appbarMen.png',fit: BoxFit.cover,),
-          child: CircleAvatar(
-            radius: 13,
-            backgroundColor: kwhite,
-            backgroundImage: const AssetImage(
-              'assets/images/appbarMen.png',
+            // child: Image.asset('assets/images/appbarMen.png',fit: BoxFit.cover,),
+            child: CircleAvatar(
+              radius: 13,
+              backgroundColor: kwhite,
+              backgroundImage: const AssetImage(
+                'assets/images/appbarMen.png',
+              ),
             ),
           ),
         ),

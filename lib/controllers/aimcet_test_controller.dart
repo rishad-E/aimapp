@@ -80,7 +80,7 @@ class AIMCETController extends GetxController {
       }
     }
 
-    log(allQuestions.toString(), name: 'contorleeeereeeeeeee');
+    log(allQuestions.toString(), name: 'fetch allqus func');
   }
 
   Future<void> submitAimTest({

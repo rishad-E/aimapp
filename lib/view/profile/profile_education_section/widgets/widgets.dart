@@ -157,8 +157,8 @@ Widget addedMediaHome(File file) {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                redularText('Physician (General Practitioner)', 12),
-                redularText('Physician (General Practitioner)', 8),
+                regularText('Physician (General Practitioner)', 12),
+                regularText('Physician (General Practitioner)', 8),
               ],
             )
           ],

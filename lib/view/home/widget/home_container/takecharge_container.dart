@@ -3,6 +3,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/career_home_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
+import 'package:aimshala/view/temp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -102,7 +103,7 @@ class TakeChargeC extends StatelessWidget {
                                         shape: buttonShape(round: 8),
                                       ),
                                       onPressed: () {
-                                        // Get.to(() => BookCareerHomePage());
+                                        Get.to(() => TempScreen());
                                       },
                                       icon: Text(
                                         "Counseling Session",

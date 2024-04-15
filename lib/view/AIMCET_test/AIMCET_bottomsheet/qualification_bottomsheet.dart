@@ -38,14 +38,14 @@ class QualificationBottomSheet extends StatelessWidget {
                       child: Image.asset('assets/images/close.png',
                           fit: BoxFit.cover)),
                 ),
-                trailing: Text(
-                  "Resend code",
-                  style: TextStyle(
-                    color: kpurple,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                // trailing: Text(
+                //   "Resend code",
+                //   style: TextStyle(
+                //     color: kpurple,
+                //     fontSize: 14,
+                //     fontWeight: FontWeight.w600,
+                //   ),
+                // ),
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,

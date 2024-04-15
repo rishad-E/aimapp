@@ -12,7 +12,8 @@ import 'package:sizer/sizer.dart';
 class BookingDialogueBox extends StatelessWidget {
   final String userName;
   final String id;
-  const BookingDialogueBox({super.key, required this.userName, required this.id});
+  const BookingDialogueBox(
+      {super.key, required this.userName, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +79,7 @@ class BookingDialogueBox extends StatelessWidget {
                   return ElevatedButton.icon(
                     style: ButtonStyle(
                       shape: buttonShape(round: 8),
+                       side: MaterialStatePropertyAll(BorderSide(color: mainPurple))
                     ),
                     icon: Text(
                       "Check AIMCET Result",
@@ -111,40 +113,35 @@ class BookingDialogueBox extends StatelessWidget {
                 } else if (controller.testDone.value == 'continue') {
                   return ElevatedButton.icon(
                     style: ButtonStyle(
-                      shape: buttonShape(round: 8),
-                    ),
+                        shape: buttonShape(round: 8),
+                        side: MaterialStatePropertyAll(
+                            BorderSide(color: mainPurple))),
                     onPressed: () => Get.to(() => AIMCETQualificationScreen()),
                     icon: Text(
                       "Continue Psychometric Test",
                       style: TextStyle(
                           fontSize: 11.sp,
-                          color: const Color.fromARGB(255, 147, 38, 143),
+                          color: mainPurple,
                           fontWeight: FontWeight.w600),
                     ),
-                    label: Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 11.sp,
-                      color: const Color.fromARGB(255, 147, 38, 143),
-                    ),
+                    label: Icon(Icons.arrow_forward_ios_sharp,
+                        size: 11.sp, color: mainPurple),
                   );
                 } else {
                   return ElevatedButton.icon(
                     style: ButtonStyle(
-                      shape: buttonShape(round: 8),
-                    ),
+                        shape: buttonShape(round: 8),
+                        backgroundColor: MaterialStatePropertyAll(mainPurple)),
                     onPressed: () => Get.to(() => AIMCETQualificationScreen()),
                     icon: Text(
                       "Take Psychometric Test",
                       style: TextStyle(
                           fontSize: 11.sp,
-                          color: const Color.fromARGB(255, 147, 38, 143),
+                          color: kwhite,
                           fontWeight: FontWeight.w600),
                     ),
-                    label: Icon(
-                      Icons.arrow_forward_ios_sharp,
-                      size: 11.sp,
-                      color: const Color.fromARGB(255, 147, 38, 143),
-                    ),
+                    label: Icon(Icons.arrow_forward_ios_sharp,
+                        size: 11.sp, color: kwhite),
                   );
                 }
               },

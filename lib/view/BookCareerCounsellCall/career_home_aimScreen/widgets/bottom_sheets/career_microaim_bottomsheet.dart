@@ -69,12 +69,15 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                                 children: [
                                   ListTile(
                                     dense: true,
-                                   
                                     contentPadding: EdgeInsets.zero,
                                     title: Text(data.categoryName.toString(),
                                         style: optionText()),
                                     trailing: Checkbox(
                                       side: BorderSide.none,
+                                      activeColor: mainPurple,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
                                       value: controller.check.any((item) =>
                                           item.microAim == data.categoryName),
                                       onChanged: (value) {

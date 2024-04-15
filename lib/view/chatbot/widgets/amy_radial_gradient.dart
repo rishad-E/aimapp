@@ -16,8 +16,10 @@ class AmyBotRadialColor extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Container(
-              width: 100,
-              height: 108,
+              //   height: 10.5.h,
+              //  width: 25.5.w,
+              width: 25.5.w,
+              height: 12.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
@@ -32,8 +34,10 @@ class AmyBotRadialColor extends StatelessWidget {
             Positioned(
               left: 50,
               child: Container(
-                width: 100,
-                height: 108,
+                width: 25.5.w,
+                height: 12.h,
+                //   height: 10.5.h,
+                //  width: 25.5.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: RadialGradient(

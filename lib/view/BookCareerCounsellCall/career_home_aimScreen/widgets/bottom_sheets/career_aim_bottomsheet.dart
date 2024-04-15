@@ -21,7 +21,7 @@ class CareerAimBottomsheet extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
-        decoration:bottomSheetDecoration(),
+        decoration: bottomSheetDecoration(),
         height: 46.5.h,
         // height: 363,
         child: Column(
@@ -65,6 +65,10 @@ class CareerAimBottomsheet extends StatelessWidget {
                                       trailing: Checkbox(
                                         side: BorderSide.none,
                                         // value: true,
+                                        activeColor: mainPurple,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
                                         value: controller
                                                 .careerAimSelectedRole.value ==
                                             data.categoryName,

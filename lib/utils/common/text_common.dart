@@ -55,7 +55,7 @@ Text boldText({required String text, required double size}) {
 }
 
 
-Text redularText(String text, double size,{TextAlign? textAlign}) {
+Text regularText(String text, double size,{TextAlign? textAlign}) {
   return Text(
     text,
     style: TextStyle(

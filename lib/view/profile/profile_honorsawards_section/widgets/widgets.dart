@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-Widget experienceInfoFiled({required Widget text, required Widget textField}) {
+Widget honorsawardsInfoFiled(
+    {required Widget text, required Widget textField}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 3),
     child: Column(
@@ -18,8 +17,12 @@ Widget experienceInfoFiled({required Widget text, required Widget textField}) {
   );
 }
 
-Widget experienceAdditional(
-    {required String heading, required String subText, String? secSub,void Function()? onTap,required Widget selected}) {
+Widget honorsawardsAdditional(
+    {required String heading,
+    required String subText,
+    String? secSub,
+    void Function()? onTap,
+    required Widget selected}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Column(
@@ -75,65 +78,7 @@ Widget experienceAdditional(
   );
 }
 
-Widget currentlyWorking() {
-  return Row(
-    children: [
-      Container(
-          height: 1.8.h,
-          width: 3.8.w,
-          decoration: BoxDecoration(
-            color: mainPurple,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-              child: Icon(
-            Icons.done,
-            color: kwhite,
-            size: 7.7.sp,
-          ))),
-      wBox,
-      Text("I am currently working in this role",
-          style: TextStyle(fontSize: 8.2.sp, color: textFieldColor))
-    ],
-  );
-}
-
-
-Widget addedskillHomeEX(String skill) {
-  return Container(
-    margin: const EdgeInsets.symmetric(vertical: 3),
-    width: double.infinity,
-    decoration: BoxDecoration(
-        color: Colors.grey.shade200, borderRadius: BorderRadius.circular(4)),
-    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
-            ),
-            wBox,
-            Text(
-              skill,
-              style: TextStyle(fontSize: 9.sp),
-            )
-          ],
-        ),
-        Icon(
-          Icons.menu,
-          size: 12.sp,
-        )
-      ],
-    ),
-  );
-}
-
-
-Widget addedMediaHomeEX(File file) {
+Widget addedMediaHomeHonorAward() {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -154,11 +99,12 @@ Widget addedMediaHomeEX(File file) {
             SizedBox(
               height: 29,
               width: 45,
-              child: Image.file(
-                file,
-                fit: BoxFit.fill,
-              ),
-            ),wBox,
+              // child: Image.file(
+              //   file,
+              //   fit: BoxFit.fill,
+              // ),
+            ),
+            wBox,
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -174,22 +120,5 @@ Widget addedMediaHomeEX(File file) {
         )
       ],
     ),
-  );
-}
-
-
-Widget mediaListTileEX(
-    {required String title, void Function()? onTap, Widget? leading}) {
-  return ListTile(
-    leading: leading,
-    title: Text(
-      title,
-      style: const TextStyle(fontSize: 14),
-    ),
-    onTap: onTap,
-    horizontalTitleGap: 5,
-    shape: const Border(
-        bottom: BorderSide(color: Color.fromARGB(255, 202, 201, 201))),
-    contentPadding: EdgeInsets.zero,
   );
 }

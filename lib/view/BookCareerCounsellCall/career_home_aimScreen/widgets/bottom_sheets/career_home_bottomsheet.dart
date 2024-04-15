@@ -57,6 +57,9 @@ class CareerHomeBottomSheet extends StatelessWidget {
                   title: Text(valueListTile[index], style: optionText()),
                   trailing: Checkbox(
                     side: BorderSide.none,
+                    activeColor: mainPurple,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
                     value:
                         controller.careerSelectedRole == valueListTile[index],
                     onChanged: (value) {
@@ -88,10 +91,10 @@ void bottomSheetListValueOnchanged(
   controller.careerSelectedRole = type;
   if (type == "Other") {
     controller.otherRole.value = type;
-    log(controller.otherRole.value,name: 'other');
+    log(controller.otherRole.value, name: 'other');
   } else {
     controller.otherRole.value = '';
-    log(controller.otherRole.value,name: 'not other');
+    log(controller.otherRole.value, name: 'not other');
   }
   controller.update(['button-careerHome']);
 }

@@ -1,13 +1,19 @@
 import 'dart:developer';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
 import 'package:aimshala/view/profile/profile_contact_info/contact_info_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_honorsawards_section/add_honorsawards_screen.dart';
 import 'package:aimshala/view/profile/profile_personal_info/personal_info_screen.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_project_section/add_project_screen.dart';
+import 'package:aimshala/view/profile/profile_publications_section/add_publications_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +23,23 @@ class ProfileHomeScreen extends StatelessWidget {
   final double profileHeight = 130;
   @override
   Widget build(BuildContext context) {
+    // String? name;
+    // String? email;
+    // String? id;
+    // String? mobNo;
+    // String? userName;
+    // String? dOB;
+    User? data;
+    final UserDataModel? userData = Get.put(LoginController()).userData;
+    if (userData != null) {
+      data = userData.user;
+      // name = userData.user?.name ?? '';
+      // email = userData.user?.email ?? '';
+      // mobNo = userData.user?.phone ?? '';
+      // id = userData.user?.id.toString() ?? '';
+      // userName = userData.user?.username;
+      // dOB = userData.user?.dob;
+    }
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
     return PopScope(
@@ -43,9 +66,11 @@ class ProfileHomeScreen extends StatelessWidget {
             Column(
               children: [
                 hBox,
-                const Text(
-                  'Jhon Doe',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Text(
+                  // name.toString(),
+                  data?.name ?? '',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const Text(
                   'Flutter Developer',
@@ -68,7 +93,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     log('edit personal info');
-                                    Get.to(() => ProfilePersonalInfoScreen());
+                                    Get.to(() => ProfilePersonalInfoScreen(
+                                        id: data?.id.toString() ?? '',
+                                        username: data?.username));
                                   },
                                   child: Icon(
                                     Icons.edit,
@@ -78,11 +105,14 @@ class ProfileHomeScreen extends StatelessWidget {
                               ],
                             ),
                             hBox,
-                            infoText(text1: 'Full Name:', text2: 'John Doe'),
-                            infoText(text1: 'Username:', text2: 'johndoe123'),
+                            infoText(
+                                text1: 'Full Name:', text2: data?.name ?? '_'),
+                            infoText(
+                                text1: 'Username:',
+                                text2: data?.username ?? '_'),
                             infoText(
                                 text1: 'Date of Birth:',
-                                text2: '24 - 08 - 1997'),
+                                text2: data?.dob ?? '_'),
                           ],
                         ),
                       ),
@@ -99,8 +129,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                 GestureDetector(
                                   onTap: () {
                                     log('edit contact info');
-                                    Get.to(
-                                        () => const ProfileContactInfoScreen());
+                                    Get.to(() => ProfileContactInfoScreen(
+                                        id: data?.id.toString() ?? '',
+                                        userName: data?.username));
                                   },
                                   child: Icon(
                                     Icons.edit,
@@ -111,28 +142,27 @@ class ProfileHomeScreen extends StatelessWidget {
                             ),
                             hBox,
                             contactInfos(
-                              text: '+91 97296 65668',
+                              text: '+91 ${data?.phone}',
                               svg: 'assets/images/call.svg',
                             ),
                             contactInfos(
-                              text: 'johndoe@gmail.com',
+                              text: data?.email ?? '_',
                               svg: 'assets/images/email.svg',
                             ),
                             contactInfos(
-                              text:
-                                  'D-79, Block D, Sector 48, Noida, Uttar Pradesh 201303, India',
+                              text: data?.address ?? '_',
                               svg: 'assets/images/location.svg',
                             ),
                             contactInfos(
-                              text: '_',
+                              text: data?.instagram ?? '_',
                               svg: 'assets/images/Instagram.svg',
                             ),
                             contactInfos(
-                              text: '_',
+                              text: data?.facebook ?? '_',
                               svg: 'assets/images/facebook.svg',
                             ),
                             contactInfos(
-                              text: '_',
+                              text: data?.twitter ?? '_',
                               svg: 'assets/images/twitter.svg',
                             ),
                           ],
@@ -203,7 +233,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () => Get.to(
+                                () => const ProfileAddHonorsandAwardsScreenn()),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -255,7 +286,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () => Get.to(
+                                () => const ProfileAddPublicationScreen()),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -281,7 +313,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () =>
+                                Get.to(() => const ProfileAddSkillScreen()),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -307,7 +340,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () =>
+                                Get.to(() => const ProfileAddProjectScreen()),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(

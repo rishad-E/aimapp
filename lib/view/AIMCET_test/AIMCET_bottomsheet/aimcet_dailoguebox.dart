@@ -53,10 +53,54 @@ class AIMCETDialogueBox extends StatelessWidget {
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
-              onPressed: () {
-                // Get.off(() => const AIMCETResultScreen());
-                controller.aimcetTestResultFunction(
+              onPressed: () async {
+                // controller.aimcetTestResultFunction(
+                //     userId: userId, userName: userName);
+                // showDialog(
+                //   context: context,
+                //   barrierDismissible: false,
+                //   builder: (BuildContext context) {
+                //     return AlertDialog(
+                //       backgroundColor: kwhite,
+                //       surfaceTintColor: kwhite,
+                //       content: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         children: [
+                //           CircularProgressIndicator(
+                //             color: mainPurple,
+                //           ),
+                //           hLBox,
+                //           primarytxt2(
+                //             "Your result is being processed...",
+                //             11.sp,
+                //           ),
+                //         ],
+                //       ),
+                //     );
+                //   },
+                // );
+
+                // Future.delayed(const Duration(seconds: 5), () {
+                //   log(
+                //       controller.personality[0] +
+                //           controller.traitType.toString() +
+                //           controller.gp.value,
+                //       name: 'traaaaaaaaaaaai');
+                //   controller
+                //       .gpReportSubmitFunction(
+                //           uId: userId,
+                //           personality: controller.personality[0],
+                //           trait: controller.traitType.toString())
+                //       .then((_) {
+                //     controller.fetchPersonalityReport(userId: userId);
+                //     controller.fetchTraitReport(userId: userId);
+                //   });
+                //   Get.off(() =>
+                //       AIMCETResultScreen(userName: userName, uId: userId));
+                // });
+                await controller.aimcetTestResultFunction(
                     userId: userId, userName: userName);
+                // Show the dialog with CircularProgressIndicator for 5 seconds
                 showDialog(
                   context: context,
                   barrierDismissible: false,
@@ -67,28 +111,34 @@ class AIMCETDialogueBox extends StatelessWidget {
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircularProgressIndicator(
-                            color: mainPurple,
-                          ),
+                          CircularProgressIndicator(color: mainPurple),
                           hLBox,
                           primarytxt2(
-                            "Your result is being processed...",
-                            11.sp,
-                          ),
+                              "Your result is being processed...", 11.sp),
                         ],
                       ),
                     );
                   },
                 );
-                
-                Future.delayed(const Duration(seconds: 5), () {
-                  log(controller.personality[0]+controller.traitType.toString()+controller.gp.value,name: 'traaaaaaaaaaaai');
-                  controller.gpReportSubmitFunction(uId: userId, personality: controller.personality[0], trait: controller.traitType.toString()).then((_) {
-                    controller.fetchPersonalityReport(userId: userId);
-                    controller.fetchTraitReport(userId:userId);
-                  });
-                  Get.off(() =>  AIMCETResultScreen(userName: userName,uId: userId));
+                await Future.delayed(const Duration(seconds: 5));
+                // Call gpReportSubmitFunction
+                await controller
+                    .gpReportSubmitFunction(
+                  uId: userId,
+                  personality: controller.personality[0],
+                  trait: controller.traitType.toString(),
+                )
+                    .then((_) async {
+                  // Call fetchPersonalityReport and fetchTraitReport
+                  await Future.wait([
+                    controller.fetchPersonalityReport(userId: userId),
+                    controller.fetchTraitReport(userId: userId),
+                  ]);
                 });
+
+                // Navigate to AIMCETResultScreen
+                Get.off(
+                    () => AIMCETResultScreen(userName: userName, uId: userId));
               },
               child: Text(
                 'Click Here To Check Result',

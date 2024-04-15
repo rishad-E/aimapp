@@ -196,7 +196,7 @@ class _AmyChatBotScreenState extends State<AmyChatBotScreen> {
                             }
                           },
                           textInputAction: TextInputAction.send,
-                          showCursor: false,
+                          // showCursor: false,
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Type here....",

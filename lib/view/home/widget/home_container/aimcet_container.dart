@@ -17,9 +17,6 @@ class AimcetContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AIMCETController());
-    controller.fetchAllTestQuestions(
-        userId: id, qualifyId: controller.qualifyId.toString());
-    controller.aimcetTestResultFunction(userId: id, userName: userName);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -71,6 +68,7 @@ class AimcetContainer extends StatelessWidget {
               child: Obx(
                 () {
                   if (controller.testDone.value == 'done') {
+                    controller.aimcetTestResultFunction(userId: id, userName: userName);
                     return ElevatedButton.icon(
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
@@ -105,13 +103,17 @@ class AimcetContainer extends StatelessWidget {
                       },
                     );
                   } else if (controller.testDone.value == 'continue') {
+                    controller.fetchAllTestQuestions(
+                        userId: id, qualifyId: controller.qualifyId.toString());
                     return ElevatedButton.icon(
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
                       ),
                       onPressed: () {
-                        controller.secID.value =
-                            controller.allQuestions![0].sectionId;
+                        if (controller.allQuestions != null) {
+                          controller.secID.value =
+                              controller.allQuestions![0].sectionId;
+                        }
                         Get.to(() => const AIMCETTestPage());
                       },
                       icon: Text(

@@ -19,4 +19,5 @@ class Apis {
   final String traitReport = '/trait-report';
   final String checkAimcet = '/test-check';
   final String checkCounsellcall = '/slot-check';
+  final String savepersonalInfo = '/add-personal-info';
 }

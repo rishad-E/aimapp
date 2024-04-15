@@ -1,0 +1,82 @@
+import 'package:aimshala/services/profile_section/update_contact_info_service.dart';
+import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/view/splash_screen/splash_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class UpdateContactInfo extends GetxController {
+  TextEditingController mobController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController stateController = TextEditingController();
+  TextEditingController facebookController = TextEditingController();
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController twitterController = TextEditingController();
+
+  Rx<Color> saveText = Rx<Color>(textFieldColor);
+  Rx<Color> saveBG = Rx<Color>(buttonColor);
+
+  Future<void> saveContactInfoFunction(
+      {required String uId,
+      required String userName,
+      required String mobNumber,
+      required String email,
+      required String address,
+      required String city,
+      required String state,
+      required String facebook,
+      required String instagram,
+      required String twitter}) async {
+    bool? res = await UpdateContactInfoService().updateContactInfo(
+      uId: uId,
+      userName: userName,
+      mobNumber: mobNumber,
+      email: email,
+      address: address,
+      city: city,
+      state: state,
+      facebook: facebook,
+      instagram: instagram,
+      twitter: twitter,
+    );
+    if (res == true) {
+      Get.off(() => const SplashScreen());
+    } else {
+      Get.showSnackbar(
+        const GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: 'Contact info update failed',
+          margin: EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  /*--------validator------ */
+  String? fieldValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'please fill this filed';
+    }
+    return null;
+  }
+
+  /*-------- all field selection ------ */
+  void allFieldSelect() {
+    bool isAllFiledSelected = mobController.text.isNotEmpty &&
+        usernameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        addressController.text.isNotEmpty &&
+        cityController.text.isNotEmpty &&
+        stateController.text.isNotEmpty &&
+        facebookController.text.isNotEmpty &&
+        instagramController.text.isNotEmpty &&
+        twitterController.text.isNotEmpty;
+    saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
+    saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
+    update(['update-contactInfo']);
+  }
+}

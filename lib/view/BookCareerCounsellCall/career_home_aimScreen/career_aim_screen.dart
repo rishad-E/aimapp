@@ -39,6 +39,7 @@ class BookCareerAimPage extends StatelessWidget {
                     careerHomeField(
                       text: primarytxt3('Your Aim', 11),
                       textField: TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         style: TextStyle(fontSize: 14, color: textFieldColor),
                         decoration: careerTextFiled(
                           hintText: 'Tell us your Aim',

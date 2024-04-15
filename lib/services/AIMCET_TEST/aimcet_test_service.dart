@@ -10,10 +10,11 @@ class AIMCETTestService {
       {required String userId, required String qualifyId}) async {
     String path = Apis().aimUrl + Apis().aimcetTest;
     try {
-      Response response = await dio.post(
-        path,
-        data: {"user_id": userId, "qualification": qualifyId},
-      );
+      Response response = await dio.post(path,
+          data: {"user_id": userId, "qualification": qualifyId},
+          options: Options(
+            validateStatus: (status) => status! < 599,
+          ));
       if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
 
@@ -92,8 +93,7 @@ class AIMCETTestService {
         data: {"user_id": userId, "secid": secId},
       );
       log(response.data.toString(), name: 'career result submit');
-    } 
-    catch (e) {
+    } catch (e) {
       log(e.toString(), name: 'career result submit error');
     }
   }
@@ -101,7 +101,7 @@ class AIMCETTestService {
   Future<dynamic> aimcetTestResult(
       {required String userId, required String userName}) async {
     String path = Apis().aimUrl + Apis().aimcetResult;
-    log(userId + userName, name: 'cccccccccccccccccccccccccccc');
+    log(userId + userName, name: 'aimcettest res serv func params');
     try {
       Response response = await dio.post(path,
           data: {"user_id": userId, "username": userName},

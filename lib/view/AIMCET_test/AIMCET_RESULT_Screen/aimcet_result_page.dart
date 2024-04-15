@@ -75,18 +75,20 @@ class AIMCETResultScreen extends StatelessWidget {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children:
-                        List.generate(controller.personality.length, (index) {
-                      return Row(
-                        children: [
-                          homeCWB,
-                          DiscoveryContainer(
-                            personality: controller.personality[index],
-                            image: discoveryImages[index],
-                          )
-                        ],
-                      );
-                    }),
+                    children: List.generate(
+                      controller.personality.length,
+                      (index) {
+                        return Row(
+                          children: [
+                            homeCWB,
+                            DiscoveryContainer(
+                              personality: controller.personality[index],
+                              image: discoveryImages[index],
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
                 hBox,
