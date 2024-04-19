@@ -1,4 +1,3 @@
-import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:flutter/material.dart';
 
 Widget perosnalInfoFiled({required Widget text, required Widget textField}) {

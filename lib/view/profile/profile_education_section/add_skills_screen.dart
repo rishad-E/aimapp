@@ -28,7 +28,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed:() => Get.off(()=>const AddEducationScreen()),
+            onPressed: () => Get.off(() => AddEducationScreen()),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
@@ -36,139 +36,147 @@ class AddProfileSkillsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                        color: textFieldColor.withOpacity(0.3), width: 1),
-                    bottom: BorderSide(
-                        color: textFieldColor.withOpacity(0.3), width: 1),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                          color: textFieldColor.withOpacity(0.3), width: 1),
+                      bottom: BorderSide(
+                          color: textFieldColor.withOpacity(0.3), width: 1),
+                    ),
                   ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  child: Obx(
+                    () {
+                      final data = controller.addedSkill;
+                      return data.isEmpty
+                          ? primarytxt("Add Skills", 14)
+                          : Wrap(
+                              spacing: 5,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.end,
+                              children: [
+                                ...List.generate(
+                                  data.length,
+                                  (index) {
+                                    return selectedSkill(
+                                      skill: data[index],
+                                      onTap: () {
+                                        data.removeAt(index);
+                                        controller.update(['add-skill']);
+                                        controller
+                                            .update(['update-educationInfo']);
+                                      },
+                                    );
+                                  },
+                                ),
+                                Text(
+                                  "Add more...",
+                                  style: TextStyle(
+                                      fontSize: 16, color: textFieldColor),
+                                )
+                              ],
+                            );
+                    },
+                  )),
+              hMBox,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Currently in your skill section',
+                      style: TextStyle(fontSize: 11, color: textFieldColor),
+                    ),
+                    ListTile(
+                      shape: const Border(
+                          bottom: BorderSide(
+                              color: Color.fromARGB(255, 202, 201, 201))),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        "Health Assessment",
+                        style: TextStyle(
+                          color: kblack,
+                          fontSize: 14,
+                        ),
+                      ),
+                      trailing: Checkbox(
+                        side: const BorderSide(color: Colors.grey),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6)),
+                        value: false,
+                        onChanged: (value) {},
+                      ),
+                      onTap: () {},
+                    )
+                  ],
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                child: Obx(
-                  () {
-                    final data = controller.addedSkill;
-                    return data.isEmpty
-                        ? primarytxt("Add Skills", 14)
-                        : Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            crossAxisAlignment: WrapCrossAlignment.end,
-                            children: [
-                              ...List.generate(
-                                data.length,
-                                (index) {
-                                  return selectedSkill(
-                                    skill: data[index],
-                                    onTap: () {
-                                      data.removeAt(index);
-                                      controller.update(['add-skill']);
-                                    },
-                                  );
+              ),
+              hMBox,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                width: double.infinity,
+                child: GetBuilder<ProfileEducationController>(
+                    id: 'add-skill',
+                    builder: (c) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Additional Skill',
+                            style:
+                                TextStyle(fontSize: 11, color: textFieldColor),
+                          ),
+                          ...List.generate(
+                            skills.length,
+                            (index) => ListTile(
+                              shape: const Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromARGB(255, 202, 201, 201))),
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(
+                                skills[index],
+                                style: TextStyle(
+                                  color: kblack,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              trailing: Checkbox(
+                                side: const BorderSide(color: Colors.grey),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6)),
+                                value: controller.addedSkill
+                                    .any((element) => element == skills[index]),
+                                onChanged: (value) {
+                                  if (value != null) {
+                                    skillsAdding(skills[index], controller);
+                                    c.update(['add-skill']);
+                                    controller.update(['update-educationInfo']);
+                                  }
                                 },
                               ),
-                              Text(
-                                "Add more...",
-                                style: TextStyle(
-                                    fontSize: 16, color: textFieldColor),
-                              )
-                            ],
-                          );
-                  },
-                )),
-            hMBox,
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Currently in your skill section',
-                    style: TextStyle(fontSize: 11, color: textFieldColor),
-                  ),
-                  ListTile(
-                    shape: const Border(
-                        bottom: BorderSide(
-                            color: Color.fromARGB(255, 202, 201, 201))),
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      "Health Assessment",
-                      style: TextStyle(
-                        color: kblack,
-                        fontSize: 14,
-                      ),
-                    ),
-                    trailing: Checkbox(
-                      side: const BorderSide(color: Colors.grey),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)),
-                      value: false,
-                      onChanged: (value) {},
-                    ),
-                    onTap: () {},
-                  )
-                ],
-              ),
-            ),
-            hMBox,
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              width: double.infinity,
-              child: GetBuilder<ProfileEducationController>(
-                  id: 'add-skill',
-                  builder: (c) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Additional Skill',
-                          style: TextStyle(fontSize: 11, color: textFieldColor),
-                        ),
-                        ...List.generate(
-                          skills.length,
-                          (index) => ListTile(
-                            shape: const Border(
-                                bottom: BorderSide(
-                                    color: Color.fromARGB(255, 202, 201, 201))),
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(
-                              skills[index],
-                              style: TextStyle(
-                                color: kblack,
-                                fontSize: 14,
-                              ),
-                            ),
-                            trailing: Checkbox(
-                              side: const BorderSide(color: Colors.grey),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(6)),
-                              value: controller.addedSkill
-                                  .any((element) => element == skills[index]),
-                              onChanged: (value) {
-                                if (value != null) {
-                                  skillsAdding(skills[index], controller);
-                                  c.update(['add-skill']);
-                                }
+                              onTap: () {
+                                skillsAdding(skills[index], controller);
+                                log('added skill to list');
+                                c.update(['add-skill']);
+                                controller.update(['update-educationInfo']);
                               },
                             ),
-                            onTap: () {
-                              skillsAdding(skills[index], controller);
-                              log('added skill to list');
-                              c.update(['add-skill']);
-                            },
-                          ),
-                        )
-                      ],
-                    );
-                  }),
-            ),
-          ],
+                          )
+                        ],
+                      );
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -178,6 +186,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
 void skillsAdding(String skill, ProfileEducationController controller) {
   if (!controller.addedSkill.contains(skill)) {
     controller.addedSkill.add(skill);
+    controller.update(['update-educationInfo']);
     log("skill added to list");
   } else {
     log("skill already exists in the list");

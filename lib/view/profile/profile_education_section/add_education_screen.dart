@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/education_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -15,7 +15,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddEducationScreen extends StatelessWidget {
-  const AddEducationScreen({super.key});
+  final String? uId;
+  AddEducationScreen({super.key, this.uId});
+  final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileEducationController());
@@ -33,166 +35,256 @@ class AddEducationScreen extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             decoration: profileSecondaryContainer(),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  profileRichText('Add', 'Education'),
-                  hBox,
-                  Text(
-                    "Tell us about your Education",
-                    style: TextStyle(fontSize: 14, color: textFieldColor),
-                  ),
-                  hLBox,
-                  educationInfoFiled(
-                    text: primarytxt3('School', 9.5.sp),
-                    textField: TextFormField(
-                      decoration: infoFieldDecoration(
-                        hintText: 'Ex: Boston University',
-                      ),
-                      maxLength: 150,
-                      style: const TextStyle(fontSize: 13),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    profileRichText('Add', 'Education'),
+                    hBox,
+                    Text(
+                      "Tell us about your Education",
+                      style: TextStyle(fontSize: 14, color: textFieldColor),
                     ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Degree', 9.5.sp),
-                    textField: TextFormField(
-                      decoration:
-                          infoFieldDecoration(hintText: 'Ex: Bachelor’s'),
-                      maxLength: 150,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Field of study', 9.5.sp),
-                    textField: TextFormField(
-                      decoration: infoFieldDecoration(hintText: 'Ex: Business'),
-                      maxLength: 150,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Start date', 9.5.sp),
-                    textField: TextFormField(
-                      readOnly: true,
-                      controller: controller.startdateController,
-                      decoration: infoFieldDecoration(
-                        hintText: 'Date',
-                        suffixWidget: GestureDetector(
-                          onTap: () =>
-                              controller.datePicker(context, start: true),
-                          child: SvgPicture.asset(
-                              'assets/images/calendar-booked.svg',
-                              colorFilter:
-                                  ColorFilter.mode(kblack, BlendMode.srcIn),
-                              fit: BoxFit.scaleDown),
+                    hLBox,
+                    educationInfoFiled(
+                      text: primarytxt3('School', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.schoolController,
+                        validator: (value) => controller.filedValidation(value),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        decoration: infoFieldDecoration(
+                          hintText: 'Ex: Boston University',
                         ),
+                        maxLength: 150,
+                        style: const TextStyle(fontSize: 13),
                       ),
-                      style: const TextStyle(fontSize: 13, height: 1.7),
                     ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('End date (or expected)', 9.5.sp),
-                    textField: TextFormField(
-                      controller: controller.endDateController,
-                      readOnly: true,
-                      decoration: infoFieldDecoration(
-                        hintText: 'Date',
-                        suffixWidget: GestureDetector(
-                          onTap: () => controller.datePicker(context),
-                          child: SvgPicture.asset(
-                              'assets/images/calendar-booked.svg',
-                              colorFilter:
-                                  ColorFilter.mode(kblack, BlendMode.srcIn),
-                              fit: BoxFit.scaleDown),
+                    educationInfoFiled(
+                      text: primarytxt3('Degree', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.degreeController,
+                        validator: (value) => controller.filedValidation(value),
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration:
+                            infoFieldDecoration(hintText: 'Ex: Bachelor’s'),
+                        maxLength: 150,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ),
+                    educationInfoFiled(
+                      text: primarytxt3('Field of study', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.studyFiledController,
+                        validator: (value) => controller.filedValidation(value),
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration:
+                            infoFieldDecoration(hintText: 'Ex: Business'),
+                        maxLength: 150,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ),
+                    educationInfoFiled(
+                      text: primarytxt3('Start date', 9.5.sp),
+                      textField: TextFormField(
+                        readOnly: true,
+                        controller: controller.startdateController,
+                        validator: (value) => controller.filedValidation(value),
+                        //  onChanged: (value) {
+                        //   controller.updateSaveButton();
+                        //   controller.update(['update-educationInfo']);
+                        // },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: infoFieldDecoration(
+                          hintText: 'Date',
+                          suffixWidget: GestureDetector(
+                            onTap: () =>
+                                controller.datePicker(context, start: true),
+                            child: SvgPicture.asset(
+                                'assets/images/calendar-booked.svg',
+                                colorFilter:
+                                    ColorFilter.mode(kblack, BlendMode.srcIn),
+                                fit: BoxFit.scaleDown),
+                          ),
                         ),
+                        style: const TextStyle(fontSize: 13, height: 1.7),
                       ),
-                      style: const TextStyle(fontSize: 13, height: 1.7),
                     ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Grade', 9.5.sp),
-                    textField: TextFormField(
-                      decoration: infoFieldDecoration(hintText: 'Enter Grade'),
-                      maxLength: 80,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Activities and societies', 9.5.sp),
-                    textField: TextFormField(
-                      decoration: infoFieldDecoration(
-                          hintText: 'Enter Activities and societies'),
-                      maxLength: 500,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  educationInfoFiled(
-                    text: primarytxt3('Description', 9.5.sp),
-                    textField: TextFormField(
-                      decoration:
-                          infoFieldDecoration(hintText: 'Enter Description'),
-                      maxLength: 1000,
-                      minLines: 3,
-                      maxLines: null,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ),
-                  educationAdditional(
-                    onTap: () {
-                      log("add skill on tap");
-                      Get.to(() => const AddProfileSkillsScreen());
-                    },
-                    heading: 'Skills',
-                    subText:
-                        'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
-                    selected: Obx(() => controller.addedSkill.isEmpty
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: List.generate(
-                                controller.addedSkill.length, (index) {
-                              final data = controller.addedSkill;
-                              return addedskillHome(data[index]);
-                            }),
-                          )),
-                  ),
-                  educationAdditional(
-                    onTap: () {
-                      log("add Media on tap");
-                      showMediaOptions(context, controller);
-                    },
-                    heading: 'Media',
-                    subText:
-                        'Add Documents, photos, sites, videos, and presentations.',
-                    secSub: 'Learn more about media file types supported',
-                    selected: Obx(() => controller.allMedias.isEmpty
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: List.generate(controller.allMedias.length,
-                                (index) {
-                              final data = controller.allMedias;
-                              return addedMediaHome(data[index]!);
-                            }),
-                          )),
-                  ),
-                  hMBox,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      actionContainer(
-                        text: 'Cancel',
-                        textColor: mainPurple,
-                        boxColor: kwhite,
-                        borderColor: mainPurple,
-                        onTap: () => Get.back(),
+                    educationInfoFiled(
+                      text: primarytxt3('End date (or expected)', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.endDateController,
+                        validator: (value) => controller.filedValidation(value),
+                        //  onChanged: (value) {
+                        //   controller.updateSaveButton();
+                        //   controller.update(['update-educationInfo']);
+                        // },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        readOnly: true,
+                        decoration: infoFieldDecoration(
+                          hintText: 'Date',
+                          suffixWidget: GestureDetector(
+                            onTap: () => controller.datePicker(context),
+                            child: SvgPicture.asset(
+                                'assets/images/calendar-booked.svg',
+                                colorFilter:
+                                    ColorFilter.mode(kblack, BlendMode.srcIn),
+                                fit: BoxFit.scaleDown),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 13, height: 1.7),
                       ),
-                      wMBox,
-                      actionContainer(
-                        text: 'Save',
-                        textColor: textFieldColor,
-                        boxColor: buttonColor,
+                    ),
+                    educationInfoFiled(
+                      text: primarytxt3('Grade', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.gradeController,
+                        validator: (value) => controller.filedValidation(value),
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration:
+                            infoFieldDecoration(hintText: 'Enter Grade'),
+                        maxLength: 80,
+                        style: const TextStyle(fontSize: 13),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    educationInfoFiled(
+                      text: primarytxt3('Activities and societies', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.activitiesController,
+                        validator: (value) => controller.filedValidation(value),
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration: infoFieldDecoration(
+                            hintText: 'Enter Activities and societies'),
+                        maxLength: 500,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ),
+                    educationInfoFiled(
+                      text: primarytxt3('Description', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.descriptionController,
+                        validator: (value) => controller.filedValidation(value),
+                        onChanged: (value) {
+                          controller.updateSaveButton();
+                          controller.update(['update-educationInfo']);
+                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        decoration:
+                            infoFieldDecoration(hintText: 'Enter Description'),
+                        maxLength: 1000,
+                        minLines: 3,
+                        maxLines: null,
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ),
+                    educationAdditional(
+                      onTap: () {
+                        log("add skill on tap");
+                        Get.to(() => const AddProfileSkillsScreen());
+                      },
+                      heading: 'Skills',
+                      subText:
+                          'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
+                      selected: Obx(() => controller.addedSkill.isEmpty
+                          ? const SizedBox.shrink()
+                          : Column(
+                              children: List.generate(
+                                  controller.addedSkill.length, (index) {
+                                final data = controller.addedSkill;
+                                return addedskillHome(data[index]);
+                              }),
+                            )),
+                    ),
+                    educationAdditional(
+                      onTap: () {
+                        log("add Media on tap");
+                        showMediaOptions(context, controller);
+                      },
+                      heading: 'Media',
+                      subText:
+                          'Add Documents, photos, sites, videos, and presentations.',
+                      secSub: 'Learn more about media file types supported',
+                      selected: Obx(() {
+                        final data = controller.allMedias;
+                        return data.isEmpty
+                            ? const SizedBox.shrink()
+                            : Column(
+                                children: List.generate(data.length, (index) {
+                                  return addedMediaHome(
+                                      data[index]!, () => data.removeAt(index));
+                                }),
+                              );
+                      }),
+                    ),
+                    hMBox,
+                    GetBuilder<ProfileEducationController>(
+                        id: 'update-educationInfo',
+                        builder: (c) {
+                          log('hiiiiiiiiiiiiiiiiiiiiiiiii',
+                              name: 'update eduaction');
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              actionContainer(
+                                text: 'Cancel',
+                                textColor: mainPurple,
+                                boxColor: kwhite,
+                                borderColor: mainPurple,
+                                onTap: () => Get.back(),
+                              ),
+                              wMBox,
+                              actionContainer(
+                                text: 'Save',
+                                textColor: c.saveText.value,
+                                boxColor: c.saveBG.value,
+                                onTap: () {
+                                  if (formKey.currentState!.validate()) {
+                                    // log('school: ${c.schoolController.text} degree:${c.degreeController.text} studyfiled: ${c.studyFiledController.text} start: ${c.startdateController.text} end: ${c.endDateController.text} grade: ${c.gradeController.text} activities: ${c.activitiesController.text} description: ${c.descriptionController.text} skills:${c.addedSkill} media:${c.allMedias}',
+                                    //     name: 'add-education');
+                                    List<File> imagesList = c.allMedias
+                                        .where((file) => file != null)
+                                        .cast<File>()
+                                        .toList();
+                                    c.saveEducationInfo(
+                                        uId: uId.toString(),
+                                        school: c.schoolController.text,
+                                        degree: c.degreeController.text,
+                                        studyfield: c.studyFiledController.text,
+                                        startDate: c.startdateController.text,
+                                        endDate: c.endDateController.text,
+                                        grade: c.gradeController.text,
+                                        activities: c.activitiesController.text,
+                                        description:
+                                            c.descriptionController.text,
+                                        images: imagesList,
+                                        skills: c.addedSkill);
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        }),
+                  ],
+                ),
               ),
             ),
           ),
@@ -205,7 +297,7 @@ class AddEducationScreen extends StatelessWidget {
       BuildContext context, ProfileEducationController controller) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
+      builder: (_) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           child: Column(
@@ -246,40 +338,3 @@ class AddEducationScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-  // Future<void> datePicker(BuildContext context, {bool? start}) async {
-  //   final DateTime? picker = await showDatePicker(
-  //     context: context,
-  //     initialDate: dateTime,
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime(2050),
-  //     builder: (BuildContext context, Widget? child) {
-  //       return Theme(
-  //         data: ThemeData.dark().copyWith(
-  //           colorScheme: const ColorScheme.dark(
-  //             primary: Colors.purple, // Header background color
-  //             onPrimary: Colors.white, // Header text color
-  //             //   surface: Colors.grey.shade300, // Calendar background color
-  //             //   onSurface: Colors.black, // Calendar text color
-  //           ),
-
-  //           dialogBackgroundColor: Colors.white, // Dialog background color
-  //         ),
-  //         child: child!,
-  //       );
-  //     },
-  //   );
-  //   if (picker != null && picker != dateTime) {
-  //     if (start == true) {
-  //       startdateController.text = picker.toString().split(" ")[0];
-  //     } else {
-  //       endDateController.text = picker.toString().split(" ")[0];
-  //     }
-  //   }
-  // }

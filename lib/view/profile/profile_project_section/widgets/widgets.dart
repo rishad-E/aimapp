@@ -67,7 +67,7 @@ Widget addedMediaHomeProject() {
               color: textFieldColor,
             ),
             wBox,
-            SizedBox(
+            const SizedBox(
               height: 29,
               width: 45,
               // child: Image.file(

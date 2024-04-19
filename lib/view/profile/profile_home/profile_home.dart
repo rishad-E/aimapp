@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/controllers/profile_controller/education_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -23,22 +24,11 @@ class ProfileHomeScreen extends StatelessWidget {
   final double profileHeight = 130;
   @override
   Widget build(BuildContext context) {
-    // String? name;
-    // String? email;
-    // String? id;
-    // String? mobNo;
-    // String? userName;
-    // String? dOB;
+
     User? data;
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       data = userData.user;
-      // name = userData.user?.name ?? '';
-      // email = userData.user?.email ?? '';
-      // mobNo = userData.user?.phone ?? '';
-      // id = userData.user?.id.toString() ?? '';
-      // userName = userData.user?.username;
-      // dOB = userData.user?.dob;
     }
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
@@ -178,8 +168,12 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () =>
-                                Get.to(() => const AddEducationScreen()),
+                            onPressed: () {
+                              final controler = Get.put(ProfileEducationController());
+                              controler.clearallFields();
+                              Get.to(() => AddEducationScreen(uId: data?.id.toString()));
+                              
+                            },
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(

@@ -19,7 +19,7 @@ class AddProfileMediaScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Add Media',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => const AddEducationScreen()),
+            onPressed: () => Get.off(() => AddEducationScreen()),
             child: const Text(
               'Apply',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

@@ -88,7 +88,7 @@ class TempScreen extends StatelessWidget {
                 await Future.delayed(const Duration(seconds: 5));
                 await secondFunction();
                 await Future.wait([thirdFunction(), fourthFunction()]);
-                Get.to(() => HomeScreen());
+                Get.to(() => const HomeScreen());
               },
               icon: Text(
                 "sample ",

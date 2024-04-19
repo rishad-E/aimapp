@@ -128,7 +128,7 @@ Widget addedskillHome(String skill) {
   );
 }
 
-Widget addedMediaHome(File file) {
+Widget addedMediaHome(File file,void Function()? onTapClose) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -140,10 +140,13 @@ Widget addedMediaHome(File file) {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap: onTapClose,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
             SizedBox(

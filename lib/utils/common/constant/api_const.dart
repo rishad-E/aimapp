@@ -20,4 +20,5 @@ class Apis {
   final String checkAimcet = '/test-check';
   final String checkCounsellcall = '/slot-check';
   final String savepersonalInfo = '/add-personal-info';
+  final String saveEducation = '/add-education';
 }
