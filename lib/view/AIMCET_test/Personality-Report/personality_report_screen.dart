@@ -49,7 +49,7 @@ class PersonalityReportPage extends StatelessWidget {
                                 homeCWB,
                                 personSkillContainer(
                                   image: reportImages[index],
-                                  text: personalityHTexts[index],
+                                  text: 'Learn About ${controller.personality[0]}',
                                   text2: personalityexplanation[index],
                                 )
                               ],

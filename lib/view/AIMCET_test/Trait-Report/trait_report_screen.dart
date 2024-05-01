@@ -53,7 +53,7 @@ class TraitReportScreen extends StatelessWidget {
                                 homeCWB,
                                 personSkillContainer(
                                   image: reportImages[index],
-                                  text: personalityHTexts[index],
+                                  text: traitHTexts[index],
                                   text2: traitContainer[index],
                                 )
                               ],
@@ -61,7 +61,7 @@ class TraitReportScreen extends StatelessWidget {
                           } else {
                             return personSkillContainer(
                               image: reportImages[index],
-                              text: personalityHTexts[index],
+                              text: traitHTexts[index],
                               text2: traitContainer[index],
                             );
                           }

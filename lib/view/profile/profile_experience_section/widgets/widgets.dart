@@ -133,7 +133,7 @@ Widget addedskillHomeEX(String skill) {
 }
 
 
-Widget addedMediaHomeEX(File file) {
+Widget addedMediaHomeEX(File file,void Function()? onTapEX) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -145,10 +145,13 @@ Widget addedMediaHomeEX(File file) {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap: onTapEX,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
             SizedBox(

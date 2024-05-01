@@ -20,7 +20,7 @@ Text careerBoldText(
 
 Widget reviewRoleController({required String role}) {
   return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(22),
       color: const Color.fromARGB(255, 15, 187, 195),

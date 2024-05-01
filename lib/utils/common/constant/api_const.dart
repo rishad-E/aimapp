@@ -21,4 +21,12 @@ class Apis {
   final String checkCounsellcall = '/slot-check';
   final String savepersonalInfo = '/add-personal-info';
   final String saveEducation = '/add-education';
+  final String saveExperience = '/add-experience';
+  final String saveHonorAwards = '/add-awards';
+  final String saveLicense = '/add-license-certificate';
+  final String savePublication = '/add-publications';
+  final String saveProject = '/add-project';
+  final String saveLanguage = '/add-language';
+  final String saveVolunteer = '/add-volunteer-experience';
+  final String saveCourse = '/add-courses';
 }

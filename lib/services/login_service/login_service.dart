@@ -22,7 +22,7 @@ class LoginService {
       } else if (response.statusCode == 422) {
         return UserDataModel.fromJson(response.data);
       }else if(response.statusCode == 500){
-        SnackbarPopUps.popUpB('Error fetching data...Please try after sometime');
+        SnackbarPopUps.popUpB('Error fetching data,Server Error...Please try after sometime');
       }
     } on DioException catch (e) {
       // Handle other exceptions

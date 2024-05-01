@@ -22,19 +22,19 @@ class UpdateEducationInfoService {
   }) async {
     String path = Apis().aimUrl + Apis().saveEducation;
 
-    log('school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images',
+    log('uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images',
         name: 'add-education');
-    log(path, name: 'path');
+    // log(path, name: 'path');
     FormData formData = FormData.fromMap({
-      "user_id": "493",
-      "school": "school",
-      "degree": "degree",
-      "study_field": "studyfield",
-      "start_date": "14-02-2020",
-      "end_date": "15-02-2020",
-      "grade": "a",
-      "activities": "activities",
-      "description": "description",
+      "user_id": uId,
+      "school": school,
+      "degree":degree,
+      "study_field": studyfield,
+      "start_date": startDate,
+      "end_date": endDate,
+      "grade": grade,
+      "activities": activities,
+      "description": description,
       "skills[]": skills,
     });
     if (images.isNotEmpty) {
@@ -62,7 +62,9 @@ class UpdateEducationInfoService {
         log(successMessage, name: 'save education info success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
+        // String errorMessage = responseData['error'];
         log(response.data.toString(), name: 'save education info MB error');
+
         return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {

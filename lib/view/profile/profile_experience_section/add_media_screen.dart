@@ -12,7 +12,8 @@ import 'package:sizer/sizer.dart';
 
 class AddExperienceMediaScreen extends StatelessWidget {
   final File? image;
-  const AddExperienceMediaScreen({super.key, required this.image});
+  final String uId;
+  const AddExperienceMediaScreen({super.key, required this.image, required this.uId});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class AddExperienceMediaScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Add Media',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => const AddExperienceScreen()),
+            onPressed: () => Get.off(() => AddExperienceScreen(uId: uId)),
             child: const Text(
               'Apply',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

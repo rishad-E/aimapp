@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:aimshala/services/profile_section/update_education_info.dart';
+import 'package:aimshala/services/profile_section/update_education_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +123,7 @@ class ProfileEducationController extends GetxController {
     allMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
     log(selectedImage.toString(), name: 'gallery');
+    updateSaveButton();
     update(['update-educationInfo']);
     return selectedImage;
   }
@@ -135,7 +136,7 @@ class ProfileEducationController extends GetxController {
     // update(['update-media']);
     allMedias.add(selectedCamera);
     log(selectedImage.toString(), name: 'camera');
-
+    updateSaveButton();
     update(['update-educationInfo']);
     return selectedCamera;
   }

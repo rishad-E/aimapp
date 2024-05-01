@@ -4,6 +4,7 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
+import 'package:aimshala/view/chatbot/widgets/amy_radial_gradient.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,10 +25,14 @@ class BookingDialogueBox extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: 55.sp,
-            backgroundColor: kwhite,
-            backgroundImage: const AssetImage('assets/images/person.png'),
+          // CircleAvatar(
+          //   radius: 55.sp,
+          //   backgroundColor: kwhite,
+          //   backgroundImage: const AssetImage('assets/images/person.png'),
+          // ),
+          const Padding(
+            padding: EdgeInsets.only(right: 50),
+            child: AmyBotRadialColor(),
           ),
           hMBox,
           Text('Thank You!',
@@ -78,9 +83,9 @@ class BookingDialogueBox extends StatelessWidget {
                 if (controller.testDone.value == 'done') {
                   return ElevatedButton.icon(
                     style: ButtonStyle(
-                      shape: buttonShape(round: 8),
-                       side: MaterialStatePropertyAll(BorderSide(color: mainPurple))
-                    ),
+                        shape: buttonShape(round: 8),
+                        side: MaterialStatePropertyAll(
+                            BorderSide(color: mainPurple))),
                     icon: Text(
                       "Check AIMCET Result",
                       style: TextStyle(
@@ -116,7 +121,8 @@ class BookingDialogueBox extends StatelessWidget {
                         shape: buttonShape(round: 8),
                         side: MaterialStatePropertyAll(
                             BorderSide(color: mainPurple))),
-                    onPressed: () => Get.to(() => AIMCETQualificationScreen()),
+                    onPressed: () =>
+                        Get.to(() => AIMCETQualificationScreen(uId: id)),
                     icon: Text(
                       "Continue Psychometric Test",
                       style: TextStyle(
@@ -132,7 +138,8 @@ class BookingDialogueBox extends StatelessWidget {
                     style: ButtonStyle(
                         shape: buttonShape(round: 8),
                         backgroundColor: MaterialStatePropertyAll(mainPurple)),
-                    onPressed: () => Get.to(() => AIMCETQualificationScreen()),
+                    onPressed: () =>
+                        Get.to(() => AIMCETQualificationScreen(uId: id)),
                     icon: Text(
                       "Take Psychometric Test",
                       style: TextStyle(

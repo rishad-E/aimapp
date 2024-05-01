@@ -1,0 +1,134 @@
+import 'dart:developer';
+import 'dart:io';
+import 'package:aimshala/services/profile_section/update_license_certification_service.dart';
+import 'package:aimshala/view/profile/profile_home/profile_home.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+
+class ProfileLicenseCertificationController extends GetxController {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController organizationController = TextEditingController();
+  TextEditingController issuedateController = TextEditingController();
+  TextEditingController expirydateController = TextEditingController();
+  TextEditingController credentialIDController = TextEditingController();
+  TextEditingController credentialurlController = TextEditingController();
+
+  DateTime dateTime = DateTime.now();
+  RxList<String> addedLicenseSkill = <String>[].obs;
+  File? selectedImage;
+  File? selectedCamera;
+  RxList<File?> allLicenseMedias = <File?>[].obs;
+
+  Future<void> saveLicenseCertificationFunction({
+    required String uId,
+    required String name,
+    required String organization,
+    required String issueDate,
+    required String expiryDate,
+    required String credID,
+    required String credURL,
+    required List<File> media,
+    required List<String> skills,
+  }) async {
+    String? res =
+        await UpdateLicenseCertificationService().saveLicenseCertificationInfo(
+      uId: uId,
+      name: name,
+      organization: organization,
+      issueDate: issueDate,
+      expiryDate: expiryDate,
+      credID: credID,
+      credURL: credURL,
+      media: media,
+      skills: skills,
+    );
+    if (res == 'License & Certificate details added successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> datePicker(BuildContext context, {bool? expiry}) async {
+    final DateTime? picker = await showDatePicker(
+      context: context,
+      initialDate: dateTime,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2050),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: const ColorScheme.dark(
+              primary: Colors.purple, // Header background color
+              onPrimary: Colors.white, // Header text color
+              //   surface: Colors.grey.shade300, // Calendar background color
+              //   onSurface: Colors.black, // Calendar text color
+            ),
+
+            dialogBackgroundColor: Colors.white, // Dialog background color
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picker != null && picker != dateTime) {
+      if (expiry == true) {
+        final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        expirydateController.text = formatedDate;
+      } else {
+        final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        issuedateController.text = formatedDate;
+      }
+    }
+  }
+
+  Future<File?> pickImageMedia() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return null;
+    selectedImage = File(pickedFile.path);
+    allLicenseMedias.add(selectedImage);
+    // allMediasFiles.add(pickedFile.path.split('/').last);
+    log(selectedImage.toString(), name: 'gallery');
+
+    return selectedImage;
+  }
+
+  Future<File?> pickCameraMedia() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile == null) return null;
+    selectedCamera = File(pickedFile.path);
+    allLicenseMedias.add(selectedCamera);
+    log(selectedCamera.toString(), name: 'camera');
+    return selectedCamera;
+  }
+
+  String? fieldValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Fill this Field';
+    }
+    return null;
+  }
+}

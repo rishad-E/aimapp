@@ -47,7 +47,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                         controller: controller.nameController,
                         // validator: (value) => controller.fieldValidator(value),
                         onChanged: (value) {
-                          controller.allFieldSelect();
+                          // controller.allFieldSelect();
                           controller.update(['update-personalinfo']);
                         },
                         style: const TextStyle(fontSize: 12),
@@ -58,14 +58,16 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                     perosnalInfoFiled(
                       text: primarytxt3('Username', 9.5.sp),
                       textField: TextFormField(
-                        controller: controller.userNameController..text = username.toString(),
+                        controller: controller.userNameController
+                          ..text = username.toString(),
                         onChanged: (value) {
-                          controller.allFieldSelect();
+                          // controller.allFieldSelect();
                           controller.update(['update-personalinfo']);
                         },
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(
-                            hintText: 'User Nane', fill: username != null ? true : false),
+                            hintText: 'User Nane',
+                            fill: username != null ? true : false),
                       ),
                     ),
                     perosnalInfoFiled(
@@ -74,10 +76,10 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                         readOnly: true,
                         controller: controller.dateController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          controller.allFieldSelect();
-                          controller.update(['update-personalinfo']);
-                        },
+                        // onChanged: (value) {
+                        //   // controller.allFieldSelect();
+                        //   controller.update(['update-personalinfo']);
+                        // },
                         validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(
@@ -111,8 +113,16 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                             wMBox,
                             actionContainer(
                               text: 'Save',
-                              textColor: c.saveText.value,
-                              boxColor: c.saveBG.value,
+                              textColor: c.nameController.text.isNotEmpty &&
+                                      c.userNameController.text.isNotEmpty &&
+                                      c.dateController.text.isNotEmpty
+                                  ? kwhite
+                                  : textFieldColor,
+                              boxColor: c.nameController.text.isNotEmpty &&
+                                      c.userNameController.text.isNotEmpty &&
+                                      c.dateController.text.isNotEmpty
+                                  ? mainPurple
+                                  : buttonColor,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   // log('name: ${c.nameController.text} username:${c.userNameController.text}date: ${c.dateController.text} UID: $id');

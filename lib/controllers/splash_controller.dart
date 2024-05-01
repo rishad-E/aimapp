@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class SplashController extends GetxController {
-  final storage = const FlutterSecureStorage();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
   final loginController = Get.put(LoginController());
   final aimtestController = Get.put(AIMCETController());
   final bookingController = Get.put(BookCareerCounsellController());
@@ -39,55 +39,43 @@ class SplashController extends GetxController {
         ),
       );
     } else {
-      String? checkLogin = await storage.read(key: 'token');
-      String? phone = await storage.read(key: 'phone');
-      log(phone.toString(), name: 'splassssssssssssssssssssssssss');
-      loginController.userData =
-          await LoginService().verifyUserExist(mobileNo: phone.toString());
-      String? checkSignup;
-      if (loginController.userData?.token != null) {
-        storage.write(
-            key: 'token', value: loginController.userData?.token.toString());
-        checkSignup = await storage.read(key: 'token');
-      }
-
-      log('signup $checkSignup....login $checkLogin');
-      // log('date ${bookingController.selectedDate}....time ${bookingController.selectedTime}');
-
-      Timer(const Duration(seconds: 2), () {
-        if (checkSignup == null && checkLogin == null) {
-          Get.off(() => const LoginScreen());
-        } else {
-          if (loginController.userData != null) {
-            String? id = loginController.userData?.user?.id.toString();
-            String? uName = loginController.userData?.user?.name.toString();
-            log('uid $id....quaId 1...uName $uName');
-            bookingController.checkCounsellcallBookingFuntion(
-                userId: id.toString());
-            aimtestController
-                .checkAimcetTestTakenFunction(userId: id.toString())
-                .then((value) {
-              if (aimtestController.testDone.value == 'done') {
-                log('aimcet test done', name: 'spalsh done');
-                aimtestController.aimcetTestResultFunction(
-                    userId: id.toString(), userName: uName.toString());
-              }
-            });
-            // fetchFunctions(uId: id.toString(), uName: uName.toString());
-          }
-          Get.off(() => const HomeScreen());
+        String? checkLogin = await storage.read(key: 'token');
+        log(checkLogin.toString(),name: 'splash checklogin');
+        String? phone = await storage.read(key: 'phone');
+        log(phone.toString(), name: 'splash mobile');
+        loginController.userData =
+            await LoginService().verifyUserExist(mobileNo: phone.toString());
+        String? checkSignup;
+        if (loginController.userData?.token != null) {
+          storage.write(
+              key: 'token', value: loginController.userData?.token.toString());
+          checkSignup = await storage.read(key: 'token');
         }
-      });
+        log(checkSignup.toString(),name: 'splash checksignup');
+        Timer(const Duration(seconds: 2), () {
+          if (checkSignup == null) {
+            Get.off(() => const LoginScreen());
+          } else {
+            if (loginController.userData != null) {
+              String? id = loginController.userData?.user?.id.toString();
+              String? uName = loginController.userData?.user?.name.toString();
+              log('uid $id....quaId 1...uName $uName');
+              bookingController.checkCounsellcallBookingFuntion(
+                  userId: id.toString());
+              aimtestController
+                  .checkAimcetTestTakenFunction(userId: id.toString())
+                  .then((value) {
+                if (aimtestController.testDone.value == 'done') {
+                  log('aimcet test done', name: 'spalsh done');
+                  aimtestController.aimcetTestResultFunction(
+                      userId: id.toString(), userName: uName.toString());
+                }
+              });
+            }
+            Get.off(() => const HomeScreen());
+          }
+        });
+      
     }
   }
-
-  // void fetchFunctions({required String uId, required String uName}) {
-    // bookingController.checkCounsellcallBookingFuntion(userId: uId);
-    // aimtestController.checkAimcetTestTakenFunction(userId: uId).then((value) {
-    //   if (aimtestController.testDone.value == 'done') {
-    //     log('aimcet test done',name: 'spalsh done');
-    //      aimtestController.aimcetTestResultFunction(userId: uId,userName: uName);
-    //   }
-    // });
-  // }
 }

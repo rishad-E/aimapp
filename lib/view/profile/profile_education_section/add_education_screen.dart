@@ -15,8 +15,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddEducationScreen extends StatelessWidget {
-  final String? uId;
-  AddEducationScreen({super.key, this.uId});
+  final String uId;
+  AddEducationScreen({super.key, required this.uId});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -199,7 +199,7 @@ class AddEducationScreen extends StatelessWidget {
                     educationAdditional(
                       onTap: () {
                         log("add skill on tap");
-                        Get.to(() => const AddProfileSkillsScreen());
+                        Get.to(() => AddProfileSkillsScreen(uId: uId,));
                       },
                       heading: 'Skills',
                       subText:
@@ -230,7 +230,12 @@ class AddEducationScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   return addedMediaHome(
-                                      data[index]!, () => data.removeAt(index));
+                                    data[index]!,
+                                    () {
+                                      data.removeAt(index);
+                                      controller.updateSaveButton();
+                                    },
+                                  );
                                 }),
                               );
                       }),
@@ -265,7 +270,7 @@ class AddEducationScreen extends StatelessWidget {
                                         .cast<File>()
                                         .toList();
                                     c.saveEducationInfo(
-                                        uId: uId.toString(),
+                                        uId: uId,
                                         school: c.schoolController.text,
                                         degree: c.degreeController.text,
                                         studyfield: c.studyFiledController.text,
@@ -317,7 +322,7 @@ class AddEducationScreen extends StatelessWidget {
                 onTap: () {
                   controller.pickImageMedia().then((value) {
                     return Get.to(
-                      () => AddProfileMediaScreen(image: value),
+                      () => AddProfileMediaScreen(image: value, uId: uId,),
                     );
                   });
                 },
@@ -327,7 +332,7 @@ class AddEducationScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() => AddProfileMediaScreen(image: value));
+                    return Get.to(() => AddProfileMediaScreen(image: value,uId: uId,));
                   });
                 },
               ),

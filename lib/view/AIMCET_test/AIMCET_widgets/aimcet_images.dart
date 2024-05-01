@@ -32,6 +32,12 @@ List<String> personalityHTexts = [
   'Learn About Your Strengths',
 ];
 
+List<String> traitHTexts = [
+  'Learn About Broad Interests',
+  'Learn About Your Detailed Interests',
+  'Learn About Your Must Haves',
+];
+
 List<String> discoveryImages = [
   'assets/images/topcareer1.png',
   'assets/images/topcareer2.png',

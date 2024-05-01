@@ -1,17 +1,86 @@
 import 'dart:io';
 
+import 'package:aimshala/services/profile_section/update_experience_info_service.dart';
+import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class ProfileExperienceController extends GetxController {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController employmentController = TextEditingController();
+  TextEditingController companyController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+  TextEditingController locationTypeController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController profileController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkillEX = <String>[].obs;
   File? selectedImageEX;
   File? selectedCameraEX;
   RxList<File?> allMediasEX = <File?>[].obs;
+
+  Rx<Color> saveText = Rx<Color>(textFieldColor);
+  Rx<Color> saveBG = Rx<Color>(buttonColor);
+
+  Future<void> saveExperienceInfoFunction({
+    required String uId,
+    required String title,
+    required String employee,
+    required String company,
+    required String location,
+    required String locationtype,
+    required String startDate,
+    required String endDate,
+    required String description,
+    required String profile,
+    required List<File> imagesEX,
+    required List<String> skillsEX,
+  }) async {
+    String? res = await UpdateExperienceInfoService().saveExperienceInfo(
+      uId: uId,
+      title: title,
+      employee: employee,
+      company: company,
+      location: location,
+      locationtype: locationtype,
+      startDate: startDate,
+      endDate: endDate,
+      description: description,
+      profile: profile,
+      imagesEX: imagesEX,
+      skillsEX: skillsEX,
+    );
+    if (res == 'Experience details added successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   Future<void> datePicker(BuildContext context, {bool? start}) async {
     final DateTime? picker = await showDatePicker(
@@ -37,9 +106,13 @@ class ProfileExperienceController extends GetxController {
     );
     if (picker != null && picker != dateTime) {
       if (start == true) {
-        startDateController.text = picker.toString().split(" ")[0];
+        final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        startDateController.text = formatedDate;
+        updateSaveButtonEX();
       } else {
-        endDateController.text = picker.toString().split(" ")[0];
+        final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        endDateController.text = formatedDate;
+        updateSaveButtonEX();
       }
     }
   }
@@ -50,14 +123,54 @@ class ProfileExperienceController extends GetxController {
     if (pickedFile == null) return null;
     selectedImageEX = File(pickedFile.path);
     allMediasEX.add(selectedImageEX);
+    updateSaveButtonEX();
     return selectedImageEX;
   }
 
-  Future<File?>pickCameraMediaEX()async{
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<File?> pickCameraMediaEX() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCameraEX = File(pickedFile.path);
     allMediasEX.add(selectedCameraEX);
+    updateSaveButtonEX();
     return selectedCameraEX;
+  }
+
+  String? filedValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please fill this filed';
+    }
+    return null;
+  }
+
+  void updateSaveButtonEX() {
+    bool isAllFiledSelected = titleController.text.isNotEmpty &&
+        employmentController.text.isNotEmpty &&
+        companyController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        locationTypeController.text.isNotEmpty &&
+        startDateController.text.isNotEmpty &&
+        endDateController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty &&
+        profileController.text.isNotEmpty &&
+        addedSkillEX.isNotEmpty &&
+        allMediasEX.isNotEmpty;
+    saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
+    saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
+  }
+
+  void clearallFieldController() {
+    titleController.clear();
+    employmentController.clear();
+    companyController.clear();
+    locationController.clear();
+    locationTypeController.clear();
+    startDateController.clear();
+    endDateController.clear();
+    descriptionController.clear();
+    profileController.clear();
+    addedSkillEX.clear();
+    allMediasEX.clear();
   }
 }

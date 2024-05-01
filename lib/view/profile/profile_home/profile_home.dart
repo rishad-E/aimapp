@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/profile_controller/education_controller.dart';
+import 'package:aimshala/controllers/profile_controller/experience_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -11,6 +12,7 @@ import 'package:aimshala/view/profile/profile_contact_info/contact_info_screen.d
 import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_experience_screen.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/add_honorsawards_screen.dart';
+import 'package:aimshala/view/profile/profile_license_certifications_section/add_license_certification_screen.dart';
 import 'package:aimshala/view/profile/profile_personal_info/personal_info_screen.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_project_screen.dart';
@@ -24,11 +26,12 @@ class ProfileHomeScreen extends StatelessWidget {
   final double profileHeight = 130;
   @override
   Widget build(BuildContext context) {
-
     User? data;
+    String? id;
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       data = userData.user;
+      id = userData.user?.id.toString() ?? '';
     }
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
@@ -57,7 +60,6 @@ class ProfileHomeScreen extends StatelessWidget {
               children: [
                 hBox,
                 Text(
-                  // name.toString(),
                   data?.name ?? '',
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
@@ -106,8 +108,6 @@ class ProfileHomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // hBox,
-                      // hBox,
                       infoContainer(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,10 +169,11 @@ class ProfileHomeScreen extends StatelessWidget {
                           ),
                           TextButton.icon(
                             onPressed: () {
-                              final controler = Get.put(ProfileEducationController());
+                              final controler =
+                                  Get.put(ProfileEducationController());
                               controler.clearallFields();
-                              Get.to(() => AddEducationScreen(uId: data?.id.toString()));
-                              
+                              Get.to(
+                                  () => AddEducationScreen(uId: id.toString()));
                             },
                             icon: const Text(
                               "Add Now",
@@ -199,8 +200,13 @@ class ProfileHomeScreen extends StatelessWidget {
                               style: TextStyle(fontSize: 12),
                             ),
                             TextButton.icon(
-                              onPressed: () =>
-                                  Get.to(() => const AddExperienceScreen()),
+                              onPressed: () {
+                                final controler =
+                                    Get.put(ProfileExperienceController());
+                                controler.clearallFieldController();
+                                Get.to(() =>
+                                    AddExperienceScreen(uId: id.toString()));
+                              },
                               icon: const Text(
                                 "Add Now",
                                 style: TextStyle(
@@ -227,8 +233,9 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () => Get.to(
-                                () => const ProfileAddHonorsandAwardsScreenn()),
+                            onPressed: () => Get.to(() =>
+                                ProfileAddHonorsandAwardsScreen(
+                                    uId: id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -254,7 +261,9 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () {},
+                            onPressed: () => Get.to(() =>
+                                AddLicenseCertificationsScreen(
+                                    uId: id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -280,8 +289,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () => Get.to(
-                                () => const ProfileAddPublicationScreen()),
+                            onPressed: () =>
+                                Get.to(() => ProfileAddPublicationScreen(uId:id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -335,7 +344,7 @@ class ProfileHomeScreen extends StatelessWidget {
                           ),
                           TextButton.icon(
                             onPressed: () =>
-                                Get.to(() => const ProfileAddProjectScreen()),
+                                Get.to(() => ProfileAddProjectScreen(uId: id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(

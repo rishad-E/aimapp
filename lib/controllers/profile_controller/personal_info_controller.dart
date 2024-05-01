@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:aimshala/services/profile_section/update_personal_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -12,12 +11,14 @@ class PerosnalInfoController extends GetxController {
   final nameController = TextEditingController();
   final userNameController = TextEditingController();
   final DateTime dateTime = DateTime.now();
-  RxBool isDateSelected = false.obs;
+  // RxBool isDateSelected = false.obs;
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
-  /* ------ save personal info function ------ */
 
+
+
+  /* ------ save personal info function ------ */
   Future<void> savepersonalInfoFunction(
       {required String uId,
       required String fullName,
@@ -66,11 +67,8 @@ class PerosnalInfoController extends GetxController {
     if (picker != null && picker != dateTime) {
       final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
       dateController.text = formatedDate;
-      log(isDateSelected.value.toString());
-      isDateSelected.value = true;
-      log(isDateSelected.value.toString());
-
-      // update(['update-personalinfo']);
+      // allFieldSelect();
+      update(['update-personalinfo']);
     }
   }
 
@@ -83,13 +81,14 @@ class PerosnalInfoController extends GetxController {
   }
 
   /* ------ all field validator------ */
-  void allFieldSelect() {
-    bool isAllFiledSelect =
-        nameController.text.isNotEmpty && userNameController.text.isNotEmpty;
+  // void allFieldSelect() {
+  //   bool isAllFiledSelect = nameController.text.isNotEmpty &&
+  //       userNameController.text.isNotEmpty &&
+  //       dateController.text.isNotEmpty;
 
-    saveText.value = isAllFiledSelect ? kwhite : textFieldColor;
-    saveBG.value = isAllFiledSelect ? mainPurple : buttonColor;
+  //   saveText.value = isAllFiledSelect ? kwhite : textFieldColor;
+  //   saveBG.value = isAllFiledSelect ? mainPurple : buttonColor;
 
-    update(['update-personalinfo']);
-  }
+  //   update(['update-personalinfo']);
+  // }
 }

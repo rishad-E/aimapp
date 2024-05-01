@@ -55,7 +55,7 @@ class AIMCETTestPage extends StatelessWidget {
                       String answer = controller.allQuestions![index].answers;
                       List<String> pageItems =
                           answer.split('|').map((data) => data.trim()).toList();
-                      log(pageItems.toString());
+                      // log(pageItems.toString(), name: 'answers');
                       int? isSelected;
                       return GetBuilder<AIMCETController>(
                         id: 'aimcet-test',
@@ -86,12 +86,17 @@ class AIMCETTestPage extends StatelessWidget {
                                         }
                                         c.secID.value = data.sectionId;
                                         c.update(['aimcet-test']);
-                                        log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId');
+                                        // log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId',name: 'all-item');
                                         log('${c.secID}', name: 'section');
                                         log('${c.secQuestion}',
                                             name: 'sectionquestion num');
                                         log('${c.totalQ}',
                                             name: 'total question num');
+                                        if (c.totalQ == 40) {
+                                          log('40th question');
+                                        } else if (c.totalQ == 55) {
+                                          log('55th question');
+                                        }
                                         c.submitAimTest(
                                             userId: uId.toString(),
                                             cAnswer: answerText,
@@ -108,25 +113,22 @@ class AIMCETTestPage extends StatelessWidget {
                                             curve: Curves.ease,
                                           );
                                         }
-                                        if (index == 39) {
-                                          log(
-                                              uId.toString() +
-                                                  data.sectionId.toString(),
+                                        if (c.totalQ == 40) {
+                                          log(uId.toString(),
                                               name: '40th index');
                                           c.careerResultSubmittion(
                                               userId: uId.toString(),
                                               secId: '1');
                                         }
-                                        if (index == 54) {
-                                          log(
-                                              uId.toString() +
-                                                  data.sectionId.toString(),
+                                        if (c.totalQ == 55) {
+                                          log(uId.toString(),
                                               name: '55th index');
                                           c.careerResultSubmittion(
                                               userId: uId.toString(),
                                               secId: '3');
                                         }
                                         if (index == length - 1) {
+                                          log(index.toString(),name: 'number $index');
                                           c.aimcetTestResultFunction(
                                             userId: uId.toString(),
                                             userName: uName.toString(),

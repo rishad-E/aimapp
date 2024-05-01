@@ -18,6 +18,7 @@ class SnackbarPopUps {
         snackStyle: SnackStyle.FLOATING,
         message: text,
         margin: const EdgeInsets.all(10),
+        borderRadius: 8,
         backgroundColor: Colors.red,
         duration: const Duration(seconds: 2),
       ),

@@ -10,7 +10,8 @@ import 'dart:developer';
 import 'package:get/get.dart';
 
 class AddProfileSkillsScreen extends StatelessWidget {
-  const AddProfileSkillsScreen({super.key});
+  final String uId;
+  const AddProfileSkillsScreen({super.key, required this.uId});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => AddEducationScreen()),
+            onPressed: () => Get.off(() => AddEducationScreen(uId:uId)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
@@ -69,6 +70,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
                                       onTap: () {
                                         data.removeAt(index);
                                         controller.update(['add-skill']);
+                                        controller.updateSaveButton();
                                         controller
                                             .update(['update-educationInfo']);
                                       },

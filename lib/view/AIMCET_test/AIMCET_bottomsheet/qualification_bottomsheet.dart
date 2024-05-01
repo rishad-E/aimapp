@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +10,6 @@ class QualificationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? uId;
-    final UserDataModel? userData = Get.put(LoginController()).userData;
-    if (userData != null) {
-      uId = userData.user?.id.toString() ?? '';
-    }
     final aimcetController = Get.put(AIMCETController());
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
@@ -38,14 +29,6 @@ class QualificationBottomSheet extends StatelessWidget {
                       child: Image.asset('assets/images/close.png',
                           fit: BoxFit.cover)),
                 ),
-                // trailing: Text(
-                //   "Resend code",
-                //   style: TextStyle(
-                //     color: kpurple,
-                //     fontSize: 14,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
               ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -90,13 +73,6 @@ class QualificationBottomSheet extends StatelessWidget {
                                       aimcetController, data.title.toString());
                                   aimcetController.qualifyId =
                                       data.id.toString();
-                                  log('qualify ${aimcetController.qualifyId.toString()} ' 'userId${uId.toString()}',
-                                     );
-                                  aimcetController.fetchAllTestQuestions(
-                                      userId: uId.toString(),
-                                      qualifyId: aimcetController.qualifyId
-                                          .toString());
-                                          // aimcetController.secID.value = 1;
                                 },
                               );
                             },

@@ -12,13 +12,15 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETQualificationScreen extends StatelessWidget {
-  AIMCETQualificationScreen({super.key});
+  final String uId;
+  AIMCETQualificationScreen({super.key, required this.uId});
   final GlobalKey<FormState> aimcetFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     final aimcetController = Get.put(AIMCETController());
     aimcetController.getQualifications();
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: aimcetAppBar(),
@@ -50,7 +52,9 @@ class AIMCETQualificationScreen extends StatelessWidget {
                         // color: Colors.yellow,
                         height: 4.h,
                         width: 35.5.w,
-                        child: Image.asset('assets/images/acecet.png',),
+                        child: Image.asset(
+                          'assets/images/acecet.png',
+                        ),
                         // child: SvgPicture.asset(
                         //   'assets/images/ACETEST_LOGO.svg',
                         //   fit: BoxFit.cover,
@@ -108,12 +112,20 @@ class AIMCETQualificationScreen extends StatelessWidget {
                               decoration: boxdecoration(12),
                               child: GetBuilder<AIMCETController>(
                                   id: 'button-qualification',
-                                  builder: (qualification) {
+                                  builder: (c) {
                                     return TextButton(
                                       onPressed: () {
                                         if (aimcetFormKey.currentState!
                                             .validate()) {
-                                          log('${qualification.qualificationController.text}  ${qualification.qualifyId}');
+                                          log('${c.qualificationController.text}  ${c.qualifyId}');
+                                          log(
+                                            'qualify=>${c.qualifyId}'
+                                            'userId=>$uId',
+                                          );
+                                          c.fetchAllTestQuestions(
+                                              userId: uId,
+                                              qualifyId:
+                                                  c.qualifyId.toString());
                                           Get.to(() =>
                                               const AIMCETGuideLinePage());
                                         }
@@ -123,10 +135,8 @@ class AIMCETQualificationScreen extends StatelessWidget {
                                         backgroundColor: MaterialStateProperty
                                             .resolveWith<Color>(
                                           (states) {
-                                            return qualification
-                                                    .qualificationController
-                                                    .text
-                                                    .isNotEmpty
+                                            return c.qualificationController
+                                                    .text.isNotEmpty
                                                 ? kpurple
                                                 : buttonColor;
                                           },
@@ -135,9 +145,7 @@ class AIMCETQualificationScreen extends StatelessWidget {
                                       child: Text(
                                         "Start Test Now!",
                                         style: TextStyle(
-                                          color: qualification
-                                                  .qualificationController
-                                                  .text
+                                          color: c.qualificationController.text
                                                   .isNotEmpty
                                               ? Colors.white
                                               : disableText,

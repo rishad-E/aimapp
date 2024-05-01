@@ -33,22 +33,18 @@ class AimcetContainer extends StatelessWidget {
           stops: [0.0, 0.4531, 1.0],
         ),
       ),
-      // height: 44.5.h,
-      // width: 40.h,
+    
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           SizedBox(
-            // color: Colors.yellow,
             height: 23.h,
             child: Image.asset('assets/images/chip.png'),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(
-              // color: Colors.yellow,
               height: 5.5.h,
-              // child: SvgPicture.asset('assets/images/ACETEST_LOGO.svg'),
               child: Image.asset('assets/images/acecet-home.png'),
             ),
           ),
@@ -63,7 +59,6 @@ class AimcetContainer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 8),
             child: SizedBox(
-              // color: Colors.yellow,
               height: 4.2.h,
               child: Obx(
                 () {
@@ -86,7 +81,6 @@ class AimcetContainer extends StatelessWidget {
                         color: const Color.fromARGB(255, 147, 38, 143),
                       ),
                       onPressed: () {
-                        // Get.to(() => AIMCETQualificationScreen());
                         controller
                             .gpReportSubmitFunction(
                                 uId: id,
@@ -117,7 +111,7 @@ class AimcetContainer extends StatelessWidget {
                         Get.to(() => const AIMCETTestPage());
                       },
                       icon: Text(
-                        "Continue Psychometric Test",
+                        "Continue AIMCET Test",
                         style: TextStyle(
                             fontSize: 11.sp,
                             color: const Color.fromARGB(255, 147, 38, 143),
@@ -135,7 +129,7 @@ class AimcetContainer extends StatelessWidget {
                         shape: buttonShape(round: 8),
                       ),
                       onPressed: () =>
-                          Get.to(() => AIMCETQualificationScreen()),
+                          Get.to(() => AIMCETQualificationScreen(uId: id)),
                       icon: Text(
                         "Take Psychometric Test",
                         style: TextStyle(

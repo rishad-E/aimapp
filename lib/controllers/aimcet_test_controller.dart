@@ -103,6 +103,7 @@ class AIMCETController extends GetxController {
 
   Future<void> careerResultSubmittion(
       {required String userId, required String secId}) async {
+        log('career result at 40th and 55th',name: '40th and 55th');
     await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
   }
 
@@ -213,9 +214,7 @@ class AIMCETController extends GetxController {
       }
     }
   }
-  // == 'Not Given' && data['status'] == '0'
-  //  == 'Continue Test' && data['status'] == '2'
-  //  == 'Test Given' && data['status'] == '1'
+  
 
   void toggleSelection() {
     guideSelect = !guideSelect;

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -78,7 +80,7 @@ Widget honorsawardsAdditional(
   );
 }
 
-Widget addedMediaHomeHonorAward() {
+Widget addedMediaHomeHonorAward(File file,void Function()? onTap) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -90,19 +92,22 @@ Widget addedMediaHomeHonorAward() {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap:onTap ,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
-            const SizedBox(
+             SizedBox(
               height: 29,
               width: 45,
-              // child: Image.file(
-              //   file,
-              //   fit: BoxFit.fill,
-              // ),
+              child: Image.file(
+                file,
+                fit: BoxFit.fill,
+              ),
             ),
             wBox,
             Column(
@@ -118,6 +123,35 @@ Widget addedMediaHomeHonorAward() {
           Icons.menu,
           size: 12.sp,
         )
+      ],
+    ),
+  );
+}
+
+Widget honorMediaListTile(
+    {required String title, void Function()? onTap, Widget? leading}) {
+  return ListTile(
+    leading: leading,
+    title: Text(
+      title,
+      style: const TextStyle(fontSize: 14),
+    ),
+    onTap: onTap,
+    horizontalTitleGap: 5,
+    shape: const Border(
+        bottom: BorderSide(color: Color.fromARGB(255, 202, 201, 201))),
+    contentPadding: EdgeInsets.zero,
+  );
+}
+
+
+Widget honorAwardsInfoFiled({required Widget text, required Widget textField}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Column(
+      children: [
+        Align(alignment: Alignment.centerLeft, child: text),
+        textField
       ],
     ),
   );
