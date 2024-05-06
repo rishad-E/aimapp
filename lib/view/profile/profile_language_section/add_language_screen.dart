@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:aimshala/controllers/profile_controller/language_course_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';

@@ -29,4 +29,7 @@ class Apis {
   final String saveLanguage = '/add-language';
   final String saveVolunteer = '/add-volunteer-experience';
   final String saveCourse = '/add-courses';
+  final String suggestedSkills = '/skills-suggestions';
+  final String getProfileAlldata = '/get-user-info';
+  final String saveSkill = '/add-skills';
 }

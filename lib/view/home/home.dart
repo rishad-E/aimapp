@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
     }
     return Scaffold(
       extendBodyBehindAppBar: true,
-      drawer: const HomeDrawer(),
+      drawer: HomeDrawer(uId: id.toString()),
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
       appBar: appbarHome(name: name),
       body: SingleChildScrollView(

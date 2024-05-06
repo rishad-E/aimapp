@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/controllers/profile_controller/education_controller.dart';
-import 'package:aimshala/controllers/profile_controller/experience_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -26,6 +27,7 @@ class ProfileHomeScreen extends StatelessWidget {
   final double profileHeight = 130;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProfileSkillController());
     User? data;
     String? id;
     final UserDataModel? userData = Get.put(LoginController()).userData;
@@ -35,6 +37,7 @@ class ProfileHomeScreen extends StatelessWidget {
     }
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
+    controller.getProfileAlldataFunction(uId: id.toString());
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const HomeScreen())),
@@ -289,8 +292,9 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () =>
-                                Get.to(() => ProfileAddPublicationScreen(uId:id.toString())),
+                            onPressed: () => Get.to(() =>
+                                ProfileAddPublicationScreen(
+                                    uId: id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -316,8 +320,11 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () =>
-                                Get.to(() => const ProfileAddSkillScreen()),
+                            onPressed: () {
+                              controller.getSuggestedSkillsFunction();
+                              Get.to(() =>
+                                  ProfileAddSkillScreen(uId: id.toString()));
+                            },
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(
@@ -343,8 +350,8 @@ class ProfileHomeScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 12),
                           ),
                           TextButton.icon(
-                            onPressed: () =>
-                                Get.to(() => ProfileAddProjectScreen(uId: id.toString())),
+                            onPressed: () => Get.to(() =>
+                                ProfileAddProjectScreen(uId: id.toString())),
                             icon: const Text(
                               "Add Now",
                               style: TextStyle(

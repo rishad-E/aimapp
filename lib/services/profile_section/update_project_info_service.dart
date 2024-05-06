@@ -47,6 +47,7 @@ class UpdateProjectInfoService {
         ),
       );
       Map<String, dynamic> responseData = response.data;
+      // log(responseData.toString(), name: 'save project info');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         log(successMessage, name: 'save project info success');

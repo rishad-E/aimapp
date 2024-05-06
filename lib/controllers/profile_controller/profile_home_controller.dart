@@ -3,7 +3,7 @@ import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:get/get.dart';
 
 class ProfileHomeController extends GetxController {
-// Rx<User?> user = Rx<User?>(null).obs;
+
   Rx<User?> user = Rx<User?>(null);
   @override
   void onInit() {

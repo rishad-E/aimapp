@@ -6,7 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class HomeDrawer extends StatelessWidget {
-  const HomeDrawer({super.key});
+  final  String uId;
+  const HomeDrawer({super.key, required this.uId});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,10 @@ class HomeDrawer extends StatelessWidget {
                     child: Image.asset('assets/images/aimshala-logo.png'),
                   ),
                   DrawerTile(
-                    ontap1: () => Get.to(() => const ProfileHomeScreen()),
+                    ontap1: () {
+                      // GetProfileAllData().fetchProfileAlldata(uId: uId);
+                      Get.to(() => const ProfileHomeScreen());
+                    },
                     icon1: Icons.person_2_outlined,
                     text1: "Your Profile",
                   ),

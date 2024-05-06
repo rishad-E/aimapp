@@ -54,14 +54,15 @@ Text boldText({required String text, required double size}) {
   );
 }
 
-
-Text regularText(String text, double size,{TextAlign? textAlign}) {
+Text regularText(String text, double size, {TextAlign? textAlign,TextOverflow? overflow,int? maxLines}) {
   return Text(
     text,
+    maxLines:maxLines ,
     style: TextStyle(
         color: const Color.fromARGB(255, 132, 131, 131),
         fontSize: size,
         fontWeight: FontWeight.w400),
-    textAlign:textAlign ,
+    textAlign: textAlign,
+    overflow: overflow,
   );
 }
