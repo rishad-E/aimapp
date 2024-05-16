@@ -49,7 +49,7 @@ Widget educationAdditional(
                     fontSize: 9.sp,
                     fontWeight: FontWeight.w400),
               )
-            : const SizedBox.shrink(),
+            : shrinked,
         selected,
         hBox,
         GestureDetector(
@@ -128,7 +128,11 @@ Widget addedskillHome(String skill) {
   );
 }
 
-Widget addedMediaHome(File file,void Function()? onTapClose) {
+Widget addedMediaHome(
+    {required File file,
+    void Function()? onTapClose,
+    required String mediaTitle,
+    required String mediaDescription}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -138,33 +142,39 @@ Widget addedMediaHome(File file,void Function()? onTapClose) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap: onTapClose,
-              child: Icon(
-                Icons.close,
-                size: 12.sp,
-                color: textFieldColor,
+        Expanded(
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: onTapClose,
+                child: Icon(
+                  Icons.close,
+                  size: 12.sp,
+                  color: textFieldColor,
+                ),
               ),
-            ),
-            wBox,
-            SizedBox(
-              height: 29,
-              width: 45,
-              child: Image.file(
-                file,
-                fit: BoxFit.fill,
+              wBox,
+              SizedBox(
+                height: 29,
+                width: 45,
+                child: Image.file(
+                  file,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),wBox,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                regularText('Physician (General Practitioner)', 12),
-                regularText('Physician (General Practitioner)', 8),
-              ],
-            )
-          ],
+              wBox,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    regularText(mediaTitle, 12),
+                    regularText(mediaDescription, 8,
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Icon(
           Icons.menu,

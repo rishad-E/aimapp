@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -15,11 +17,37 @@ import 'package:sizer/sizer.dart';
 
 class AddExperienceScreen extends StatelessWidget {
   final String uId;
-  AddExperienceScreen({super.key, required this.uId});
+  final Experience? experience;
+  AddExperienceScreen({super.key, required this.uId, this.experience});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileExperienceController());
+    String? exID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.titleController.text =
+          experience?.title.toString() ?? controller.titleController.text;
+      controller.employmentController.text =
+          experience?.employmentType.toString() ??
+              controller.employmentController.text;
+      controller.companyController.text = experience?.companyName.toString() ??
+          controller.companyController.text;
+      controller.locationController.text =
+          experience?.location.toString() ?? controller.locationController.text;
+      controller.locationTypeController.text =
+          experience?.locationType.toString() ??
+              controller.locationTypeController.text;
+      controller.startDateController.text = experience?.startDate.toString() ??
+          controller.startDateController.text;
+      controller.endDateController.text =
+          experience?.endDate.toString() ?? controller.endDateController.text;
+      controller.descriptionController.text =
+          experience?.description.toString() ??
+              controller.descriptionController.text;
+      controller.profileController.text =
+          experience?.profile.toString() ?? controller.profileController.text;
+      exID = experience?.id.toString();
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -37,7 +65,7 @@ class AddExperienceScreen extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    profileRichText('Add$uId', 'Experience'),
+                    profileRichText('Add', 'Experience'),
                     hBox,
                     Text(
                       "Tell us about your Experience",
@@ -129,7 +157,20 @@ class AddExperienceScreen extends StatelessWidget {
                       ),
                     ),
                     hBox,
-                    currentlyWorking(),
+                    GetBuilder<ProfileExperienceController>(
+                        id: 'EX-currentlyworkingButton',
+                        builder: (c) {
+                          // bool currently = experience?.workingCurrently == 'Yes'
+                          //     ? true
+                          //     : course?.workingCurrently == 'No'
+                          //         ? false
+                          //         : c.currentlyWorking;
+                          return GestureDetector(
+                            onTap: () => c.toggleCurrentlyWorking(),
+                            child:
+                                currentlyWorking(working: c.currentlyWorking),
+                          );
+                        }),
                     experienceInfoFiled(
                       text: primarytxt3('Start date', 9.5.sp),
                       textField: TextFormField(
@@ -211,6 +252,7 @@ class AddExperienceScreen extends StatelessWidget {
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
                       onTap: () => Get.to(() => AddExperienceSkillScreen(
                             uId: uId,
+                            ex: experience,
                           )),
                       selected: Obx(
                         () => controller.addedSkillEX.isEmpty
@@ -236,11 +278,17 @@ class AddExperienceScreen extends StatelessWidget {
                               children: List.generate(
                                   controller.allMediasEX.length, (index) {
                                 final data = controller.allMediasEX;
-                                return addedMediaHomeEX(data[index]!, () {
-                                  data.removeAt(index);
-                                  // controller.updateSaveButtonEX();
-                                  controller.update(['update-experienceInfo']);
-                                });
+                                return addedMediaHomeEX(
+                                    file: data[index]!,
+                                    onTapClose: () {
+                                      data.removeAt(index);
+                                      controller
+                                          .update(['update-experienceInfo']);
+                                    },
+                                    mediaTitle:
+                                        controller.mediaTitleController.text,
+                                    mediaDescription: controller
+                                        .mediaDescriptionController.text);
                               }),
                             )),
                     ),
@@ -265,13 +313,58 @@ class AddExperienceScreen extends StatelessWidget {
                               boxColor: c.saveBG.value,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  // log('title:${c.titleController.text}=> employee:${c.employmentController.text}=> company:${c.companyController.text}=> location:${c.locationController.text}=> locationtype:${c.locationTypeController.text}=> startDate:${c.startDateController.text}=> endDate:${c.endDateController.text}=> description:${c.descriptionController.text}=> profile:${c.profileController.text}=> skill:${c.addedSkillEX}=> media:${c.allMediasEX}',
-                                  //     name: 'add-EX screen');
                                   List<File> imagesList = c.allMediasEX
                                       .where((file) => file != null)
                                       .cast<File>()
                                       .toList();
-                                      c.saveExperienceInfoFunction(uId: uId, title: c.titleController.text, employee: c.employmentController.text, company: c.companyController.text, location: c.locationController.text, locationtype: c.locationTypeController.text, startDate: c.startDateController.text, endDate: c.endDateController.text, description: c.descriptionController.text, profile: c.profileController.text, imagesEX: imagesList, skillsEX: c.addedSkillEX);
+                                  String currently =
+                                      c.currentlyWorking == true ? 'Yes' : 'No';
+                                  log('currently=>$currently   title:${c.titleController.text}=> employee:${c.employmentController.text}=> company:${c.companyController.text}=> location:${c.locationController.text}=> locationtype:${c.locationTypeController.text}=> startDate:${c.startDateController.text}=> endDate:${c.endDateController.text}=> description:${c.descriptionController.text}=> profile:${c.profileController.text}=> skill:${c.addedSkillEX}=> media:${c.allMediasEX} mediaTitle=>${c.mediaTitleController.text} mediaDesc=>${c.mediaDescriptionController.text}',
+                                      name: 'add-EX screen');
+                                  experience == null
+                                      ? c.saveExperienceInfoFunction(
+                                          uId: uId,
+                                          title: c.titleController.text,
+                                          employee: c.employmentController.text,
+                                          company: c.companyController.text,
+                                          location: c.locationController.text,
+                                          locationtype:
+                                              c.locationTypeController.text,
+                                          currentlyWorking: currently,
+                                          startDate: c.startDateController.text,
+                                          endDate: c.endDateController.text,
+                                          description:
+                                              c.descriptionController.text,
+                                          profile: c.profileController.text,
+                                          mediaTitle:
+                                              c.mediaTitleController.text,
+                                          mediaDescription:
+                                              c.mediaDescriptionController.text,
+                                          imagesEX: imagesList,
+                                          skillsEX: c.addedSkillEX,
+                                        )
+                                      : c.updateExperienceFunction(
+                                          exID: exID.toString(),
+                                          uId: uId,
+                                          title: c.titleController.text,
+                                          employee: c.employmentController.text,
+                                          company: c.companyController.text,
+                                          location: c.locationController.text,
+                                          locationtype:
+                                              c.locationTypeController.text,
+                                          currentlyWorking: currently,
+                                          startDate: c.startDateController.text,
+                                          endDate: c.endDateController.text,
+                                          description:
+                                              c.descriptionController.text,
+                                          profile: c.profileController.text,
+                                          mediaTitle:
+                                              c.mediaTitleController.text,
+                                          mediaDescription:
+                                              c.mediaDescriptionController.text,
+                                          imagesEX: imagesList,
+                                          skillsEX: c.addedSkillEX,
+                                        );
                                 }
                               },
                             ),
@@ -312,8 +405,14 @@ class AddExperienceScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMediaEX().then((value) {
-                    return Get.to(
-                        () => AddExperienceMediaScreen(image: value, uId: uId));
+                    // controller.mediaTitleController.clear();
+                    // controller.mediaDescriptionController.clear();
+                    Get.to(() => AddExperienceMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          ex: experience,
+                        ));
                   });
                   Navigator.pop(context);
                 },
@@ -323,8 +422,12 @@ class AddExperienceScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMediaEX().then((value) {
-                    return Get.to(
-                        () => AddExperienceMediaScreen(image: value, uId: uId));
+                    return Get.to(() => AddExperienceMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          ex: experience,
+                        ));
                   });
                   Navigator.pop(context);
                 },

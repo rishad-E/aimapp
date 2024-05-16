@@ -6,8 +6,7 @@ import 'package:dio/dio.dart';
 class GetProfileAllData {
   Dio dio = Dio();
 
-  Future<dynamic> fetchProfileAlldata(
-      {required String uId}) async {
+  Future<dynamic> fetchProfileAlldata({required String uId}) async {
     String path = Apis().aimUrl + Apis().getProfileAlldata;
     try {
       Response response = await dio.get(
@@ -15,12 +14,9 @@ class GetProfileAllData {
         queryParameters: {"user_id": uId},
         options: Options(validateStatus: (status) => status! < 599),
       );
-      // log(response.data.toString(), name: 'profile all data');
+
       if (response.statusCode == 200) {
         return response.data;
-        // ProfileAlldataModel model = ProfileAlldataModel.fromJson(response.data);
-        // log(model.experiences.toString(), name: 'profile all data');
-        // return model;
       } else {
         // Handle other response status codes if needed
         throw Exception('Failed to fetch profile data: ${response.statusCode}');

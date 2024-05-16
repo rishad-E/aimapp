@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:aimshala/services/profile_section/update_education_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -18,6 +16,8 @@ class ProfileEducationController extends GetxController {
   TextEditingController gradeController = TextEditingController();
   TextEditingController activitiesController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController mediaTitleController = TextEditingController();
+  TextEditingController mediaDescriptionController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkill = <String>[].obs;
@@ -38,10 +38,12 @@ class ProfileEducationController extends GetxController {
     required String grade,
     required String activities,
     required String description,
+    required String mediaTitle,
+    required String mediaDescription,
     required List<File> images,
     required List<String> skills,
   }) async {
-    String? res = await UpdateEducationInfoService().updateEducationInfo(
+    String? res = await UpdateEducationInfoService().saveEducationInfo(
       uId: uId,
       school: school,
       degree: degree,
@@ -51,12 +53,72 @@ class ProfileEducationController extends GetxController {
       grade: grade,
       activities: activities,
       description: description,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
       images: images,
       skills: skills,
     );
     if (res == 'Education details added successfully.') {
       Get.showSnackbar(
         GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateEducationInfo({
+    required String edID,
+    required String uId,
+    required String school,
+    required String degree,
+    required String studyfield,
+    required String startDate,
+    required String endDate,
+    required String grade,
+    required String activities,
+    required String description,
+    required String mediaTitle,
+    required String mediaDescription,
+    required List<File> images,
+    required List<String> skills,
+  }) async {
+    String? res = await UpdateEducationInfoService().updateEducationInfo(
+      edID: edID,
+      uId: uId,
+      school: school,
+      degree: degree,
+      studyfield: studyfield,
+      startDate: startDate,
+      endDate: endDate,
+      grade: grade,
+      activities: activities,
+      description: description,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+      images: images,
+      skills: skills,
+    );
+    if (res == "Education details updated successfully.") {
+      Get.showSnackbar(
+         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
           message: res,
           borderRadius: 4,
@@ -122,7 +184,6 @@ class ProfileEducationController extends GetxController {
     selectedImage = File(pickedFile.path);
     allMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
-    log(selectedImage.toString(), name: 'gallery');
     updateSaveButton();
     update(['update-educationInfo']);
     return selectedImage;
@@ -135,7 +196,6 @@ class ProfileEducationController extends GetxController {
     selectedCamera = File(pickedFile.path);
     // update(['update-media']);
     allMedias.add(selectedCamera);
-    log(selectedImage.toString(), name: 'camera');
     updateSaveButton();
     update(['update-educationInfo']);
     return selectedCamera;

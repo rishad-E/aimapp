@@ -21,14 +21,14 @@ class UpdateCourseInfoService {
             "user_id": uId,
             "course_name": course,
             "course_number": courseNo,
-            "assosiated": courseAssosiated,
+            "associated": courseAssosiated,
             "working_currently": working,
           },
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-
+      log(responseData.toString(), name: 'save course success');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         log(successMessage, name: 'save course success');

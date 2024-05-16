@@ -18,6 +18,10 @@ class ProfileExperienceController extends GetxController {
   TextEditingController profileController = TextEditingController();
   TextEditingController startDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
+  TextEditingController mediaTitleController = TextEditingController();
+  TextEditingController mediaDescriptionController = TextEditingController();
+
+  bool currentlyWorking = false;
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkillEX = <String>[].obs;
@@ -35,10 +39,13 @@ class ProfileExperienceController extends GetxController {
     required String company,
     required String location,
     required String locationtype,
+    required String currentlyWorking,
     required String startDate,
     required String endDate,
     required String description,
     required String profile,
+    required String mediaTitle,
+    required String mediaDescription,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
@@ -49,10 +56,13 @@ class ProfileExperienceController extends GetxController {
       company: company,
       location: location,
       locationtype: locationtype,
+      currentlyWorking: currentlyWorking,
       startDate: startDate,
       endDate: endDate,
       description: description,
       profile: profile,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
       imagesEX: imagesEX,
       skillsEX: skillsEX,
     );
@@ -80,6 +90,44 @@ class ProfileExperienceController extends GetxController {
         ),
       );
     }
+  }
+
+  Future<void> updateExperienceFunction({
+    required String exID,
+    required String uId,
+    required String title,
+    required String employee,
+    required String company,
+    required String location,
+    required String locationtype,
+    required String currentlyWorking,
+    required String startDate,
+    required String endDate,
+    required String description,
+    required String profile,
+    required String mediaTitle,
+    required String mediaDescription,
+    required List<File> imagesEX,
+    required List<String> skillsEX,
+  }) async {
+    UpdateExperienceInfoService().updateExperienceInfo(
+      exID: exID,
+      uId: uId,
+      title: title,
+      employee: employee,
+      company: company,
+      location: location,
+      locationtype: locationtype,
+      currentlyWorking: currentlyWorking,
+      startDate: startDate,
+      endDate: endDate,
+      description: description,
+      profile: profile,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+      imagesEX: imagesEX,
+      skillsEX: skillsEX,
+    );
   }
 
   Future<void> datePicker(BuildContext context, {bool? start}) async {
@@ -158,6 +206,11 @@ class ProfileExperienceController extends GetxController {
         allMediasEX.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
+  }
+
+  void toggleCurrentlyWorking() {
+    currentlyWorking = !currentlyWorking;
+    update(['EX-currentlyworkingButton']);
   }
 
   void clearallFieldController() {

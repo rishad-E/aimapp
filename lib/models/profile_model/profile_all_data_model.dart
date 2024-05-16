@@ -18,6 +18,7 @@ class ProfileAlldataModel {
   List<Language>? languages;
   List<Course>? courses;
   List<License>? licenses;
+  List<Skill>? skills;
 
   ProfileAlldataModel({
     this.educations,
@@ -29,6 +30,7 @@ class ProfileAlldataModel {
     this.languages,
     this.courses,
     this.licenses,
+    this.skills,
   });
 
   factory ProfileAlldataModel.fromJson(Map<String, dynamic> json) =>
@@ -68,6 +70,9 @@ class ProfileAlldataModel {
             ? []
             : List<License>.from(
                 json["licenses"]!.map((x) => License.fromJson(x))),
+        skills: json["skills"] == null
+            ? []
+            : List<Skill>.from(json["skills"]!.map((x) => Skill.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,6 +103,9 @@ class ProfileAlldataModel {
         "licenses": licenses == null
             ? []
             : List<dynamic>.from(licenses!.map((x) => x.toJson())),
+        "skills": skills == null
+            ? []
+            : List<dynamic>.from(skills!.map((x) => x.toJson())),
       };
 }
 
@@ -666,5 +674,69 @@ class VolunteerExperience {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,
+      };
+}
+
+class Skill {
+  int? id;
+  int? userId;
+  String? skillName;
+  String? experiencesId;
+  String? educationsId;
+  String? licensesId;
+  String? projectsId;
+  String? coursesId;
+  String? awardsId;
+  String? followupPermission;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Skill({
+    this.id,
+    this.userId,
+    this.skillName,
+    this.experiencesId,
+    this.educationsId,
+    this.licensesId,
+    this.projectsId,
+    this.coursesId,
+    this.awardsId,
+    this.followupPermission,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Skill.fromJson(Map<String, dynamic> json) => Skill(
+        id: json["id"],
+        userId: json["user_id"],
+        skillName: json["skill_name"],
+        experiencesId: json["experiences_id"],
+        educationsId: json["educations_id"],
+        licensesId: json["licenses_id"],
+        projectsId: json["projects_id"],
+        coursesId: json["courses_id"],
+        awardsId: json["awards_id"],
+        followupPermission: json["followup_permission"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "skill_name": skillName,
+        "experiences_id": experiencesId,
+        "educations_id": educationsId,
+        "licenses_id": licensesId,
+        "projects_id": projectsId,
+        "courses_id": coursesId,
+        "awards_id": awardsId,
+        "followup_permission": followupPermission,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

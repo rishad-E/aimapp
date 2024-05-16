@@ -44,7 +44,6 @@ class UpdateVolunteerInfoService {
         final errorMessage = errorMessages.join('\n');
         log(errorMessage.toString(), name: 'save volunteer error data');
         return errorMessage;
-        // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {

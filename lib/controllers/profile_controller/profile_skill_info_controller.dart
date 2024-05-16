@@ -13,14 +13,27 @@ class ProfileSkillController extends GetxController {
   RxList<String> suggestedSkills = <String>[].obs;
   ProfileAlldataModel? alldataModel;
   RxBool loading = true.obs;
+  RxBool profileDataLoading = true.obs;
   RxString? error;
   /*------- model class lists------*/
-  List<Education> education = [];
-  List<Experience> experience = [];
-  List<License> license = [];
-  List<Project> project = [];
-  List<Course> course = [];
-  List<Award> award = [];
+  // List<Experience> experience = [];
+  // List<Education> education = [];
+  // List<License> license = [];
+  // List<Project> project = [];
+  // List<Course> course = [];
+  // List<Award> award = [];
+
+  RxList<Education> education = <Education>[].obs;
+  RxList<Experience> experience = <Experience>[].obs;
+  RxList<License> license = <License>[].obs;
+  RxList<Project> project = <Project>[].obs;
+  RxList<Award> award = <Award>[].obs;
+  RxList<Publication> publication = <Publication>[].obs;
+  RxList<Course> course = <Course>[].obs;
+  RxList<Language> language = <Language>[].obs;
+  RxList<VolunteerExperience> volExperience = <VolunteerExperience>[].obs;
+  RxList<Skill> skills = <Skill>[].obs;
+
   /*------- model class lists------*/
 
   /*------- lists to show in add skill screen ------*/
@@ -95,12 +108,16 @@ class ProfileSkillController extends GetxController {
   /*------- functions to extract items needed to pass with skill section ------*/
   Future<void> getProfileAlldataFunction({required String uId}) async {
     try {
+      profileDataLoading.value = true;
+
       dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
       if (alldata != null) {
+        log(alldata.toString(), name: 'alldata c');
+
         /* -------extracting experience---------- */
         List<dynamic> experiencedata = alldata["experiences"];
         if (experiencedata.isNotEmpty) {
-          experience =
+          experience.value =
               experiencedata.map((json) => Experience.fromJson(json)).toList();
           // log(experience.toString(), name: 'all data');
           if (experience.isNotEmpty) {
@@ -112,20 +129,22 @@ class ProfileSkillController extends GetxController {
               if (!exSkillsList
                   .any((item) => item.companyName == model.companyName)) {
                 exSkillsList.add(model);
-                log('added', name: 'add to EXskill list');
+                // log('added', name: 'add to EXskill list');
               } else {
-                log('contais', name: 'add to EXskill list');
+                // log('contais', name: 'add to EXskill list');
               }
 
               log(exSkillsList.toString(), name: 'newskills c');
             }
           }
+        } else {
+          // experience.value = [];
         }
 
         /* -------extracting education---------- */
         List<dynamic> educationdata = alldata["educations"];
         if (educationdata.isNotEmpty) {
-          education =
+          education.value =
               educationdata.map((json) => Education.fromJson(json)).toList();
           if (education.isNotEmpty) {
             for (var i = 0; i < education.length; i++) {
@@ -135,11 +154,11 @@ class ProfileSkillController extends GetxController {
                   EducationModel(school: school, educationID: id);
               if (!edSchoolList.any((item) => item.school == model.school)) {
                 edSchoolList.add(model);
-                log('added', name: 'add to edSchool list');
+                // log('added', name: 'add to edSchool list');
               } else {
-                log('contais', name: 'add to edSchool list');
+                // log('contais', name: 'add to edSchool list');
               }
-              log(edSchoolList.toString(), name: 'newEducationList c');
+              // log(edSchoolList.toString(), name: 'newEducationList c');
             }
           }
           log(edSchoolList.toString(), name: 'newEducationList data');
@@ -148,7 +167,8 @@ class ProfileSkillController extends GetxController {
         /* -------extracting license---------- */
         List<dynamic> licensedata = alldata["licenses"];
         if (licensedata.isNotEmpty) {
-          license = licensedata.map((json) => License.fromJson(json)).toList();
+          license.value =
+              licensedata.map((json) => License.fromJson(json)).toList();
           if (license.isNotEmpty) {
             for (var i = 0; i < license.length; i++) {
               String name = license[i].name.toString();
@@ -156,9 +176,9 @@ class ProfileSkillController extends GetxController {
               LicenseModel model = LicenseModel(name: name, licenseID: id);
               if (!licenseNameList.any((item) => item.name == model.name)) {
                 licenseNameList.add(model);
-                log('added', name: 'add to licenseNameList list');
+                // log('added', name: 'add to licenseNameList list');
               } else {
-                log('contais', name: 'licenseNameList list');
+                // log('contais', name: 'licenseNameList list');
               }
             }
           }
@@ -168,7 +188,8 @@ class ProfileSkillController extends GetxController {
         /* -------extracting projects---------- */
         List<dynamic> projectdata = alldata["projects"];
         if (projectdata.isNotEmpty) {
-          project = projectdata.map((json) => Project.fromJson(json)).toList();
+          project.value =
+              projectdata.map((json) => Project.fromJson(json)).toList();
           if (project.isNotEmpty) {
             for (var i = 0; i < project.length; i++) {
               String title = project[i].title.toString();
@@ -176,9 +197,9 @@ class ProfileSkillController extends GetxController {
               ProjectModel model = ProjectModel(title: title, projectID: id);
               if (!projectTitleList.any((item) => item.title == model.title)) {
                 projectTitleList.add(model);
-                log('added', name: 'add to projectTitleList list');
+                // log('added', name: 'add to projectTitleList list');
               } else {
-                log('contais', name: ' projectTitleList list');
+                // log('contais', name: ' projectTitleList list');
               }
             }
           }
@@ -187,7 +208,7 @@ class ProfileSkillController extends GetxController {
         /* -------extracting courses---------- */
         List<dynamic> coursedata = alldata["courses"];
         if (coursedata.isNotEmpty) {
-          course = coursedata.map((e) => Course.fromJson(e)).toList();
+          course.value = coursedata.map((e) => Course.fromJson(e)).toList();
           if (course.isNotEmpty) {
             for (var i = 0; i < course.length; i++) {
               String name = course[i].courseName.toString();
@@ -195,9 +216,9 @@ class ProfileSkillController extends GetxController {
               CourseModel model = CourseModel(name: name, courseID: id);
               if (!courseNameList.any((i) => i.name == model.name)) {
                 courseNameList.add(model);
-                log('added', name: 'add to courseNameList list');
+                // log('added', name: 'add to courseNameList list');
               } else {
-                log('contais', name: ' courseNameList list');
+                // log('contais', name: ' courseNameList list');
               }
             }
           }
@@ -207,7 +228,7 @@ class ProfileSkillController extends GetxController {
         /* -------extracting award---------- */
         List<dynamic> awardData = alldata["awards"];
         if (awardData.isNotEmpty) {
-          award = awardData.map((e) => Award.fromJson(e)).toList();
+          award.value = awardData.map((e) => Award.fromJson(e)).toList();
           if (award.isNotEmpty) {
             for (var i = 0; i < award.length; i++) {
               String title = award[i].title.toString();
@@ -215,28 +236,54 @@ class ProfileSkillController extends GetxController {
               AwardModel model = AwardModel(title: title, awardID: id);
               if (!awardNameList.any((i) => i.title == model.title)) {
                 awardNameList.add(model);
-                log('added', name: 'add to awardNameList list');
+                // log('added', name: 'add to awardNameList list');
               } else {
-                log('contais', name: ' awardNameList list');
+                // log('contais', name: ' awardNameList list');
               }
             }
           }
           log(awardNameList.toString(), name: 'New awardNameList c');
         }
+
+        /* -------extracting publication ---------- */
+        List<dynamic> publicationData = alldata["publications"];
+        if (publicationData.isNotEmpty) {
+          publication.value =
+              publicationData.map((e) => Publication.fromJson(e)).toList();
+        }
+
+        /* -------extracting Skills ---------- */
+        List<dynamic> skillData = alldata["skills"];
+        if (skillData.isNotEmpty) {
+          skills.value = skillData.map((e) => Skill.fromJson(e)).toList();
+        }
+
+        /* -------extracting language ---------- */
+        List<dynamic> languageData = alldata["languages"];
+        if (languageData.isNotEmpty) {
+          language.value =
+              languageData.map((e) => Language.fromJson(e)).toList();
+        }
+
+        /* -------extracting volunteer experience ---------- */
+        List<dynamic> volExperienceData = alldata["volunteer_experiences"];
+        if (volExperienceData.isNotEmpty) {
+          volExperience.value = volExperienceData
+              .map((e) => VolunteerExperience.fromJson(e))
+              .toList();
+        }
       }
+      profileDataLoading.value = false;
     } catch (e) {
       log('Error fetching profile data: $e');
+      profileDataLoading.value = false;
+    } finally {
+      profileDataLoading.value = false;
     }
   }
 
   /*------- fuction to get suggested skills ------*/
   Future<void> getSuggestedSkillsFunction() async {
-    List<String> suggested =
-        await UpdateSkillInfoService().getSuggestedSkills();
-    suggestedSkills.assignAll(suggested);
-    log(suggestedSkills.toString(), name: 'suggested skill-c');
-    log(exSkillsList.toString(), name: 'newskills c');
-
     try {
       loading.value = true;
       List<String> skills = await UpdateSkillInfoService().getSuggestedSkills();
@@ -316,6 +363,16 @@ class ProfileSkillController extends GetxController {
       return 'Please Enter this Field';
     }
     return null;
+  }
+
+  void clearallFields() {
+    skillController.clear();
+    exSkillIdList.clear();
+    edSchoolIdList.clear();
+    liscenseidList.clear();
+    projectIdList.clear();
+    courseIdList.clear();
+    awardIdList.clear();
   }
 }
 

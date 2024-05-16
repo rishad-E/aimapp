@@ -85,9 +85,7 @@ class LoginController extends GetxController {
         !word.isNumericOnly) {
       return 'Please enter a Valid Mobile Number';
     }
-    // if (!word.isNumericOnly) {
-    //   log("messageeeeee");
-    // }
+   
     return null;
   }
 

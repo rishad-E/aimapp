@@ -40,7 +40,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    profileRichText('Add$uId', 'Project'),
+                    profileRichText('Add', 'Project'),
                     hBox,
                     Text(
                       "Tell us about your Project",

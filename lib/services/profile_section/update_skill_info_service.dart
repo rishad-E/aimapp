@@ -51,18 +51,19 @@ class UpdateSkillInfoService {
           data: {
             "user_id": uId,
             "skill": skill,
-            "experience_ids[]": exIDs,
-            "education_ids[]": edIDs,
-            "license_ids[]": liIDs,
-            "project_ids[]": prIDs,
-            "course_ids[]": crsIds,
-            "award_ids[]": awIDs,
+            "experience_ids": exIDs,
+            "education_ids": edIDs,
+            "license_ids": liIDs,
+            "project_ids": prIDs,
+            "course_ids": crsIds,
+            "award_ids": awIDs,
             "permission": permission,
           },
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
+      log(responseData.toString(), name: 'response data-save skill');
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];

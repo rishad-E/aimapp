@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/services/profile_section/update_license_certification_service.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -110,7 +109,7 @@ class ProfileLicenseCertificationController extends GetxController {
     selectedImage = File(pickedFile.path);
     allLicenseMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
-    log(selectedImage.toString(), name: 'gallery');
+    // log(selectedImage.toString(), name: 'gallery');
 
     return selectedImage;
   }
@@ -121,7 +120,7 @@ class ProfileLicenseCertificationController extends GetxController {
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
     allLicenseMedias.add(selectedCamera);
-    log(selectedCamera.toString(), name: 'camera');
+    // log(selectedCamera.toString(), name: 'camera');
     return selectedCamera;
   }
 

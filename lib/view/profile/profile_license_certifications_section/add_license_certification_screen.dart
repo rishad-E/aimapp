@@ -41,7 +41,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    profileRichText('Add$uId', 'license or certification'),
+                    profileRichText('Add', 'license or certification'),
                     hLBox,
                     licenseInfoFiled(
                       text: primarytxt3('Name', 9.5.sp),

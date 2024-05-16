@@ -11,9 +11,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileContactInfoScreen extends StatelessWidget {
-  final String? id;
+  final String id;
   final String? userName;
-  ProfileContactInfoScreen({super.key, this.id, this.userName});
+  ProfileContactInfoScreen({super.key, required this.id, this.userName});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {

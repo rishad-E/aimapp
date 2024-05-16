@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:aimshala/services/profile_section/update_project_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -114,7 +112,7 @@ class ProfileProjectController extends GetxController {
     allProjectMedias.add(selectedImage);
     allFiledSelected();
     update(['update-projectInfo']);
-    log(selectedImage.toString(), name: 'gallery');
+    // log(selectedImage.toString(), name: 'gallery');
     return selectedImage;
   }
 
@@ -127,7 +125,7 @@ class ProfileProjectController extends GetxController {
     allProjectMedias.add(selectedCamera);
     allFiledSelected();
     update(['update-projectInfo']);
-    log(selectedImage.toString(), name: 'camera');
+    // log(selectedImage.toString(), name: 'camera');
     return selectedCamera;
   }
 

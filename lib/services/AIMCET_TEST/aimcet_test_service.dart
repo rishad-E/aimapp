@@ -17,13 +17,6 @@ class AIMCETTestService {
           ));
       if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
-
-        // Map<String, List<Question>> res = {};
-
-        // data.forEach((key, value) {
-        //   res[key] = List<Question>.from(value.map((x) => Question.fromJson(x)));
-        // });
-        // log(data.toString(), name: 'aimcet res');
         return data;
       } else if (response.statusCode == 500) {
         SnackbarPopUps.popUpB(

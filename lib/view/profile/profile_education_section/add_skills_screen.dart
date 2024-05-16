@@ -1,4 +1,5 @@
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -11,7 +12,8 @@ import 'package:get/get.dart';
 
 class AddProfileSkillsScreen extends StatelessWidget {
   final String uId;
-  const AddProfileSkillsScreen({super.key, required this.uId});
+  final Education? edu;
+  const AddProfileSkillsScreen({super.key, required this.uId, this.edu});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,8 @@ class AddProfileSkillsScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => AddEducationScreen(uId:uId)),
+            onPressed: () =>
+                Get.off(() => AddEducationScreen(uId: uId, edu: edu)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

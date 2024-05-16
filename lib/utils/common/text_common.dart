@@ -54,12 +54,16 @@ Text boldText({required String text, required double size}) {
   );
 }
 
-Text regularText(String text, double size, {TextAlign? textAlign,TextOverflow? overflow,int? maxLines}) {
+Text regularText(String text, double size,
+    {TextAlign? textAlign,
+    TextOverflow? overflow,
+    int? maxLines,
+    Color? color}) {
   return Text(
     text,
-    maxLines:maxLines ,
+    maxLines: maxLines,
     style: TextStyle(
-        color: const Color.fromARGB(255, 132, 131, 131),
+        color: color ?? const Color.fromARGB(255, 132, 131, 131),
         fontSize: size,
         fontWeight: FontWeight.w400),
     textAlign: textAlign,

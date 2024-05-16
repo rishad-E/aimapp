@@ -57,13 +57,6 @@ class SignUpController extends GetxController {
     if (word.length > 35) {
       return 'Name should be less than 35 characters';
     }
-    // List<String> nameWords = word.split(' ');
-
-    // log(nameWords.toString(), name: 'words');
-    // // Check if there are at least two wsords
-    // if (nameWords.length < 2) {
-    //   return 'Please enter First and Last name';
-    // }
     return null;
   }
 

@@ -19,7 +19,11 @@ Widget experienceInfoFiled({required Widget text, required Widget textField}) {
 }
 
 Widget experienceAdditional(
-    {required String heading, required String subText, String? secSub,void Function()? onTap,required Widget selected}) {
+    {required String heading,
+    required String subText,
+    String? secSub,
+    void Function()? onTap,
+    required Widget selected}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 5),
     child: Column(
@@ -75,29 +79,30 @@ Widget experienceAdditional(
   );
 }
 
-Widget currentlyWorking() {
+Widget currentlyWorking({required bool working}) {
   return Row(
     children: [
       Container(
-          height: 1.8.h,
-          width: 3.8.w,
-          decoration: BoxDecoration(
-            color: mainPurple,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-              child: Icon(
-            Icons.done,
-            color: kwhite,
-            size: 7.7.sp,
-          ))),
+        height: 1.8.h,
+        width: 3.8.w,
+        decoration: BoxDecoration(
+          color: working ? mainPurple : kwhite,
+          border: working
+              ? null
+              : Border.all(
+                  width: 1, color: const Color.fromARGB(255, 195, 197, 198)),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: working
+            ? Center(child: Icon(Icons.done, color: kwhite, size: 7.7.sp))
+            : null,
+      ),
       wBox,
       Text("I am currently working in this role",
           style: TextStyle(fontSize: 8.2.sp, color: textFieldColor))
     ],
   );
 }
-
 
 Widget addedskillHomeEX(String skill) {
   return Container(
@@ -132,8 +137,12 @@ Widget addedskillHomeEX(String skill) {
   );
 }
 
-
-Widget addedMediaHomeEX(File file,void Function()? onTapEX) {
+Widget addedMediaHomeEX({
+  required File file,
+  void Function()? onTapClose,
+  required String mediaTitle,
+  required String mediaDescription,
+}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -143,33 +152,39 @@ Widget addedMediaHomeEX(File file,void Function()? onTapEX) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap: onTapEX,
-              child: Icon(
-                Icons.close,
-                size: 12.sp,
-                color: textFieldColor,
+        Expanded(
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: onTapClose,
+                child: Icon(
+                  Icons.close,
+                  size: 12.sp,
+                  color: textFieldColor,
+                ),
               ),
-            ),
-            wBox,
-            SizedBox(
-              height: 29,
-              width: 45,
-              child: Image.file(
-                file,
-                fit: BoxFit.fill,
+              wBox,
+              SizedBox(
+                height: 29,
+                width: 45,
+                child: Image.file(
+                  file,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),wBox,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                regularText('Physician (General Practitioner)', 12),
-                regularText('Physician (General Practitioner)', 8),
-              ],
-            )
-          ],
+              wBox,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    regularText(mediaTitle, 12),
+                    regularText(mediaDescription, 8,
+                        maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Icon(
           Icons.menu,
@@ -179,7 +194,6 @@ Widget addedMediaHomeEX(File file,void Function()? onTapEX) {
     ),
   );
 }
-
 
 Widget mediaListTileEX(
     {required String title, void Function()? onTap, Widget? leading}) {

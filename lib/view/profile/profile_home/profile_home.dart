@@ -8,11 +8,23 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_add_course_info/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/course_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/education_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/experience_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/honor_award_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/license_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/project_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/publication_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/skills_section.dart';
 import 'package:aimshala/view/profile/profile_contact_info/contact_info_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/section_widgets.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/texts.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/add_honorsawards_screen.dart';
+import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/add_license_certification_screen.dart';
 import 'package:aimshala/view/profile/profile_personal_info/personal_info_screen.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
@@ -33,11 +45,14 @@ class ProfileHomeScreen extends StatelessWidget {
     final UserDataModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       data = userData.user;
-      id = userData.user?.id.toString() ?? '';
+      id = userData.user?.id.toString();
     }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      log(id.toString());
+      controller.getProfileAlldataFunction(uId: id.toString());
+    });
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
-    controller.getProfileAlldataFunction(uId: id.toString());
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const HomeScreen())),
@@ -89,7 +104,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                   onTap: () {
                                     log('edit personal info');
                                     Get.to(() => ProfilePersonalInfoScreen(
-                                        id: data?.id.toString() ?? '',
+                                        id: id.toString(),
                                         username: data?.username));
                                   },
                                   child: Icon(
@@ -123,7 +138,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                   onTap: () {
                                     log('edit contact info');
                                     Get.to(() => ProfileContactInfoScreen(
-                                        id: data?.id.toString() ?? '',
+                                        id: id.toString(),
                                         userName: data?.username));
                                   },
                                   child: Icon(
@@ -161,212 +176,464 @@ class ProfileHomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Education'),
-                          hBox,
-                          const Text(
-                            "No Education included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () {
-                              final controler =
-                                  Get.put(ProfileEducationController());
-                              controler.clearallFields();
-                              Get.to(
-                                  () => AddEducationScreen(uId: id.toString()));
-                            },
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
-                      infoContainer(
-                        child: Column(
-                          children: [
-                            infoHeading('Experience'),
-                            hBox,
-                            const Text(
-                              "No Experience included yet",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            TextButton.icon(
-                              onPressed: () {
-                                final controler =
-                                    Get.put(ProfileExperienceController());
-                                controler.clearallFieldController();
-                                Get.to(() =>
-                                    AddExperienceScreen(uId: id.toString()));
-                              },
-                              icon: const Text(
-                                "Add Now",
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    color: Color.fromARGB(255, 15, 187, 195),
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              label: const Icon(
-                                Icons.add,
-                                size: 16,
-                                color: Color.fromARGB(255, 15, 187, 195),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Honors & awards'),
-                          hBox,
-                          const Text(
-                            "No Honors & awards included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () => Get.to(() =>
-                                ProfileAddHonorsandAwardsScreen(
-                                    uId: id.toString())),
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Licenses & Certifications'),
-                          hBox,
-                          const Text(
-                            "No Licenses & Certifications included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () => Get.to(() =>
-                                AddLicenseCertificationsScreen(
-                                    uId: id.toString())),
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Publications'),
-                          hBox,
-                          const Text(
-                            "No Publications included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () => Get.to(() =>
-                                ProfileAddPublicationScreen(
-                                    uId: id.toString())),
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Skills'),
-                          hBox,
-                          const Text(
-                            "No Skills included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () {
-                              controller.getSuggestedSkillsFunction();
-                              Get.to(() =>
-                                  ProfileAddSkillScreen(uId: id.toString()));
-                            },
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
-                      infoContainer(
-                          child: Column(
-                        children: [
-                          infoHeading('Projects'),
-                          hBox,
-                          const Text(
-                            "No Projects included yet",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          TextButton.icon(
-                            onPressed: () => Get.to(() =>
-                                ProfileAddProjectScreen(uId: id.toString())),
-                            icon: const Text(
-                              "Add Now",
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Color.fromARGB(255, 15, 187, 195),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            label: const Icon(
-                              Icons.add,
-                              size: 16,
-                              color: Color.fromARGB(255, 15, 187, 195),
-                            ),
-                          )
-                        ],
-                      )),
+                      Obx(() {
+                        final data = controller.education;
+                        return controller.profileDataLoading.value
+                            ? loadingWidget()
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Education',
+                                    subText: 'No Education included yet',
+                                    onPressed: () {
+                                      Get.put(ProfileEducationController())
+                                          .clearallFields();
+                                      Get.to(() => AddEducationScreen(
+                                          uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Education",
+                                    onTapAdd: () {
+                                      log('onPress', name: 'onTap Save');
+                                      Get.put(ProfileEducationController())
+                                          .clearallFields();
+                                      Get.to(() => AddEducationScreen(
+                                          uId: id.toString()));
+                                    },
+                                    onTapEdit: () {
+                                      log('onPress', name: 'onTap Edit');
+                                      Get.to(() => EducationSectionScreen(
+                                          education: data));
+                                    },
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() => EducationSectionScreen(
+                                          education: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) {
+                                        // final String? media = data[index].media;
+                                        // final List<String> imageList = media != null ? media.split(",").toList() : [];
+                                        // String image = imageList.isEmpty ? imageList[0] : 'null';
+                                        return sectionDataWidget(
+                                            image: "assets/images/upEvent1.png",
+                                            secTitle:
+                                                data[index].school.toString(),
+                                            secSubTitle:
+                                                data[index].degree.toString(),
+                                            secSubTitle2:
+                                                "${yearFormatter(data[index].startDate.toString())}-${yearFormatter(data[index].endDate.toString())}",
+                                            secSubTitle3:
+                                                data[index].grade.toString(),
+                                            secSubTitle4:
+                                                "Skills: ${data[index].skills.toString()}",
+                                            secSubTitle5: data[index]
+                                                .description
+                                                .toString(),
+                                            end: data.length < 2
+                                                ? data.length - 1 == index
+                                                : index == 1);
+                                      },
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.experience;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Experience',
+                                    subText: "No Experience included yet",
+                                    onPressed: () {
+                                      Get.put(ProfileExperienceController())
+                                          .clearallFieldController();
+                                      Get.to(() => AddExperienceScreen(
+                                          uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Experience",
+                                    onTapAdd: () {
+                                      log('onPress', name: 'onTap add');
+                                      Get.put(ProfileExperienceController())
+                                          .clearallFieldController();
+                                      Get.to(() => AddExperienceScreen(
+                                          uId: id.toString()));
+                                    },
+                                    onTapEdit: () => Get.to(() =>
+                                        ExperienceSectionScreen(
+                                            experience: data)),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() => ExperienceSectionScreen(
+                                          experience: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => sectionDataWidget(
+                                          image: "assets/images/upEvent1.png",
+                                          secTitle: data[index]
+                                              .employmentType
+                                              .toString(),
+                                          secSubTitle: data[index]
+                                              .companyName
+                                              .toString(),
+                                          secSubTitle2:
+                                              "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
+                                          secSubTitle3:
+                                              "${data[index].locationType.toString()},${data[index].location.toString()}",
+                                          secSubTitle4:
+                                              "Skills:${data[index].skills.toString()}",
+                                          secSubTitle5: data[index]
+                                              .description
+                                              .toString(),
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.award;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Honors & awards',
+                                    subText: "No Honors & awards included yet",
+                                    onPressed: () {
+                                      Get.to(() =>
+                                          ProfileAddHonorsandAwardsScreen(
+                                              uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Honors & awards",
+                                    onTapAdd: () {
+                                      log('onPress', name: 'onTap add');
+                                      Get.to(() =>
+                                          ProfileAddHonorsandAwardsScreen(
+                                              uId: id.toString()));
+                                    },
+                                    onTapEdit: () =>
+                                        log('onPress', name: 'onTap edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() =>
+                                          AwardHonorSectionScreen(award: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => honorWidget(
+                                          title: data[index].title.toString(),
+                                          date: parseDateMonthYear(
+                                              data[index].startDate.toString()),
+                                          image: "assets/images/upEvent1.png",
+                                          assosiated:
+                                              data[index].associated.toString(),
+                                          description: data[index]
+                                              .description
+                                              .toString(),
+                                          skills: 'no',
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.license;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Licenses & Certifications',
+                                    subText:
+                                        "No Licenses & Certifications included yet",
+                                    onPressed: () {
+                                      Get.to(() =>
+                                          AddLicenseCertificationsScreen(
+                                              uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Licenses & Certifications",
+                                    onTapAdd: () {
+                                      log('button pressed', name: 'onTap Save');
+                                      Get.to(() =>
+                                          AddLicenseCertificationsScreen(
+                                              uId: id.toString()));
+                                    },
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() =>
+                                          LicenseSectionScreen(license: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => sectionDataWidget(
+                                          image: "assets/images/upEvent1.png",
+                                          secTitle: data[index].name.toString(),
+                                          secSubTitle: data[index]
+                                              .organization
+                                              .toString(),
+                                          color: kblack,
+                                          secSubTitle2:
+                                              "${parseDateMonthYear(data[index].issueDate.toString())}-${parseDateMonthYear(data[index].expireDate.toString())}",
+                                          secSubTitle3: "Education",
+                                          secSubTitle4:
+                                              "Skills: ${data[index].skills.toString()}",
+                                          secSubTitle5: edSubText,
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.publication;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Publications',
+                                    subText: "No Publications included yet",
+                                    onPressed: () {
+                                      Get.to(() => ProfileAddPublicationScreen(
+                                          uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Publications",
+                                    onTapAdd: () {
+                                      log('button pressed', name: 'onTap Save');
+                                      Get.to(() => ProfileAddPublicationScreen(
+                                          uId: id.toString()));
+                                    },
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() => PublicationsSectionScreen(
+                                          publication: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => sectionDataWidget(
+                                          image: "assets/images/upEvent1.png",
+                                          secTitle:
+                                              data[index].title.toString(),
+                                          secSubTitle: data[index]
+                                              .publication
+                                              .toString(),
+                                          secSubTitle2: parseDateMonthYear(
+                                              data[index]
+                                                  .publicationDate
+                                                  .toString()),
+                                          secSubTitle3: "Grade: 2:1",
+                                          secSubTitle4:
+                                              "Skills: Coach, Training",
+                                          secSubTitle5: edSubText,
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.skills;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Skills',
+                                    subText: "No Skills included yet",
+                                    onPressed: () {
+                                      controller.getSuggestedSkillsFunction();
+                                      controller.clearallFields();
+                                      Get.to(() => ProfileAddSkillScreen(
+                                          uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Skills",
+                                    onTapAdd: () {
+                                      controller.getSuggestedSkillsFunction();
+                                      controller.clearallFields();
+                                      Get.to(() => ProfileAddSkillScreen(
+                                          uId: id.toString()));
+                                      log('button pressed', name: 'onTap add');
+                                    },
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() =>
+                                          SkillsSectionScreen(skill: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => skillWidget(
+                                        company: "Business Intelligence (BI)",
+                                        image: "assets/images/upEvent1.png",
+                                        position:
+                                            data[index].skillName.toString(),
+                                        end: data.length < 2
+                                            ? data.length - 1 == index
+                                            : index == 1,
+                                      ),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.project;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? profileNodataContainer(
+                                    headingText: 'Projects',
+                                    subText: "No Projects included yet",
+                                    onPressed: () {
+                                      Get.to(() => ProfileAddProjectScreen(
+                                          uId: id.toString()));
+                                    },
+                                  )
+                                : profileDataContainer(
+                                    section: "Projects",
+                                    onTapAdd: () {
+                                      log('button pressed', name: 'onTap Save');
+                                      Get.to(() => ProfileAddProjectScreen(
+                                          uId: id.toString()));
+                                    },
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() =>
+                                          ProjectSectionScreen(project: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => honorWidget(
+                                          title: data[index].title.toString(),
+                                          date: parseDateMonthYear(
+                                              data[index].startDate.toString()),
+                                          image: "assets/images/upEvent1.png",
+                                          assosiated:
+                                              data[index].associated.toString(),
+                                          description: data[index]
+                                              .description
+                                              .toString(),
+                                          skills:
+                                              "Skills: ${data[index].skills.toString()}",
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.language;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? shrinked
+                                : languageWidget(
+                                    section: "Language",
+                                    onTapAdd: () => Get.to(() =>
+                                        ProfileAddLanguageScreen(
+                                            uId: id.toString())),
+                                    languageData: List.generate(
+                                      data.length,
+                                      (index) => languageDataWidget(
+                                          language:
+                                              data[index].language.toString(),
+                                          level: data[index]
+                                              .proficiency
+                                              .toString()),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.course;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? shrinked
+                                : profileDataContainer(
+                                    section: "Courses",
+                                    onTapAdd: () {
+                                      log('button pressed', name: 'onTap Save');
+                                      Get.to(() => ProfileAddCourseScreen(
+                                          uId: id.toString()));
+                                    },
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () {
+                                      log('onPress', name: 'onTap viewall');
+                                      Get.to(() =>
+                                          CoursesSectionScreen(course: data));
+                                    },
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => courseWidget(
+                                        course:
+                                            data[index].courseName.toString(),
+                                        courseNo:
+                                            data[index].courseNumber.toString(),
+                                        image: "assets/images/upEvent1.png",
+                                        associated: data[index]
+                                            .associatedWith
+                                            .toString(),
+                                        end: data.length < 2
+                                            ? data.length - 1 == index
+                                            : index == 1,
+                                      ),
+                                    ),
+                                  );
+                      }),
+                      Obx(() {
+                        final data = controller.volExperience;
+                        return controller.profileDataLoading.value
+                            ? shrinked
+                            : data.isEmpty
+                                ? shrinked
+                                : profileDataContainer(
+                                    section: " volunteer experiences",
+                                    onTapAdd: () => log('button pressed',
+                                        name: 'onTap Save'),
+                                    onTapEdit: () => log('button pressed',
+                                        name: 'onTap Edit'),
+                                    onPressedViewAll: () => log(
+                                        'button pressed',
+                                        name: 'onTap viewall'),
+                                    sectionData: List.generate(
+                                      data.length < 2 ? data.length : 2,
+                                      (index) => sectionDataWidget(
+                                          image: "assets/images/upEvent1.png",
+                                          secTitle: data[index].role.toString(),
+                                          secSubTitle: data[index]
+                                              .organization
+                                              .toString(),
+                                          // secSubTitle2: "${parseDateMonthYear(data[index].startDate.toString())} -${parseDateMonthYear(data[index].endDate.toString())}",
+                                          secSubTitle2: "2021-2023",
+                                          secSubTitle3:
+                                              data[index].cause.toString(),
+                                          secSubTitle4:
+                                              "Skills: Coach, Training",
+                                          secSubTitle5: data[index]
+                                              .description
+                                              .toString(),
+                                          end: data.length < 2
+                                              ? data.length - 1 == index
+                                              : index == 1),
+                                    ),
+                                  );
+                      })
                     ],
                   ),
                 ),

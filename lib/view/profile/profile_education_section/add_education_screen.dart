@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -16,11 +17,40 @@ import 'package:sizer/sizer.dart';
 
 class AddEducationScreen extends StatelessWidget {
   final String uId;
-  AddEducationScreen({super.key, required this.uId});
+  final Education? edu;
+  AddEducationScreen({super.key, required this.uId, this.edu});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileEducationController());
+    String? eduID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.schoolController.text =
+          edu?.school.toString() ?? controller.schoolController.text;
+      controller.degreeController.text =
+          edu?.degree.toString() ?? controller.degreeController.text;
+      controller.studyFiledController.text =
+          edu?.studyField.toString() ?? controller.studyFiledController.text;
+      controller.startdateController.text =
+          edu?.startDate.toString() ?? controller.startdateController.text;
+      controller.endDateController.text =
+          edu?.endDate.toString() ?? controller.endDateController.text;
+      controller.gradeController.text =
+          edu?.grade.toString() ?? controller.gradeController.text;
+      controller.activitiesController.text =
+          edu?.activities.toString() ?? controller.activitiesController.text;
+      controller.descriptionController.text =
+          edu?.description.toString() ?? controller.descriptionController.text;
+      eduID = edu?.id.toString();
+      // List<String>? resList = edu?.skills?.split(',');
+      // if (resList != null) {
+      //   for (String skill in resList) {
+      //     if (!controller.addedSkill.contains(skill)) {
+      //       controller.addedSkill.addAll(resList);
+      //     }
+      //   }
+      // }
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -101,10 +131,6 @@ class AddEducationScreen extends StatelessWidget {
                         readOnly: true,
                         controller: controller.startdateController,
                         validator: (value) => controller.filedValidation(value),
-                        //  onChanged: (value) {
-                        //   controller.updateSaveButton();
-                        //   controller.update(['update-educationInfo']);
-                        // },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: infoFieldDecoration(
                           hintText: 'Date',
@@ -126,10 +152,6 @@ class AddEducationScreen extends StatelessWidget {
                       textField: TextFormField(
                         controller: controller.endDateController,
                         validator: (value) => controller.filedValidation(value),
-                        //  onChanged: (value) {
-                        //   controller.updateSaveButton();
-                        //   controller.update(['update-educationInfo']);
-                        // },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         readOnly: true,
                         decoration: infoFieldDecoration(
@@ -199,20 +221,23 @@ class AddEducationScreen extends StatelessWidget {
                     educationAdditional(
                       onTap: () {
                         log("add skill on tap");
-                        Get.to(() => AddProfileSkillsScreen(uId: uId,));
+                        Get.to(
+                            () => AddProfileSkillsScreen(uId: uId, edu: edu));
                       },
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
-                      selected: Obx(() => controller.addedSkill.isEmpty
-                          ? const SizedBox.shrink()
-                          : Column(
-                              children: List.generate(
-                                  controller.addedSkill.length, (index) {
-                                final data = controller.addedSkill;
-                                return addedskillHome(data[index]);
-                              }),
-                            )),
+                      selected: Obx(() {
+                        return controller.addedSkill.isEmpty
+                            ? const SizedBox.shrink()
+                            : Column(
+                                children: List.generate(
+                                    controller.addedSkill.length, (index) {
+                                  final data = controller.addedSkill;
+                                  return addedskillHome(data[index]);
+                                }),
+                              );
+                      }),
                     ),
                     educationAdditional(
                       onTap: () {
@@ -230,8 +255,12 @@ class AddEducationScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   return addedMediaHome(
-                                    data[index]!,
-                                    () {
+                                    file: data[index]!,
+                                    mediaTitle:
+                                        controller.mediaTitleController.text,
+                                    mediaDescription: controller
+                                        .mediaDescriptionController.text,
+                                    onTapClose: () {
                                       data.removeAt(index);
                                       controller.updateSaveButton();
                                     },
@@ -244,8 +273,6 @@ class AddEducationScreen extends StatelessWidget {
                     GetBuilder<ProfileEducationController>(
                         id: 'update-educationInfo',
                         builder: (c) {
-                          log('hiiiiiiiiiiiiiiiiiiiiiiiii',
-                              name: 'update eduaction');
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -265,23 +292,55 @@ class AddEducationScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     // log('school: ${c.schoolController.text} degree:${c.degreeController.text} studyfiled: ${c.studyFiledController.text} start: ${c.startdateController.text} end: ${c.endDateController.text} grade: ${c.gradeController.text} activities: ${c.activitiesController.text} description: ${c.descriptionController.text} skills:${c.addedSkill} media:${c.allMedias}',
                                     //     name: 'add-education');
+                                    log("edID=>${edu?.id}  media tile:=>${c.mediaTitleController.text} media desc:=>${c.mediaDescriptionController.text}");
                                     List<File> imagesList = c.allMedias
                                         .where((file) => file != null)
                                         .cast<File>()
                                         .toList();
-                                    c.saveEducationInfo(
-                                        uId: uId,
-                                        school: c.schoolController.text,
-                                        degree: c.degreeController.text,
-                                        studyfield: c.studyFiledController.text,
-                                        startDate: c.startdateController.text,
-                                        endDate: c.endDateController.text,
-                                        grade: c.gradeController.text,
-                                        activities: c.activitiesController.text,
-                                        description:
-                                            c.descriptionController.text,
-                                        images: imagesList,
-                                        skills: c.addedSkill);
+                                    edu == null
+                                        ? c.saveEducationInfo(
+                                            uId: uId,
+                                            school: c.schoolController.text,
+                                            degree: c.degreeController.text,
+                                            studyfield:
+                                                c.studyFiledController.text,
+                                            startDate:
+                                                c.startdateController.text,
+                                            endDate: c.endDateController.text,
+                                            grade: c.gradeController.text,
+                                            activities:
+                                                c.activitiesController.text,
+                                            description:
+                                                c.descriptionController.text,
+                                            mediaTitle:
+                                                c.mediaTitleController.text,
+                                            mediaDescription: c
+                                                .mediaDescriptionController
+                                                .text,
+                                            images: imagesList,
+                                            skills: c.addedSkill)
+                                        : c.updateEducationInfo(
+                                            edID: eduID.toString(),
+                                            uId: uId,
+                                            school: c.schoolController.text,
+                                            degree: c.degreeController.text,
+                                            studyfield:
+                                                c.studyFiledController.text,
+                                            startDate:
+                                                c.startdateController.text,
+                                            endDate: c.endDateController.text,
+                                            grade: c.gradeController.text,
+                                            activities:
+                                                c.activitiesController.text,
+                                            description:
+                                                c.descriptionController.text,
+                                            mediaTitle:
+                                                c.mediaTitleController.text,
+                                            mediaDescription: c
+                                                .mediaDescriptionController
+                                                .text,
+                                            images: imagesList,
+                                            skills: c.addedSkill);
                                   }
                                 },
                               ),
@@ -322,7 +381,11 @@ class AddEducationScreen extends StatelessWidget {
                 onTap: () {
                   controller.pickImageMedia().then((value) {
                     return Get.to(
-                      () => AddProfileMediaScreen(image: value, uId: uId,),
+                      () => AddProfileMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          edu: edu),
                     );
                   });
                 },
@@ -332,7 +395,11 @@ class AddEducationScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() => AddProfileMediaScreen(image: value,uId: uId,));
+                    return Get.to(() => AddProfileMediaScreen(
+                        image: value,
+                        uId: uId,
+                        controller: controller,
+                        edu: edu));
                   });
                 },
               ),

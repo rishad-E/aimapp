@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -13,7 +14,8 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddCourseScreen extends StatelessWidget {
   final String uId;
-  ProfileAddCourseScreen({super.key, required this.uId});
+  final Course? course;
+  ProfileAddCourseScreen({super.key, required this.uId, this.course});
 
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
@@ -41,7 +43,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       courseInfoFiled(
                         text: primarytxt3('Course name', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseController,
+                          controller: controller.courseController
+                            ..text = course?.courseName.toString() ?? '',
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -56,7 +59,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       courseInfoFiled(
                         text: primarytxt3('Number', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseNoController,
+                          controller: controller.courseNoController
+                            ..text = course?.courseNumber.toString() ?? '',
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -72,17 +76,22 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       GetBuilder<LanguageAndCourseController>(
                           id: 'update-workingButton',
                           builder: (c) {
+                            bool currently = course?.workingCurrently == 'Yes'
+                                ? true
+                                : course?.workingCurrently == 'No'
+                                    ? false
+                                    : c.currentlyWorking;
                             return GestureDetector(
                               onTap: () => c.toggleCurrentlyWorking(),
-                              child: currentlyWorkingCourse(
-                                  working: c.currentlyWorking),
+                              child: currentlyWorkingCourse(working: currently),
                             );
                           }),
                       hBox,
                       courseInfoFiled(
                         text: primarytxt3('Associated with', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseAssosiatedController,
+                          controller: controller.courseAssosiatedController
+                            ..text = course?.associatedWith ?? '',
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -134,15 +143,15 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                           c.currentlyWorking == true
                                               ? 'Yes'
                                               : 'No';
-                                      log('ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} currently=>$working',
+                                      log('courseID=>${course?.id}  ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} currently=>$working',
                                           name: 'course-screen');
-                                      c.saveCourseFunction(
-                                          uId: uId,
-                                          course: c.courseController.text,
-                                          courseNo: c.courseNoController.text,
-                                          courseAssosiated:
-                                              c.courseAssosiatedController.text,
-                                          working: working);
+                                      // c.saveCourseFunction(
+                                      //     uId: uId,
+                                      //     course: c.courseController.text,
+                                      //     courseNo: c.courseNoController.text,
+                                      //     courseAssosiated:
+                                      //         c.courseAssosiatedController.text,
+                                      //     working: working);
                                     }
                                   },
                                 ),

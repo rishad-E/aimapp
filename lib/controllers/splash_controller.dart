@@ -26,7 +26,7 @@ class SplashController extends GetxController {
     ApiExceptions exceptions =
         ApiExceptions.fromconnectivityError(connectivityResult);
     String connectionStatus = exceptions.errorMessage;
-    log(connectionStatus.toString(), name: 'conectivity');
+    // log(connectionStatus.toString(), name: 'conectivity');
 
     if (connectionStatus == 'not internet') {
       Get.showSnackbar(

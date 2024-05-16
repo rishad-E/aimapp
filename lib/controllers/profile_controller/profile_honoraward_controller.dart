@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/services/profile_section/update_honoraward_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -103,7 +102,7 @@ class ProfileHonorsAwardsController extends GetxController {
     selectedImage = File(pickedFile.path);
     allAwardMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
-    log(selectedImage.toString(), name: 'gallery');
+    // log(selectedImage.toString(), name: 'gallery');
     allFieldSelect();
     update(['update-HonorAwardsbutton']);
     return selectedImage;
@@ -115,7 +114,7 @@ class ProfileHonorsAwardsController extends GetxController {
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
     allAwardMedias.add(selectedCamera);
-    log(selectedCamera.toString(), name: 'camera');
+    // log(selectedCamera.toString(), name: 'camera');
     allFieldSelect();
     update(['update-HonorAwardsbutton']);
     return selectedCamera;

@@ -36,7 +36,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                   key: formKey,
                   child: Column(
                     children: [
-                      profileRichText('Add$uId', 'Publications'),
+                      profileRichText('Add', 'Publications'),
                       hBox,
                       Text(
                         "Tell us about your Publications",

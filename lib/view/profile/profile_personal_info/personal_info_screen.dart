@@ -45,9 +45,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                       text: primarytxt3('Name', 9.5.sp),
                       textField: TextFormField(
                         controller: controller.nameController,
-                        // validator: (value) => controller.fieldValidator(value),
                         onChanged: (value) {
-                          // controller.allFieldSelect();
                           controller.update(['update-personalinfo']);
                         },
                         style: const TextStyle(fontSize: 12),

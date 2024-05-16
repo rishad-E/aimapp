@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -12,56 +14,75 @@ import 'package:sizer/sizer.dart';
 class AddProfileMediaScreen extends StatelessWidget {
   final File? image;
   final String uId;
-  const AddProfileMediaScreen({super.key, this.image, required this.uId});
-
+  final Education? edu;
+  final ProfileEducationController controller;
+  AddProfileMediaScreen(
+      {super.key, this.image, required this.uId, required this.controller, this.edu});
+  final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: profileAppBar(
-        title: 'Add Media',
-        doneWidget: TextButton(
-            onPressed: () => Get.off(() => AddEducationScreen(uId:uId,)),
-            child: const Text(
-              'Apply',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            )),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-        child: Column(
-          children: [
-            educationInfoFiled(
-              text: primarytxt3('Title', 9.5.sp),
-              textField: TextFormField(
-                decoration: infoFieldDecoration(hintText: 'Ex: Certificate'),
-                style: const TextStyle(fontSize: 13),
-              ),
+    return Form(
+      key: formKey,
+      child: Scaffold(
+        appBar: profileAppBar(
+          title: 'Add Media',
+          doneWidget: TextButton(
+              onPressed: () {
+                if (formKey.currentState!.validate()) {
+                  Get.off(() => AddEducationScreen(uId: uId));
+                }
+              },
+              child: const Text(
+                'Apply',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                educationInfoFiled(
+                  text: primarytxt3('Title', 9.5.sp),
+                  textField: TextFormField(
+                    decoration: infoFieldDecoration(hintText: 'Ex: Certificate'),
+                    style: const TextStyle(fontSize: 13),
+                    controller: controller.mediaTitleController,
+                    validator: (value) => controller.filedValidation(value),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
+                educationInfoFiled(
+                  text: primarytxt3('Description', 9.5.sp),
+                  textField: TextFormField(
+                    decoration:
+                        infoFieldDecoration(hintText: 'Enter Description'),
+                    style: const TextStyle(fontSize: 13),
+                    minLines: 3,
+                    maxLines: null,
+                    controller: controller.mediaDescriptionController,
+                    validator: (value) => controller.filedValidation(value),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
+                hMBox,
+                SizedBox(
+                  height: 17.h,
+                  width: double.infinity,
+                  // color: Colors.yellow,
+                  child: image != null
+                      ? Image.file(image!, fit: BoxFit.contain)
+                      : Center(
+                          child: Text(
+                            "Please select an image",
+                            style: TextStyle(color: textFieldColor),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                )
+              ],
             ),
-            educationInfoFiled(
-              text: primarytxt3('Description', 9.5.sp),
-              textField: TextFormField(
-                decoration: infoFieldDecoration(hintText: 'Enter Description'),
-                style: const TextStyle(fontSize: 13),
-                minLines: 3,
-                maxLines: null,
-              ),
-            ),
-            hMBox,
-            SizedBox(
-              height: 17.h,
-              width: double.infinity,
-              // color: Colors.yellow,
-              child: image != null
-                  ? Image.file(image!, fit: BoxFit.contain)
-                  : Center(
-                      child: Text(
-                        "Please select an image",
-                        style: TextStyle(color: textFieldColor),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-            )
-          ],
+          ),
         ),
       ),
     );
