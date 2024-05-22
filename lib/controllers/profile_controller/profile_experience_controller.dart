@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_experience_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -21,13 +21,13 @@ class ProfileExperienceController extends GetxController {
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
 
-  bool currentlyWorking = false;
+  RxBool currentlyWorking = false.obs;
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkillEX = <String>[].obs;
   File? selectedImageEX;
   File? selectedCameraEX;
-  RxList<File?> allMediasEX = <File?>[].obs;
+  RxList<AddMediaModel> allMediasEX = <AddMediaModel>[].obs;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
@@ -44,8 +44,8 @@ class ProfileExperienceController extends GetxController {
     required String endDate,
     required String description,
     required String profile,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
@@ -105,12 +105,12 @@ class ProfileExperienceController extends GetxController {
     required String endDate,
     required String description,
     required String profile,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
-    UpdateExperienceInfoService().updateExperienceInfo(
+    String? res = await UpdateExperienceInfoService().updateExperienceInfo(
       exID: exID,
       uId: uId,
       title: title,
@@ -128,6 +128,30 @@ class ProfileExperienceController extends GetxController {
       imagesEX: imagesEX,
       skillsEX: skillsEX,
     );
+    if (res == 'Experience details updated successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   Future<void> datePicker(BuildContext context, {bool? start}) async {
@@ -170,8 +194,8 @@ class ProfileExperienceController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImageEX = File(pickedFile.path);
-    allMediasEX.add(selectedImageEX);
-    updateSaveButtonEX();
+    // allMediasEX.add(selectedImageEX);
+    // updateSaveButtonEX();
     return selectedImageEX;
   }
 
@@ -180,8 +204,8 @@ class ProfileExperienceController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCameraEX = File(pickedFile.path);
-    allMediasEX.add(selectedCameraEX);
-    updateSaveButtonEX();
+    // allMediasEX.add(selectedCameraEX);
+    // updateSaveButtonEX();
     return selectedCameraEX;
   }
 
@@ -192,6 +216,18 @@ class ProfileExperienceController extends GetxController {
     return null;
   }
 
+  void addMediaModelEx({
+    required String title,
+    required String description,
+    File? file,
+  }) {
+    AddMediaModel model =
+        AddMediaModel(file: file, title: title, description: description);
+    allMediasEX.add(model);
+    updateSaveButtonEX();
+    update(['update-experienceInfo']);
+  }
+
   void updateSaveButtonEX() {
     bool isAllFiledSelected = titleController.text.isNotEmpty &&
         employmentController.text.isNotEmpty &&
@@ -199,7 +235,6 @@ class ProfileExperienceController extends GetxController {
         locationController.text.isNotEmpty &&
         locationTypeController.text.isNotEmpty &&
         startDateController.text.isNotEmpty &&
-        endDateController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         profileController.text.isNotEmpty &&
         addedSkillEX.isNotEmpty &&
@@ -209,7 +244,10 @@ class ProfileExperienceController extends GetxController {
   }
 
   void toggleCurrentlyWorking() {
-    currentlyWorking = !currentlyWorking;
+    currentlyWorking.value = !currentlyWorking.value;
+    if (currentlyWorking.value == true) {
+      endDateController.clear();
+    }
     update(['EX-currentlyworkingButton']);
   }
 

@@ -5,15 +5,15 @@ import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-Widget projectSectionWidget({
-  required String title,
-  required String date,
-  required String image,
-  required String assosiated,
-  required String skills,
-  required String description,
-  required bool end,
-}) {
+Widget projectSectionWidget(
+    {required String title,
+    required String date,
+    required String image,
+    required String assosiated,
+    required String skills,
+    required String description,
+    required bool end,
+    void Function()? onTap}) {
   return Column(
     children: [
       Row(
@@ -64,7 +64,7 @@ Widget projectSectionWidget({
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: onTap,
             child: Icon(
               Icons.edit,
               size: 14.sp,

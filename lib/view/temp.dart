@@ -6,7 +6,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/profile_add_course_info/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/add_colunteer_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

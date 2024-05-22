@@ -55,6 +55,50 @@ class ProfilePublicationController extends GetxController {
     }
   }
 
+  Future<void> updatePublicationFuntion({
+    required String pbID,
+    required String uId,
+    required String title,
+    required String publication,
+    required String pubDate,
+    required String pubURL,
+    required String pubDescription,
+  }) async {
+    String? res = await UpdatePublicationService().updatePublicationInfo(
+      pbID: pbID,
+      uId: uId,
+      title: title,
+      publication: publication,
+      pubDate: pubDate,
+      pubURL: pubURL,
+      pubDescription: pubDescription,
+    );
+    if (res == 'Publication updated successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   Future<void> datePicker(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,

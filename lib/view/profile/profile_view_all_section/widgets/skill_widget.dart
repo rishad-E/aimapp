@@ -10,6 +10,7 @@ Widget skillSectionWidget({
   required String company,
   required String position,
   required bool end,
+  void Function()? onTap
 }) {
   return Column(
     children: [
@@ -39,7 +40,7 @@ Widget skillSectionWidget({
             ],
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: onTap,
             child: Icon(
               Icons.edit,
               size: 14.sp,

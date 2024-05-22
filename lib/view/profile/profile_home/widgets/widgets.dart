@@ -271,7 +271,7 @@ Widget sectionDataWidget(
                 ),
                 regularText(secSubTitle, 9.sp, color: color),
                 regularText(secSubTitle2, 8.sp),
-                regularText("Grade: $secSubTitle3", 8.sp),
+                regularText(secSubTitle3, 8.sp),
                 regularText(secSubTitle4, 8.sp),
                 regularText(
                   secSubTitle5,

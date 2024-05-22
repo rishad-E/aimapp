@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -13,11 +14,23 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddLanguageScreen extends StatelessWidget {
   final String uId;
-   ProfileAddLanguageScreen({super.key, required this.uId});
- final GlobalKey<FormState> formKey = GlobalKey();
+  final Language? language;
+  ProfileAddLanguageScreen({super.key, required this.uId, this.language});
+  final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    String? languageID;
+    log(language.toString(), name: 'langugae data');
     final controller = Get.put(LanguageAndCourseController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.languageController.text =
+          language?.language.toString() ?? controller.languageController.text;
+      controller.proficiencyController.text =
+          language?.proficiency.toString() ??
+              controller.proficiencyController.text;
+      languageID = language?.id.toString();
+      controller.update(['update-LanguageInfo']);
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -99,8 +112,24 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                                           : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('ID=>$uId language=>${c.languageController.text} proficiency=>${c.proficiencyController.text}',name: 'language-screen');
-                                      c.saveLanguageFunction(uId: uId, language: c.languageController.text, proficiency: c.proficiencyController.text);
+                                      log('ID=>$uId language=>${c.languageController.text} proficiency=>${c.proficiencyController.text}',
+                                          name: 'language-screen');
+                                      language == null
+                                          ? c.saveLanguageFunction(
+                                              uId: uId,
+                                              language:
+                                                  c.languageController.text,
+                                              proficiency:
+                                                  c.proficiencyController.text,
+                                            )
+                                          : c.updateLanguageFunction(
+                                              languageID: languageID.toString(),
+                                              uId: uId,
+                                              language:
+                                                  c.languageController.text,
+                                              proficiency:
+                                                  c.proficiencyController.text,
+                                            );
                                     }
                                   },
                                 ),

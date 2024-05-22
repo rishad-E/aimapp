@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_license_certification_service.dart';
+import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,12 +15,17 @@ class ProfileLicenseCertificationController extends GetxController {
   TextEditingController expirydateController = TextEditingController();
   TextEditingController credentialIDController = TextEditingController();
   TextEditingController credentialurlController = TextEditingController();
+  TextEditingController mediaTitleController = TextEditingController();
+  TextEditingController mediaDescriptionController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedLicenseSkill = <String>[].obs;
   File? selectedImage;
   File? selectedCamera;
-  RxList<File?> allLicenseMedias = <File?>[].obs;
+  RxList<AddMediaModel> allLicenseMedias = <AddMediaModel>[].obs;
+
+  Rx<Color> saveText = Rx<Color>(textFieldColor);
+  Rx<Color> saveBG = Rx<Color>(buttonColor);
 
   Future<void> saveLicenseCertificationFunction({
     required String uId,
@@ -30,6 +37,8 @@ class ProfileLicenseCertificationController extends GetxController {
     required String credURL,
     required List<File> media,
     required List<String> skills,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
   }) async {
     String? res =
         await UpdateLicenseCertificationService().saveLicenseCertificationInfo(
@@ -41,9 +50,66 @@ class ProfileLicenseCertificationController extends GetxController {
       credID: credID,
       credURL: credURL,
       media: media,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
       skills: skills,
     );
     if (res == 'License & Certificate details added successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateLicenseCertificationFunction({
+    required String lcID,
+    required String uId,
+    required String name,
+    required String organization,
+    required String issueDate,
+    required String expiryDate,
+    required String credID,
+    required String credURL,
+    required List<File> media,
+    required List<String> skills,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
+  }) async {
+    String? res = await UpdateLicenseCertificationService()
+        .updateLicenseCertificationInfo(
+      lcID: lcID,
+      uId: uId,
+      name: name,
+      organization: organization,
+      issueDate: issueDate,
+      expiryDate: expiryDate,
+      credID: credID,
+      credURL: credURL,
+      media: media,
+      skills: skills,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+    );
+    if (res == 'License & Certificate details updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
@@ -107,7 +173,7 @@ class ProfileLicenseCertificationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    allLicenseMedias.add(selectedImage);
+    // allLicenseMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
     // log(selectedImage.toString(), name: 'gallery');
 
@@ -119,9 +185,16 @@ class ProfileLicenseCertificationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    allLicenseMedias.add(selectedCamera);
+    // allLicenseMedias.add(selectedCamera);
     // log(selectedCamera.toString(), name: 'camera');
     return selectedCamera;
+  }
+
+  void addLicenseMedia(
+      {required String title, required String desc, File? file}) {
+    AddMediaModel model =
+        AddMediaModel(file: file, title: title, description: desc);
+    allLicenseMedias.add(model);
   }
 
   String? fieldValidation(String? value) {
@@ -129,5 +202,27 @@ class ProfileLicenseCertificationController extends GetxController {
       return 'Please Fill this Field';
     }
     return null;
+  }
+
+  void updateLicenseButton() {
+    bool isAllFiledSelected = nameController.text.isNotEmpty &&
+        organizationController.text.isNotEmpty &&
+        issuedateController.text.isNotEmpty &&
+        expirydateController.text.isNotEmpty &&
+        credentialIDController.text.isNotEmpty &&
+        credentialurlController.text.isNotEmpty &&
+        allLicenseMedias.isNotEmpty;
+    saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
+    saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
+  }
+
+  void clearallFieldController() {
+    nameController.clear();
+    organizationController.clear();
+    issuedateController.clear();
+    expirydateController.clear();
+    credentialIDController.clear();
+    credentialurlController.clear();
+    allLicenseMedias.clear();
   }
 }

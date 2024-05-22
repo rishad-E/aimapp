@@ -13,6 +13,7 @@ class LanguageAndCourseController extends GetxController {
 
   bool currentlyWorking = false;
 
+/*-----------save and update course---------- */
   Future<void> saveLanguageFunction({
     required String uId,
     required String language,
@@ -49,6 +50,44 @@ class LanguageAndCourseController extends GetxController {
     }
   }
 
+  Future<void> updateLanguageFunction({
+    required String languageID,
+    required String uId,
+    required String language,
+    required String proficiency,
+  }) async {
+    String? res = await UpdateLanguageInfoService().updateLanguageInfo(
+        languageID: languageID,
+        uId: uId,
+        language: language,
+        proficiency: proficiency);
+    if (res == 'Language updated successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+/*-----------save and update course---------- */
   Future<void> saveCourseFunction({
     required String uId,
     required String course,
@@ -64,6 +103,48 @@ class LanguageAndCourseController extends GetxController {
       working: working,
     );
     if (res == 'Course added successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateCourseInfo({
+    required String uId,
+    required String courseID,
+    required String course,
+    required String courseNo,
+    required String courseAssosiated,
+    required String working,
+  }) async {
+    String? res = await UpdateCourseInfoService().updateCourseInfo(
+      uId: uId,
+      courseID: courseID,
+      course: course,
+      courseNo: courseNo,
+      courseAssosiated: courseAssosiated,
+      working: working,
+    );
+     if (res == 'Course updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,

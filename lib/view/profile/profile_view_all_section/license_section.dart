@@ -1,6 +1,7 @@
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_license_certifications_section/add_license_certification_screen.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/common_widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/section_widgets.dart';
@@ -43,6 +44,9 @@ class LicenseSectionScreen extends StatelessWidget {
                         skill: "Skills: ${data.skills}",
                         description: edSubText,
                         end: license.length - 1 == index,
+                        onTap: () => Get.to(() =>
+                            AddLicenseCertificationsScreen(
+                                uId: data.userId.toString(), license: data)),
                       );
                     },
                   )),

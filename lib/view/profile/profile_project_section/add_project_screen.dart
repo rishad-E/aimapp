@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -17,11 +18,35 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddProjectScreen extends StatelessWidget {
   final String uId;
-  ProfileAddProjectScreen({super.key, required this.uId});
+  final Project? project;
+  ProfileAddProjectScreen({super.key, required this.uId, this.project});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileProjectController());
+    log(project.toString(), name: 'project data');
+    String? prID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.projectnameController.text =
+          project?.title.toString() ?? controller.projectnameController.text;
+      controller.projectDescriptionController.text =
+          project?.description.toString() ??
+              controller.projectDescriptionController.text;
+      controller.startdateController.text =
+          project?.startDate.toString() ?? controller.startdateController.text;
+      controller.projectAssosiatedController.text =
+          project?.associated.toString() ??
+              controller.projectAssosiatedController.text;
+      prID = project?.id.toString();
+      if (project?.endDate.toString() == 'currently_working') {
+        controller.currentlyWorking.value = true;
+        controller.update(['currentlyWorking-project']);
+      } else {
+        controller.endDateController.text =
+            project?.endDate.toString() ?? controller.endDateController.text;
+      }
+      // controller.toggleCurrentlyWorking();
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -84,8 +109,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
                       ),
                     ),
                     projectAdditional(
-                        onTap: () =>
-                            Get.to(() => AddProjectSkillScreen(uId: uId)),
+                        onTap: () => Get.to(() =>
+                            AddProjectSkillScreen(uId: uId, project: project)),
                         heading: 'Skills',
                         subText:
                             'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
@@ -100,7 +125,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                 );
                         })),
                     projectAdditional(
-                        onTap: () => showMediaOptions(context, controller),
+                        onTap: () =>
+                            showMediaOptions(context, controller, project),
                         heading: 'Media',
                         subText:
                             'Add Documents, photos, sites, videos, and presentations.',
@@ -111,11 +137,14 @@ class ProfileAddProjectScreen extends StatelessWidget {
                               ? shrinked
                               : Column(
                                   children: List.generate(data.length, (index) {
-                                    return addedMediaHomeProject(data[index]!,
-                                        () {
-                                      data.removeAt(index);
-                                      controller.allFiledSelected();
-                                    });
+                                    return addedMediaHomeProject(
+                                        file: data[index].file!,
+                                        title: data[index].title,
+                                        desc: data[index].description,
+                                        onTap: () {
+                                          data.removeAt(index);
+                                          controller.allFiledSelected();
+                                        });
                                   }),
                                 );
                         })),
@@ -125,7 +154,15 @@ class ProfileAddProjectScreen extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 14)),
                     ),
-                    currentlyWorkingProject(),
+                    GetBuilder<ProfileProjectController>(
+                        id: 'currentlyWorking-project',
+                        builder: (c) {
+                          return GestureDetector(
+                            onTap: () => c.toggleCurrentlyWorking(),
+                            child: currentlyWorkingProject(
+                                working: c.currentlyWorking.value),
+                          );
+                        }),
                     projectInfoFiled(
                       text: primarytxt3('Start date', 9.5.sp),
                       textField: TextFormField(
@@ -151,30 +188,35 @@ class ProfileAddProjectScreen extends StatelessWidget {
                         readOnly: true,
                       ),
                     ),
-                    projectInfoFiled(
-                      text: primarytxt3('End date', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.endDateController,
-                        validator: (value) => controller.filedValidation(value),
-                        onChanged: (value) {
-                          controller.allFiledSelected();
-                          controller.update(['update-projectInfo']);
-                        },
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: infoFieldDecoration(
-                            hintText: 'Date',
-                            suffixWidget: GestureDetector(
-                              onTap: () => controller.datePicker(context),
-                              child: SvgPicture.asset(
-                                  'assets/images/calendar-booked.svg',
-                                  colorFilter:
-                                      ColorFilter.mode(kblack, BlendMode.srcIn),
-                                  fit: BoxFit.scaleDown),
-                            )),
-                        style: const TextStyle(fontSize: 13),
-                        readOnly: true,
-                      ),
-                    ),
+                    Obx(() => Visibility(
+                        visible: controller.currentlyWorking.value == false
+                            ? true
+                            : false,
+                        child: projectInfoFiled(
+                            text: primarytxt3('End date', 9.5.sp),
+                            textField: TextFormField(
+                              controller: controller.endDateController,
+                              validator: (value) =>
+                                  controller.filedValidation(value),
+                              onChanged: (value) {
+                                controller.allFiledSelected();
+                                controller.update(['update-projectInfo']);
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: infoFieldDecoration(
+                                  hintText: 'Date',
+                                  suffixWidget: GestureDetector(
+                                    onTap: () => controller.datePicker(context),
+                                    child: SvgPicture.asset(
+                                        'assets/images/calendar-booked.svg',
+                                        colorFilter: ColorFilter.mode(
+                                            kblack, BlendMode.srcIn),
+                                        fit: BoxFit.scaleDown),
+                                  )),
+                              style: const TextStyle(fontSize: 13),
+                              readOnly: true,
+                            )))),
                     projectInfoFiled(
                       text: primarytxt3('Associated with', 9.5.sp),
                       textField: TextFormField(
@@ -209,23 +251,65 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                 boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    log('uid=>$uId projectName=>${c.projectnameController.text} startdate=>${c.startdateController.text} endDate=>${c.endDateController.text} description=>${c.projectDescriptionController.text} assosiated=>${c.projectAssosiatedController.text} skills=>${c.addedProjectSkill} media=>${c.allProjectMedias}',
-                                        name: 'project-screen');
+                                    // log('uid=>$uId projectName=>${c.projectnameController.text} startdate=>${c.startdateController.text} endDate=>${c.endDateController.text} description=>${c.projectDescriptionController.text} assosiated=>${c.projectAssosiatedController.text} skills=>${c.addedProjectSkill} media=>${c.allProjectMedias}',
+                                    //     name: 'project-screen');
                                     List<File> imagesList = c.allProjectMedias
+                                        .map((i) => i.file)
                                         .where((file) => file != null)
                                         .cast<File>()
                                         .toList();
-                                    c.saveProjectFunction(
-                                        uId: uId,
-                                        proName: c.projectnameController.text,
-                                        startDate: c.startdateController.text,
-                                        endDate: c.endDateController.text,
-                                        description:
-                                            c.projectDescriptionController.text,
-                                        assosiated:
-                                            c.projectAssosiatedController.text,
-                                        skills: c.addedProjectSkill,
-                                        medias: imagesList);
+                                    List<String> mediaTitles = c
+                                        .allProjectMedias
+                                        .map((i) => i.title)
+                                        .toList();
+                                    List<String> mediaDescs = c.allProjectMedias
+                                        .map((i) => i.description)
+                                        .toList();
+
+                                    String currenly =
+                                        c.currentlyWorking.value == true
+                                            ? 'Yes'
+                                            : 'No';
+                                    project == null
+                                        ? c.saveProjectFunction(
+                                            uId: uId,
+                                            proName:
+                                                c.projectnameController.text,
+                                            startDate:
+                                                c.startdateController.text,
+                                            endDate: c.endDateController.text,
+                                            description: c
+                                                .projectDescriptionController
+                                                .text,
+                                            assosiated: c
+                                                .projectAssosiatedController
+                                                .text,
+                                            currentlyWorking: currenly,
+                                            skills: c.addedProjectSkill,
+                                            medias: imagesList,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDescs,
+                                          )
+                                        : c.updateProjectFunction(
+                                            prID: prID,
+                                            uId: uId,
+                                            proName:
+                                                c.projectnameController.text,
+                                            startDate:
+                                                c.startdateController.text,
+                                            endDate: c.endDateController.text,
+                                            description: c
+                                                .projectDescriptionController
+                                                .text,
+                                            assosiated: c
+                                                .projectAssosiatedController
+                                                .text,
+                                            currentlyWorking: currenly,
+                                            skills: c.addedProjectSkill,
+                                            medias: imagesList,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDescs,
+                                          );
                                   }
                                 },
                               ),
@@ -242,8 +326,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
     );
   }
 
-  void showMediaOptions(
-      BuildContext context, ProfileProjectController controller) {
+  void showMediaOptions(BuildContext context,
+      ProfileProjectController controller, Project? project) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -265,8 +349,13 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMedia().then((value) {
-                    return Get.to(
-                        () => AddProjectMediaScreen(image: value, uId: uId));
+                    if (value != null) {
+                      Get.to(() => AddProjectMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          project: project));
+                    }
                   });
                 },
               ),
@@ -275,8 +364,11 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(
-                        () => AddProjectMediaScreen(image: value, uId: uId));
+                    return Get.to(() => AddProjectMediaScreen(
+                        image: value,
+                        uId: uId,
+                        controller: controller,
+                        project: project));
                   });
                 },
               ),

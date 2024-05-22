@@ -12,6 +12,7 @@ Widget awarSectionWidget({
   required String assosiated,
   required String description,
   required bool end,
+  void Function()? onTap
 }) {
   return Column(
     children: [
@@ -57,7 +58,7 @@ Widget awarSectionWidget({
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap:onTap,
             child: Icon(
               Icons.edit,
               size: 14.sp,

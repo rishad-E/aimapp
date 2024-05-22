@@ -1,6 +1,7 @@
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_honorsawards_section/add_honorsawards_screen.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/award_widget.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/common_widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -27,7 +28,12 @@ class AwardHonorSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                 section: "Honors & awards",
-                onTapAdd: () {},
+                onTapAdd: () {
+                  // Get.put(ProfileHonorsAwardsController())
+                  //     .clearallFieldController();
+                  // Get.to(() =>
+                  //     ProfileAddHonorsandAwardsScreen(uId: award[0].id.toString()));
+                },
                 child: List.generate(
                   award.length,
                   (index) {
@@ -39,6 +45,10 @@ class AwardHonorSectionScreen extends StatelessWidget {
                       assosiated: data.associated.toString(),
                       description: data.description.toString(),
                       end: index == award.length - 1,
+                      onTap: () {
+                        Get.to(() => ProfileAddHonorsandAwardsScreen(
+                            uId: data.userId.toString(), award: data));
+                      },
                     );
                   },
                 ),

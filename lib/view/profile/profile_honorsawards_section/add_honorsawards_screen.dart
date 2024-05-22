@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -16,11 +17,27 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
   final String uId;
-  ProfileAddHonorsandAwardsScreen({super.key, required this.uId});
+  final Award? award;
+  ProfileAddHonorsandAwardsScreen({super.key, required this.uId, this.award});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileHonorsAwardsController());
+    log(award.toString(), name: 'award data');
+    String? awardID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.titileController.text =
+          award?.title.toString() ?? controller.titileController.text;
+      controller.assosiatedController.text =
+          award?.associated.toString() ?? controller.assosiatedController.text;
+      controller.issuerController.text =
+          award?.issuer.toString() ?? controller.issuerController.text;
+      controller.startdateController.text =
+          award?.startDate.toString() ?? controller.startdateController.text;
+      controller.descriptionController.text = award?.description.toString() ??
+          controller.descriptionController.text;
+        awardID = award?.id.toString();
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -103,6 +120,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                         controller: controller.startdateController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => controller.filedValidation(value),
+                        readOnly: true,
                         decoration: infoFieldDecoration(
                             hintText: 'Date',
                             suffixWidget: GestureDetector(
@@ -136,7 +154,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                       ),
                     ),
                     honorsawardsAdditional(
-                        onTap: () => showMediaOptions(context, controller),
+                        onTap: () =>
+                            showMediaOptions(context, controller, award),
                         heading: 'Media',
                         subText:
                             'Add Documents, photos, sites, videos, and presentations.',
@@ -148,12 +167,16 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     return addedMediaHomeHonorAward(
-                                        data[index]!, () {
-                                      data.removeAt(index);
-                                      controller
-                                          .update(['update-HonorAwardsbutton']);
-                                      controller.allFieldSelect();
-                                    });
+                                      file: data[index].file!,
+                                      onTap: () {
+                                        data.removeAt(index);
+                                        controller.update(
+                                            ['update-HonorAwardsbutton']);
+                                        controller.allFieldSelect();
+                                      },
+                                      title: data[index].title,
+                                      desc: data[index].description,
+                                    );
                                   }),
                                 );
                         })),
@@ -178,20 +201,47 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               boxColor: c.saveBG.value,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  log('uid=>$uId title=>${c.titileController.text} assosiated=>${c.assosiatedController.text} issuer=>${c.issuerController.text} startdate=>${c.startdateController.text} description=>${c.descriptionController.text} media=>${c.allAwardMedias}',
-                                      name: 'add honor-screen');
+                                  // log('uid=>$uId title=>${c.titileController.text} assosiated=>${c.assosiatedController.text} issuer=>${c.issuerController.text} startdate=>${c.startdateController.text} description=>${c.descriptionController.text} media=>${c.allAwardMedias}',
+                                  //     name: 'add honor-screen');
                                   List<File> imagesList = c.allAwardMedias
+                                      .map((i) => i.file)
                                       .where((file) => file != null)
                                       .cast<File>()
                                       .toList();
-                                  c.saveHonorAwardFunction(
-                                      uId: uId,
-                                      titile: c.titileController.text,
-                                      assosiated: c.assosiatedController.text,
-                                      issuer: c.issuerController.text,
-                                      startdate: c.startdateController.text,
-                                      description: c.assosiatedController.text,
-                                      media: imagesList);
+                                  List<String> mediaTitles = c.allAwardMedias
+                                      .map((i) => i.title)
+                                      .toList();
+                                  List<String> mediaDescs = c.allAwardMedias
+                                      .map((i) => i.description)
+                                      .toList();
+                                  award == null
+                                      ? c.saveHonorAwardFunction(
+                                          uId: uId,
+                                          title: c.titileController.text,
+                                          assosiated:
+                                              c.assosiatedController.text,
+                                          issuer: c.issuerController.text,
+                                          startdate: c.startdateController.text,
+                                          description:
+                                              c.descriptionController.text,
+                                          media: imagesList,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDescs,
+                                        )
+                                      : c.updateHonorAwardFunction(
+                                          awardID: awardID.toString(),
+                                          uId: uId,
+                                          title: c.titileController.text,
+                                          assosiated:
+                                              c.assosiatedController.text,
+                                          issuer: c.issuerController.text,
+                                          startdate: c.startdateController.text,
+                                          description:
+                                              c.descriptionController.text,
+                                          media: imagesList,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDescs,
+                                        );
                                 }
                               },
                             ),
@@ -209,8 +259,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
     );
   }
 
-  void showMediaOptions(
-      BuildContext context, ProfileHonorsAwardsController controller) {
+  void showMediaOptions(BuildContext context,
+      ProfileHonorsAwardsController controller, Award? award) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -232,8 +282,11 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMedia().then((value) {
-                    return Get.to(() =>
-                        AddHonorAwardsMediaScreen(image: value, uId: uId));
+                    return Get.to(() => AddHonorAwardsMediaScreen(
+                        image: value,
+                        uId: uId,
+                        controller: controller,
+                        award: award));
                   });
                 },
               ),
@@ -242,8 +295,11 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() =>
-                        AddHonorAwardsMediaScreen(image: value, uId: uId));
+                    return Get.to(() => AddHonorAwardsMediaScreen(
+                        image: value,
+                        uId: uId,
+                        controller: controller,
+                        award: award));
                   });
                 },
               ),

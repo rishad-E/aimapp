@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -12,11 +13,77 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddSkillScreen extends StatelessWidget {
   final String uId;
-  ProfileAddSkillScreen({super.key, required this.uId});
+  final Skill? skill;
+  ProfileAddSkillScreen({super.key, required this.uId, this.skill});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileSkillController());
+    String? skID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      skID = skill?.id.toString();
+      controller.skillController.text =
+          skill?.skillName.toString() ?? controller.skillController.text;
+      List<String>? experience = skill?.experiencesId;
+      if (experience != null && experience.isNotEmpty) {
+        for (var item in experience) {
+          if (!controller.exSkillIdList.contains(item)) {
+            controller.exSkillIdList.add(item);
+            controller.update(['update-ExID']);
+          }
+        }
+      }
+      List<String>? education = skill?.educationsId;
+      if (education != null && education.isNotEmpty) {
+        for (var item in education) {
+          if (!controller.edSchoolIdList.contains(item)) {
+            controller.edSchoolIdList.add(item);
+            controller.update(['update-EdID']);
+          }
+        }
+      }
+      List<String>? license = skill?.licensesId;
+      if (license != null && license.isNotEmpty) {
+        for (var item in license) {
+          if (!controller.liscenseidList.contains(item)) {
+            controller.liscenseidList.add(item);
+            controller.update(['update-LiID']);
+          }
+        }
+      }
+      List<String>? project = skill?.projectsId;
+      if (project != null && project.isNotEmpty) {
+        for (var item in project) {
+          if (!controller.projectIdList.contains(item)) {
+            controller.projectIdList.add(item);
+            controller.update(['update-PrID']);
+          }
+        }
+      }
+      List<String>? course = skill?.coursesId;
+      if (course != null && course.isNotEmpty) {
+        for (var item in course) {
+          if (!controller.courseIdList.contains(item)) {
+            controller.courseIdList.add(item);
+            controller.update(['update-courseID']);
+          }
+        }
+      }
+      List<String>? award = skill?.awardsId;
+      if (award != null && award.isNotEmpty) {
+        for (var item in award) {
+          if (!controller.awardIdList.contains(item)) {
+            controller.awardIdList.add(item);
+            controller.update(['update-awardIDs']);
+          }
+        }
+      }
+      if (skill?.followupPermission.toString() == "yes") {
+        controller.permission = true;
+        controller.update(['update-permission']);
+      }
+      controller.update(['update-skilladdButton']);
+    });
     return Scaffold(
       // extendBodyBehindAppBar: true,
       appBar: profileAppBar(title: 'Add Skill', doneWidget: shrinked),
@@ -37,7 +104,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: profileRichText('Add$uId', 'Skill'),
+                      child: profileRichText('Add', 'Skill'),
                     ),
                     hLBox,
                     skillInfoFiled(
@@ -46,7 +113,8 @@ class ProfileAddSkillScreen extends StatelessWidget {
                         controller: controller.skillController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) => controller.update(['update-skilladdButton']),
+                        onChanged: (value) =>
+                            controller.update(['update-skilladdButton']),
                         decoration: infoFieldDecoration(
                             hintText: 'Ex: Retail Sales Manager'),
                         style: const TextStyle(fontSize: 13),
@@ -123,18 +191,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.exSkillIdList
                                       .any((item) => item == data.experienceID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.experienceID}',
-                                        name: 'exID');
                                     c.selectExperienceIDs(data.experienceID);
                                     c.update(['update-ExID']);
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.experienceID}',
-                                        name: 'exID');
                                     c.selectExperienceIDs(data.experienceID);
                                     c.update(['update-ExID']);
-                                    log('List=>${c.exSkillIdList}',
-                                        name: 'exList IDS');
                                   },
                                 );
                               },
@@ -156,20 +218,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.edSchoolIdList
                                       .any((item) => item == data.educationID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.educationID}',
-                                        name: 'edID');
                                     c.selectEducationIDs(data.educationID);
                                     c.update(['update-EdID']);
-                                    log('List=>${c.edSchoolIdList}',
-                                        name: 'education IDS');
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.educationID}',
-                                        name: 'edID');
                                     c.selectEducationIDs(data.educationID);
                                     c.update(['update-EdID']);
-                                    log('List=>${c.edSchoolIdList}',
-                                        name: 'education IDS');
                                   },
                                 );
                               },
@@ -191,18 +245,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.liscenseidList
                                       .any((item) => item == data.licenseID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.licenseID}', name: 'lcID');
                                     c.selectLicenseIDs(data.licenseID);
                                     c.update(['update-LiID']);
-                                    log('List=>${c.liscenseidList}',
-                                        name: 'License list');
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.licenseID}', name: 'lcID');
                                     c.selectLicenseIDs(data.licenseID);
                                     c.update(['update-LiID']);
-                                    log('List=>${c.liscenseidList}',
-                                        name: 'License list');
                                   },
                                 );
                               },
@@ -224,18 +272,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.projectIdList
                                       .any((item) => item == data.projectID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.projectID}', name: 'prID');
                                     c.selectProjectIDs(data.projectID);
                                     c.update(['update-PrID']);
-                                    log('List=>${c.projectIdList}',
-                                        name: 'project ids');
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.projectID}', name: 'prID');
                                     c.selectProjectIDs(data.projectID);
                                     c.update(['update-PrID']);
-                                    log('List=>${c.projectIdList}',
-                                        name: 'project ids');
                                   },
                                 );
                               },
@@ -257,18 +299,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.courseIdList
                                       .any((i) => i == data.courseID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.courseID}', name: 'crID');
                                     c.selectCourseIDs(data.courseID);
                                     c.update(['update-courseID']);
-                                    log('crList=>${c.courseIdList}',
-                                        name: 'CourseIds');
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.courseID}', name: 'crID');
                                     c.selectCourseIDs(data.courseID);
                                     c.update(['update-courseID']);
-                                    log('crList=>${c.courseIdList}',
-                                        name: 'CourseIds');
                                   },
                                 );
                               },
@@ -290,18 +326,12 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                   cbValue: c.awardIdList
                                       .any((item) => item == data.awardID),
                                   cbOnChanged: (value) {
-                                    log('ID=>${data.awardID}', name: 'awID');
                                     c.selectAwardIDs(data.awardID);
                                     c.update(['update-awardIDs']);
-                                    log('awList=>${c.awardIdList}',
-                                        name: 'award List');
                                   },
                                   onTapBox: () {
-                                    log('ID=>${data.awardID}', name: 'awID');
                                     c.selectAwardIDs(data.awardID);
                                     c.update(['update-awardIDs']);
-                                    log('awList=>${c.awardIdList}',
-                                        name: 'award List');
                                   },
                                 );
                               },
@@ -358,7 +388,30 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                     log(newPermission);
                                     log('Skill=>${c.skillController.text} ExperienceList=>${c.exSkillIdList} educationList=>${c.edSchoolIdList} LicenseList=>${c.liscenseidList} projectList=>${c.projectIdList} CourseList=>${c.courseIdList} awardList=>${c.awardIdList}',
                                         name: 'all Ids-screen');
-                                      c.saveSkillInfoFunction(uId: uId, skill: c.skillController.text, exIDs:c.exSkillIdList, edIDs: c.edSchoolIdList, liIDs: c.liscenseidList, prIDs: c.projectIdList, crsIds: c.courseIdList, awIDs: c.awardIdList, permission: newPermission);
+                                    skill == null
+                                        ? c.saveSkillInfoFunction(
+                                            uId: uId,
+                                            skill: c.skillController.text,
+                                            exIDs: c.exSkillIdList,
+                                            edIDs: c.edSchoolIdList,
+                                            liIDs: c.liscenseidList,
+                                            prIDs: c.projectIdList,
+                                            crsIds: c.courseIdList,
+                                            awIDs: c.awardIdList,
+                                            permission: newPermission,
+                                          )
+                                        : c.updateSkillFunction(
+                                            skID: skID.toString(),
+                                            uId: uId,
+                                            skill: c.skillController.text,
+                                            exIDs: c.exSkillIdList,
+                                            edIDs: c.edSchoolIdList,
+                                            liIDs: c.liscenseidList,
+                                            prIDs: c.projectIdList,
+                                            crsIds: c.courseIdList,
+                                            awIDs: c.awardIdList,
+                                            permission: newPermission,
+                                          );
                                   }
                                 },
                               ),

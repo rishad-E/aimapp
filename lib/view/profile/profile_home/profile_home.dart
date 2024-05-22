@@ -2,6 +2,9 @@ import 'dart:developer';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -14,6 +17,7 @@ import 'package:aimshala/view/profile/profile_view_all_section/course_section.da
 import 'package:aimshala/view/profile/profile_view_all_section/education_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/experience_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/honor_award_section.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/language_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/license_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/project_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/publication_section.dart';
@@ -30,6 +34,8 @@ import 'package:aimshala/view/profile/profile_personal_info/personal_info_screen
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_project_screen.dart';
 import 'package:aimshala/view/profile/profile_publications_section/add_publications_screen.dart';
+import 'package:aimshala/view/profile/profile_view_all_section/volunteer_section.dart';
+import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -202,20 +208,21 @@ class ProfileHomeScreen extends StatelessWidget {
                                     },
                                     onTapEdit: () {
                                       log('onPress', name: 'onTap Edit');
+                                      Get.put(ProfileEducationController())
+                                          .clearallFields();
                                       Get.to(() => EducationSectionScreen(
                                           education: data));
                                     },
                                     onPressedViewAll: () {
                                       log('onPress', name: 'onTap viewall');
+                                      Get.put(ProfileEducationController())
+                                          .clearallFields();
                                       Get.to(() => EducationSectionScreen(
                                           education: data));
                                     },
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) {
-                                        // final String? media = data[index].media;
-                                        // final List<String> imageList = media != null ? media.split(",").toList() : [];
-                                        // String image = imageList.isEmpty ? imageList[0] : 'null';
                                         return sectionDataWidget(
                                             image: "assets/images/upEvent1.png",
                                             secTitle:
@@ -225,7 +232,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                             secSubTitle2:
                                                 "${yearFormatter(data[index].startDate.toString())}-${yearFormatter(data[index].endDate.toString())}",
                                             secSubTitle3:
-                                                data[index].grade.toString(),
+                                                "Grade: ${data[index].grade.toString()}",
                                             secSubTitle4:
                                                 "Skills: ${data[index].skills.toString()}",
                                             secSubTitle5: data[index]
@@ -280,8 +287,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                           secSubTitle: data[index]
                                               .companyName
                                               .toString(),
-                                          secSubTitle2:
-                                              "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
+                                          secSubTitle2: data[index].endDate ==
+                                                  null
+                                              ? "${parseDateMonthYear(data[index].startDate.toString())}- on-going"
+                                              : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           secSubTitle3:
                                               "${data[index].locationType.toString()},${data[index].location.toString()}",
                                           secSubTitle4:
@@ -304,6 +313,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                     headingText: 'Honors & awards',
                                     subText: "No Honors & awards included yet",
                                     onPressed: () {
+                                      Get.put(ProfileHonorsAwardsController())
+                                          .clearallFieldController();
                                       Get.to(() =>
                                           ProfileAddHonorsandAwardsScreen(
                                               uId: id.toString()));
@@ -313,17 +324,16 @@ class ProfileHomeScreen extends StatelessWidget {
                                     section: "Honors & awards",
                                     onTapAdd: () {
                                       log('onPress', name: 'onTap add');
+                                      Get.put(ProfileHonorsAwardsController())
+                                          .clearallFieldController();
                                       Get.to(() =>
                                           ProfileAddHonorsandAwardsScreen(
                                               uId: id.toString()));
                                     },
-                                    onTapEdit: () =>
-                                        log('onPress', name: 'onTap edit'),
-                                    onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
-                                      Get.to(() =>
-                                          AwardHonorSectionScreen(award: data));
-                                    },
+                                    onTapEdit: () => Get.to(() =>
+                                        AwardHonorSectionScreen(award: data)),
+                                    onPressedViewAll: () => Get.to(() =>
+                                        AwardHonorSectionScreen(award: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => honorWidget(
@@ -362,12 +372,17 @@ class ProfileHomeScreen extends StatelessWidget {
                                     section: "Licenses & Certifications",
                                     onTapAdd: () {
                                       log('button pressed', name: 'onTap Save');
+                                      Get.put(ProfileLicenseCertificationController())
+                                          .clearallFieldController();
                                       Get.to(() =>
                                           AddLicenseCertificationsScreen(
                                               uId: id.toString()));
                                     },
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
+                                    onTapEdit: () {
+                                      log('button pressed', name: 'onTap Edit');
+                                      Get.to(() =>
+                                          LicenseSectionScreen(license: data));
+                                    },
                                     onPressedViewAll: () {
                                       log('onPress', name: 'onTap viewall');
                                       Get.to(() =>
@@ -384,7 +399,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                           color: kblack,
                                           secSubTitle2:
                                               "${parseDateMonthYear(data[index].issueDate.toString())}-${parseDateMonthYear(data[index].expireDate.toString())}",
-                                          secSubTitle3: "Education",
+                                          secSubTitle3: data[index]
+                                              .credentialUrl
+                                              .toString(),
                                           secSubTitle4:
                                               "Skills: ${data[index].skills.toString()}",
                                           secSubTitle5: edSubText,
@@ -409,18 +426,15 @@ class ProfileHomeScreen extends StatelessWidget {
                                   )
                                 : profileDataContainer(
                                     section: "Publications",
-                                    onTapAdd: () {
-                                      log('button pressed', name: 'onTap Save');
-                                      Get.to(() => ProfileAddPublicationScreen(
-                                          uId: id.toString()));
-                                    },
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
-                                    onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
-                                      Get.to(() => PublicationsSectionScreen(
-                                          publication: data));
-                                    },
+                                    onTapAdd: () => Get.to(() =>
+                                        ProfileAddPublicationScreen(
+                                            uId: id.toString())),
+                                    onTapEdit: () => Get.to(() =>
+                                        PublicationsSectionScreen(
+                                            publication: data)),
+                                    onPressedViewAll: () => Get.to(() =>
+                                        PublicationsSectionScreen(
+                                            publication: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
@@ -434,9 +448,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                               data[index]
                                                   .publicationDate
                                                   .toString()),
-                                          secSubTitle3: "Grade: 2:1",
-                                          secSubTitle4:
-                                              "Skills: Coach, Training",
+                                          secSubTitle3: data[index]
+                                              .publicationUrl
+                                              .toString(),
+                                          secSubTitle4: "Skills: ",
                                           secSubTitle5: edSubText,
                                           end: data.length < 2
                                               ? data.length - 1 == index
@@ -468,13 +483,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                           uId: id.toString()));
                                       log('button pressed', name: 'onTap add');
                                     },
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
-                                    onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
-                                      Get.to(() =>
-                                          SkillsSectionScreen(skill: data));
-                                    },
+                                    onTapEdit: () => Get.to(
+                                        () => SkillsSectionScreen(skill: data)),
+                                    onPressedViewAll: () => Get.to(
+                                        () => SkillsSectionScreen(skill: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => skillWidget(
@@ -505,14 +517,14 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Projects",
                                     onTapAdd: () {
-                                      log('button pressed', name: 'onTap Save');
+                                      Get.put(ProfileProjectController())
+                                          .clearallFieldController();
                                       Get.to(() => ProfileAddProjectScreen(
                                           uId: id.toString()));
                                     },
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
+                                    onTapEdit: () => Get.to(() =>
+                                        ProjectSectionScreen(project: data)),
                                     onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
                                       Get.to(() =>
                                           ProjectSectionScreen(project: data));
                                     },
@@ -544,6 +556,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                 ? shrinked
                                 : languageWidget(
                                     section: "Language",
+                                    onTapEdit: () =>
+                                        Get.to(() => LanguageSectionScreen(
+                                              language: data,
+                                            )),
                                     onTapAdd: () => Get.to(() =>
                                         ProfileAddLanguageScreen(
                                             uId: id.toString())),
@@ -566,18 +582,13 @@ class ProfileHomeScreen extends StatelessWidget {
                                 ? shrinked
                                 : profileDataContainer(
                                     section: "Courses",
-                                    onTapAdd: () {
-                                      log('button pressed', name: 'onTap Save');
-                                      Get.to(() => ProfileAddCourseScreen(
-                                          uId: id.toString()));
-                                    },
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
-                                    onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
-                                      Get.to(() =>
-                                          CoursesSectionScreen(course: data));
-                                    },
+                                    onTapAdd: () => Get.to(() =>
+                                        ProfileAddCourseScreen(
+                                            uId: id.toString())),
+                                    onTapEdit: () => Get.to(() =>
+                                        CoursesSectionScreen(course: data)),
+                                    onPressedViewAll: () => Get.to(() =>
+                                        CoursesSectionScreen(course: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => courseWidget(
@@ -603,14 +614,16 @@ class ProfileHomeScreen extends StatelessWidget {
                             : data.isEmpty
                                 ? shrinked
                                 : profileDataContainer(
-                                    section: " volunteer experiences",
-                                    onTapAdd: () => log('button pressed',
-                                        name: 'onTap Save'),
-                                    onTapEdit: () => log('button pressed',
-                                        name: 'onTap Edit'),
-                                    onPressedViewAll: () => log(
-                                        'button pressed',
-                                        name: 'onTap viewall'),
+                                    section: "volunteer experiences",
+                                    onTapAdd: () => Get.to(() =>
+                                        ProfileAddVolunteerExperienceScreen(
+                                            uId: id.toString())),
+                                    onTapEdit: () => Get.to(() =>
+                                        VolunteerSectionScreen(
+                                            volunteer: data)),
+                                    onPressedViewAll: () => Get.to(() =>
+                                        VolunteerSectionScreen(
+                                            volunteer: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
@@ -619,10 +632,12 @@ class ProfileHomeScreen extends StatelessWidget {
                                           secSubTitle: data[index]
                                               .organization
                                               .toString(),
-                                          // secSubTitle2: "${parseDateMonthYear(data[index].startDate.toString())} -${parseDateMonthYear(data[index].endDate.toString())}",
-                                          secSubTitle2: "2021-2023",
+                                          secSubTitle2: data[index].endDate ==
+                                                  "currently_working"
+                                              ? "${parseDateMonthYear(data[index].startDate.toString())}- ongoing"
+                                              : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           secSubTitle3:
-                                              data[index].cause.toString(),
+                                              "Cause: ${data[index].cause.toString()}",
                                           secSubTitle4:
                                               "Skills: Coach, Training",
                                           secSubTitle5: data[index]

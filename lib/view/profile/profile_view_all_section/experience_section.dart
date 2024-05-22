@@ -36,14 +36,15 @@ class ExperienceSectionScreen extends StatelessWidget {
                         image: "assets/images/upEvent1.png",
                         school: data.employmentType.toString(),
                         degree: data.companyName.toString(),
-                        year:
-                            "${parseDateMonthYear(data.startDate.toString())} - ${parseDateMonthYear(data.endDate.toString())}",
+                        year: data.endDate == null
+                            ? "${parseDateMonthYear(data.startDate.toString())}- on-going"
+                            : "${parseDateMonthYear(data.startDate.toString())}-${parseDateMonthYear(data.endDate.toString())}",
                         grade: "${data.locationType},${data.location}",
                         skill: "Skills: ${data.skills}",
                         description: data.description.toString(),
                         end: experience.length - 1 == index,
                         onTap: () => Get.to(() => AddExperienceScreen(
-                            uId: data.id.toString(), experience: data)));
+                            uId: data.userId.toString(), experience: data)));
                   },
                 ),
               ),

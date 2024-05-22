@@ -17,15 +17,15 @@ class UpdateEducationInfoService {
     required String grade,
     required String activities,
     required String description,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
     required List<File> images,
     required List<String> skills,
   }) async {
     String path = Apis().aimUrl + Apis().saveEducation;
 
     log('uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription',
-        name: 'add-education');
+        name: 'add-education save');
     // log(path, name: 'path');
     FormData formData = FormData.fromMap({
       "user_id": uId,
@@ -148,9 +148,15 @@ class UpdateEducationInfoService {
         log(successMessage, name: 'save education info success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
-        // String errorMessage = responseData['error'];
-        log(response.data.toString(), name: 'save education info MB error');
-        return 'Each image must not exceed 2MB in size.';
+        // log(errorMessage.toString(), name: 'save education info MB error');
+        Map<String, dynamic> errors = responseData['error'];
+        String first = errors.keys.first;
+        if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+          String errorMessage = errors[first][0].toString();
+          log(errorMessage, name: 'save education info MB error');
+          return errorMessage;
+        }
+        // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {

@@ -24,6 +24,7 @@ class AddExperienceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileExperienceController());
     String? exID;
+    log(experience.toString(), name: 'experience detial');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.titleController.text =
           experience?.title.toString() ?? controller.titleController.text;
@@ -39,14 +40,18 @@ class AddExperienceScreen extends StatelessWidget {
               controller.locationTypeController.text;
       controller.startDateController.text = experience?.startDate.toString() ??
           controller.startDateController.text;
-      controller.endDateController.text =
-          experience?.endDate.toString() ?? controller.endDateController.text;
+      controller.endDateController.text = experience?.endDate.toString() ?? '';
       controller.descriptionController.text =
           experience?.description.toString() ??
               controller.descriptionController.text;
       controller.profileController.text =
           experience?.profile.toString() ?? controller.profileController.text;
       exID = experience?.id.toString();
+      if (experience?.endDate == null) {
+        controller.currentlyWorking.value = true;
+        controller.update(['EX-currentlyworkingButton']);
+        log(controller.currentlyWorking.toString(), name: 'currenlyworking-ex');
+      }
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -160,15 +165,10 @@ class AddExperienceScreen extends StatelessWidget {
                     GetBuilder<ProfileExperienceController>(
                         id: 'EX-currentlyworkingButton',
                         builder: (c) {
-                          // bool currently = experience?.workingCurrently == 'Yes'
-                          //     ? true
-                          //     : course?.workingCurrently == 'No'
-                          //         ? false
-                          //         : c.currentlyWorking;
                           return GestureDetector(
                             onTap: () => c.toggleCurrentlyWorking(),
-                            child:
-                                currentlyWorking(working: c.currentlyWorking),
+                            child: currentlyWorking(
+                                working: c.currentlyWorking.value),
                           );
                         }),
                     experienceInfoFiled(
@@ -176,6 +176,7 @@ class AddExperienceScreen extends StatelessWidget {
                       textField: TextFormField(
                         readOnly: true,
                         controller: controller.startDateController,
+                        validator: (value) => controller.filedValidation(value),
                         decoration: infoFieldDecoration(
                           hintText: 'Date',
                           suffixWidget: GestureDetector(
@@ -191,23 +192,32 @@ class AddExperienceScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 13, height: 1.7),
                       ),
                     ),
-                    experienceInfoFiled(
-                      text: primarytxt3('End date (or expected)', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.endDateController,
-                        readOnly: true,
-                        decoration: infoFieldDecoration(
-                          hintText: 'Date',
-                          suffixWidget: GestureDetector(
-                            onTap: () => controller.datePicker(context),
-                            child: SvgPicture.asset(
-                                'assets/images/calendar-booked.svg',
-                                colorFilter:
-                                    ColorFilter.mode(kblack, BlendMode.srcIn),
-                                fit: BoxFit.scaleDown),
+                    Obx(
+                      () => Visibility(
+                        visible: controller.currentlyWorking.value == false
+                            ? true
+                            : false,
+                        child: experienceInfoFiled(
+                          text: primarytxt3('End date (or expected)', 9.5.sp),
+                          textField: TextFormField(
+                            controller: controller.endDateController,
+                            validator: (value) =>
+                                controller.filedValidation(value),
+                            readOnly: true,
+                            decoration: infoFieldDecoration(
+                              hintText: 'Date',
+                              suffixWidget: GestureDetector(
+                                onTap: () => controller.datePicker(context),
+                                child: SvgPicture.asset(
+                                    'assets/images/calendar-booked.svg',
+                                    colorFilter: ColorFilter.mode(
+                                        kblack, BlendMode.srcIn),
+                                    fit: BoxFit.scaleDown),
+                              ),
+                            ),
+                            style: const TextStyle(fontSize: 13, height: 1.7),
                           ),
                         ),
-                        style: const TextStyle(fontSize: 13, height: 1.7),
                       ),
                     ),
                     experienceInfoFiled(
@@ -271,7 +281,8 @@ class AddExperienceScreen extends StatelessWidget {
                       subText:
                           'Add Documents, photos, sites, videos, and presentations.',
                       secSub: 'Learn more about media file types supported',
-                      onTap: () => showMediaOptions(context, controller),
+                      onTap: () =>
+                          showMediaOptions(context, controller, experience),
                       selected: Obx(() => controller.allMediasEX.isEmpty
                           ? const SizedBox.shrink()
                           : Column(
@@ -279,16 +290,14 @@ class AddExperienceScreen extends StatelessWidget {
                                   controller.allMediasEX.length, (index) {
                                 final data = controller.allMediasEX;
                                 return addedMediaHomeEX(
-                                    file: data[index]!,
+                                    file: data[index].file!,
                                     onTapClose: () {
                                       data.removeAt(index);
                                       controller
                                           .update(['update-experienceInfo']);
                                     },
-                                    mediaTitle:
-                                        controller.mediaTitleController.text,
-                                    mediaDescription: controller
-                                        .mediaDescriptionController.text);
+                                    mediaTitle: data[index].title,
+                                    mediaDescription: data[index].description);
                               }),
                             )),
                     ),
@@ -314,13 +323,20 @@ class AddExperienceScreen extends StatelessWidget {
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   List<File> imagesList = c.allMediasEX
+                                      .map((item) => item.file)
                                       .where((file) => file != null)
                                       .cast<File>()
                                       .toList();
+                                  List<String> mediaTitles = c.allMediasEX
+                                      .map((i) => i.title)
+                                      .toList();
+                                  List<String> mediaDesc = c.allMediasEX
+                                      .map((i) => i.description)
+                                      .toList();
                                   String currently =
-                                      c.currentlyWorking == true ? 'Yes' : 'No';
-                                  log('currently=>$currently   title:${c.titleController.text}=> employee:${c.employmentController.text}=> company:${c.companyController.text}=> location:${c.locationController.text}=> locationtype:${c.locationTypeController.text}=> startDate:${c.startDateController.text}=> endDate:${c.endDateController.text}=> description:${c.descriptionController.text}=> profile:${c.profileController.text}=> skill:${c.addedSkillEX}=> media:${c.allMediasEX} mediaTitle=>${c.mediaTitleController.text} mediaDesc=>${c.mediaDescriptionController.text}',
-                                      name: 'add-EX screen');
+                                      c.currentlyWorking.value == true
+                                          ? 'Yes'
+                                          : 'No';
                                   experience == null
                                       ? c.saveExperienceInfoFunction(
                                           uId: uId,
@@ -336,10 +352,8 @@ class AddExperienceScreen extends StatelessWidget {
                                           description:
                                               c.descriptionController.text,
                                           profile: c.profileController.text,
-                                          mediaTitle:
-                                              c.mediaTitleController.text,
-                                          mediaDescription:
-                                              c.mediaDescriptionController.text,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDesc,
                                           imagesEX: imagesList,
                                           skillsEX: c.addedSkillEX,
                                         )
@@ -358,10 +372,8 @@ class AddExperienceScreen extends StatelessWidget {
                                           description:
                                               c.descriptionController.text,
                                           profile: c.profileController.text,
-                                          mediaTitle:
-                                              c.mediaTitleController.text,
-                                          mediaDescription:
-                                              c.mediaDescriptionController.text,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDesc,
                                           imagesEX: imagesList,
                                           skillsEX: c.addedSkillEX,
                                         );
@@ -382,8 +394,8 @@ class AddExperienceScreen extends StatelessWidget {
     );
   }
 
-  void showMediaOptions(
-      BuildContext context, ProfileExperienceController controller) {
+  void showMediaOptions(BuildContext context,
+      ProfileExperienceController controller, Experience? ex) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -405,13 +417,13 @@ class AddExperienceScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMediaEX().then((value) {
-                    // controller.mediaTitleController.clear();
-                    // controller.mediaDescriptionController.clear();
+                    controller.mediaTitleController.clear();
+                    controller.mediaDescriptionController.clear();
                     Get.to(() => AddExperienceMediaScreen(
                           image: value,
                           uId: uId,
                           controller: controller,
-                          ex: experience,
+                          ex: ex,
                         ));
                   });
                   Navigator.pop(context);
@@ -422,11 +434,13 @@ class AddExperienceScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMediaEX().then((value) {
-                    return Get.to(() => AddExperienceMediaScreen(
+                    controller.mediaTitleController.clear();
+                    controller.mediaDescriptionController.clear();
+                    Get.to(() => AddExperienceMediaScreen(
                           image: value,
                           uId: uId,
                           controller: controller,
-                          ex: experience,
+                          ex: ex,
                         ));
                   });
                   Navigator.pop(context);

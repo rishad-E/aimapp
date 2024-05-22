@@ -32,7 +32,7 @@ class AddExperienceSkillScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => AddExperienceScreen(uId: uId,)),
+            onPressed: () => Get.off(() => AddExperienceScreen(uId: uId,experience: ex)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

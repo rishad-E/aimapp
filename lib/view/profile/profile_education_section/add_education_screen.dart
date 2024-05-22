@@ -24,6 +24,7 @@ class AddEducationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileEducationController());
     String? eduID;
+    log(edu.toString(),name: 'educational data');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.schoolController.text =
           edu?.school.toString() ?? controller.schoolController.text;
@@ -240,26 +241,21 @@ class AddEducationScreen extends StatelessWidget {
                       }),
                     ),
                     educationAdditional(
-                      onTap: () {
-                        log("add Media on tap");
-                        showMediaOptions(context, controller);
-                      },
+                      onTap: () => showMediaOptions(context, controller,edu),
                       heading: 'Media',
                       subText:
                           'Add Documents, photos, sites, videos, and presentations.',
                       secSub: 'Learn more about media file types supported',
                       selected: Obx(() {
-                        final data = controller.allMedias;
+                        final data = controller.allMediasModel;
                         return data.isEmpty
                             ? const SizedBox.shrink()
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   return addedMediaHome(
-                                    file: data[index]!,
-                                    mediaTitle:
-                                        controller.mediaTitleController.text,
-                                    mediaDescription: controller
-                                        .mediaDescriptionController.text,
+                                    file: data[index].file!,
+                                    mediaTitle: data[index].title,
+                                    mediaDescription: data[index].description,
                                     onTapClose: () {
                                       data.removeAt(index);
                                       controller.updateSaveButton();
@@ -292,10 +288,18 @@ class AddEducationScreen extends StatelessWidget {
                                   if (formKey.currentState!.validate()) {
                                     // log('school: ${c.schoolController.text} degree:${c.degreeController.text} studyfiled: ${c.studyFiledController.text} start: ${c.startdateController.text} end: ${c.endDateController.text} grade: ${c.gradeController.text} activities: ${c.activitiesController.text} description: ${c.descriptionController.text} skills:${c.addedSkill} media:${c.allMedias}',
                                     //     name: 'add-education');
-                                    log("edID=>${edu?.id}  media tile:=>${c.mediaTitleController.text} media desc:=>${c.mediaDescriptionController.text}");
-                                    List<File> imagesList = c.allMedias
-                                        .where((file) => file != null)
+                                    // log("edID=>${edu?.id}  media tile:=>${c.mediaTitleController.text} media desc:=>${c.mediaDescriptionController.text}");
+                                    
+                                    List<File> imagesList = c.allMediasModel
+                                        .map((media) => media.file)
+                                        .where((image) => image != null)
                                         .cast<File>()
+                                        .toList();
+                                    List<String> mediaTitles = c.allMediasModel
+                                        .map((title) => title.title)
+                                        .toList();
+                                    List<String> mediaDesc = c.allMediasModel
+                                        .map((title) => title.description)
                                         .toList();
                                     edu == null
                                         ? c.saveEducationInfo(
@@ -312,13 +316,11 @@ class AddEducationScreen extends StatelessWidget {
                                                 c.activitiesController.text,
                                             description:
                                                 c.descriptionController.text,
-                                            mediaTitle:
-                                                c.mediaTitleController.text,
-                                            mediaDescription: c
-                                                .mediaDescriptionController
-                                                .text,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDesc,
                                             images: imagesList,
-                                            skills: c.addedSkill)
+                                            skills: c.addedSkill,
+                                          )
                                         : c.updateEducationInfo(
                                             edID: eduID.toString(),
                                             uId: uId,
@@ -340,7 +342,8 @@ class AddEducationScreen extends StatelessWidget {
                                                 .mediaDescriptionController
                                                 .text,
                                             images: imagesList,
-                                            skills: c.addedSkill);
+                                            skills: c.addedSkill,
+                                          );
                                   }
                                 },
                               ),
@@ -358,7 +361,7 @@ class AddEducationScreen extends StatelessWidget {
   }
 
   void showMediaOptions(
-      BuildContext context, ProfileEducationController controller) {
+      BuildContext context, ProfileEducationController controller,Education? edu) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -380,13 +383,15 @@ class AddEducationScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMedia().then((value) {
-                    return Get.to(
-                      () => AddProfileMediaScreen(
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      return Get.to(() => AddProfileMediaScreen(
                           image: value,
                           uId: uId,
                           controller: controller,
-                          edu: edu),
-                    );
+                          edu: edu));
+                    }
                   });
                 },
               ),
@@ -395,11 +400,13 @@ class AddEducationScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() => AddProfileMediaScreen(
-                        image: value,
-                        uId: uId,
-                        controller: controller,
-                        edu: edu));
+                    if (value != null) {
+                      return Get.to(() => AddProfileMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          edu: edu));
+                    }
                   });
                 },
               ),

@@ -80,7 +80,11 @@ Widget honorsawardsAdditional(
   );
 }
 
-Widget addedMediaHomeHonorAward(File file,void Function()? onTap) {
+Widget addedMediaHomeHonorAward(
+    {required File file,
+    void Function()? onTap,
+    required String title,
+    required String desc}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -90,34 +94,38 @@ Widget addedMediaHomeHonorAward(File file,void Function()? onTap) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap:onTap ,
-              child: Icon(
-                Icons.close,
-                size: 12.sp,
-                color: textFieldColor,
+        Expanded(
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: onTap,
+                child: Icon(
+                  Icons.close,
+                  size: 12.sp,
+                  color: textFieldColor,
+                ),
               ),
-            ),
-            wBox,
-             SizedBox(
-              height: 29,
-              width: 45,
-              child: Image.file(
-                file,
-                fit: BoxFit.fill,
+              wBox,
+              SizedBox(
+                height: 29,
+                width: 45,
+                child: Image.file(
+                  file,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            wBox,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                regularText('Physician (General Practitioner)', 12),
-                regularText('Physician (General Practitioner)', 8),
-              ],
-            )
-          ],
+              wBox,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    regularText(title, 12),
+                    regularText(desc, 8),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Icon(
           Icons.menu,
@@ -143,7 +151,6 @@ Widget honorMediaListTile(
     contentPadding: EdgeInsets.zero,
   );
 }
-
 
 Widget honorAwardsInfoFiled({required Widget text, required Widget textField}) {
   return Padding(

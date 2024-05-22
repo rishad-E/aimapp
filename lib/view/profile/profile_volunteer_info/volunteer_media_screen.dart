@@ -1,24 +1,30 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+
+import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
-import 'package:aimshala/view/profile/profile_education_section/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_info/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class AddProfileMediaScreen extends StatelessWidget {
+class VolunteerMediaScreen extends StatelessWidget {
   final File? image;
   final String uId;
-  final Education? edu;
-  final ProfileEducationController controller;
-  AddProfileMediaScreen(
-      {super.key, this.image, required this.uId, required this.controller, this.edu});
+  final VolunteerExperience? vol;
+  final ProfileVolunteerController controller;
+  VolunteerMediaScreen(
+      {super.key,
+      this.image,
+      required this.uId,
+      this.vol,
+      required this.controller});
+
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -30,9 +36,13 @@ class AddProfileMediaScreen extends StatelessWidget {
           doneWidget: TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  controller.addMediaFields(file: image, title: controller.mediaTitleController.text, description: controller.mediaDescriptionController.text);
-                  Get.off(() => AddEducationScreen(uId: uId,edu: edu));
-                  log(controller.allMediasModel.toString());
+                  controller.addVolunteerMedia(
+                      title: controller.mediaTitleController.text,
+                      desc: controller.mediaDescriptionController.text,
+                      file: image);
+                  Get.off(() => ProfileAddVolunteerExperienceScreen(
+                      uId: uId, volunteer: vol));
+                    log(controller.volunteerMedia.toString(),name: 'volunteer media');
                 }
               },
               child: const Text(
@@ -45,27 +55,26 @@ class AddProfileMediaScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                educationInfoFiled(
+                volunteerInfoFiled(
                   text: primarytxt3('Title', 9.5.sp),
                   textField: TextFormField(
-                    decoration: infoFieldDecoration(hintText: 'Ex: Certificate'),
-                    style: const TextStyle(fontSize: 13),
                     controller: controller.mediaTitleController,
-                    validator: (value) => controller.filedValidation(value),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => controller.fieldValidation(value),
+                    decoration:
+                        infoFieldDecoration(hintText: 'Ex: Certificate'),
+                    style: const TextStyle(fontSize: 13),
                   ),
                 ),
-                educationInfoFiled(
+                volunteerInfoFiled(
                   text: primarytxt3('Description', 9.5.sp),
                   textField: TextFormField(
+                    controller: controller.mediaDescriptionController,
+                    validator: (value) => controller.fieldValidation(value),
                     decoration:
                         infoFieldDecoration(hintText: 'Enter Description'),
                     style: const TextStyle(fontSize: 13),
                     minLines: 3,
                     maxLines: null,
-                    controller: controller.mediaDescriptionController,
-                    validator: (value) => controller.filedValidation(value),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
                 hMBox,

@@ -1,10 +1,11 @@
+import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/common_widgets.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/skill_widget.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
-import 'package:aimshala/view/profile/profile_home/widgets/section_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +38,11 @@ class SkillsSectionScreen extends StatelessWidget {
                         company: "Business Intelligence (BI)",
                         position: data.skillName.toString(),
                         end: skill.length - 1 == index,
+                        onTap: () {
+                          Get.put(ProfileSkillController()).getSuggestedSkillsFunction();
+                          Get.to(() => ProfileAddSkillScreen(
+                            uId: data.userId.toString(), skill: data));
+                        },
                       );
                     },
                   )),

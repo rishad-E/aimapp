@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_honoraward_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -13,33 +14,89 @@ class ProfileHonorsAwardsController extends GetxController {
   TextEditingController issuerController = TextEditingController();
   TextEditingController startdateController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController mediaTitleController = TextEditingController();
+  TextEditingController mediaDescriptionController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   File? selectedImage;
   File? selectedCamera;
-  RxList<File?> allAwardMedias = <File?>[].obs;
+  RxList<AddMediaModel> allAwardMedias = <AddMediaModel>[].obs;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
   Future<void> saveHonorAwardFunction({
     required String uId,
-    required String titile,
+    required String title,
     required String assosiated,
     required String issuer,
     required String startdate,
     required String description,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
     required List<File> media,
   }) async {
     String? res = await UpdateHonorAwardService().saveHonorAwardInfo(
         uId: uId,
-        titile: titile,
+        title: title,
         assosiated: assosiated,
         issuer: issuer,
         startdate: startdate,
         description: description,
-        media: media);
+        media: media,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription);
     if (res == 'Award details added successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> updateHonorAwardFunction({
+    required String awardID,
+    required String uId,
+    required String title,
+    required String assosiated,
+    required String issuer,
+    required String startdate,
+    required String description,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
+    required List<File> media,
+  }) async {
+    String? res = await UpdateHonorAwardService().updateHonorAwardInfo(
+      awardID: awardID,
+      uId: uId,
+      title: title,
+      assosiated: assosiated,
+      issuer: issuer,
+      startdate: startdate,
+      description: description,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+      media: media,
+    );
+    if (res == 'Award details updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
@@ -100,11 +157,11 @@ class ProfileHonorsAwardsController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    allAwardMedias.add(selectedImage);
+    // allAwardMedias.add(selectedImage);
     // allMediasFiles.add(pickedFile.path.split('/').last);
     // log(selectedImage.toString(), name: 'gallery');
-    allFieldSelect();
-    update(['update-HonorAwardsbutton']);
+    // allFieldSelect();
+    // update(['update-HonorAwardsbutton']);
     return selectedImage;
   }
 
@@ -113,11 +170,20 @@ class ProfileHonorsAwardsController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    allAwardMedias.add(selectedCamera);
+    // allAwardMedias.add(selectedCamera);
     // log(selectedCamera.toString(), name: 'camera');
+    // allFieldSelect();
+    // update(['update-HonorAwardsbutton']);
+    return selectedCamera;
+  }
+
+  void addAwardMedia(
+      {required String title, required String desc, File? file}) {
+    AddMediaModel model =
+        AddMediaModel(file: file, title: title, description: desc);
+    allAwardMedias.add(model);
     allFieldSelect();
     update(['update-HonorAwardsbutton']);
-    return selectedCamera;
   }
 
   String? filedValidation(String? value) {
@@ -136,5 +202,14 @@ class ProfileHonorsAwardsController extends GetxController {
         allAwardMedias.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
+  }
+
+  void clearallFieldController() {
+    titileController.clear();
+    assosiatedController.clear();
+    issuerController.clear();
+    startdateController.clear();
+    descriptionController.clear();
+    allAwardMedias.clear();
   }
 }

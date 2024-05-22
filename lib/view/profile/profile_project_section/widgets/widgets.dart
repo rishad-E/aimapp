@@ -51,7 +51,11 @@ Widget addedskillHomeProject(String skill) {
   );
 }
 
-Widget addedMediaHomeProject(File file,void Function()? onTap) {
+Widget addedMediaHomeProject(
+    {required File file,
+    void Function()? onTap,
+    required String title,
+    required String desc}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -61,34 +65,38 @@ Widget addedMediaHomeProject(File file,void Function()? onTap) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            GestureDetector(
-              onTap: onTap,
-              child: Icon(
-                Icons.close,
-                size: 12.sp,
-                color: textFieldColor,
+        Expanded(
+          child: Row(
+            children: [
+              GestureDetector(
+                onTap: onTap,
+                child: Icon(
+                  Icons.close,
+                  size: 12.sp,
+                  color: textFieldColor,
+                ),
               ),
-            ),
-            wBox,
-             SizedBox(
-              height: 29,
-              width: 45,
-              child: Image.file(
-                file,
-                fit: BoxFit.fill,
+              wBox,
+              SizedBox(
+                height: 29,
+                width: 45,
+                child: Image.file(
+                  file,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            wBox,
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                regularText('Physician (General Practitioner)', 12),
-                regularText('Physician (General Practitioner)', 8),
-              ],
-            )
-          ],
+              wBox,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    regularText(title, 12),
+                    regularText(desc, 8),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Icon(
           Icons.menu,
@@ -98,7 +106,6 @@ Widget addedMediaHomeProject(File file,void Function()? onTap) {
     ),
   );
 }
-
 
 Widget projectAdditional(
     {required String heading,
@@ -161,31 +168,30 @@ Widget projectAdditional(
   );
 }
 
-
-
-Widget currentlyWorkingProject() {
+Widget currentlyWorkingProject({required bool working}) {
   return Row(
     children: [
       Container(
-          height: 1.8.h,
-          width: 3.8.w,
-          decoration: BoxDecoration(
-            color: mainPurple,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Center(
-              child: Icon(
-            Icons.done,
-            color: kwhite,
-            size: 7.7.sp,
-          ))),
+        height: 1.8.h,
+        width: 3.8.w,
+        decoration: BoxDecoration(
+          color: working ? mainPurple : kwhite,
+          border: working
+              ? null
+              : Border.all(
+                  width: 1, color: const Color.fromARGB(255, 195, 197, 198)),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: working
+            ? Center(child: Icon(Icons.done, color: kwhite, size: 7.7.sp))
+            : null,
+      ),
       wBox,
       Text("I am currently working in this role",
           style: TextStyle(fontSize: 8.2.sp, color: textFieldColor))
     ],
   );
 }
-
 
 Widget selectedPSkill({required String skill, required Function()? onTap}) {
   return GestureDetector(
@@ -203,9 +209,7 @@ Widget selectedPSkill({required String skill, required Function()? onTap}) {
             child: Text(
               skill,
               style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,color: kblack
-              ),
+                  fontSize: 14, fontWeight: FontWeight.w500, color: kblack),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -221,7 +225,8 @@ Widget selectedPSkill({required String skill, required Function()? onTap}) {
   );
 }
 
-Widget projectMediaInfoFiled({required Widget text, required Widget textField}) {
+Widget projectMediaInfoFiled(
+    {required Widget text, required Widget textField}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 3),
     child: Column(
@@ -232,7 +237,6 @@ Widget projectMediaInfoFiled({required Widget text, required Widget textField}) 
     ),
   );
 }
-
 
 Widget projectMediaListTile(
     {required String title, void Function()? onTap, Widget? leading}) {

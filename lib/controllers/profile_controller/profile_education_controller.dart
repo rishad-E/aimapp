@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_education_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -23,8 +24,7 @@ class ProfileEducationController extends GetxController {
   RxList<String> addedSkill = <String>[].obs;
   File? selectedImage;
   File? selectedCamera;
-  RxList<File?> allMedias = <File?>[].obs;
-  // RxList<String?> allMediasFiles = <String?>[].obs;
+  RxList<AddMediaModel> allMediasModel = <AddMediaModel>[].obs;
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
@@ -38,8 +38,8 @@ class ProfileEducationController extends GetxController {
     required String grade,
     required String activities,
     required String description,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
     required List<File> images,
     required List<String> skills,
   }) async {
@@ -118,7 +118,7 @@ class ProfileEducationController extends GetxController {
     );
     if (res == "Education details updated successfully.") {
       Get.showSnackbar(
-         GetSnackBar(
+        GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
           message: res,
           borderRadius: 4,
@@ -182,10 +182,6 @@ class ProfileEducationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    allMedias.add(selectedImage);
-    // allMediasFiles.add(pickedFile.path.split('/').last);
-    updateSaveButton();
-    update(['update-educationInfo']);
     return selectedImage;
   }
 
@@ -194,11 +190,19 @@ class ProfileEducationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    // update(['update-media']);
-    allMedias.add(selectedCamera);
+    return selectedCamera;
+  }
+
+  void addMediaFields({
+    required File? file,
+    required String title,
+    required String description,
+  }) {
+    AddMediaModel model =
+        AddMediaModel(file: file, title: title, description: description);
+    allMediasModel.add(model);
     updateSaveButton();
     update(['update-educationInfo']);
-    return selectedCamera;
   }
 
   String? filedValidation(String? value) {
@@ -218,7 +222,7 @@ class ProfileEducationController extends GetxController {
         activitiesController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         addedSkill.isNotEmpty &&
-        allMedias.isNotEmpty;
+        allMediasModel.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['update-educationInfo']);
@@ -234,6 +238,6 @@ class ProfileEducationController extends GetxController {
     activitiesController.clear();
     descriptionController.clear();
     addedSkill.clear();
-    allMedias.clear();
+    allMediasModel.clear();
   }
 }

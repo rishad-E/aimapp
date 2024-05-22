@@ -681,12 +681,12 @@ class Skill {
   int? id;
   int? userId;
   String? skillName;
-  String? experiencesId;
-  String? educationsId;
-  String? licensesId;
-  String? projectsId;
-  String? coursesId;
-  String? awardsId;
+  List<String>? experiencesId;
+  List<String>? educationsId;
+  List<String>? licensesId;
+  List<String>? projectsId;
+  List<String>? coursesId;
+  List<String>? awardsId;
   String? followupPermission;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -710,12 +710,24 @@ class Skill {
         id: json["id"],
         userId: json["user_id"],
         skillName: json["skill_name"],
-        experiencesId: json["experiences_id"],
-        educationsId: json["educations_id"],
-        licensesId: json["licenses_id"],
-        projectsId: json["projects_id"],
-        coursesId: json["courses_id"],
-        awardsId: json["awards_id"],
+        experiencesId: json["experiences_id"] == null
+            ? []
+            : List<String>.from(json["experiences_id"]!.map((x) => x)),
+        educationsId: json["educations_id"] == null
+            ? []
+            : List<String>.from(json["educations_id"]!.map((x) => x)),
+        licensesId: json["licenses_id"] == null
+            ? []
+            : List<String>.from(json["licenses_id"]!.map((x) => x)),
+        projectsId: json["projects_id"] == null
+            ? []
+            : List<String>.from(json["projects_id"]!.map((x) => x)),
+        coursesId: json["courses_id"] == null
+            ? []
+            : List<String>.from(json["courses_id"]!.map((x) => x)),
+        awardsId: json["awards_id"] == null
+            ? []
+            : List<String>.from(json["awards_id"]!.map((x) => x)),
         followupPermission: json["followup_permission"],
         createdAt: json["created_at"] == null
             ? null
@@ -729,12 +741,23 @@ class Skill {
         "id": id,
         "user_id": userId,
         "skill_name": skillName,
-        "experiences_id": experiencesId,
-        "educations_id": educationsId,
-        "licenses_id": licensesId,
-        "projects_id": projectsId,
-        "courses_id": coursesId,
-        "awards_id": awardsId,
+        "experiences_id": experiencesId == null
+            ? []
+            : List<dynamic>.from(experiencesId!.map((x) => x)),
+        "educations_id": educationsId == null
+            ? []
+            : List<dynamic>.from(educationsId!.map((x) => x)),
+        "licenses_id": licensesId == null
+            ? []
+            : List<dynamic>.from(licensesId!.map((x) => x)),
+        "projects_id": projectsId == null
+            ? []
+            : List<dynamic>.from(projectsId!.map((x) => x)),
+        "courses_id": coursesId == null
+            ? []
+            : List<dynamic>.from(coursesId!.map((x) => x)),
+        "awards_id":
+            awardsId == null ? [] : List<dynamic>.from(awardsId!.map((x) => x)),
         "followup_permission": followupPermission,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -17,11 +18,32 @@ import 'package:sizer/sizer.dart';
 
 class AddLicenseCertificationsScreen extends StatelessWidget {
   final String uId;
-  AddLicenseCertificationsScreen({super.key, required this.uId});
+  final License? license;
+  AddLicenseCertificationsScreen({super.key, required this.uId, this.license});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileLicenseCertificationController());
+    log(license.toString(), name: 'license data');
+    String? liID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.nameController.text =
+          license?.name.toString() ?? controller.nameController.text;
+      controller.organizationController.text =
+          license?.organization.toString() ??
+              controller.organizationController.text;
+      controller.issuedateController.text =
+          license?.issueDate.toString() ?? controller.issuedateController.text;
+      controller.expirydateController.text = license?.expireDate.toString() ??
+          controller.expirydateController.text;
+      controller.credentialIDController.text =
+          license?.credentialId.toString() ??
+              controller.credentialIDController.text;
+      controller.credentialurlController.text =
+          license?.credentialUrl.toString() ??
+              controller.credentialurlController.text;
+      liID = license?.id.toString();
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -32,7 +54,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
           decoration: profileMainContainer(),
           child: Container(
             width: double.infinity,
-            // height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             decoration: profileSecondaryContainer(),
@@ -49,6 +70,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         controller: controller.nameController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         decoration: infoFieldDecoration(
                           hintText: 'Ex: Certified Network Security Associate',
                         ),
@@ -61,6 +86,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         controller: controller.organizationController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         decoration:
                             infoFieldDecoration(hintText: 'Ex: Microsoft'),
                         style: const TextStyle(fontSize: 13),
@@ -73,6 +102,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         controller: controller.issuedateController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         decoration: infoFieldDecoration(
                           hintText: 'Date',
                           suffixWidget: GestureDetector(
@@ -94,6 +127,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         controller: controller.expirydateController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         readOnly: true,
                         decoration: infoFieldDecoration(
                           hintText: 'Date',
@@ -116,6 +153,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         controller: controller.credentialIDController,
                         validator: (value) => controller.fieldValidation(value),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         decoration: infoFieldDecoration(
                             hintText: 'Enter Credential ID'),
                         style: const TextStyle(fontSize: 13),
@@ -126,6 +167,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                       textField: TextFormField(
                         controller: controller.credentialurlController,
                         validator: (value) => controller.fieldValidation(value),
+                        onChanged: (value) {
+                          controller.updateLicenseButton();
+                          controller.update(['update-licenseButton']);
+                        },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: infoFieldDecoration(
                             hintText: 'Enter Credential URL'),
@@ -133,8 +178,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                       ),
                     ),
                     licenseAdditional(
-                      onTap: () =>
-                          Get.to(() => AddLicenseSkillScreen(uId: uId)),
+                      onTap: () => Get.to(() =>
+                          AddLicenseSkillScreen(uId: uId, license: license)),
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
@@ -150,7 +195,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                       }),
                     ),
                     licenseAdditional(
-                      onTap: () => showMediaOptions(context, controller),
+                      onTap: () =>
+                          showMediaOptions(context, controller, license),
                       heading: 'Media',
                       subText:
                           'Add Documents, photos, sites, videos, and presentations.',
@@ -162,9 +208,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   return addedLicenseMediaHome(
-                                    data[index]!,
-                                    () => data.removeAt(index),
-                                  );
+                                      file: data[index].file!,
+                                      onTapClose: () => data.removeAt(index),
+                                      title: data[index].title,
+                                      desc: data[index].description);
                                 }),
                               );
                       }),
@@ -186,28 +233,60 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                               wMBox,
                               actionContainer(
                                 text: 'Save',
-                                textColor: textFieldColor,
-                                boxColor: buttonColor,
+                                textColor: c.saveText.value,
+                                boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    log('name=>${c.nameController.text} organization=>${c.organizationController.text} issueDate=>${c.issuedateController.text} expiryDate=>${c.expirydateController.text} credID=>${c.credentialIDController.text} credURL=>${c.credentialurlController.text} skills=>${c.addedLicenseSkill} media=>${c.allLicenseMedias}',
-                                        name: 'license-screen');
                                     List<File> imagesList = c.allLicenseMedias
+                                        .map((i) => i.file)
                                         .where((file) => file != null)
                                         .cast<File>()
                                         .toList();
-                                    c.saveLicenseCertificationFunction(
-                                      uId: uId,
-                                      name: c.nameController.text,
-                                      organization:
-                                          c.organizationController.text,
-                                      issueDate: c.issuedateController.text,
-                                      expiryDate: c.expirydateController.text,
-                                      credID: c.credentialIDController.text,
-                                      credURL: c.credentialurlController.text,
-                                      media: imagesList,
-                                      skills: c.addedLicenseSkill,
-                                    );
+                                    List<String> mediaTitles = c
+                                        .allLicenseMedias
+                                        .map((i) => i.title)
+                                        .toList();
+                                    List<String> mediaDescs = c.allLicenseMedias
+                                        .map((i) => i.description)
+                                        .toList();
+                                    license == null
+                                        ? c.saveLicenseCertificationFunction(
+                                            uId: uId,
+                                            name: c.nameController.text,
+                                            organization:
+                                                c.organizationController.text,
+                                            issueDate:
+                                                c.issuedateController.text,
+                                            expiryDate:
+                                                c.expirydateController.text,
+                                            credID:
+                                                c.credentialIDController.text,
+                                            credURL:
+                                                c.credentialurlController.text,
+                                            media: imagesList,
+                                            skills: c.addedLicenseSkill,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDescs,
+                                          )
+                                        : c.updateLicenseCertificationFunction(
+                                            lcID: liID.toString(),
+                                            uId: uId,
+                                            name: c.nameController.text,
+                                            organization:
+                                                c.organizationController.text,
+                                            issueDate:
+                                                c.issuedateController.text,
+                                            expiryDate:
+                                                c.expirydateController.text,
+                                            credID:
+                                                c.credentialIDController.text,
+                                            credURL:
+                                                c.credentialurlController.text,
+                                            media: imagesList,
+                                            skills: c.addedLicenseSkill,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDescs,
+                                          );
                                   }
                                 },
                               ),
@@ -224,8 +303,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     );
   }
 
-  void showMediaOptions(
-      BuildContext context, ProfileLicenseCertificationController controller) {
+  void showMediaOptions(BuildContext context,
+      ProfileLicenseCertificationController controller, License? license) {
     showModalBottomSheet(
       context: context,
       builder: (_) {
@@ -246,16 +325,28 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                 title: 'Upload a Photo',
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () => controller.pickImageMedia().then((value) {
-                  return Get.to(
-                      () => AddLicenseMediaScreen(image: value, uId: uId));
+                  if (value != null) {
+                    Get.to(() => AddLicenseMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          license: license,
+                        ));
+                  }
                 }),
               ),
               mediaLicenseListTile(
                 title: 'Take a Photo',
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () => controller.pickCameraMedia().then((value) {
-                  return Get.to(
-                      () => AddLicenseMediaScreen(image: value, uId: uId));
+                  if (value != null) {
+                    Get.to(() => AddLicenseMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          license: license,
+                        ));
+                  }
                 }),
                 // onTap: () {
                 //   // controller.pickCameraMedia().then((value) {

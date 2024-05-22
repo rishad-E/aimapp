@@ -55,7 +55,7 @@ class ProfileSkillController extends GetxController {
   /*------- final selected lists to pass ------*/
   bool permission = false;
 
-  /*------- funtion to save skill info ------*/
+  /*------- funtion to save and update skill info ------*/
   Future<void> saveSkillInfoFunction({
     required String uId,
     required String skill,
@@ -103,7 +103,57 @@ class ProfileSkillController extends GetxController {
       );
     }
   }
-  /*------- funtion to save skill info ------*/
+
+  Future<void> updateSkillFunction({
+    required String skID,
+    required String uId,
+    required String skill,
+    required List<String> exIDs,
+    required List<String> edIDs,
+    required List<String> liIDs,
+    required List<String> prIDs,
+    required List<String> crsIds,
+    required List<String> awIDs,
+    required String permission,
+  }) async {
+   String? res = await UpdateSkillInfoService().updateAddedSkillService(
+      skID: skID,
+      uId: uId,
+      skill: skill,
+      exIDs: exIDs,
+      edIDs: edIDs,
+      liIDs: liIDs,
+      prIDs: prIDs,
+      crsIds: crsIds,
+      awIDs: awIDs,
+      permission: permission,
+    );
+     if (res == 'Skill updated successfully.') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => const ProfileHomeScreen());
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+  /*------- funtion to save and update skill info ------*/
 
   /*------- functions to extract items needed to pass with skill section ------*/
   Future<void> getProfileAlldataFunction({required String uId}) async {

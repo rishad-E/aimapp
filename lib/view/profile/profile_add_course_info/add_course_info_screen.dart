@@ -20,7 +20,24 @@ class ProfileAddCourseScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
+    String? courseID;
+    log(course.toString(),name: 'course data');
     final controller = Get.put(LanguageAndCourseController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.courseController.text =
+          course?.courseName.toString() ?? controller.courseController.text;
+      controller.courseNoController.text =
+          course?.courseNumber.toString() ?? controller.courseNoController.text;
+      controller.courseAssosiatedController.text =
+          course?.associatedWith.toString() ??
+              controller.courseAssosiatedController.text;
+      courseID = course?.id.toString();
+      if (course?.workingCurrently == "Yes") {
+        controller.currentlyWorking = true;
+        controller.update(['update-workingButton']);
+      }
+      controller.update(['update-courseInfo']);
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -43,8 +60,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       courseInfoFiled(
                         text: primarytxt3('Course name', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseController
-                            ..text = course?.courseName.toString() ?? '',
+                          controller: controller.courseController,
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -59,8 +75,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       courseInfoFiled(
                         text: primarytxt3('Number', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseNoController
-                            ..text = course?.courseNumber.toString() ?? '',
+                          controller: controller.courseNoController,
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -76,22 +91,17 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       GetBuilder<LanguageAndCourseController>(
                           id: 'update-workingButton',
                           builder: (c) {
-                            bool currently = course?.workingCurrently == 'Yes'
-                                ? true
-                                : course?.workingCurrently == 'No'
-                                    ? false
-                                    : c.currentlyWorking;
                             return GestureDetector(
                               onTap: () => c.toggleCurrentlyWorking(),
-                              child: currentlyWorkingCourse(working: currently),
+                              child: currentlyWorkingCourse(
+                                  working: c.currentlyWorking),
                             );
                           }),
                       hBox,
                       courseInfoFiled(
                         text: primarytxt3('Associated with', 9.5.sp),
                         textField: TextFormField(
-                          controller: controller.courseAssosiatedController
-                            ..text = course?.associatedWith ?? '',
+                          controller: controller.courseAssosiatedController,
                           validator: (value) =>
                               controller.fieldValidation(value),
                           onChanged: (value) =>
@@ -145,13 +155,28 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                               : 'No';
                                       log('courseID=>${course?.id}  ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} currently=>$working',
                                           name: 'course-screen');
-                                      // c.saveCourseFunction(
-                                      //     uId: uId,
-                                      //     course: c.courseController.text,
-                                      //     courseNo: c.courseNoController.text,
-                                      //     courseAssosiated:
-                                      //         c.courseAssosiatedController.text,
-                                      //     working: working);
+                                      course == null
+                                          ? c.saveCourseFunction(
+                                              uId: uId,
+                                              course: c.courseController.text,
+                                              courseNo:
+                                                  c.courseNoController.text,
+                                              courseAssosiated: c
+                                                  .courseAssosiatedController
+                                                  .text,
+                                              working: working,
+                                            )
+                                          : c.updateCourseInfo(
+                                              uId: uId,
+                                              courseID: courseID.toString(),
+                                              course: c.courseController.text,
+                                              courseNo:
+                                                  c.courseNoController.text,
+                                              courseAssosiated: c
+                                                  .courseAssosiatedController
+                                                  .text,
+                                              working: working,
+                                            );
                                     }
                                   },
                                 ),

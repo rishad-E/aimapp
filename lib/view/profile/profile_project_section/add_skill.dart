@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -12,7 +13,8 @@ import 'package:get/get.dart';
 
 class AddProjectSkillScreen extends StatelessWidget {
   final String uId;
-  const AddProjectSkillScreen({super.key, required this.uId});
+  final Project? project;
+  const AddProjectSkillScreen({super.key, required this.uId, this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,8 @@ class AddProjectSkillScreen extends StatelessWidget {
         title: 'Skills',
         doneWidget: TextButton(
             onPressed: () {
-              Get.off(() => ProfileAddProjectScreen(
-                    uId: uId,
-                  ));
+              Get.off(
+                  () => ProfileAddProjectScreen(uId: uId, project: project));
             },
             child: const Text(
               'Done',

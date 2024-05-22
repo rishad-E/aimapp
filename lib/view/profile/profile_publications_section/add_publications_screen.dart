@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_publications_controller.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -14,11 +13,31 @@ import 'package:sizer/sizer.dart';
 
 class ProfileAddPublicationScreen extends StatelessWidget {
   final String uId;
-  ProfileAddPublicationScreen({super.key, required this.uId});
+  final Publication? publication;
+  ProfileAddPublicationScreen({super.key, required this.uId, this.publication});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfilePublicationController());
+    String? pbID;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.titleController.text =
+          publication?.title.toString() ?? controller.titleController.text;
+      controller.publicationController.text =
+          publication?.publication.toString() ??
+              controller.publicationController.text;
+      controller.publicationDateController.text =
+          publication?.publicationDate.toString() ??
+              controller.publicationDateController.text;
+      controller.publicationURLController.text =
+          publication?.publicationUrl.toString() ??
+              controller.publicationURLController.text;
+      controller.publicationDescriptionController.text =
+          publication?.description.toString() ??
+              controller.publicationDescriptionController.text;
+      pbID = publication?.id.toString();
+      controller.update(['update-publication']);
+    });
     return PopScope(
       onPopInvoked: (didPop) =>
           Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
@@ -173,20 +192,36 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                       : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('uid=>$uId  title=>${c.titleController.text} publication=>${c.publicationController.text}  publicationDate=>${c.publicationDateController.text} publicationURL=>${c.publicationURLController.text} publicationDescri=>${c.publicationDescriptionController.text}',
-                                          name: 'publication-screen');
-                                      c.savePublicationFuntion(
-                                        uId: uId,
-                                        title: c.titleController.text,
-                                        publication:
-                                            c.publicationController.text,
-                                        pubDate:
-                                            c.publicationDateController.text,
-                                        pubURL: c.publicationURLController.text,
-                                        pubDescription: c
-                                            .publicationDescriptionController
-                                            .text,
-                                      );
+                                      publication == null
+                                          ? c.savePublicationFuntion(
+                                              uId: uId,
+                                              title: c.titleController.text,
+                                              publication:
+                                                  c.publicationController.text,
+                                              pubDate: c
+                                                  .publicationDateController
+                                                  .text,
+                                              pubURL: c.publicationURLController
+                                                  .text,
+                                              pubDescription: c
+                                                  .publicationDescriptionController
+                                                  .text,
+                                            )
+                                          : c.updatePublicationFuntion(
+                                              pbID: pbID.toString(),
+                                              uId: uId,
+                                              title: c.titleController.text,
+                                              publication:
+                                                  c.publicationController.text,
+                                              pubDate: c
+                                                  .publicationDateController
+                                                  .text,
+                                              pubURL: c.publicationURLController
+                                                  .text,
+                                              pubDescription: c
+                                                  .publicationDescriptionController
+                                                  .text,
+                                            );
                                     }
                                   },
                                 ),
