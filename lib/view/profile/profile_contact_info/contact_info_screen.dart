@@ -5,6 +5,8 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_contact_info/widgets/city_bottom_sheet.dart';
+import 'package:aimshala/view/profile/profile_contact_info/widgets/state_bottom_sheet.dart';
 import 'package:aimshala/view/profile/profile_contact_info/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -124,37 +126,54 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   ),
                   contactInfoFiled(
                     text: primarytxt3('State', 9.5.sp),
-                    textField: TextFormField(
-                      controller: controller.stateController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
+                    textField: GestureDetector(
+                      onTap: () {
+                        log('ontap');
+                        showStateBottomsheet(context);
                       },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: const TextStyle(fontSize: 12),
-                      decoration: infoFieldDecoration(
-                        hintText: 'Please Select',
-                        suffixWidget: Icon(Icons.keyboard_arrow_down,
-                            size: 26, color: kblack),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: controller.stateController,
+                          validator: (value) =>
+                              controller.fieldValidator(value),
+                          onChanged: (value) {
+                            controller.allFieldSelect();
+                            controller.update(['update-contactInfo']);
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          style: const TextStyle(fontSize: 12),
+                          decoration: infoFieldDecoration(
+                            hintText: 'Please Select',
+                            suffixWidget: Icon(Icons.keyboard_arrow_down,
+                                size: 26, color: kblack),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   contactInfoFiled(
                     text: primarytxt3('City', 9.5.sp),
-                    textField: TextFormField(
-                      controller: controller.cityController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: const TextStyle(fontSize: 12),
-                      decoration: infoFieldDecoration(
-                        hintText: 'Please Select',
-                        suffixWidget: Icon(Icons.keyboard_arrow_down,
-                            size: 26, color: kblack),
+                    textField: GestureDetector(
+                      onTap: () => showCityBottomsheet(context),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: controller.cityController,
+                          readOnly: true,
+                          validator: (value) =>
+                              controller.fieldValidator(value),
+                          onChanged: (value) {
+                            controller.allFieldSelect();
+                            controller.update(['update-contactInfo']);
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          style: const TextStyle(fontSize: 12),
+                          decoration: infoFieldDecoration(
+                            hintText: 'Please Select',
+                            suffixWidget: Icon(Icons.keyboard_arrow_down,
+                                size: 26, color: kblack),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -259,5 +278,22 @@ class ProfileContactInfoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showStateBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const StateBottomSheetClass();
+      },
+    );
+  }
+
+  void showCityBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return const CityBottomSheetClass();
+        });
   }
 }

@@ -1,18 +1,19 @@
 import 'dart:developer';
-import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_home_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_add_course_info/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/dialoguebox_profile_image.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/course_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/education_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/experience_section.dart';
@@ -40,22 +41,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileHomeScreen extends StatelessWidget {
-  const ProfileHomeScreen({super.key});
+  final String id;
+  const ProfileHomeScreen({super.key, required this.id});
   final double coverHeight = 240;
   final double profileHeight = 130;
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileSkillController());
-    User? data;
-    String? id;
-    final UserDataModel? userData = Get.put(LoginController()).userData;
-    if (userData != null) {
-      data = userData.user;
-      id = userData.user?.id.toString();
-    }
+    final profileC = Get.put(ProfileHomeController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      log(id.toString());
-      controller.getProfileAlldataFunction(uId: id.toString());
+      log(id, name: 'callback uid');
+      controller.getProfileAlldataFunction(uId: id);
     });
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
@@ -74,32 +70,43 @@ class ProfileHomeScreen extends StatelessWidget {
               coverHeight: coverHeight,
               top: top,
               profileHeight: profileHeight,
-              profilePicWidget: buildProfileImage(
-                profileHeight: profileHeight,
-                onPressed: () => log('camera icon profile'),
+              profilePicWidget: Obx(
+                () => buildProfileImage(
+                  profileHeight: profileHeight,
+                  image: profileC.selectedImage.value.isNotEmpty
+                      ? NetworkImage(profileC.selectedImage.value)
+                          as ImageProvider
+                      : const AssetImage('assets/images/person.png'),
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (context) =>
+                          ProfileDialogueBox(controller: profileC, uId: id)),
+                ),
               ),
             ),
             hMBox,
             Column(
               children: [
                 hBox,
-                Text(
-                  data?.name ?? '',
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  'Flutter Developer',
-                  style: TextStyle(fontSize: 12),
-                ),
+                Obx(() => Text(
+                      controller.userProfile.value?.name ?? '',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
+                // const Text(
+                //   '',
+                //   style: TextStyle(fontSize: 12),
+                // ),
+                hBox,
                 hMBox,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      infoContainer(
-                        child: Column(
+                      infoContainer(child: Obx(() {
+                        final data = controller.userProfile.value;
+                        return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
@@ -110,8 +117,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                   onTap: () {
                                     log('edit personal info');
                                     Get.to(() => ProfilePersonalInfoScreen(
-                                        id: id.toString(),
-                                        username: data?.username));
+                                        id: id, username: data?.username));
                                   },
                                   child: Icon(
                                     Icons.edit,
@@ -128,59 +134,79 @@ class ProfileHomeScreen extends StatelessWidget {
                                 text2: data?.username ?? '_'),
                             infoText(
                                 text1: 'Date of Birth:',
-                                text2: data?.dob ?? '_'),
+                                text2: data?.dob != null
+                                    ? "${data?.dob?.day}-${getMonthName(data?.dob)}-${data?.dob?.year}"
+                                    : "_"),
                           ],
-                        ),
-                      ),
-                      infoContainer(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        );
+                      })),
+                      Obx(
+                        () {
+                          final data = controller.userProfile.value;
+                          return infoContainer(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                infoHeading("Contact Info"),
-                                GestureDetector(
-                                  onTap: () {
-                                    log('edit contact info');
-                                    Get.to(() => ProfileContactInfoScreen(
-                                        id: id.toString(),
-                                        userName: data?.username));
-                                  },
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: kpurple,
-                                  ),
-                                )
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    infoHeading("Contact Info"),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.put(UpdateContactInfo()).fetchCountryStates();
+                                        Get.to(() => ProfileContactInfoScreen(
+                                            id: id, userName: data?.username));
+                                      },
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: kpurple,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                hBox,
+                                contactInfos(
+                                  text: data?.phone == null
+                                      ? "-"
+                                      : '+91 ${data?.phone}',
+                                  svg: 'assets/images/call.svg',
+                                ),
+                                contactInfos(
+                                  text: data?.email ?? '_',
+                                  svg: 'assets/images/email.svg',
+                                ),
+                                contactInfos(
+                                  text: data?.address == null
+                                      ? "-"
+                                      : "${data?.address}, ${data?.city}, ${data?.state}",
+                                  svg: 'assets/images/location.svg',
+                                ),
+                                contactInfos(
+                                  text: data?.instagram == "" ||
+                                          data?.instagram == null
+                                      ? "_"
+                                      : "${data?.instagram}",
+                                  svg: 'assets/images/Instagram.svg',
+                                ),
+                                contactInfos(
+                                  text: data?.facebook == "" ||
+                                          data?.facebook == null
+                                      ? "_"
+                                      : "${data?.facebook}",
+                                  svg: 'assets/images/facebook.svg',
+                                ),
+                                contactInfos(
+                                  text: data?.twitter == "" ||
+                                          data?.twitter == null
+                                      ? "_"
+                                      : "${data?.twitter}",
+                                  svg: 'assets/images/twitter.svg',
+                                ),
                               ],
                             ),
-                            hBox,
-                            contactInfos(
-                              text: '+91 ${data?.phone}',
-                              svg: 'assets/images/call.svg',
-                            ),
-                            contactInfos(
-                              text: data?.email ?? '_',
-                              svg: 'assets/images/email.svg',
-                            ),
-                            contactInfos(
-                              text: data?.address ?? '_',
-                              svg: 'assets/images/location.svg',
-                            ),
-                            contactInfos(
-                              text: data?.instagram ?? '_',
-                              svg: 'assets/images/Instagram.svg',
-                            ),
-                            contactInfos(
-                              text: data?.facebook ?? '_',
-                              svg: 'assets/images/facebook.svg',
-                            ),
-                            contactInfos(
-                              text: data?.twitter ?? '_',
-                              svg: 'assets/images/twitter.svg',
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
                       Obx(() {
                         final data = controller.education;
@@ -193,8 +219,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onPressed: () {
                                       Get.put(ProfileEducationController())
                                           .clearallFields();
-                                      Get.to(() => AddEducationScreen(
-                                          uId: id.toString()));
+                                      Get.to(() => AddEducationScreen(uId: id));
                                     },
                                   )
                                 : profileDataContainer(
@@ -203,22 +228,21 @@ class ProfileHomeScreen extends StatelessWidget {
                                       log('onPress', name: 'onTap Save');
                                       Get.put(ProfileEducationController())
                                           .clearallFields();
-                                      Get.to(() => AddEducationScreen(
-                                          uId: id.toString()));
+                                      Get.to(() => AddEducationScreen(uId: id));
                                     },
                                     onTapEdit: () {
                                       log('onPress', name: 'onTap Edit');
                                       Get.put(ProfileEducationController())
                                           .clearallFields();
                                       Get.to(() => EducationSectionScreen(
-                                          education: data));
+                                          uId: id, education: data));
                                     },
                                     onPressedViewAll: () {
                                       log('onPress', name: 'onTap viewall');
                                       Get.put(ProfileEducationController())
                                           .clearallFields();
                                       Get.to(() => EducationSectionScreen(
-                                          education: data));
+                                          uId: id, education: data));
                                     },
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
@@ -256,8 +280,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onPressed: () {
                                       Get.put(ProfileExperienceController())
                                           .clearallFieldController();
-                                      Get.to(() => AddExperienceScreen(
-                                          uId: id.toString()));
+                                      Get.to(
+                                          () => AddExperienceScreen(uId: id));
                                     },
                                   )
                                 : profileDataContainer(
@@ -266,16 +290,16 @@ class ProfileHomeScreen extends StatelessWidget {
                                       log('onPress', name: 'onTap add');
                                       Get.put(ProfileExperienceController())
                                           .clearallFieldController();
-                                      Get.to(() => AddExperienceScreen(
-                                          uId: id.toString()));
+                                      Get.to(
+                                          () => AddExperienceScreen(uId: id));
                                     },
                                     onTapEdit: () => Get.to(() =>
                                         ExperienceSectionScreen(
-                                            experience: data)),
+                                            uId: id, experience: data)),
                                     onPressedViewAll: () {
                                       log('onPress', name: 'onTap viewall');
                                       Get.to(() => ExperienceSectionScreen(
-                                          experience: data));
+                                          uId: id, experience: data));
                                     },
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
@@ -287,9 +311,11 @@ class ProfileHomeScreen extends StatelessWidget {
                                           secSubTitle: data[index]
                                               .companyName
                                               .toString(),
-                                          secSubTitle2: data[index].endDate ==
-                                                  null
-                                              ? "${parseDateMonthYear(data[index].startDate.toString())}- on-going"
+                                          secSubTitle2: data[index]
+                                                      .endDate
+                                                      .toString() ==
+                                                  'currently_working'
+                                              ? "${parseDateMonthYear(data[index].startDate.toString())} - On-going"
                                               : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           secSubTitle3:
                                               "${data[index].locationType.toString()},${data[index].location.toString()}",
@@ -317,7 +343,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                           .clearallFieldController();
                                       Get.to(() =>
                                           ProfileAddHonorsandAwardsScreen(
-                                              uId: id.toString()));
+                                              uId: id));
                                     },
                                   )
                                 : profileDataContainer(
@@ -328,12 +354,14 @@ class ProfileHomeScreen extends StatelessWidget {
                                           .clearallFieldController();
                                       Get.to(() =>
                                           ProfileAddHonorsandAwardsScreen(
-                                              uId: id.toString()));
+                                              uId: id));
                                     },
                                     onTapEdit: () => Get.to(() =>
-                                        AwardHonorSectionScreen(award: data)),
+                                        AwardHonorSectionScreen(
+                                            uId: id, award: data)),
                                     onPressedViewAll: () => Get.to(() =>
-                                        AwardHonorSectionScreen(award: data)),
+                                        AwardHonorSectionScreen(
+                                            uId: id, award: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => honorWidget(
@@ -365,7 +393,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onPressed: () {
                                       Get.to(() =>
                                           AddLicenseCertificationsScreen(
-                                              uId: id.toString()));
+                                              uId: id));
                                     },
                                   )
                                 : profileDataContainer(
@@ -376,17 +404,17 @@ class ProfileHomeScreen extends StatelessWidget {
                                           .clearallFieldController();
                                       Get.to(() =>
                                           AddLicenseCertificationsScreen(
-                                              uId: id.toString()));
+                                              uId: id));
                                     },
                                     onTapEdit: () {
                                       log('button pressed', name: 'onTap Edit');
-                                      Get.to(() =>
-                                          LicenseSectionScreen(license: data));
+                                      Get.to(() => LicenseSectionScreen(
+                                          uId: id, license: data));
                                     },
                                     onPressedViewAll: () {
                                       log('onPress', name: 'onTap viewall');
-                                      Get.to(() =>
-                                          LicenseSectionScreen(license: data));
+                                      Get.to(() => LicenseSectionScreen(
+                                          uId: id, license: data));
                                     },
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
@@ -420,21 +448,20 @@ class ProfileHomeScreen extends StatelessWidget {
                                     headingText: 'Publications',
                                     subText: "No Publications included yet",
                                     onPressed: () {
-                                      Get.to(() => ProfileAddPublicationScreen(
-                                          uId: id.toString()));
+                                      Get.to(() =>
+                                          ProfileAddPublicationScreen(uId: id));
                                     },
                                   )
                                 : profileDataContainer(
                                     section: "Publications",
                                     onTapAdd: () => Get.to(() =>
-                                        ProfileAddPublicationScreen(
-                                            uId: id.toString())),
+                                        ProfileAddPublicationScreen(uId: id)),
                                     onTapEdit: () => Get.to(() =>
                                         PublicationsSectionScreen(
-                                            publication: data)),
+                                            uId: id, publication: data)),
                                     onPressedViewAll: () => Get.to(() =>
                                         PublicationsSectionScreen(
-                                            publication: data)),
+                                            uId: id, publication: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
@@ -470,8 +497,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onPressed: () {
                                       controller.getSuggestedSkillsFunction();
                                       controller.clearallFields();
-                                      Get.to(() => ProfileAddSkillScreen(
-                                          uId: id.toString()));
+                                      Get.to(
+                                          () => ProfileAddSkillScreen(uId: id));
                                     },
                                   )
                                 : profileDataContainer(
@@ -479,14 +506,16 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onTapAdd: () {
                                       controller.getSuggestedSkillsFunction();
                                       controller.clearallFields();
-                                      Get.to(() => ProfileAddSkillScreen(
-                                          uId: id.toString()));
+                                      Get.to(
+                                          () => ProfileAddSkillScreen(uId: id));
                                       log('button pressed', name: 'onTap add');
                                     },
-                                    onTapEdit: () => Get.to(
-                                        () => SkillsSectionScreen(skill: data)),
-                                    onPressedViewAll: () => Get.to(
-                                        () => SkillsSectionScreen(skill: data)),
+                                    onTapEdit: () => Get.to(() =>
+                                        SkillsSectionScreen(
+                                            uId: id, skill: data)),
+                                    onPressedViewAll: () => Get.to(() =>
+                                        SkillsSectionScreen(
+                                            uId: id, skill: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => skillWidget(
@@ -509,24 +538,23 @@ class ProfileHomeScreen extends StatelessWidget {
                                 ? profileNodataContainer(
                                     headingText: 'Projects',
                                     subText: "No Projects included yet",
-                                    onPressed: () {
-                                      Get.to(() => ProfileAddProjectScreen(
-                                          uId: id.toString()));
-                                    },
+                                    onPressed: () => Get.to(
+                                        () => ProfileAddProjectScreen(uId: id)),
                                   )
                                 : profileDataContainer(
                                     section: "Projects",
                                     onTapAdd: () {
                                       Get.put(ProfileProjectController())
                                           .clearallFieldController();
-                                      Get.to(() => ProfileAddProjectScreen(
-                                          uId: id.toString()));
+                                      Get.to(() =>
+                                          ProfileAddProjectScreen(uId: id));
                                     },
                                     onTapEdit: () => Get.to(() =>
-                                        ProjectSectionScreen(project: data)),
+                                        ProjectSectionScreen(
+                                            uId: id, project: data)),
                                     onPressedViewAll: () {
-                                      Get.to(() =>
-                                          ProjectSectionScreen(project: data));
+                                      Get.to(() => ProjectSectionScreen(
+                                          uId: id, project: data));
                                     },
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
@@ -558,11 +586,11 @@ class ProfileHomeScreen extends StatelessWidget {
                                     section: "Language",
                                     onTapEdit: () =>
                                         Get.to(() => LanguageSectionScreen(
+                                              uId: id,
                                               language: data,
                                             )),
                                     onTapAdd: () => Get.to(() =>
-                                        ProfileAddLanguageScreen(
-                                            uId: id.toString())),
+                                        ProfileAddLanguageScreen(uId: id)),
                                     languageData: List.generate(
                                       data.length,
                                       (index) => languageDataWidget(
@@ -582,13 +610,14 @@ class ProfileHomeScreen extends StatelessWidget {
                                 ? shrinked
                                 : profileDataContainer(
                                     section: "Courses",
-                                    onTapAdd: () => Get.to(() =>
-                                        ProfileAddCourseScreen(
-                                            uId: id.toString())),
+                                    onTapAdd: () => Get.to(
+                                        () => ProfileAddCourseScreen(uId: id)),
                                     onTapEdit: () => Get.to(() =>
-                                        CoursesSectionScreen(course: data)),
+                                        CoursesSectionScreen(
+                                            uId: id, course: data)),
                                     onPressedViewAll: () => Get.to(() =>
-                                        CoursesSectionScreen(course: data)),
+                                        CoursesSectionScreen(
+                                            uId: id, course: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => courseWidget(
@@ -617,13 +646,13 @@ class ProfileHomeScreen extends StatelessWidget {
                                     section: "volunteer experiences",
                                     onTapAdd: () => Get.to(() =>
                                         ProfileAddVolunteerExperienceScreen(
-                                            uId: id.toString())),
+                                            uId: id)),
                                     onTapEdit: () => Get.to(() =>
                                         VolunteerSectionScreen(
-                                            volunteer: data)),
+                                            uId: id, volunteer: data)),
                                     onPressedViewAll: () => Get.to(() =>
                                         VolunteerSectionScreen(
-                                            volunteer: data)),
+                                            uId: id, volunteer: data)),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(

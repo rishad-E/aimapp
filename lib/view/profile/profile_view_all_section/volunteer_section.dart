@@ -10,13 +10,16 @@ import 'package:get/get.dart';
 
 class VolunteerSectionScreen extends StatelessWidget {
   final RxList<VolunteerExperience> volunteer;
-  const VolunteerSectionScreen({super.key, required this.volunteer});
+  final String uId;
+
+  const VolunteerSectionScreen(
+      {super.key, required this.volunteer, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar:
             profileAppBar(title: 'volunteer experiences', doneWidget: shrinked),
@@ -28,7 +31,8 @@ class VolunteerSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "volunteer experiences",
-                  onTapAdd: () {},
+                  onTapAdd: () => Get.to(
+                      () => ProfileAddVolunteerExperienceScreen(uId: uId)),
                   child: List.generate(
                     volunteer.length,
                     (index) {
@@ -37,8 +41,7 @@ class VolunteerSectionScreen extends StatelessWidget {
                         image: "assets/images/upEvent1.png",
                         school: data.organization.toString(),
                         degree: data.role.toString(),
-                        year: 
-                                data.endDate == "currently_working"
+                        year: data.endDate == "currently_working"
                             ? "${parseDateMonthYear(data.startDate.toString())}- ongoing"
                             : "${parseDateMonthYear(data.startDate.toString())}-${parseDateMonthYear(data.endDate.toString())}",
                         grade: "Education",

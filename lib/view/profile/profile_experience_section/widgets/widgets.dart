@@ -104,7 +104,7 @@ Widget currentlyWorking({required bool working}) {
   );
 }
 
-Widget addedskillHomeEX(String skill) {
+Widget addedskillHomeEX(String skill,{void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -116,10 +116,13 @@ Widget addedskillHomeEX(String skill) {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
             Text(

@@ -18,7 +18,7 @@ class GPReportService {
         data: {"user_id": uId, "personality": personality, "trait": trait},
       );
       if (response.statusCode == 200) {
-        log(response.data.toString());
+        log(response.data.toString(),name: 'gp-report');
         return 'sucess';
       } else if (response.statusCode == 422) {
         log(response.data.toString());

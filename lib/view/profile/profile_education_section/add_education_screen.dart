@@ -24,7 +24,7 @@ class AddEducationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileEducationController());
     String? eduID;
-    log(edu.toString(),name: 'educational data');
+    log(edu.toString(), name: 'educational data');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.schoolController.text =
           edu?.school.toString() ?? controller.schoolController.text;
@@ -54,7 +54,7 @@ class AddEducationScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Education', doneWidget: shrinked),
         body: Container(
@@ -235,13 +235,16 @@ class AddEducationScreen extends StatelessWidget {
                                 children: List.generate(
                                     controller.addedSkill.length, (index) {
                                   final data = controller.addedSkill;
-                                  return addedskillHome(data[index]);
+                                  return addedskillHome(
+                                    data[index],
+                                    onTap: () => data.removeAt(index),
+                                  );
                                 }),
                               );
                       }),
                     ),
                     educationAdditional(
-                      onTap: () => showMediaOptions(context, controller,edu),
+                      onTap: () => showMediaOptions(context, controller, edu),
                       heading: 'Media',
                       subText:
                           'Add Documents, photos, sites, videos, and presentations.',
@@ -249,7 +252,7 @@ class AddEducationScreen extends StatelessWidget {
                       selected: Obx(() {
                         final data = controller.allMediasModel;
                         return data.isEmpty
-                            ? const SizedBox.shrink()
+                            ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   return addedMediaHome(
@@ -289,7 +292,7 @@ class AddEducationScreen extends StatelessWidget {
                                     // log('school: ${c.schoolController.text} degree:${c.degreeController.text} studyfiled: ${c.studyFiledController.text} start: ${c.startdateController.text} end: ${c.endDateController.text} grade: ${c.gradeController.text} activities: ${c.activitiesController.text} description: ${c.descriptionController.text} skills:${c.addedSkill} media:${c.allMedias}',
                                     //     name: 'add-education');
                                     // log("edID=>${edu?.id}  media tile:=>${c.mediaTitleController.text} media desc:=>${c.mediaDescriptionController.text}");
-                                    
+
                                     List<File> imagesList = c.allMediasModel
                                         .map((media) => media.file)
                                         .where((image) => image != null)
@@ -360,8 +363,8 @@ class AddEducationScreen extends StatelessWidget {
     );
   }
 
-  void showMediaOptions(
-      BuildContext context, ProfileEducationController controller,Education? edu) {
+  void showMediaOptions(BuildContext context,
+      ProfileEducationController controller, Education? edu) {
     showModalBottomSheet(
       context: context,
       builder: (_) {

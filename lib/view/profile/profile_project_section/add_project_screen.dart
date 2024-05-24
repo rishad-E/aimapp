@@ -49,7 +49,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Project', doneWidget: shrinked),
         body: Container(
@@ -120,7 +120,10 @@ class ProfileAddProjectScreen extends StatelessWidget {
                               ? shrinked
                               : Column(
                                   children: List.generate(data.length, (index) {
-                                    return addedskillHomeProject(data[index]);
+                                    return addedskillHomeProject(
+                                      data[index],
+                                      onTap: () => data.removeAt(index),
+                                    );
                                   }),
                                 );
                         })),

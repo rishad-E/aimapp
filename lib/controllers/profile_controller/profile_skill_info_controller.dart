@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:aimshala/controllers/profile_controller/profile_home_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
+import 'package:aimshala/models/profile_model/profile_all_data_user_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/model/skill_models.dart';
@@ -12,17 +14,13 @@ class ProfileSkillController extends GetxController {
   TextEditingController skillController = TextEditingController();
   RxList<String> suggestedSkills = <String>[].obs;
   ProfileAlldataModel? alldataModel;
+  Rx<UserProfile?> userProfile = Rx<UserProfile?>(null);
+  // String? profilePhoto;
   RxBool loading = true.obs;
   RxBool profileDataLoading = true.obs;
   RxString? error;
-  /*------- model class lists------*/
-  // List<Experience> experience = [];
-  // List<Education> education = [];
-  // List<License> license = [];
-  // List<Project> project = [];
-  // List<Course> course = [];
-  // List<Award> award = [];
 
+  /*------- model class lists------*/
   RxList<Education> education = <Education>[].obs;
   RxList<Experience> experience = <Experience>[].obs;
   RxList<License> license = <License>[].obs;
@@ -33,7 +31,6 @@ class ProfileSkillController extends GetxController {
   RxList<Language> language = <Language>[].obs;
   RxList<VolunteerExperience> volExperience = <VolunteerExperience>[].obs;
   RxList<Skill> skills = <Skill>[].obs;
-
   /*------- model class lists------*/
 
   /*------- lists to show in add skill screen ------*/
@@ -89,7 +86,7 @@ class ProfileSkillController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -116,7 +113,7 @@ class ProfileSkillController extends GetxController {
     required List<String> awIDs,
     required String permission,
   }) async {
-   String? res = await UpdateSkillInfoService().updateAddedSkillService(
+    String? res = await UpdateSkillInfoService().updateAddedSkillService(
       skID: skID,
       uId: uId,
       skill: skill,
@@ -128,7 +125,7 @@ class ProfileSkillController extends GetxController {
       awIDs: awIDs,
       permission: permission,
     );
-     if (res == 'Skill updated successfully.') {
+    if (res == 'Skill updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
@@ -139,7 +136,7 @@ class ProfileSkillController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -162,7 +159,13 @@ class ProfileSkillController extends GetxController {
 
       dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
       if (alldata != null) {
-        log(alldata.toString(), name: 'alldata c');
+        String? profilePhoto = alldata["user"]["image"];
+        if (profilePhoto != null && profilePhoto.isNotEmpty) {
+          Get.put(ProfileHomeController()).selectedImage.value = "http://154.26.130.161/elearning/$profilePhoto";
+        }
+        /* ------- extracting user data ---------- */
+        Map<String, dynamic> userDeatails = alldata["user"];
+        userProfile.value = UserProfile.fromJson(userDeatails);
 
         /* -------extracting experience---------- */
         List<dynamic> experiencedata = alldata["experiences"];
@@ -325,7 +328,7 @@ class ProfileSkillController extends GetxController {
       }
       profileDataLoading.value = false;
     } catch (e) {
-      log('Error fetching profile data: $e');
+      log('Error fetching profile data: $e', name: 'profile-alldata');
       profileDataLoading.value = false;
     } finally {
       profileDataLoading.value = false;

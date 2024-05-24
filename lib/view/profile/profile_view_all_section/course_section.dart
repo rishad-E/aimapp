@@ -9,14 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CoursesSectionScreen extends StatelessWidget {
+  final String uId;
   final RxList<Course> course;
-  const CoursesSectionScreen({super.key, required this.course});
+  const CoursesSectionScreen(
+      {super.key, required this.course, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Courses', doneWidget: shrinked),
         body: Container(
@@ -28,7 +30,8 @@ class CoursesSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                   section: "Courses",
-                  onTapAdd: () {},
+                  onTapAdd: () =>
+                      Get.to(() => ProfileAddCourseScreen(uId: uId)),
                   child: List.generate(
                     course.length,
                     (index) {

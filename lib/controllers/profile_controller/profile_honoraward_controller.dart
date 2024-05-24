@@ -57,7 +57,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() => ProfileHomeScreen(id:uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -107,7 +107,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() => ProfileHomeScreen(id:uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(

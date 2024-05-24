@@ -11,13 +11,16 @@ import 'package:get/get.dart';
 
 class LicenseSectionScreen extends StatelessWidget {
   final RxList<License> license;
-  const LicenseSectionScreen({super.key, required this.license});
+  final String uId;
+
+  const LicenseSectionScreen(
+      {super.key, required this.license, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Licenses & Certifications', doneWidget: shrinked),
@@ -29,7 +32,8 @@ class LicenseSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "Licenses & Certifications",
-                  onTapAdd: () {},
+                  onTapAdd: () =>
+                      Get.to(() => AddLicenseCertificationsScreen(uId: uId)),
                   child: List.generate(
                     license.length,
                     (index) {

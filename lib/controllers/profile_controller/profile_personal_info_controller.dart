@@ -1,6 +1,7 @@
 
 import 'package:aimshala/services/profile_section/update_personal_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class PerosnalInfoController extends GetxController {
     bool? res = await UpdatePersonalInfoService().updatePersonalInfo(
         uId: uId, fullName: fullName, userName: userName, dOB: dOB);
     if (res == true) {
-      Get.off(() => const SplashScreen());
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         const GetSnackBar(

@@ -11,13 +11,15 @@ import 'package:get/get.dart';
 
 class SkillsSectionScreen extends StatelessWidget {
   final RxList<Skill> skill;
-  const SkillsSectionScreen({super.key, required this.skill});
+  final String uId;
+  const SkillsSectionScreen(
+      {super.key, required this.skill, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Skills', doneWidget: shrinked),
         body: Container(
@@ -28,7 +30,7 @@ class SkillsSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "Skills",
-                  onTapAdd: () {},
+                  onTapAdd: () => Get.to(() => ProfileAddSkillScreen(uId: uId)),
                   child: List.generate(
                     skill.length,
                     (index) {
@@ -39,9 +41,10 @@ class SkillsSectionScreen extends StatelessWidget {
                         position: data.skillName.toString(),
                         end: skill.length - 1 == index,
                         onTap: () {
-                          Get.put(ProfileSkillController()).getSuggestedSkillsFunction();
+                          Get.put(ProfileSkillController())
+                              .getSuggestedSkillsFunction();
                           Get.to(() => ProfileAddSkillScreen(
-                            uId: data.userId.toString(), skill: data));
+                              uId: data.userId.toString(), skill: data));
                         },
                       );
                     },

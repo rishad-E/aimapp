@@ -55,7 +55,7 @@ class AddExperienceScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Experience', doneWidget: shrinked),
         body: Container(
@@ -271,7 +271,10 @@ class AddExperienceScreen extends StatelessWidget {
                                 children: List.generate(
                                     controller.addedSkillEX.length, (index) {
                                   final data = controller.addedSkillEX;
-                                  return addedskillHomeEX(data[index]);
+                                  return addedskillHomeEX(
+                                    data[index],
+                                    onTap: () => data.removeAt(index),
+                                  );
                                 }),
                               ),
                       ),

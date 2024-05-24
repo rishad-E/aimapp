@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:aimshala/models/profile_model/cities_model.dart';
+import 'package:aimshala/models/profile_model/country_state_model.dart';
 import 'package:aimshala/services/profile_section/update_contact_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
@@ -17,6 +21,11 @@ class UpdateContactInfo extends GetxController {
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
+
+  RxList<StateData> stateData = <StateData>[].obs;
+  RxList<City> cityData = <City>[].obs;
+  RxString errorMessage = ''.obs;
+  RxBool isLoading = false.obs;
 
   Future<void> saveContactInfoFunction(
       {required String uId,
@@ -53,6 +62,45 @@ class UpdateContactInfo extends GetxController {
           duration: Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> fetchCountryStates() async {
+    try {
+      final res = await UpdateContactInfoService().getCountryStatesService();
+      if (res != null) {
+        List<dynamic> data = res["states"];
+        if (data.isNotEmpty) {
+          stateData.value =
+              data.map((json) => StateData.fromJson(json)).toList();
+          log(stateData.toString(), name: 'state data c');
+        } else {
+          stateData.value = [];
+        }
+      } else {
+        stateData.value = [];
+      }
+    } catch (e) {
+      stateData.value = [];
+      errorMessage.value = 'error occurred';
+      log('Error fetching states: $e', name: 'state data c');
+    }
+  }
+
+  Future<void> fetchCities({required String stateId}) async {
+    try {
+      isLoading.value = true;
+      final res =
+          await UpdateContactInfoService().getCitiesService(stateID: stateId);
+      if (res != null) {
+        cityData.value = res;
+      } else {
+        cityData.value = [];
+      }
+    } catch (e) {
+      cityData.value = [];
+    } finally {
+      isLoading.value = false;
     }
   }
 

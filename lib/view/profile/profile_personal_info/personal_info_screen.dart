@@ -74,10 +74,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                         readOnly: true,
                         controller: controller.dateController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        // onChanged: (value) {
-                        //   // controller.allFieldSelect();
-                        //   controller.update(['update-personalinfo']);
-                        // },
+                       
                         validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(

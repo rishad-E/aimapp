@@ -12,13 +12,16 @@ import 'package:sizer/sizer.dart';
 
 class LanguageSectionScreen extends StatelessWidget {
   final RxList<Language> language;
-  const LanguageSectionScreen({super.key, required this.language});
+  final String uId;
+
+  const LanguageSectionScreen(
+      {super.key, required this.language, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Language', doneWidget: shrinked),
         body: Container(
@@ -29,7 +32,8 @@ class LanguageSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "Language",
-                  onTapAdd: () {},
+                  onTapAdd: () =>
+                      Get.to(() => ProfileAddLanguageScreen(uId: uId)),
                   child: List.generate(
                     language.length,
                     (index) {
@@ -44,11 +48,10 @@ class LanguageSectionScreen extends StatelessWidget {
                                 level: data.proficiency.toString(),
                               ),
                               GestureDetector(
-                                onTap: () => Get.to(
-                                  () => ProfileAddLanguageScreen(
-                                      uId: data.userId.toString(),
-                                      language: data),
-                                ),
+                                onTap: () => Get.to(() =>
+                                    ProfileAddLanguageScreen(
+                                        uId: data.userId.toString(),
+                                        language: data)),
                                 child: Icon(
                                   Icons.edit,
                                   size: 14.sp,
@@ -57,7 +60,9 @@ class LanguageSectionScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          index == language.length-1 ? shrinked : const Divider(thickness: 0.2)
+                          index == language.length - 1
+                              ? shrinked
+                              : const Divider(thickness: 0.2)
                         ],
                       );
                     },

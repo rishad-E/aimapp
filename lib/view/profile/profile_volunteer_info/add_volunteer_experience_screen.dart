@@ -46,7 +46,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Add volunteer experience', doneWidget: shrinked),
@@ -280,8 +280,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                                 c.descriptionController.text,
                                             media: images,
                                             mediaTitle: mediaTitles,
-                                            mediaDesc: mediaDesc
-                                          )
+                                            mediaDesc: mediaDesc)
                                         : c.updateVolunteerFunction(
                                             vtID: vtID.toString(),
                                             uId: uId,

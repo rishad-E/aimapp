@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_education_info_service.dart';
@@ -69,7 +70,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() =>  ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -127,7 +128,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen());
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -182,6 +183,7 @@ class ProfileEducationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
+    log(selectedImage.toString(),name: 'cheeeeeeeeeecccccccccccck');
     return selectedImage;
   }
 

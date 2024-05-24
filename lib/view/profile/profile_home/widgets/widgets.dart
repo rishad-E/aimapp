@@ -4,6 +4,7 @@ import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 Widget buildTopContent(
@@ -34,7 +35,7 @@ Widget buildTopContent(
 }
 
 Widget buildProfileImage(
-        {required double profileHeight, required void Function()? onPressed}) =>
+        {required double profileHeight, required void Function()? onPressed,ImageProvider<Object>? image}) =>
     Stack(
       alignment: Alignment.bottomRight,
       clipBehavior: Clip.none,
@@ -44,8 +45,8 @@ Widget buildProfileImage(
           padding: const EdgeInsets.all(3),
           child: CircleAvatar(
             radius: profileHeight / 2,
-            backgroundColor: Colors.grey.shade400,
-            backgroundImage: const AssetImage('assets/images/person.png'),
+            backgroundColor:kwhite,
+            backgroundImage:image ,
           ),
         ),
         Positioned(
@@ -297,7 +298,9 @@ Widget loadingWidget() {
   );
 }
 
-
+String getMonthName(DateTime? date) {
+  return DateFormat.MMMM().format(date!);
+}
 //                     Image.network(
 //   'your_image_url_here',
 //   loadingBuilder: (context, child, loadingProgress) {

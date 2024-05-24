@@ -32,4 +32,8 @@ class Apis {
   final String suggestedSkills = '/skills-suggestions';
   final String getProfileAlldata = '/get-user-info';
   final String saveSkill = '/add-skills';
+  final String updateProfilePic = "/add-profile";
+  final String getCountryStates = '/get-countries-states';
+  final String getCities = '/get-cities';
+  
 }

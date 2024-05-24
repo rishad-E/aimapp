@@ -15,16 +15,17 @@ class PersonalityReportService {
       Response response = await dio.get(
         path,
         queryParameters: {"user_id": userId},
+        options: Options(validateStatus: (status) => status! < 599,)
       );
 
       if (response.statusCode == 200) {
-        log(response.data.toString(),name: 'personality report');
+        log(response.data.toString(), name: 'personality report');
         Map<String, dynamic> responseBody = response.data;
         return PersonalityReportModel.fromJson(responseBody);
-      } else {
+      } else if (response.statusCode != 200) {
         // If the request fails, log the error and return null
-        log('Failed to get personality report: ${response.statusCode}',
-            name: 'personality report error');
+        log('Failed to get trait report: ${response.statusCode}',
+            name: 'trait report error');
         return null;
       }
     } catch (e) {

@@ -46,7 +46,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Add license or certification', doneWidget: shrinked),
@@ -189,7 +189,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                             ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
-                                  return addedLicenseSkillHome(data[index]);
+                                  return addedLicenseSkillHome(
+                                    data[index],
+                                    onTap: () => data.removeAt(index),
+                                  );
                                 }),
                               );
                       }),

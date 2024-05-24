@@ -95,7 +95,7 @@ Widget mediaListTile(
   );
 }
 
-Widget addedskillHome(String skill) {
+Widget addedskillHome(String skill, {void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -107,10 +107,13 @@ Widget addedskillHome(String skill) {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
             Text(

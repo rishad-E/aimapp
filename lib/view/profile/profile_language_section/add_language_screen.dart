@@ -33,7 +33,7 @@ class ProfileAddLanguageScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id:uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Language', doneWidget: shrinked),
         body: Container(

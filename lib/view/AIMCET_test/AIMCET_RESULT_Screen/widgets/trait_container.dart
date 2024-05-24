@@ -77,53 +77,71 @@ class TraitContainer extends StatelessWidget {
           ),
           hMBox,
           Obx(
-            () => controller.gp.value == 'wait'
-                ? Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "REPORT is processing",
-                      style: TextStyle(
-                        color: mainPurple,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
+            () {
+              if (controller.gp.value == 'wait') {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "REPORT is processing",
+                    style: TextStyle(
+                      color: mainPurple,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
-                  )
-                : controller.gp.value == "sucess"
-                    ? GestureDetector(
-                        onTap: () {
-                          Get.to(() => TraitReportScreen(
-                                userName: userName,
-                              ));
-                          // log(controller.gp.value,name: 'gp');
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              "VIEW REPORT",
-                              style: TextStyle(
-                                  color: mainPurple,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                            ),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: mainPurple,
-                              size: 19,
-                            )
-                          ],
-                        ))
-                    : Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "REPORT Fetch failed...",
-                          style: TextStyle(
-                            color: textFieldColor,
+                  ),
+                );
+              } else if (controller.gp.value == "sucess" &&
+                  controller.gp.value != "trait-e") {
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(() => TraitReportScreen(
+                          userName: userName,
+                        ));
+                    // log(controller.gp.value,name: 'gp');
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        "VIEW REPORT",
+                        style: TextStyle(
+                            color: mainPurple,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
+                            fontSize: 16),
                       ),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: mainPurple,
+                        size: 19,
+                      )
+                    ],
+                  ),
+                );
+              } else if (controller.gp.value == "trait-e") {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "REPORT Fetch failed...",
+                    style: TextStyle(
+                      color: textFieldColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                );
+              } else {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "REPORT Fetch failed...",
+                    style: TextStyle(
+                      color: textFieldColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                );
+              }
+            },
           )
         ],
       ),

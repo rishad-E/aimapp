@@ -40,7 +40,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id:uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Course', doneWidget: shrinked),
         body: Container(

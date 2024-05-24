@@ -103,7 +103,7 @@ class AIMCETController extends GetxController {
 
   Future<void> careerResultSubmittion(
       {required String userId, required String secId}) async {
-        log('career result at 40th and 55th',name: '40th and 55th');
+    log('career result at 40th and 55th', name: '40th and 55th');
     await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
   }
 
@@ -183,20 +183,30 @@ class AIMCETController extends GetxController {
   }
 
   Future<void> fetchPersonalityReport({required String userId}) async {
-    PersonalityReportModel? report =
-        await PersonalityReportService().getPersonalityReport(userId: userId);
-    if (report != null) {
-      personalityReport = report;
-      update();
+    try {
+      PersonalityReportModel? report =
+          await PersonalityReportService().getPersonalityReport(userId: userId);
+      if (report != null) {
+        personalityReport = report;
+        update();
+      }
+    } catch (e) {
+      gp.value= 'personality-e';
+      log(e.toString(), name: 'fetch personality-c');
     }
   }
 
   Future<void> fetchTraitReport({required String userId}) async {
-    TraitReportModel? report =
-        await TraitReportService().getTraitReport(userId: userId);
-    if (report != null) {
-      traitReport = report;
-      update();
+    try {
+      TraitReportModel? report =
+          await TraitReportService().getTraitReport(userId: userId);
+      if (report != null) {
+        traitReport = report;
+        update();
+      }
+    } catch (e) {
+      gp.value = 'trait-e';
+      log(e.toString(),name: 'fetch trait-c');
     }
   }
 
@@ -214,7 +224,6 @@ class AIMCETController extends GetxController {
       }
     }
   }
-  
 
   void toggleSelection() {
     guideSelect = !guideSelect;

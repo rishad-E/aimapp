@@ -18,7 +18,7 @@ Widget projectInfoFiled({required Widget text, required Widget textField}) {
   );
 }
 
-Widget addedskillHomeProject(String skill) {
+Widget addedskillHomeProject(String skill,{void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -30,10 +30,13 @@ Widget addedskillHomeProject(String skill) {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.close,
-              size: 12.sp,
-              color: textFieldColor,
+            GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.close,
+                size: 12.sp,
+                color: textFieldColor,
+              ),
             ),
             wBox,
             Text(

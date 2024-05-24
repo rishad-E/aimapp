@@ -10,13 +10,15 @@ import 'package:get/get.dart';
 
 class ExperienceSectionScreen extends StatelessWidget {
   final RxList<Experience> experience;
-  const ExperienceSectionScreen({super.key, required this.experience});
+  final String uId;
+  const ExperienceSectionScreen(
+      {super.key, required this.experience, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Experience', doneWidget: shrinked),
         body: Container(
@@ -27,7 +29,7 @@ class ExperienceSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                 section: "Experience",
-                onTapAdd: () {},
+                onTapAdd: () => Get.to(() => AddExperienceScreen(uId: uId)),
                 child: List.generate(
                   experience.length,
                   (index) {
@@ -36,8 +38,8 @@ class ExperienceSectionScreen extends StatelessWidget {
                         image: "assets/images/upEvent1.png",
                         school: data.employmentType.toString(),
                         degree: data.companyName.toString(),
-                        year: data.endDate == null
-                            ? "${parseDateMonthYear(data.startDate.toString())}- on-going"
+                        year: data.endDate.toString() == 'currently_working'
+                            ? "${parseDateMonthYear(data.startDate.toString())} - On-going"
                             : "${parseDateMonthYear(data.startDate.toString())}-${parseDateMonthYear(data.endDate.toString())}",
                         grade: "${data.locationType},${data.location}",
                         skill: "Skills: ${data.skills}",

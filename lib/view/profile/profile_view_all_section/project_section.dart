@@ -11,13 +11,15 @@ import 'package:get/get.dart';
 
 class ProjectSectionScreen extends StatelessWidget {
   final RxList<Project> project;
-  const ProjectSectionScreen({super.key, required this.project});
+  final String uId;
+  const ProjectSectionScreen(
+      {super.key, required this.project, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Projects', doneWidget: shrinked),
         body: Container(
@@ -29,7 +31,8 @@ class ProjectSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                   section: "Projects",
-                  onTapAdd: () {},
+                  onTapAdd: () =>
+                      Get.to(() => ProfileAddProjectScreen(uId: uId)),
                   child: List.generate(
                     project.length,
                     (index) {
