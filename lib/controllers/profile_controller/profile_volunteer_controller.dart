@@ -18,6 +18,7 @@ class ProfileVolunteerController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   RxList<AddMediaModel> volunteerMedia = <AddMediaModel>[].obs;
   File? selectedImageVl;
@@ -39,6 +40,7 @@ class ProfileVolunteerController extends GetxController {
     required List<File> media,
     required List<String> mediaDesc,
     required List<String> mediaTitle,
+    required List<String> mediaLink,
   }) async {
     String? res = await UpdateVolunteerInfoService().saveVolunteerInfo(
       uId: uId,
@@ -51,7 +53,8 @@ class ProfileVolunteerController extends GetxController {
       description: description,
       media: media,
       mediaTitle: mediaTitle,
-      mediaDesc: mediaDesc
+      mediaLink: mediaLink,
+      mediaDesc: mediaDesc,
     );
     if (res == 'Volunteer experience added successfully.') {
       Get.showSnackbar(
@@ -64,7 +67,7 @@ class ProfileVolunteerController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -92,6 +95,7 @@ class ProfileVolunteerController extends GetxController {
     required List<File> media,
     required List<String> mediaDesc,
     required List<String> mediaTitle,
+    required List<String> mediaLink,
   }) async {
     String? res = await UpdateVolunteerInfoService().updateVolunteerInfo(
         vtID: vtID,
@@ -105,7 +109,8 @@ class ProfileVolunteerController extends GetxController {
         description: description,
         media: media,
         mediaDesc: mediaDesc,
-        mediaTitle: mediaTitle);
+        mediaTitle: mediaTitle,
+        mediaLink: mediaLink);
     if (res == 'Volunteer experience updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -117,7 +122,7 @@ class ProfileVolunteerController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -185,9 +190,9 @@ class ProfileVolunteerController extends GetxController {
   }
 
   void addVolunteerMedia(
-      {required String title, required String desc, File? file}) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: desc);
+      {required String title, required String desc, File? file, String? link}) {
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: desc, mediaLink: link);
     volunteerMedia.add(model);
     allFieldSelected();
     update(['update-volunteerInfo']);
@@ -215,6 +220,16 @@ class ProfileVolunteerController extends GetxController {
   String? fieldValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Enter this Filed';
+    }
+    return null;
+  }
+
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Enter this Filed';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a Valid URL';
     }
     return null;
   }

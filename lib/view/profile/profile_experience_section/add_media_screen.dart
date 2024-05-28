@@ -39,6 +39,7 @@ class AddExperienceMediaScreen extends StatelessWidget {
                   controller.addMediaModelEx(
                       title: controller.mediaTitleController.text,
                       description: controller.mediaDescriptionController.text,
+                      link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() => AddExperienceScreen(uId: uId, experience: ex));
                   log(controller.allMediasEX.toString(),

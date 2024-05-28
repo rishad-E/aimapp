@@ -16,6 +16,7 @@ class UpdateHonorAwardService {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> media,
   }) async {
     String path = Apis().aimUrl + Apis().saveHonorAwards;
@@ -30,6 +31,7 @@ class UpdateHonorAwardService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {
@@ -88,6 +90,7 @@ class UpdateHonorAwardService {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> media,
   }) async {
     String path = Apis().aimUrl + Apis().saveHonorAwards;
@@ -103,6 +106,7 @@ class UpdateHonorAwardService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {

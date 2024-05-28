@@ -4,7 +4,7 @@ import 'package:aimshala/models/profile_model/cities_model.dart';
 import 'package:aimshala/models/profile_model/country_state_model.dart';
 import 'package:aimshala/services/profile_section/update_contact_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/view/splash_screen/splash_screen.dart';
+import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,8 +13,10 @@ class UpdateContactInfo extends GetxController {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController stateController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
   TextEditingController facebookController = TextEditingController();
   TextEditingController instagramController = TextEditingController();
   TextEditingController twitterController = TextEditingController();
@@ -27,31 +29,36 @@ class UpdateContactInfo extends GetxController {
   RxString errorMessage = ''.obs;
   RxBool isLoading = false.obs;
 
-  Future<void> saveContactInfoFunction(
-      {required String uId,
-      required String userName,
-      required String mobNumber,
-      required String email,
-      required String address,
-      required String city,
-      required String state,
-      required String facebook,
-      required String instagram,
-      required String twitter}) async {
+  Future<void> saveContactInfoFunction({
+    required String uId,
+    required String userName,
+    required String mobNumber,
+    required String email,
+    required String address,
+    required String pincode,
+    required String city,
+    required String state,
+    required String country,
+    required String facebook,
+    required String instagram,
+    required String twitter,
+  }) async {
     bool? res = await UpdateContactInfoService().updateContactInfo(
       uId: uId,
       userName: userName,
       mobNumber: mobNumber,
       email: email,
       address: address,
+      pincode: pincode,
       city: city,
       state: state,
+      country: country,
       facebook: facebook,
       instagram: instagram,
       twitter: twitter,
     );
     if (res == true) {
-      Get.off(() => const SplashScreen());
+     Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         const GetSnackBar(

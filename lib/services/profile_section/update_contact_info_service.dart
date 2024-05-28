@@ -13,13 +13,15 @@ class UpdateContactInfoService {
       required String mobNumber,
       required String email,
       required String address,
+      required String pincode,
       required String city,
       required String state,
+      required String country,
       required String facebook,
       required String instagram,
       required String twitter}) async {
-    String path = Apis().aimUrl + Apis().savepersonalInfo;
-    log('mob: $mobNumber username:$userName email: $email address: $address city: $city state: $state facebook: $facebook instagram: $instagram twitter: $twitter UID: $uId',
+    String path = Apis().aimUrl + Apis().saveContactInfo;
+    log('mob: $mobNumber username:$userName email: $email address: $address pincode=>$pincode city: $city state: $state country=>$country facebook: $facebook instagram: $instagram twitter: $twitter UID: $uId ',
         name: 'update contact info');
 
     try {
@@ -30,8 +32,10 @@ class UpdateContactInfoService {
             "username": userName,
             "email": email,
             "address": address,
+            "pin_code":pincode,
             "state": state,
             "city": city,
+            "country":country,
             "facebook": facebook,
             "twitter": twitter,
             "instagram": instagram,
@@ -39,6 +43,7 @@ class UpdateContactInfoService {
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
+      log(response.data.toString(),name:'save contact info res' );
       if (response.statusCode == 200) {
         log(response.data.toString(), name: 'save contact info');
         return true;

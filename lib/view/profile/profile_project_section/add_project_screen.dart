@@ -8,6 +8,7 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
+import 'package:aimshala/view/profile/profile_project_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_media.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_skill.dart';
 import 'package:aimshala/view/profile/profile_project_section/widgets/widgets.dart';
@@ -254,8 +255,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                 boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    // log('uid=>$uId projectName=>${c.projectnameController.text} startdate=>${c.startdateController.text} endDate=>${c.endDateController.text} description=>${c.projectDescriptionController.text} assosiated=>${c.projectAssosiatedController.text} skills=>${c.addedProjectSkill} media=>${c.allProjectMedias}',
-                                    //     name: 'project-screen');
                                     List<File> imagesList = c.allProjectMedias
                                         .map((i) => i.file)
                                         .where((file) => file != null)
@@ -268,7 +267,10 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                     List<String> mediaDescs = c.allProjectMedias
                                         .map((i) => i.description)
                                         .toList();
-
+                                    List<String> mediaLink = c.allProjectMedias
+                                        .map((i) => i.mediaLink)
+                                        .cast<String>()
+                                        .toList();
                                     String currenly =
                                         c.currentlyWorking.value == true
                                             ? 'Yes'
@@ -292,7 +294,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             medias: imagesList,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDescs,
-                                          )
+                                            mediaLink: mediaLink)
                                         : c.updateProjectFunction(
                                             prID: prID,
                                             uId: uId,
@@ -312,7 +314,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             medias: imagesList,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDescs,
-                                          );
+                                            mediaLink: mediaLink);
                                   }
                                 },
                               ),
@@ -345,7 +347,14 @@ class ProfileAddProjectScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddProjectLinkScreen(
+                        uId: uId,
+                        controller: controller,
+                        project: project,
+                      ));
+                },
               ),
               projectMediaListTile(
                 title: 'Upload a Photo',

@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/profile_controller/profile_personal_info_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_personal_info/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_personal_section/widgets/select_gender_bottomsheet.dart';
+import 'package:aimshala/view/profile/profile_personal_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -45,9 +48,9 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                       text: primarytxt3('Name', 9.5.sp),
                       textField: TextFormField(
                         controller: controller.nameController,
-                        onChanged: (value) {
-                          controller.update(['update-personalinfo']);
-                        },
+                        onChanged: (value) =>
+                            controller.update(['update-personalinfo']),
+                        validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration:
                             infoFieldDecoration(hintText: 'Enter Full Name'),
@@ -58,13 +61,12 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                       textField: TextFormField(
                         controller: controller.userNameController
                           ..text = username.toString(),
-                        onChanged: (value) {
-                          // controller.allFieldSelect();
-                          controller.update(['update-personalinfo']);
-                        },
+                        onChanged: (value) =>
+                            controller.update(['update-personalinfo']),
+                        validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(
-                            hintText: 'User Nane',
+                            hintText: 'User Name',
                             fill: username != null ? true : false),
                       ),
                     ),
@@ -74,7 +76,6 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                         readOnly: true,
                         controller: controller.dateController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                       
                         validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(
@@ -89,6 +90,41 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ),
+                    ),
+                    perosnalInfoFiled(
+                      text: primarytxt3('Gender', 9.5.sp),
+                      textField: GestureDetector(
+                        onTap: () => showGenderOptions(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            controller: controller.genderController,
+                            onChanged: (value) =>
+                                controller.update(['update-personalinfo']),
+                            validator: (value) =>
+                                controller.fieldValidator(value),
+                            style: const TextStyle(fontSize: 12),
+                            decoration: infoFieldDecoration(
+                                hintText: 'Please Select',
+                                suffixWidget:
+                                    const Icon(Icons.keyboard_arrow_down)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    perosnalInfoFiled(
+                      text: primarytxt3('Personal Statement', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.aboutController,
+                        onChanged: (value) =>
+                            controller.update(['update-personalinfo']),
+                        validator: (value) => controller.fieldValidator(value),
+                        style: const TextStyle(fontSize: 12),
+                        maxLength: 1000,
+                        minLines: 3,
+                        maxLines: null,
+                        decoration: infoFieldDecoration(
+                            hintText: 'Write Personal Statement'),
                       ),
                     ),
                     hLBox,
@@ -110,22 +146,29 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                               text: 'Save',
                               textColor: c.nameController.text.isNotEmpty &&
                                       c.userNameController.text.isNotEmpty &&
-                                      c.dateController.text.isNotEmpty
+                                      c.dateController.text.isNotEmpty &&
+                                      c.genderController.text.isNotEmpty &&
+                                      c.aboutController.text.isNotEmpty
                                   ? kwhite
                                   : textFieldColor,
                               boxColor: c.nameController.text.isNotEmpty &&
                                       c.userNameController.text.isNotEmpty &&
+                                      c.genderController.text.isNotEmpty &&
+                                      c.aboutController.text.isNotEmpty &&
                                       c.dateController.text.isNotEmpty
                                   ? mainPurple
                                   : buttonColor,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  // log('name: ${c.nameController.text} username:${c.userNameController.text}date: ${c.dateController.text} UID: $id');
+                                  log('name: ${c.nameController.text} username:${c.userNameController.text}date: ${c.dateController.text} UID: $id gender=>${c.genderController.text} about=>${c.aboutController.text}');
                                   c.savepersonalInfoFunction(
-                                      uId: id,
-                                      fullName: c.nameController.text,
-                                      userName: c.userNameController.text,
-                                      dOB: c.dateController.text);
+                                    uId: id,
+                                    fullName: c.nameController.text,
+                                    userName: c.userNameController.text,
+                                    dOB: c.dateController.text,
+                                    gender: c.genderController.text,
+                                    statement: c.aboutController.text,
+                                  );
                                 }
                               },
                             ),
@@ -141,5 +184,10 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showGenderOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context, builder: (context) => const GenderTypeBottomSheet());
   }
 }

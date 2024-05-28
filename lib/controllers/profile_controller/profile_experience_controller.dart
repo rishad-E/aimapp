@@ -20,6 +20,7 @@ class ProfileExperienceController extends GetxController {
   TextEditingController endDateController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   RxBool currentlyWorking = false.obs;
 
@@ -46,6 +47,7 @@ class ProfileExperienceController extends GetxController {
     required String profile,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
@@ -63,6 +65,7 @@ class ProfileExperienceController extends GetxController {
       profile: profile,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLink: mediaLink,
       imagesEX: imagesEX,
       skillsEX: skillsEX,
     );
@@ -107,6 +110,7 @@ class ProfileExperienceController extends GetxController {
     required String profile,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
@@ -125,6 +129,7 @@ class ProfileExperienceController extends GetxController {
       profile: profile,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLink: mediaLink,
       imagesEX: imagesEX,
       skillsEX: skillsEX,
     );
@@ -139,7 +144,7 @@ class ProfileExperienceController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -216,13 +221,24 @@ class ProfileExperienceController extends GetxController {
     return null;
   }
 
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please fill this filed';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a valid URL';
+    }
+    return null;
+  }
+
   void addMediaModelEx({
     required String title,
     required String description,
     File? file,
+    String? link,
   }) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: description);
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: description, mediaLink: link);
     allMediasEX.add(model);
     updateSaveButtonEX();
     update(['update-experienceInfo']);

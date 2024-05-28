@@ -20,6 +20,7 @@ class Apis {
   final String checkAimcet = '/test-check';
   final String checkCounsellcall = '/slot-check';
   final String savepersonalInfo = '/add-personal-info';
+  final String saveContactInfo = '/add-contact-info';
   final String saveEducation = '/add-education';
   final String saveExperience = '/add-experience';
   final String saveHonorAwards = '/add-awards';
@@ -35,5 +36,25 @@ class Apis {
   final String updateProfilePic = "/add-profile";
   final String getCountryStates = '/get-countries-states';
   final String getCities = '/get-cities';
-  
+
+  /*-------- apis for delete sections */
+  final String deleteProfilePic = '/remove-profile';
+
+
+  /*
+  http://154.26.130.161/elearning/api/destroy-publication -- publication_id
+  http://154.26.130.161/elearning/api/destroy-language -- language_id
+  http://154.26.130.161/elearning/api/destroy-course -- course_id
+  http://154.26.130.161/elearning/api/destroy-skill -- skill_id
+  http://154.26.130.161/elearning/api/destroy-education -- education_id
+  http://154.26.130.161/elearning/api/destroy-experience --  experience_id
+  http://154.26.130.161/elearning/api/destroy-award -- award_id
+  http://154.26.130.161/elearning/api/destroy-project -- peoject_id
+  http://154.26.130.161/elearning/api/destroy-license -- license_id
+  http://154.26.130.161/elearning/api/destroy-volunteer-experience -- volunteer_experience_id
+  http://154.26.130.161/elearning/api/remove-profile -- user_id
+
+  POST Method in all apis
+
+  */
 }

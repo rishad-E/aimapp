@@ -6,7 +6,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_add_course_info/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_add_course_section/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -19,12 +19,13 @@ class UpdateEducationInfoService {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLinks,
     required List<File> images,
     required List<String> skills,
   }) async {
     String path = Apis().aimUrl + Apis().saveEducation;
 
-    log('uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription',
+    log('uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription  mediaLinks=>$mediaLinks',
         name: 'add-education save');
     // log(path, name: 'path');
     FormData formData = FormData.fromMap({
@@ -39,6 +40,7 @@ class UpdateEducationInfoService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLinks,
       "skills[]": skills,
     });
     if (images.isNotEmpty) {
@@ -98,12 +100,13 @@ class UpdateEducationInfoService {
     required String grade,
     required String activities,
     required String description,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
+    required List<String> mediaLinks,
     required List<File> images,
     required List<String> skills,
   }) async {
-    log('edID=>$edID uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription',
+    log('edID=>$edID uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription mediaLink=>$mediaLinks',
         name: 'add-education update');
 
     String path = Apis().aimUrl + Apis().saveEducation;
@@ -120,6 +123,7 @@ class UpdateEducationInfoService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLinks,
       "skills[]": skills,
     });
     if (images.isNotEmpty) {

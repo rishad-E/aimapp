@@ -8,12 +8,13 @@ import 'package:aimshala/controllers/profile_controller/profile_license_certific
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_add_course_info/add_course_info_screen.dart';
+import 'package:aimshala/view/profile/profile_add_course_section/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
-import 'package:aimshala/view/profile/profile_home/widgets/dialoguebox_profile_image.dart';
+import 'package:aimshala/view/profile/profile_home/update_profile_photo.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/course_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/education_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/experience_section.dart';
@@ -23,7 +24,7 @@ import 'package:aimshala/view/profile/profile_view_all_section/license_section.d
 import 'package:aimshala/view/profile/profile_view_all_section/project_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/publication_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/skills_section.dart';
-import 'package:aimshala/view/profile/profile_contact_info/contact_info_screen.dart';
+import 'package:aimshala/view/profile/profile_contact_section/contact_info_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_experience_screen.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/section_widgets.dart';
@@ -31,12 +32,12 @@ import 'package:aimshala/view/profile/profile_home/widgets/texts.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/add_honorsawards_screen.dart';
 import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/add_license_certification_screen.dart';
-import 'package:aimshala/view/profile/profile_personal_info/personal_info_screen.dart';
+import 'package:aimshala/view/profile/profile_personal_section/personal_info_screen.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_project_screen.dart';
 import 'package:aimshala/view/profile/profile_publications_section/add_publications_screen.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/volunteer_section.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,6 +53,7 @@ class ProfileHomeScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       log(id, name: 'callback uid');
       controller.getProfileAlldataFunction(uId: id);
+      profileC.fetchAlluserData(uId: id);
     });
     final top = coverHeight - profileHeight / 1.2;
     final bottom = profileHeight / 7;
@@ -79,8 +81,7 @@ class ProfileHomeScreen extends StatelessWidget {
                       : const AssetImage('assets/images/person.png'),
                   onPressed: () => showDialog(
                       context: context,
-                      builder: (context) =>
-                          ProfileDialogueBox(controller: profileC, uId: id)),
+                      builder: (context) => UpdateProfilePhotoScreen(uId: id)),
                 ),
               ),
             ),
@@ -89,14 +90,16 @@ class ProfileHomeScreen extends StatelessWidget {
               children: [
                 hBox,
                 Obx(() => Text(
-                      controller.userProfile.value?.name ?? '',
+                      profileC.userData.value?.name ?? '',
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     )),
-                // const Text(
-                //   '',
-                //   style: TextStyle(fontSize: 12),
-                // ),
+                Obx(
+                  () => Text(
+                    profileC.userRole.value,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ),
                 hBox,
                 hMBox,
                 Padding(
@@ -105,7 +108,7 @@ class ProfileHomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       infoContainer(child: Obx(() {
-                        final data = controller.userProfile.value;
+                        final data = profileC.userData.value;
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -128,21 +131,30 @@ class ProfileHomeScreen extends StatelessWidget {
                             ),
                             hBox,
                             infoText(
-                                text1: 'Full Name:', text2: data?.name ?? '_'),
+                              text1: 'Full Name:',
+                              text2: data?.name ?? '_',
+                            ),
                             infoText(
-                                text1: 'Username:',
-                                text2: data?.username ?? '_'),
+                              text1: 'Username:',
+                              text2: data?.username ?? '_',
+                            ),
                             infoText(
-                                text1: 'Date of Birth:',
-                                text2: data?.dob != null
-                                    ? "${data?.dob?.day}-${getMonthName(data?.dob)}-${data?.dob?.year}"
-                                    : "_"),
+                              text1: 'Date of Birth:',
+                              text2: data?.dob ?? '',
+                            ),
+                            infoText(
+                              text1: 'Gender:',
+                              text2: data?.gender ?? '',
+                            ),
+                            hBox,
+                            hBox,
+                            regularText(data?.about ?? '', 12)
                           ],
                         );
                       })),
                       Obx(
                         () {
-                          final data = controller.userProfile.value;
+                          final data = profileC.userData.value;
                           return infoContainer(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +166,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                     infoHeading("Contact Info"),
                                     GestureDetector(
                                       onTap: () {
-                                        Get.put(UpdateContactInfo()).fetchCountryStates();
+                                        Get.put(UpdateContactInfo())
+                                            .fetchCountryStates();
                                         Get.to(() => ProfileContactInfoScreen(
                                             id: id, userName: data?.username));
                                       },

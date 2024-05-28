@@ -5,9 +5,9 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_contact_info/widgets/city_bottom_sheet.dart';
-import 'package:aimshala/view/profile/profile_contact_info/widgets/state_bottom_sheet.dart';
-import 'package:aimshala/view/profile/profile_contact_info/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_contact_section/widgets/city_bottom_sheet.dart';
+import 'package:aimshala/view/profile/profile_contact_section/widgets/state_bottom_sheet.dart';
+import 'package:aimshala/view/profile/profile_contact_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -125,12 +125,23 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     ),
                   ),
                   contactInfoFiled(
+                    text: primarytxt3('Pincode', 9.5.sp),
+                    textField: TextFormField(
+                      controller: controller.pincodeController,
+                      validator: (value) => controller.fieldValidator(value),
+                      onChanged: (value) {
+                        controller.allFieldSelect();
+                        controller.update(['update-contactInfo']);
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      style: const TextStyle(fontSize: 12),
+                      decoration: infoFieldDecoration(hintText: 'Ex: 135001'),
+                    ),
+                  ),
+                  contactInfoFiled(
                     text: primarytxt3('State', 9.5.sp),
                     textField: GestureDetector(
-                      onTap: () {
-                        log('ontap');
-                        showStateBottomsheet(context);
-                      },
+                      onTap: () => showStateCountryBottomsheet(context: context,filed: 'State'),
                       child: AbsorbPointer(
                         child: TextFormField(
                           readOnly: true,
@@ -159,6 +170,31 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: controller.cityController,
+                          readOnly: true,
+                          validator: (value) =>
+                              controller.fieldValidator(value),
+                          onChanged: (value) {
+                            controller.allFieldSelect();
+                            controller.update(['update-contactInfo']);
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          style: const TextStyle(fontSize: 12),
+                          decoration: infoFieldDecoration(
+                            hintText: 'Please Select',
+                            suffixWidget: Icon(Icons.keyboard_arrow_down,
+                                size: 26, color: kblack),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  contactInfoFiled(
+                    text: primarytxt3('Country', 9.5.sp),
+                    textField: GestureDetector(
+                      onTap: () => showStateCountryBottomsheet(context: context,filed: 'Country'),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: controller.countryController,
                           readOnly: true,
                           validator: (value) =>
                               controller.fieldValidator(value),
@@ -259,8 +295,10 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                     mobNumber: c.mobController.text,
                                     email: c.emailController.text,
                                     address: c.addressController.text,
+                                    pincode: c.pincodeController.text,
                                     city: c.cityController.text,
                                     state: c.stateController.text,
+                                    country: c.countryController.text,
                                     facebook: c.facebookController.text,
                                     instagram: c.instagramController.text,
                                     twitter: c.twitterController.text);
@@ -280,11 +318,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
     );
   }
 
-  void showStateBottomsheet(BuildContext context) {
+  void showStateCountryBottomsheet({required BuildContext context,required String filed}) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return const StateBottomSheetClass();
+        return StateBottomSheetClass(filed: filed);
       },
     );
   }

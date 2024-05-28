@@ -8,6 +8,7 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
+import 'package:aimshala/view/profile/profile_license_certifications_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/add_media_secreen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/add_skill_screen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/widgets/widgets.dart';
@@ -245,6 +246,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                         .where((file) => file != null)
                                         .cast<File>()
                                         .toList();
+                                    List<String> mediaLinks = c.allLicenseMedias
+                                        .map((i) => i.mediaLink)
+                                        .cast<String>()
+                                        .toList();
                                     List<String> mediaTitles = c
                                         .allLicenseMedias
                                         .map((i) => i.title)
@@ -270,7 +275,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                             skills: c.addedLicenseSkill,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDescs,
-                                          )
+                                            mediaLink: mediaLinks)
                                         : c.updateLicenseCertificationFunction(
                                             lcID: liID.toString(),
                                             uId: uId,
@@ -289,7 +294,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                             skills: c.addedLicenseSkill,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDescs,
-                                          );
+                                            mediaLink: mediaLinks);
                                   }
                                 },
                               ),
@@ -322,7 +327,14 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddLicenseLinkScreen(
+                        uId: uId,
+                        controller: controller,
+                        license: license,
+                      ));
+                },
               ),
               mediaLicenseListTile(
                 title: 'Upload a Photo',

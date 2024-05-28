@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
@@ -30,7 +28,7 @@ class HomeDrawer extends StatelessWidget {
                     ontap1: () {
                       log(uId);
                       // GetProfileAllData().fetchProfileAlldata(uId: uId);
-                      Get.put(ProfileSkillController()).getProfileAlldataFunction(uId: uId);
+                      // Get.put(ProfileSkillController()).getProfileAlldataFunction(uId: uId);
                       Get.to(() => ProfileHomeScreen(id: uId));
                     },
                     icon1: Icons.person_2_outlined,

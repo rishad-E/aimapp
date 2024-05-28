@@ -16,6 +16,7 @@ class ProfileHonorsAwardsController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   File? selectedImage;
@@ -34,18 +35,21 @@ class ProfileHonorsAwardsController extends GetxController {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> media,
   }) async {
     String? res = await UpdateHonorAwardService().saveHonorAwardInfo(
-        uId: uId,
-        title: title,
-        assosiated: assosiated,
-        issuer: issuer,
-        startdate: startdate,
-        description: description,
-        media: media,
-        mediaTitle: mediaTitle,
-        mediaDescription: mediaDescription);
+      uId: uId,
+      title: title,
+      assosiated: assosiated,
+      issuer: issuer,
+      startdate: startdate,
+      description: description,
+      media: media,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+      mediaLink: mediaLink,
+    );
     if (res == 'Award details added successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -57,7 +61,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -82,6 +86,7 @@ class ProfileHonorsAwardsController extends GetxController {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> media,
   }) async {
     String? res = await UpdateHonorAwardService().updateHonorAwardInfo(
@@ -94,6 +99,7 @@ class ProfileHonorsAwardsController extends GetxController {
       description: description,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLink: mediaLink,
       media: media,
     );
     if (res == 'Award details updated successfully.') {
@@ -107,7 +113,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -157,11 +163,6 @@ class ProfileHonorsAwardsController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    // allAwardMedias.add(selectedImage);
-    // allMediasFiles.add(pickedFile.path.split('/').last);
-    // log(selectedImage.toString(), name: 'gallery');
-    // allFieldSelect();
-    // update(['update-HonorAwardsbutton']);
     return selectedImage;
   }
 
@@ -170,17 +171,13 @@ class ProfileHonorsAwardsController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    // allAwardMedias.add(selectedCamera);
-    // log(selectedCamera.toString(), name: 'camera');
-    // allFieldSelect();
-    // update(['update-HonorAwardsbutton']);
     return selectedCamera;
   }
 
   void addAwardMedia(
-      {required String title, required String desc, File? file}) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: desc);
+      {required String title, required String desc, File? file, String? link}) {
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: desc, mediaLink: link);
     allAwardMedias.add(model);
     allFieldSelect();
     update(['update-HonorAwardsbutton']);
@@ -189,6 +186,16 @@ class ProfileHonorsAwardsController extends GetxController {
   String? filedValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Enter this Filed';
+    }
+    return null;
+  }
+
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Enter this Filed';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a Valid URL';
     }
     return null;
   }

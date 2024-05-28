@@ -10,7 +10,7 @@ class UpdateProfilePhotoService {
   Future<dynamic> updateProfile(
       {required String uId, required File file}) async {
     String path = Apis().aimUrl + Apis().updateProfilePic;
-    log('UID=>$uId  file=>$file path=>$path update profile service');
+    log('UID=>$uId  file=>$file path=>$path', name: 'update profile service');
     FormData formData = FormData.fromMap({
       "user_id": uId,
       "user_profile": await MultipartFile.fromFile(file.path,
@@ -26,7 +26,40 @@ class UpdateProfilePhotoService {
         ),
       );
       if (response.statusCode == 200) {
-          // log(response.data.toString(), name: 'update profilepic res');
+        // log(response.data.toString(), name: 'update profilepic res');
+        return response.data;
+      } else {
+        return null;
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}', name: 'update profilepic error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error: statuscode:${e.response?.data}',
+            name: 'update profilepic error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'update profilepic error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<dynamic> deleteProfilePicService({required String uId}) async {
+    String path = Apis().aimUrl + Apis().deleteProfilePic;
+    log('UID=>$uId', name: 'remove profile pic service');
+    try {
+      Response response = await dio.post(
+        path,
+        data: {"user_id": uId},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+        ),
+      );
+      log(response.data.toString(), name: 'remove profilepic res');
+      if (response.statusCode == 200) {
         return response.data;
       } else {
         return null;

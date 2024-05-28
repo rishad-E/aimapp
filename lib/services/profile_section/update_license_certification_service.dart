@@ -19,9 +19,10 @@ class UpdateLicenseCertificationService {
     required List<String> skills,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveLicense;
-    log('uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
+    log('uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'license-service save');
 
     FormData formData = FormData.fromMap({
@@ -35,6 +36,7 @@ class UpdateLicenseCertificationService {
       "skills[]": skills,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {
@@ -97,13 +99,14 @@ class UpdateLicenseCertificationService {
     required List<String> skills,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveLicense;
-    log('lcID=>$lcID uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
+    log('lcID=>$lcID uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'license-service update');
 
     FormData formData = FormData.fromMap({
-      "license_id":lcID,
+      "license_id": lcID,
       "user_id": uId,
       "name": name,
       "organization": organization,
@@ -114,6 +117,7 @@ class UpdateLicenseCertificationService {
       "skills[]": skills,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {

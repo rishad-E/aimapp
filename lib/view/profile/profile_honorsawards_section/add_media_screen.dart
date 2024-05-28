@@ -18,7 +18,11 @@ class AddHonorAwardsMediaScreen extends StatelessWidget {
   final Award? award;
   final ProfileHonorsAwardsController controller;
   AddHonorAwardsMediaScreen(
-      {super.key, this.image, required this.uId, required this.controller, this.award});
+      {super.key,
+      this.image,
+      required this.uId,
+      required this.controller,
+      this.award});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,15 @@ class AddHonorAwardsMediaScreen extends StatelessWidget {
           doneWidget: TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  controller.addAwardMedia(title: controller.mediaTitleController.text, desc: controller.mediaDescriptionController.text,file: image);
-                  Get.off(() => ProfileAddHonorsandAwardsScreen(uId: uId,award: award));
-                  log(controller.allAwardMedias.toString(),name: 'award media');
+                  controller.addAwardMedia(
+                      title: controller.mediaTitleController.text,
+                      desc: controller.mediaDescriptionController.text,
+                      file: image,
+                      link: controller.mediaLinkController.text);
+                  Get.off(() =>
+                      ProfileAddHonorsandAwardsScreen(uId: uId, award: award));
+                  log(controller.allAwardMedias.toString(),
+                      name: 'award media');
                 }
               },
               child: const Text(

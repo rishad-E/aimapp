@@ -36,6 +36,7 @@ class AddLicenseMediaScreen extends StatelessWidget {
                   controller.addLicenseMedia(
                       title: controller.mediaTitleController.text,
                       desc: controller.mediaDescriptionController.text,
+                      link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() => AddLicenseCertificationsScreen(
                       uId: uId, license: license));

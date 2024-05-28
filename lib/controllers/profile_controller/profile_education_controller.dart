@@ -20,6 +20,7 @@ class ProfileEducationController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkill = <String>[].obs;
@@ -41,6 +42,7 @@ class ProfileEducationController extends GetxController {
     required String description,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLinks,
     required List<File> images,
     required List<String> skills,
   }) async {
@@ -56,6 +58,7 @@ class ProfileEducationController extends GetxController {
       description: description,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLinks: mediaLinks,
       images: images,
       skills: skills,
     );
@@ -70,7 +73,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id: uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -96,8 +99,9 @@ class ProfileEducationController extends GetxController {
     required String grade,
     required String activities,
     required String description,
-    required String mediaTitle,
-    required String mediaDescription,
+    required List<String> mediaTitle,
+    required List<String> mediaDescription,
+    required List<String> mediaLinks,
     required List<File> images,
     required List<String> skills,
   }) async {
@@ -114,6 +118,7 @@ class ProfileEducationController extends GetxController {
       description: description,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLinks: mediaLinks,
       images: images,
       skills: skills,
     );
@@ -183,7 +188,7 @@ class ProfileEducationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    log(selectedImage.toString(),name: 'cheeeeeeeeeecccccccccccck');
+    log(selectedImage.toString(), name: 'cheeeeeeeeeecccccccccccck');
     return selectedImage;
   }
 
@@ -199,9 +204,10 @@ class ProfileEducationController extends GetxController {
     required File? file,
     required String title,
     required String description,
+    String? link,
   }) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: description);
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: description, mediaLink: link);
     allMediasModel.add(model);
     updateSaveButton();
     update(['update-educationInfo']);
@@ -210,6 +216,16 @@ class ProfileEducationController extends GetxController {
   String? filedValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Fill this filed';
+    }
+    return null;
+  }
+
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Fill this filed';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a Valid URL';
     }
     return null;
   }

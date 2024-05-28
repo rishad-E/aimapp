@@ -17,6 +17,7 @@ class ProfileLicenseCertificationController extends GetxController {
   TextEditingController credentialurlController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedLicenseSkill = <String>[].obs;
@@ -39,6 +40,7 @@ class ProfileLicenseCertificationController extends GetxController {
     required List<String> skills,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String? res =
         await UpdateLicenseCertificationService().saveLicenseCertificationInfo(
@@ -53,6 +55,7 @@ class ProfileLicenseCertificationController extends GetxController {
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
       skills: skills,
+      mediaLink: mediaLink
     );
     if (res == 'License & Certificate details added successfully.') {
       Get.showSnackbar(
@@ -65,7 +68,7 @@ class ProfileLicenseCertificationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -93,6 +96,7 @@ class ProfileLicenseCertificationController extends GetxController {
     required List<String> skills,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String? res = await UpdateLicenseCertificationService()
         .updateLicenseCertificationInfo(
@@ -108,6 +112,7 @@ class ProfileLicenseCertificationController extends GetxController {
       skills: skills,
       mediaTitle: mediaTitle,
       mediaDescription: mediaDescription,
+      mediaLink: mediaLink
     );
     if (res == 'License & Certificate details updated successfully.') {
       Get.showSnackbar(
@@ -120,7 +125,7 @@ class ProfileLicenseCertificationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -191,15 +196,25 @@ class ProfileLicenseCertificationController extends GetxController {
   }
 
   void addLicenseMedia(
-      {required String title, required String desc, File? file}) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: desc);
+      {required String title, required String desc, File? file, String? link}) {
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: desc, mediaLink: link);
     allLicenseMedias.add(model);
   }
 
   String? fieldValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Fill this Field';
+    }
+    return null;
+  }
+
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Fill this Field';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a Valid URL';
     }
     return null;
   }

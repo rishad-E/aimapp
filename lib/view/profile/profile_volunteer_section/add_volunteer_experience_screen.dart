@@ -7,8 +7,9 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/volunteer_media_screen.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/volunteer_link_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/volunteer_media_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -264,6 +265,10 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                     List<String> mediaDesc = c.volunteerMedia
                                         .map((i) => i.description)
                                         .toList();
+                                    List<String> mediaLinks = c.volunteerMedia
+                                        .map((i) => i.mediaLink)
+                                        .cast<String>()
+                                        .toList();
                                     volunteer == null
                                         ? c.saveVolunteerInfoFuntion(
                                             uId: uId,
@@ -280,7 +285,9 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                                 c.descriptionController.text,
                                             media: images,
                                             mediaTitle: mediaTitles,
-                                            mediaDesc: mediaDesc)
+                                            mediaDesc: mediaDesc,
+                                            mediaLink: mediaLinks,
+                                          )
                                         : c.updateVolunteerFunction(
                                             vtID: vtID.toString(),
                                             uId: uId,
@@ -298,6 +305,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                             media: images,
                                             mediaTitle: mediaTitles,
                                             mediaDesc: mediaDesc,
+                                            mediaLink: mediaLinks,
                                           );
                                   }
                                 },
@@ -333,7 +341,14 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddVolunteerLinkScreen(
+                        uId: uId,
+                        controller: controller,
+                        volunteer: volunteer,
+                      ));
+                },
               ),
               mediaListTileVol(
                 title: 'Upload a Photo',

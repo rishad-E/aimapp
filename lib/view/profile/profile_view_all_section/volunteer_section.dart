@@ -4,7 +4,7 @@ import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/section_widgets.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/widgets/common_widgets.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

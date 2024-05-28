@@ -1,8 +1,6 @@
-
 import 'package:aimshala/services/profile_section/update_personal_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
-import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -11,22 +9,33 @@ class PerosnalInfoController extends GetxController {
   final dateController = TextEditingController();
   final nameController = TextEditingController();
   final userNameController = TextEditingController();
+  final genderController = TextEditingController();
+  final aboutController = TextEditingController();
   final DateTime dateTime = DateTime.now();
   // RxBool isDateSelected = false.obs;
+
+  var selectedGender = ''.obs;
+
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
-
-
-
   /* ------ save personal info function ------ */
-  Future<void> savepersonalInfoFunction(
-      {required String uId,
-      required String fullName,
-      required String userName,
-      required String dOB}) async {
+  Future<void> savepersonalInfoFunction({
+    required String uId,
+    required String fullName,
+    required String userName,
+    required String dOB,
+    required String gender,
+    required String statement,
+  }) async {
     bool? res = await UpdatePersonalInfoService().updatePersonalInfo(
-        uId: uId, fullName: fullName, userName: userName, dOB: dOB);
+      uId: uId,
+      fullName: fullName,
+      userName: userName,
+      dOB: dOB,
+      gender: gender,
+      statement: statement
+    );
     if (res == true) {
       Get.off(() => ProfileHomeScreen(id: uId));
     } else {

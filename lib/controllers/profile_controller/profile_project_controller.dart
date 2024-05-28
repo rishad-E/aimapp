@@ -16,6 +16,7 @@ class ProfileProjectController extends GetxController {
   TextEditingController projectAssosiatedController = TextEditingController();
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
+  TextEditingController mediaLinkController = TextEditingController();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedProjectSkill = <String>[].obs;
@@ -34,24 +35,27 @@ class ProfileProjectController extends GetxController {
     required String endDate,
     required String description,
     required String assosiated,
-     required String currentlyWorking,
+    required String currentlyWorking,
     required List<String> skills,
     required List<File> medias,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String? res = await UpdateProjectInfoService().saveProjectInfo(
-        uId: uId,
-        proName: proName,
-        startDate: startDate,
-        endDate: endDate,
-        description: description,
-        assosiated: assosiated,
-        currentlyWorking: currentlyWorking,
-        skills: skills,
-        medias: medias,
-        mediaTitle: mediaTitle,
-        mediaDescription: mediaDescription);
+      uId: uId,
+      proName: proName,
+      startDate: startDate,
+      endDate: endDate,
+      description: description,
+      assosiated: assosiated,
+      currentlyWorking: currentlyWorking,
+      skills: skills,
+      medias: medias,
+      mediaTitle: mediaTitle,
+      mediaDescription: mediaDescription,
+      mediaLink: mediaLink,
+    );
     if (res == 'Project details added successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -63,7 +67,7 @@ class ProfileProjectController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -86,26 +90,27 @@ class ProfileProjectController extends GetxController {
     required String endDate,
     required String description,
     required String assosiated,
-     required String currentlyWorking,
+    required String currentlyWorking,
     required List<String> skills,
     required List<File> medias,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String? res = await UpdateProjectInfoService().updateProjectInfo(
-      prID: prID,
-      uId: uId,
-      proName: proName,
-      startDate: startDate,
-      endDate: endDate,
-      description: description,
-      assosiated: assosiated,
-      currentlyWorking: currentlyWorking,
-      skills: skills,
-      medias: medias,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-    );
+        prID: prID,
+        uId: uId,
+        proName: proName,
+        startDate: startDate,
+        endDate: endDate,
+        description: description,
+        assosiated: assosiated,
+        currentlyWorking: currentlyWorking,
+        skills: skills,
+        medias: medias,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription,
+        mediaLink: mediaLink);
     if (res == 'Project details updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -117,7 +122,7 @@ class ProfileProjectController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -173,10 +178,6 @@ class ProfileProjectController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    // allProjectMedias.add(selectedImage);
-    // allFiledSelected();
-    // update(['update-projectInfo']);
-    // log(selectedImage.toString(), name: 'gallery');
     return selectedImage;
   }
 
@@ -185,18 +186,13 @@ class ProfileProjectController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    // update(['update-media']);
-    // allProjectMedias.add(selectedCamera);
-    // allFiledSelected();
-    // update(['update-projectInfo']);
-    // log(selectedImage.toString(), name: 'camera');
     return selectedCamera;
   }
 
   void addProjectMedia(
-      {required String title, required String desc, File? file}) {
-    AddMediaModel model =
-        AddMediaModel(file: file, title: title, description: desc);
+      {required String title, required String desc, File? file, String? link}) {
+    AddMediaModel model = AddMediaModel(
+        file: file, title: title, description: desc, mediaLink: link);
     allProjectMedias.add(model);
     allFiledSelected();
     update(['update-projectInfo']);
@@ -213,6 +209,16 @@ class ProfileProjectController extends GetxController {
   String? filedValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please Enter this Field';
+    }
+    return null;
+  }
+
+  String? mediaLinkValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please Enter this Field';
+    }
+    if (!value.isURL) {
+      return 'Please Enter a Valid URL';
     }
     return null;
   }

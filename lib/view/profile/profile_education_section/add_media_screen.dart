@@ -18,7 +18,11 @@ class AddProfileMediaScreen extends StatelessWidget {
   final Education? edu;
   final ProfileEducationController controller;
   AddProfileMediaScreen(
-      {super.key, this.image, required this.uId, required this.controller, this.edu});
+      {super.key,
+      this.image,
+      required this.uId,
+      required this.controller,
+      this.edu});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -30,8 +34,12 @@ class AddProfileMediaScreen extends StatelessWidget {
           doneWidget: TextButton(
               onPressed: () {
                 if (formKey.currentState!.validate()) {
-                  controller.addMediaFields(file: image, title: controller.mediaTitleController.text, description: controller.mediaDescriptionController.text);
-                  Get.off(() => AddEducationScreen(uId: uId,edu: edu));
+                  controller.addMediaFields(
+                      file: image,
+                      title: controller.mediaTitleController.text,
+                      description: controller.mediaDescriptionController.text,
+                      link: controller.mediaLinkController.text);
+                  Get.off(() => AddEducationScreen(uId: uId, edu: edu));
                   log(controller.allMediasModel.toString());
                 }
               },
@@ -48,7 +56,8 @@ class AddProfileMediaScreen extends StatelessWidget {
                 educationInfoFiled(
                   text: primarytxt3('Title', 9.5.sp),
                   textField: TextFormField(
-                    decoration: infoFieldDecoration(hintText: 'Ex: Certificate'),
+                    decoration:
+                        infoFieldDecoration(hintText: 'Ex: Certificate'),
                     style: const TextStyle(fontSize: 13),
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.filedValidation(value),

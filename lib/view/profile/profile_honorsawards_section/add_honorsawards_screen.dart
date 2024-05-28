@@ -8,7 +8,8 @@ import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
-import 'package:aimshala/view/profile/profile_honorsawards_section/widgets/add_media_screen.dart';
+import 'package:aimshala/view/profile/profile_honorsawards_section/add_link_screen.dart';
+import 'package:aimshala/view/profile/profile_honorsawards_section/add_media_screen.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,11 +37,11 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
           award?.startDate.toString() ?? controller.startdateController.text;
       controller.descriptionController.text = award?.description.toString() ??
           controller.descriptionController.text;
-        awardID = award?.id.toString();
+      awardID = award?.id.toString();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() =>ProfileHomeScreen(id:uId))),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar:
             profileAppBar(title: 'Add honors & awards', doneWidget: shrinked),
@@ -201,12 +202,14 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               boxColor: c.saveBG.value,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  // log('uid=>$uId title=>${c.titileController.text} assosiated=>${c.assosiatedController.text} issuer=>${c.issuerController.text} startdate=>${c.startdateController.text} description=>${c.descriptionController.text} media=>${c.allAwardMedias}',
-                                  //     name: 'add honor-screen');
                                   List<File> imagesList = c.allAwardMedias
                                       .map((i) => i.file)
                                       .where((file) => file != null)
                                       .cast<File>()
+                                      .toList();
+                                  List<String> mediaLinks = c.allAwardMedias
+                                      .map((i) => i.mediaLink)
+                                      .cast<String>()
                                       .toList();
                                   List<String> mediaTitles = c.allAwardMedias
                                       .map((i) => i.title)
@@ -227,7 +230,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           media: imagesList,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDescs,
-                                        )
+                                          mediaLink: mediaLinks)
                                       : c.updateHonorAwardFunction(
                                           awardID: awardID.toString(),
                                           uId: uId,
@@ -241,7 +244,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           media: imagesList,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDescs,
-                                        );
+                                          mediaLink: mediaLinks);
                                 }
                               },
                             ),
@@ -275,7 +278,14 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddAwardLinkScreen(
+                        uId: uId,
+                        controller: controller,
+                        award: award,
+                      ));
+                },
               ),
               honorMediaListTile(
                 title: 'Upload a Photo',

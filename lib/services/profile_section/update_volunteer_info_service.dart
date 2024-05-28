@@ -18,9 +18,10 @@ class UpdateVolunteerInfoService {
     required List<File> media,
     required List<String> mediaDesc,
     required List<String> mediaTitle,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveVolunteer;
-    log('ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc',
+    log('ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
         name: 'volunteer-service save');
     FormData formData = FormData.fromMap({
       "user_id": uId,
@@ -33,6 +34,7 @@ class UpdateVolunteerInfoService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDesc,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (var i = 0; i < media.length; i++) {
@@ -47,16 +49,6 @@ class UpdateVolunteerInfoService {
     try {
       Response response = await dio.post(path,
           data: formData,
-          // data: {
-          //   "user_id": uId,
-          //   "organization": organization,
-          //   "role": volRole,
-          //   "cause": volCause,
-          //   "start_date": startDate,
-          //   "end_date": endDate,
-          //   "currently_working": currentlyWorking,
-          //   "description": description,
-          // },
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
@@ -102,9 +94,10 @@ class UpdateVolunteerInfoService {
     required List<File> media,
     required List<String> mediaDesc,
     required List<String> mediaTitle,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveVolunteer;
-    log('volunteerID=>$vtID ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc',
+    log('volunteerID=>$vtID ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
         name: 'volunteer-service update');
     FormData formData = FormData.fromMap({
       "volunteer_experience_id": vtID,
@@ -118,6 +111,7 @@ class UpdateVolunteerInfoService {
       "description": description,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDesc,
+      "media_links[]": mediaLink,
     });
     if (media.isNotEmpty) {
       for (var i = 0; i < media.length; i++) {

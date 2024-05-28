@@ -1,8 +1,5 @@
 import 'dart:developer';
-
-import 'package:aimshala/controllers/profile_controller/profile_home_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/models/profile_model/profile_all_data_user_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/model/skill_models.dart';
@@ -14,7 +11,7 @@ class ProfileSkillController extends GetxController {
   TextEditingController skillController = TextEditingController();
   RxList<String> suggestedSkills = <String>[].obs;
   ProfileAlldataModel? alldataModel;
-  Rx<UserProfile?> userProfile = Rx<UserProfile?>(null);
+  // Rx<UserProfile?> userProfile = Rx<UserProfile?>(null);
   // String? profilePhoto;
   RxBool loading = true.obs;
   RxBool profileDataLoading = true.obs;
@@ -159,14 +156,6 @@ class ProfileSkillController extends GetxController {
 
       dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
       if (alldata != null) {
-        String? profilePhoto = alldata["user"]["image"];
-        if (profilePhoto != null && profilePhoto.isNotEmpty) {
-          Get.put(ProfileHomeController()).selectedImage.value = "http://154.26.130.161/elearning/$profilePhoto";
-        }
-        /* ------- extracting user data ---------- */
-        Map<String, dynamic> userDeatails = alldata["user"];
-        userProfile.value = UserProfile.fromJson(userDeatails);
-
         /* -------extracting experience---------- */
         List<dynamic> experiencedata = alldata["experiences"];
         if (experiencedata.isNotEmpty) {

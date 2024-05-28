@@ -31,7 +31,7 @@ class CityBottomSheetClass extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Text(
-                'Select your State',
+                'Select your City',
                 style: TextStyle(
                   color: kblack,
                   fontSize: 16,

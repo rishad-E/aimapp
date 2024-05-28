@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class StateBottomSheetClass extends StatelessWidget {
-  const StateBottomSheetClass({super.key});
+  final String filed;
+  const StateBottomSheetClass({super.key, required this.filed});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<UpdateContactInfo>();
+    log(filed);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -32,7 +34,7 @@ class StateBottomSheetClass extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Text(
-                'Select your State',
+                'Select your $filed',
                 style: TextStyle(
                   color: kblack,
                   fontSize: 16,
@@ -42,7 +44,7 @@ class StateBottomSheetClass extends StatelessWidget {
             ),
             Obx(
               () => controller.errorMessage.value == 'error occurred'
-                  ? const Text('Error fetching States')
+                  ? Text('Error fetching $filed')
                   : controller.stateData.isEmpty
                       ? const Text("Result not found")
                       : Column(
@@ -69,28 +71,55 @@ class StateBottomSheetClass extends StatelessWidget {
                                   activeColor: mainPurple,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5)),
-                                  value: controller.stateController.text ==
-                                      data.name,
+                                  value: filed == 'State'
+                                      ? controller.stateController.text ==
+                                          data.name
+                                      : controller.countryController.text ==
+                                          data.name,
                                   onChanged: (value) {
                                     if (value != null && value) {
-                                      controller.stateController.text =
-                                          data.name.toString();
-                                      controller.update(['update-contactInfo']);
-                                      Get.back();
-                                      log(data.id.toString(), name: 'state id');
-                                      controller.fetchCities(
-                                          stateId: data.id.toString());
+                                      if (filed == 'State') {
+                                        controller.stateController.text =
+                                            data.name.toString();
+                                        controller
+                                            .update(['update-contactInfo']);
+                                        Get.back();
+                                        log(data.id.toString(),
+                                            name: 'state id');
+                                        controller.fetchCities(
+                                            stateId: data.id.toString());
+                                      } else {
+                                        controller.countryController.text ='India';
+                                            // data.name.toString();
+                                        controller
+                                            .update(['update-contactInfo']);
+                                        Get.back();
+                                        log(data.id.toString(),
+                                            name: 'state id');
+                                        controller.fetchCities(
+                                            stateId: data.id.toString());
+                                      }
                                     }
                                   },
                                 ),
                                 onTap: () {
-                                  controller.stateController.text =
-                                      data.name.toString();
-                                  controller.update(['update-contactInfo']);
-                                  Get.back();
-                                  log(data.id.toString(), name: 'state id');
-                                  controller.fetchCities(
-                                      stateId: data.id.toString());
+                                  if (filed == 'State') {
+                                    controller.stateController.text =
+                                        data.name.toString();
+                                    controller.update(['update-contactInfo']);
+                                    Get.back();
+                                    log(data.id.toString(), name: 'state id');
+                                    controller.fetchCities(
+                                        stateId: data.id.toString());
+                                  } else {
+                                    controller.countryController.text =
+                                        data.name.toString();
+                                    controller.update(['update-contactInfo']);
+                                    Get.back();
+                                    log(data.id.toString(), name: 'state id');
+                                    controller.fetchCities(
+                                        stateId: data.id.toString());
+                                  }
                                 },
                               );
                             },

@@ -18,9 +18,10 @@ class UpdateProjectInfoService {
     required List<File> medias,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveProject;
-    log('uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated curretly=>$currentlyWorking skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
+    log('uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated curretly=>$currentlyWorking skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'project-service save');
     FormData formData = FormData.fromMap({
       "user_id": uId,
@@ -33,6 +34,7 @@ class UpdateProjectInfoService {
       "skills[]": skills,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (medias.isNotEmpty) {
       for (int i = 0; i < medias.length; i++) {
@@ -95,9 +97,10 @@ class UpdateProjectInfoService {
     required List<File> medias,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveProject;
-    log('prID=>$prID uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription currenty=>$currentlyWorking',
+    log('prID=>$prID uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription currenty=>$currentlyWorking mediaLinks=>$mediaLink',
         name: 'project-service update');
 
     FormData formData = FormData.fromMap({
@@ -112,6 +115,7 @@ class UpdateProjectInfoService {
       "skills[]": skills,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]": mediaLink,
     });
     if (medias.isNotEmpty) {
       for (int i = 0; i < medias.length; i++) {
@@ -144,7 +148,7 @@ class UpdateProjectInfoService {
           log('Server error: ${response.data}',
               name: 'update project info error 500');
           return 'Server error occurred';
-        // throw Exception('Server error occurred');
+          // throw Exception('Server error occurred');
         } else {
           Map<String, dynamic> responseData = response.data;
           if (responseData.containsKey('error')) {
@@ -166,7 +170,7 @@ class UpdateProjectInfoService {
       if (e.response?.statusCode == 500) {
         log('Server error: ${e.message}',
             name: 'update project info error 500');
-            return 'Server error occurred';
+        return 'Server error occurred';
         // throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',

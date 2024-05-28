@@ -21,11 +21,12 @@ class UpdateExperienceInfoService {
     required String profile,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
     String path = Apis().aimUrl + Apis().saveExperience;
-    log('title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate=> description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription',
+    log('title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate=> description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription mediaLnk=>$mediaLink',
         name: 'add-EX service save');
 
     FormData formData = FormData.fromMap({
@@ -42,6 +43,7 @@ class UpdateExperienceInfoService {
       "profile": profile,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]":mediaLink,
       "skills[]": skillsEX,
     });
     if (imagesEX.isNotEmpty) {
@@ -107,11 +109,12 @@ class UpdateExperienceInfoService {
     required String profile,
     required List<String> mediaTitle,
     required List<String> mediaDescription,
+    required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
     String path = Apis().aimUrl + Apis().saveExperience;
-    log('exID=>$exID title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate=> description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription currenly=>$currentlyWorking',
+    log('exID=>$exID title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate=> description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription currenly=>$currentlyWorking mediaLnk=>$mediaLink',
         name: 'add-EX service update');
 
     FormData formData = FormData.fromMap({
@@ -129,6 +132,7 @@ class UpdateExperienceInfoService {
       "profile": profile,
       "media_titles[]": mediaTitle,
       "media_descriptions[]": mediaDescription,
+      "media_links[]":mediaLink,
       "skills[]": skillsEX,
     });
     if (imagesEX.isNotEmpty) {

@@ -6,8 +6,11 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_experience_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_media_screen.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_skill_screen.dart';
+import 'package:aimshala/view/profile/profile_experience_section/widgets/employment_type_bottomsheet.dart';
+import 'package:aimshala/view/profile/profile_experience_section/widgets/location_type_bottomsheet.dart';
 import 'package:aimshala/view/profile/profile_experience_section/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +30,9 @@ class AddExperienceScreen extends StatelessWidget {
     log(experience.toString(), name: 'experience detial');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.titleController.text =
-          experience?.title.toString() ?? controller.titleController.text;
+          controller.titleController.text.isEmpty && experience?.title != null
+              ? experience?.title.toString() as String
+              : controller.titleController.text;
       controller.employmentController.text =
           experience?.employmentType.toString() ??
               controller.employmentController.text;
@@ -47,7 +52,7 @@ class AddExperienceScreen extends StatelessWidget {
       controller.profileController.text =
           experience?.profile.toString() ?? controller.profileController.text;
       exID = experience?.id.toString();
-      if (experience?.endDate == null) {
+      if (experience?.endDate == null||experience?.endDate =="currently_working") {
         controller.currentlyWorking.value = true;
         controller.update(['EX-currentlyworkingButton']);
         log(controller.currentlyWorking.toString(), name: 'currenlyworking-ex');
@@ -94,18 +99,25 @@ class AddExperienceScreen extends StatelessWidget {
                     ),
                     experienceInfoFiled(
                       text: primarytxt3('Employment type', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.employmentController,
-                        validator: (value) => controller.filedValidation(value),
-                        onChanged: (value) {
-                          controller.updateSaveButtonEX();
-                          controller.update(['update-experienceInfo']);
-                        },
-                        decoration: infoFieldDecoration(
-                            hintText: 'Please Select',
-                            suffixWidget:
-                                const Icon(Icons.keyboard_arrow_down)),
-                        style: const TextStyle(fontSize: 13),
+                      textField: GestureDetector(
+                        onTap: () => showEmploymentTypeOptions(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: controller.employmentController,
+                            validator: (value) =>
+                                controller.filedValidation(value),
+                            onChanged: (value) {
+                              controller.updateSaveButtonEX();
+                              controller.update(['update-experienceInfo']);
+                            },
+                            decoration: infoFieldDecoration(
+                                hintText: 'Please Select',
+                                suffixWidget:
+                                    const Icon(Icons.keyboard_arrow_down)),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                       ),
                     ),
                     experienceInfoFiled(
@@ -140,18 +152,25 @@ class AddExperienceScreen extends StatelessWidget {
                     ),
                     experienceInfoFiled(
                       text: primarytxt3('Location type', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.locationTypeController,
-                        validator: (value) => controller.filedValidation(value),
-                        onChanged: (value) {
-                          controller.updateSaveButtonEX();
-                          controller.update(['update-experienceInfo']);
-                        },
-                        decoration: infoFieldDecoration(
-                            hintText: 'Please Select',
-                            suffixWidget:
-                                const Icon(Icons.keyboard_arrow_down)),
-                        style: const TextStyle(fontSize: 13),
+                      textField: GestureDetector(
+                        onTap: () => showLocationTypeOptions(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: controller.locationTypeController,
+                            validator: (value) =>
+                                controller.filedValidation(value),
+                            onChanged: (value) {
+                              controller.updateSaveButtonEX();
+                              controller.update(['update-experienceInfo']);
+                            },
+                            decoration: infoFieldDecoration(
+                                hintText: 'Please Select',
+                                suffixWidget:
+                                    const Icon(Icons.keyboard_arrow_down)),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                       ),
                     ),
                     const Align(
@@ -336,6 +355,10 @@ class AddExperienceScreen extends StatelessWidget {
                                   List<String> mediaDesc = c.allMediasEX
                                       .map((i) => i.description)
                                       .toList();
+                                  List<String> mediaLinks = c.allMediasEX
+                                      .map((i) => i.mediaLink)
+                                      .cast<String>()
+                                      .toList();
                                   String currently =
                                       c.currentlyWorking.value == true
                                           ? 'Yes'
@@ -357,6 +380,7 @@ class AddExperienceScreen extends StatelessWidget {
                                           profile: c.profileController.text,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDesc,
+                                          mediaLink: mediaLinks,
                                           imagesEX: imagesList,
                                           skillsEX: c.addedSkillEX,
                                         )
@@ -377,6 +401,7 @@ class AddExperienceScreen extends StatelessWidget {
                                           profile: c.profileController.text,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDesc,
+                                          mediaLink: mediaLinks,
                                           imagesEX: imagesList,
                                           skillsEX: c.addedSkillEX,
                                         );
@@ -413,21 +438,30 @@ class AddExperienceScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddExperienceLinkScreen(
+                        controller: controller,
+                        experience: ex,
+                        uId: uId,
+                      ));
+                },
               ),
               mediaListTileEX(
                 title: 'Upload a Photo',
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMediaEX().then((value) {
-                    controller.mediaTitleController.clear();
-                    controller.mediaDescriptionController.clear();
-                    Get.to(() => AddExperienceMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          ex: ex,
-                        ));
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      Get.to(() => AddExperienceMediaScreen(
+                            image: value,
+                            uId: uId,
+                            controller: controller,
+                            ex: ex,
+                          ));
+                    }
                   });
                   Navigator.pop(context);
                 },
@@ -437,14 +471,16 @@ class AddExperienceScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMediaEX().then((value) {
-                    controller.mediaTitleController.clear();
-                    controller.mediaDescriptionController.clear();
-                    Get.to(() => AddExperienceMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          ex: ex,
-                        ));
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      Get.to(() => AddExperienceMediaScreen(
+                            image: value,
+                            uId: uId,
+                            controller: controller,
+                            ex: ex,
+                          ));
+                    }
                   });
                   Navigator.pop(context);
                 },
@@ -454,5 +490,18 @@ class AddExperienceScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void showEmploymentTypeOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const EmploymentTypeBottomSheet(),
+    );
+  }
+
+  void showLocationTypeOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => const LocationTypeBottomSheet());
   }
 }

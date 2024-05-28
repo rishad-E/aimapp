@@ -38,6 +38,7 @@ class AddProjectMediaScreen extends StatelessWidget {
                   controller.addProjectMedia(
                       title: controller.mediaTitleController.text,
                       desc: controller.mediaDescriptionController.text,
+                      link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() =>
                       ProfileAddProjectScreen(uId: uId, project: project));

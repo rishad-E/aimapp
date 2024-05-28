@@ -7,8 +7,8 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/add_volunteer_experience_screen.dart';
-import 'package:aimshala/view/profile/profile_volunteer_info/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -39,6 +39,7 @@ class VolunteerMediaScreen extends StatelessWidget {
                   controller.addVolunteerMedia(
                       title: controller.mediaTitleController.text,
                       desc: controller.mediaDescriptionController.text,
+                      link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() => ProfileAddVolunteerExperienceScreen(
                       uId: uId, volunteer: vol));

@@ -6,6 +6,7 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_education_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_media_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_skills_screen.dart';
 import 'package:aimshala/view/profile/profile_education_section/widgets/widgets.dart';
@@ -289,20 +290,20 @@ class AddEducationScreen extends StatelessWidget {
                                 boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    // log('school: ${c.schoolController.text} degree:${c.degreeController.text} studyfiled: ${c.studyFiledController.text} start: ${c.startdateController.text} end: ${c.endDateController.text} grade: ${c.gradeController.text} activities: ${c.activitiesController.text} description: ${c.descriptionController.text} skills:${c.addedSkill} media:${c.allMedias}',
-                                    //     name: 'add-education');
-                                    // log("edID=>${edu?.id}  media tile:=>${c.mediaTitleController.text} media desc:=>${c.mediaDescriptionController.text}");
-
                                     List<File> imagesList = c.allMediasModel
                                         .map((media) => media.file)
                                         .where((image) => image != null)
                                         .cast<File>()
                                         .toList();
                                     List<String> mediaTitles = c.allMediasModel
-                                        .map((title) => title.title)
+                                        .map((i) => i.title)
                                         .toList();
                                     List<String> mediaDesc = c.allMediasModel
-                                        .map((title) => title.description)
+                                        .map((i) => i.description)
+                                        .toList();
+                                    List<String> mediaLinks = c.allMediasModel
+                                        .map((i) => i.mediaLink)
+                                        .cast<String>()
                                         .toList();
                                     edu == null
                                         ? c.saveEducationInfo(
@@ -321,6 +322,7 @@ class AddEducationScreen extends StatelessWidget {
                                                 c.descriptionController.text,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDesc,
+                                            mediaLinks: mediaLinks,
                                             images: imagesList,
                                             skills: c.addedSkill,
                                           )
@@ -339,11 +341,9 @@ class AddEducationScreen extends StatelessWidget {
                                                 c.activitiesController.text,
                                             description:
                                                 c.descriptionController.text,
-                                            mediaTitle:
-                                                c.mediaTitleController.text,
-                                            mediaDescription: c
-                                                .mediaDescriptionController
-                                                .text,
+                                            mediaTitle: mediaTitles,
+                                            mediaDescription: mediaDesc,
+                                            mediaLinks: mediaLinks,
                                             images: imagesList,
                                             skills: c.addedSkill,
                                           );
@@ -379,7 +379,14 @@ class AddEducationScreen extends StatelessWidget {
                   angle: -0.7,
                   child: const Icon(Icons.link),
                 ),
-                onTap: () {},
+                onTap: () {
+                  controller.mediaLinkController.clear();
+                  Get.to(() => AddEducationLinkScreen(
+                        controller: controller,
+                        uId: uId,
+                        edu: edu,
+                      ));
+                },
               ),
               mediaListTile(
                 title: 'Upload a Photo',
