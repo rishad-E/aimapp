@@ -40,7 +40,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id:uId))),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Publications', doneWidget: shrinked),
         body: Container(
@@ -228,6 +228,15 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                               ],
                             );
                           }),
+                      hBox,
+                      publication == null
+                          ? shrinked
+                          : deleteSectionWidget(
+                              onPressed: () =>
+                                  controller.deletePublicationFuntion(
+                                      pbID: pbID.toString(), uId: uId),
+                              section: 'Publication',
+                            )
                     ],
                   ),
                 ),

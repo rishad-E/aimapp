@@ -165,6 +165,8 @@ class AIMCETController extends GetxController {
       }
     } else if (result is String) {
       log('result is string');
+    }else{
+      throw 'Result is null =>$result';
     }
   }
 
@@ -188,10 +190,11 @@ class AIMCETController extends GetxController {
           await PersonalityReportService().getPersonalityReport(userId: userId);
       if (report != null) {
         personalityReport = report;
+        // log(personalityReport.toString(),name: 'report personality controller');
         update();
       }
     } catch (e) {
-      gp.value= 'personality-e';
+      gp.value = 'personality-e';
       log(e.toString(), name: 'fetch personality-c');
     }
   }
@@ -202,11 +205,12 @@ class AIMCETController extends GetxController {
           await TraitReportService().getTraitReport(userId: userId);
       if (report != null) {
         traitReport = report;
+        log(traitType.toString(), name: 'report trait controller');
         update();
       }
     } catch (e) {
       gp.value = 'trait-e';
-      log(e.toString(),name: 'fetch trait-c');
+      log(e.toString(), name: 'fetch trait-c');
     }
   }
 

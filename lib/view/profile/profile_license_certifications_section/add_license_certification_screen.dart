@@ -222,85 +222,89 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                     ),
                     hMBox,
                     GetBuilder<ProfileLicenseCertificationController>(
-                        id: 'update-licenseButton',
-                        builder: (c) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              actionContainer(
-                                text: 'Cancel',
-                                textColor: mainPurple,
-                                boxColor: kwhite,
-                                borderColor: mainPurple,
-                                onTap: () => Get.back(),
-                              ),
-                              wMBox,
-                              actionContainer(
-                                text: 'Save',
-                                textColor: c.saveText.value,
-                                boxColor: c.saveBG.value,
-                                onTap: () {
-                                  if (formKey.currentState!.validate()) {
-                                    List<File> imagesList = c.allLicenseMedias
-                                        .map((i) => i.file)
-                                        .where((file) => file != null)
-                                        .cast<File>()
-                                        .toList();
-                                    List<String> mediaLinks = c.allLicenseMedias
-                                        .map((i) => i.mediaLink)
-                                        .cast<String>()
-                                        .toList();
-                                    List<String> mediaTitles = c
-                                        .allLicenseMedias
-                                        .map((i) => i.title)
-                                        .toList();
-                                    List<String> mediaDescs = c.allLicenseMedias
-                                        .map((i) => i.description)
-                                        .toList();
-                                    license == null
-                                        ? c.saveLicenseCertificationFunction(
-                                            uId: uId,
-                                            name: c.nameController.text,
-                                            organization:
-                                                c.organizationController.text,
-                                            issueDate:
-                                                c.issuedateController.text,
-                                            expiryDate:
-                                                c.expirydateController.text,
-                                            credID:
-                                                c.credentialIDController.text,
-                                            credURL:
-                                                c.credentialurlController.text,
-                                            media: imagesList,
-                                            skills: c.addedLicenseSkill,
-                                            mediaTitle: mediaTitles,
-                                            mediaDescription: mediaDescs,
-                                            mediaLink: mediaLinks)
-                                        : c.updateLicenseCertificationFunction(
-                                            lcID: liID.toString(),
-                                            uId: uId,
-                                            name: c.nameController.text,
-                                            organization:
-                                                c.organizationController.text,
-                                            issueDate:
-                                                c.issuedateController.text,
-                                            expiryDate:
-                                                c.expirydateController.text,
-                                            credID:
-                                                c.credentialIDController.text,
-                                            credURL:
-                                                c.credentialurlController.text,
-                                            media: imagesList,
-                                            skills: c.addedLicenseSkill,
-                                            mediaTitle: mediaTitles,
-                                            mediaDescription: mediaDescs,
-                                            mediaLink: mediaLinks);
-                                  }
-                                },
-                              ),
-                            ],
-                          );
-                        })
+                      id: 'update-licenseButton',
+                      builder: (c) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            actionContainer(
+                              text: 'Cancel',
+                              textColor: mainPurple,
+                              boxColor: kwhite,
+                              borderColor: mainPurple,
+                              onTap: () => Get.back(),
+                            ),
+                            wMBox,
+                            actionContainer(
+                              text: 'Save',
+                              textColor: c.saveText.value,
+                              boxColor: c.saveBG.value,
+                              onTap: () {
+                                if (formKey.currentState!.validate()) {
+                                  List<File> imagesList = c.allLicenseMedias
+                                      .map((i) => i.file)
+                                      .where((file) => file != null)
+                                      .cast<File>()
+                                      .toList();
+                                  List<String> mediaLinks = c.allLicenseMedias
+                                      .map((i) => i.mediaLink)
+                                      .cast<String>()
+                                      .toList();
+                                  List<String> mediaTitles = c.allLicenseMedias
+                                      .map((i) => i.title)
+                                      .toList();
+                                  List<String> mediaDescs = c.allLicenseMedias
+                                      .map((i) => i.description)
+                                      .toList();
+                                  license == null
+                                      ? c.saveLicenseCertificationFunction(
+                                          uId: uId,
+                                          name: c.nameController.text,
+                                          organization:
+                                              c.organizationController.text,
+                                          issueDate: c.issuedateController.text,
+                                          expiryDate:
+                                              c.expirydateController.text,
+                                          credID: c.credentialIDController.text,
+                                          credURL:
+                                              c.credentialurlController.text,
+                                          media: imagesList,
+                                          skills: c.addedLicenseSkill,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDescs,
+                                          mediaLink: mediaLinks)
+                                      : c.updateLicenseCertificationFunction(
+                                          lcID: liID.toString(),
+                                          uId: uId,
+                                          name: c.nameController.text,
+                                          organization:
+                                              c.organizationController.text,
+                                          issueDate: c.issuedateController.text,
+                                          expiryDate:
+                                              c.expirydateController.text,
+                                          credID: c.credentialIDController.text,
+                                          credURL:
+                                              c.credentialurlController.text,
+                                          media: imagesList,
+                                          skills: c.addedLicenseSkill,
+                                          mediaTitle: mediaTitles,
+                                          mediaDescription: mediaDescs,
+                                          mediaLink: mediaLinks);
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    hBox,
+                    license == null
+                        ? shrinked
+                        : deleteSectionWidget(
+                            onPressed: () => controller.deleteLicenseFunction(
+                                  licenseID: liID.toString(), uId: uId),
+                            section: 'License',
+                          )
                   ],
                 ),
               ),

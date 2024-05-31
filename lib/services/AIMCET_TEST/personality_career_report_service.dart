@@ -19,7 +19,7 @@ class PersonalityReportService {
       );
 
       if (response.statusCode == 200) {
-        log(response.data.toString(), name: 'personality report');
+        // log(response.data.toString(), name: 'personality report');
         Map<String, dynamic> responseBody = response.data;
         return PersonalityReportModel.fromJson(responseBody);
       } else if (response.statusCode != 200) {

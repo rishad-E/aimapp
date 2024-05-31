@@ -69,7 +69,7 @@ class UpdateCourseInfoService {
     try {
       Response response = await dio.post(path,
           data: {
-            "course_id":courseID,
+            "course_id": courseID,
             "user_id": uId,
             "course_name": course,
             "course_number": courseNo,
@@ -102,6 +102,54 @@ class UpdateCourseInfoService {
     } catch (e) {
       // Handle other exceptions
       log('error :${e.toString()}', name: 'update course error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<String?> deleteCourseInfo({required String courseID}) async {
+    String path = Apis().aimUrl + Apis().deleteCourses;
+    try {
+      Response response = await dio.post(
+        path,
+        data: {"course_id": courseID},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+        ),
+      );
+      // log(response.data.toString(),name: 'delete couser');
+      Map<String, dynamic> responseData = response.data;
+
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        log(successMessage, name: 'delete Course section success');
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete Course section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}',
+            name: 'delete Course section error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error: statuscode:${e.response?.statusCode}',
+            name: 'delete Course section error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'delete Course info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

@@ -321,6 +321,11 @@ class ProfileAddProjectScreen extends StatelessWidget {
                             ],
                           );
                         }),
+                    hBox,
+                    deleteSectionWidget(
+                        onPressed: () => controller.deleteProjectFunction(
+                            prID: prID.toString(), uId: uId),
+                        section: 'Project')
                   ],
                 ),
               ),

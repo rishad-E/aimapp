@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_education_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -145,6 +146,39 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> deleteEducationFunction(
+      {required String eduID, required String uId,required String school}) async {
+    String? res =
+        await UpdateEducationInfoService().deleteEducationInfo(eduID: eduID);
+    final awardC = Get.put(ProfileHonorsAwardsController());
+    if (res == "Education deleted successfully") {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+      awardC.assosiatedListdata.remove(school);
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
     }
   }
 

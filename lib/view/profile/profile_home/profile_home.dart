@@ -318,9 +318,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
                                           image: "assets/images/upEvent1.png",
-                                          secTitle: data[index]
-                                              .employmentType
-                                              .toString(),
+                                          secTitle:
+                                              data[index].title.toString(),
                                           secSubTitle: data[index]
                                               .companyName
                                               .toString(),
@@ -412,20 +411,16 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Licenses & Certifications",
                                     onTapAdd: () {
-                                      log('button pressed', name: 'onTap Save');
                                       Get.put(ProfileLicenseCertificationController())
                                           .clearallFieldController();
                                       Get.to(() =>
                                           AddLicenseCertificationsScreen(
                                               uId: id));
                                     },
-                                    onTapEdit: () {
-                                      log('button pressed', name: 'onTap Edit');
-                                      Get.to(() => LicenseSectionScreen(
-                                          uId: id, license: data));
-                                    },
+                                    onTapEdit: () => Get.to(() =>
+                                        LicenseSectionScreen(
+                                            uId: id, license: data)),
                                     onPressedViewAll: () {
-                                      log('onPress', name: 'onTap viewall');
                                       Get.to(() => LicenseSectionScreen(
                                           uId: id, license: data));
                                     },
@@ -597,11 +592,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                 ? shrinked
                                 : languageWidget(
                                     section: "Language",
-                                    onTapEdit: () =>
-                                        Get.to(() => LanguageSectionScreen(
-                                              uId: id,
-                                              language: data,
-                                            )),
+                                    onTapEdit: () => Get.to(() =>
+                                        LanguageSectionScreen(
+                                            uId: id, language: data)),
                                     onTapAdd: () => Get.to(() =>
                                         ProfileAddLanguageScreen(uId: id)),
                                     languageData: List.generate(

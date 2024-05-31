@@ -22,6 +22,8 @@ class ProfileHonorsAwardsController extends GetxController {
   File? selectedImage;
   File? selectedCamera;
   RxList<AddMediaModel> allAwardMedias = <AddMediaModel>[].obs;
+  RxList<String> assosiatedListdata = <String>[].obs;
+
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
@@ -125,6 +127,37 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> deleteAwardFunction(
+      {required String awardID, required String uId}) async {
+    String? res =
+        await UpdateHonorAwardService().deleteAwardInfo(awardID: awardID);
+    if (res == 'Award deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
     }
   }
 

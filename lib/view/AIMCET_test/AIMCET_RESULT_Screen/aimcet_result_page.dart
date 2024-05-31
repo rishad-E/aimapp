@@ -230,39 +230,4 @@ class AIMCETResultScreen extends StatelessWidget {
     );
   }
 }
- // hMBox,
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     children: List.generate(controller.degrees.length, (index) {
-              //       int degreeImageIndex = index % topDegree.length;
-              //       return Row(
-              //         children: [
-              //           homeCWB,
-              //           TopDegreeContainer(
-              //             degreeImage: topDegree[degreeImageIndex],
-              //             degree: controller.degrees[index],
-              //             // degreeCap: 'assets/images/cap icon.svg',
-              //             degreeCap: 'assets/images/degree-cap 1.png',
-              //           )
-              //         ],
-              //       );
-              //     }),
-              //   ),
-              // ),
-
-                 // hBox,
-              // hBox,
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     children: List.generate(4, (index) {
-              //       return Row(
-              //         children: [
-              //           homeCWB,
-              //           TopCareerContainer(bgImage: topCareerSec[index])
-              //         ],
-              //       );
-              //     }),
-              //   ),
-              // ),
+ 

@@ -33,7 +33,7 @@ class ProfileAddLanguageScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id:uId))),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Language', doneWidget: shrinked),
         body: Container(
@@ -135,7 +135,18 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                                 ),
                               ],
                             );
-                          })
+                          }),
+                      hBox,
+                      language == null
+                          ? shrinked
+                          : deleteSectionWidget(
+                              onPressed: () {
+                                controller.deleteLanguageFunction(
+                                    languageID: languageID.toString(),
+                                    uId: uId);
+                              },
+                              section: 'Language',
+                            )
                     ],
                   ),
                 ),

@@ -314,6 +314,15 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                           );
                         },
                       ),
+                      hBox,
+                      volunteer == null
+                          ? shrinked
+                          : deleteSectionWidget(
+                              onPressed: () =>
+                                  controller.deleteVolunteerFunction(
+                                      vtID: vtID.toString(), uId: uId),
+                              section: 'Volunteer',
+                            )
                     ],
                   ),
                 ),

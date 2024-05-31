@@ -39,22 +39,14 @@ class Apis {
 
   /*-------- apis for delete sections */
   final String deleteProfilePic = '/remove-profile';
-
-
-  /*
-  http://154.26.130.161/elearning/api/destroy-publication -- publication_id
-  http://154.26.130.161/elearning/api/destroy-language -- language_id
-  http://154.26.130.161/elearning/api/destroy-course -- course_id
-  http://154.26.130.161/elearning/api/destroy-skill -- skill_id
-  http://154.26.130.161/elearning/api/destroy-education -- education_id
-  http://154.26.130.161/elearning/api/destroy-experience --  experience_id
-  http://154.26.130.161/elearning/api/destroy-award -- award_id
-  http://154.26.130.161/elearning/api/destroy-project -- peoject_id
-  http://154.26.130.161/elearning/api/destroy-license -- license_id
-  http://154.26.130.161/elearning/api/destroy-volunteer-experience -- volunteer_experience_id
-  http://154.26.130.161/elearning/api/remove-profile -- user_id
-
-  POST Method in all apis
-
-  */
+  final String deleteEducations = '/destroy-education';
+  final String deleteExperiences = '/destroy-experience';
+  final String deleteAwards = '/destroy-award';
+  final String deleteLicenses = '/destroy-license';
+  final String deletePublications = '/destroy-publication';
+  final String deleteSkills = '/destroy-skill';
+  final String deleteProjects = '/destroy-project';
+  final String deleteLanguages = '/destroy-language';
+  final String deleteCourses = '/destroy-course';
+  final String deleteVolunteerEX = '/destroy-volunteer-experience';
 }

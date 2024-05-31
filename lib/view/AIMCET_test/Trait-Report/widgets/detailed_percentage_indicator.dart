@@ -87,8 +87,8 @@ class TraitPercentageIndicatorDetailed extends StatelessWidget {
                       ),
                       barRadius: const Radius.circular(20),
                       lineHeight: 17,
-                      percent: convert(
-                          detailedPersonality!.concernForOthers.toString()),
+                      percent:
+                          convert(detailedPersonality!.leadership.toString()),
                       progressColor: const Color.fromARGB(255, 0, 180, 216),
                       backgroundColor: kwhite,
                       animation: true,
@@ -131,8 +131,8 @@ class TraitPercentageIndicatorDetailed extends StatelessWidget {
                       ),
                       barRadius: const Radius.circular(20),
                       lineHeight: 17,
-                      percent: convert(
-                          detailedPersonality!.dependability.toString()),
+                      percent:
+                          convert(detailedPersonality!.leadership.toString()),
                       progressColor: const Color.fromARGB(255, 59, 0, 154),
                       backgroundColor: kwhite,
                       animation: true,
@@ -177,9 +177,8 @@ class TraitPercentageIndicatorDetailed extends StatelessWidget {
                       ),
                       barRadius: const Radius.circular(20),
                       lineHeight: 17,
-                      percent: convert(detailedPersonality!
-                          .toleranceOfStressAndCriticism
-                          .toString()),
+                      percent:
+                          convert(detailedPersonality!.leadership.toString()),
                       progressColor: const Color.fromARGB(255, 181, 23, 158),
                       backgroundColor: kwhite,
                       animation: true,

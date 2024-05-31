@@ -35,7 +35,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -72,7 +72,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -84,6 +84,37 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> deleteLanguageFunction(
+      {required String languageID, required String uId}) async {
+    String? res = await UpdateLanguageInfoService()
+        .deleteLanguageInfo(languageID: languageID);
+    if (res == 'Language deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
     }
   }
 
@@ -113,7 +144,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -144,7 +175,7 @@ class LanguageAndCourseController extends GetxController {
       courseAssosiated: courseAssosiated,
       working: working,
     );
-     if (res == 'Course updated successfully.') {
+    if (res == 'Course updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
@@ -155,7 +186,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -169,6 +200,38 @@ class LanguageAndCourseController extends GetxController {
       );
     }
   }
+
+  Future<void> deleteCourseInfo(
+      {required String uId, required String courseID}) async {
+    String? res =
+        await UpdateCourseInfoService().deleteCourseInfo(courseID: courseID);
+    if (res == 'course deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    }
+  }
+/*-----------save and update course---------- */
 
   void toggleCurrentlyWorking() {
     currentlyWorking = !currentlyWorking;

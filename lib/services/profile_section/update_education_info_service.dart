@@ -177,68 +177,51 @@ class UpdateEducationInfoService {
     }
     return null;
   }
+
+  Future<String?> deleteEducationInfo({required String eduID}) async {
+    String path = Apis().aimUrl + Apis().deleteEducations;
+    try {
+      Response response = await dio.post(
+        path,
+        data: {"education_id": eduID},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+        ),
+      );
+      Map<String, dynamic> responseData = response.data;
+
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        log(successMessage, name: 'delete education section success');
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete education section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}',
+            name: 'delete education section error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error: statuscode:${e.response?.statusCode}',
+            name: 'delete education section error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'save education info error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
 }
-
-
-
-
-  // data: {
-            // "user_id": uId,
-            // "school": school,
-            // "degree": degree,
-            // "study_field": studyfield,
-            // "start_date": startDate,
-            // "end_date": endDate,
-            // "grade": grade,
-            // "activities": activities,
-            // "description": description,
-            // "images": image,
-            // "skills": skills,
-          // },
-
-
-
-
-
-
-  //          FormData formData = FormData.fromMap({
-  //     "user_id": uId,
-  //     "school": school,
-  //     "degree": degree,
-  //     "study_field": studyfield,
-  //     "start_date": startDate,
-  //     "end_date": endDate,
-  //     "grade": grade,
-  //     "activities": activities,
-  //     "description": description,
-  //     "skills[]": skills,
-  //   });
-  //   for ( var item in images) {
-  //     formData.files.addAll([MapEntry("images[]", await MultipartFile.fromFile(item.path,filename: item.path.split('/').last))]);
-  //   }
-  //   try {
-  //     Response response = await dio.post(path,
-  //         data: formData,
-  //         options: Options(
-  //           validateStatus: (status) => status! < 599,
-  //           headers: {'Content-Type': 'multipart/form-data'},
-  //         ));
-
-  //     log(response.data.toString(), name: 'save education info');
-  //   } on DioException catch (e) {
-  //     if (e.response?.statusCode == 500) {
-  //       // Handle status code 500 here
-  //       log('Server error: ${e.message}', name: 'save education info error');
-  //       // You can throw a custom exception or return an empty list as needed
-  //       throw Exception('Server error occurred');
-  //     } else {
-  //       log('error: statuscode:${e.response?.statusCode}',
-  //           name: 'save education info error');
-  //     }
-  //   } catch (e) {
-  //     // Handle other exceptions
-  //     log('error :${e.toString()}', name: 'save education info error');
-  //     throw Exception('error occurred ${e.toString()}');
-  //   }
-  //   // return null;
-  // }

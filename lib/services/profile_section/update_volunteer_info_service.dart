@@ -157,4 +157,46 @@ class UpdateVolunteerInfoService {
     }
     return null;
   }
+
+  Future<String?> deleteVolunteerExperienceInfo(
+      {required String volunteerID}) async {
+    String path = Apis().aimUrl + Apis().deleteVolunteerEX;
+    try {
+      Response response = await dio.post(path,
+          data: {"volunteer_experience_id": volunteerID},
+          options: Options(validateStatus: (status) => status! < 599));
+      Map<String, dynamic> responseData = response.data;
+      log(responseData.toString(), name: 'response data-delete volunteerEX');
+
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete volunteerEX section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}', name: 'delete volunteerEX error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error:${e.response?.data}', name: 'delete volunteerEX error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'delete volunteerEX error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
 }

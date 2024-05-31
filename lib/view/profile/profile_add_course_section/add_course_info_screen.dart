@@ -21,7 +21,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? courseID;
-    log(course.toString(),name: 'course data');
+    log(course.toString(), name: 'course data');
     final controller = Get.put(LanguageAndCourseController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.courseController.text =
@@ -40,7 +40,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id:uId))),
+          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Course', doneWidget: shrinked),
         body: Container(
@@ -182,7 +182,14 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                 ),
                               ],
                             );
-                          })
+                          }),
+                      hBox,
+                      course == null
+                          ? shrinked
+                          : deleteSectionWidget(
+                              onPressed: ()=>controller.deleteCourseInfo(uId: uId, courseID: courseID.toString()),
+                              section: 'Courses',
+                            )
                     ],
                   ),
                 ),

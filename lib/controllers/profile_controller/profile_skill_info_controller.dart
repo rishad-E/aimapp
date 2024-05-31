@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
@@ -48,6 +49,7 @@ class ProfileSkillController extends GetxController {
   List<String> awardIdList = [];
   /*------- final selected lists to pass ------*/
   bool permission = false;
+  final awardController = Get.put(ProfileHonorsAwardsController());
 
   /*------- funtion to save and update skill info ------*/
   Future<void> saveSkillInfoFunction({
@@ -147,6 +149,37 @@ class ProfileSkillController extends GetxController {
       );
     }
   }
+
+  Future<void> deleteSkillFuntion(
+      {required String skID, required String uId}) async {
+    String? res = await UpdateSkillInfoService().deleteSkillInfo(skID: skID);
+    if (res == 'skill deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    }
+  }
+
   /*------- funtion to save and update skill info ------*/
 
   /*------- functions to extract items needed to pass with skill section ------*/
@@ -171,16 +204,15 @@ class ProfileSkillController extends GetxController {
               if (!exSkillsList
                   .any((item) => item.companyName == model.companyName)) {
                 exSkillsList.add(model);
-                // log('added', name: 'add to EXskill list');
-              } else {
-                // log('contais', name: 'add to EXskill list');
               }
-
+              if (!awardController.assosiatedListdata.contains(company)) {
+                awardController.assosiatedListdata.add(company);
+              }
               log(exSkillsList.toString(), name: 'newskills c');
             }
           }
         } else {
-          // experience.value = [];
+          experience.value = [];
         }
 
         /* -------extracting education---------- */
@@ -196,14 +228,15 @@ class ProfileSkillController extends GetxController {
                   EducationModel(school: school, educationID: id);
               if (!edSchoolList.any((item) => item.school == model.school)) {
                 edSchoolList.add(model);
-                // log('added', name: 'add to edSchool list');
-              } else {
-                // log('contais', name: 'add to edSchool list');
               }
-              // log(edSchoolList.toString(), name: 'newEducationList c');
+              if (!awardController.assosiatedListdata.contains(school)) {
+                awardController.assosiatedListdata.add(school);
+              }
             }
           }
           log(edSchoolList.toString(), name: 'newEducationList data');
+        } else {
+          education.value = [];
         }
 
         /* -------extracting license---------- */
@@ -218,13 +251,12 @@ class ProfileSkillController extends GetxController {
               LicenseModel model = LicenseModel(name: name, licenseID: id);
               if (!licenseNameList.any((item) => item.name == model.name)) {
                 licenseNameList.add(model);
-                // log('added', name: 'add to licenseNameList list');
-              } else {
-                // log('contais', name: 'licenseNameList list');
               }
             }
           }
           log(licenseNameList.toString(), name: 'New licenseNameList c');
+        } else {
+          license.value = [];
         }
 
         /* -------extracting projects---------- */
@@ -239,13 +271,12 @@ class ProfileSkillController extends GetxController {
               ProjectModel model = ProjectModel(title: title, projectID: id);
               if (!projectTitleList.any((item) => item.title == model.title)) {
                 projectTitleList.add(model);
-                // log('added', name: 'add to projectTitleList list');
-              } else {
-                // log('contais', name: ' projectTitleList list');
               }
             }
           }
           log(projectTitleList.toString(), name: 'New projectTitleList c');
+        } else {
+          project.value = [];
         }
         /* -------extracting courses---------- */
         List<dynamic> coursedata = alldata["courses"];
@@ -258,13 +289,12 @@ class ProfileSkillController extends GetxController {
               CourseModel model = CourseModel(name: name, courseID: id);
               if (!courseNameList.any((i) => i.name == model.name)) {
                 courseNameList.add(model);
-                // log('added', name: 'add to courseNameList list');
-              } else {
-                // log('contais', name: ' courseNameList list');
               }
             }
           }
           log(courseNameList.toString(), name: 'New courseNameList c');
+        } else {
+          course.value = [];
         }
 
         /* -------extracting award---------- */
@@ -278,13 +308,12 @@ class ProfileSkillController extends GetxController {
               AwardModel model = AwardModel(title: title, awardID: id);
               if (!awardNameList.any((i) => i.title == model.title)) {
                 awardNameList.add(model);
-                // log('added', name: 'add to awardNameList list');
-              } else {
-                // log('contais', name: ' awardNameList list');
               }
             }
           }
           log(awardNameList.toString(), name: 'New awardNameList c');
+        } else {
+          award.value = [];
         }
 
         /* -------extracting publication ---------- */
@@ -292,12 +321,16 @@ class ProfileSkillController extends GetxController {
         if (publicationData.isNotEmpty) {
           publication.value =
               publicationData.map((e) => Publication.fromJson(e)).toList();
+        } else {
+          publication.value = [];
         }
 
         /* -------extracting Skills ---------- */
         List<dynamic> skillData = alldata["skills"];
         if (skillData.isNotEmpty) {
           skills.value = skillData.map((e) => Skill.fromJson(e)).toList();
+        } else {
+          skills.value = [];
         }
 
         /* -------extracting language ---------- */
@@ -305,6 +338,8 @@ class ProfileSkillController extends GetxController {
         if (languageData.isNotEmpty) {
           language.value =
               languageData.map((e) => Language.fromJson(e)).toList();
+        } else {
+          language.value = [];
         }
 
         /* -------extracting volunteer experience ---------- */
@@ -313,6 +348,11 @@ class ProfileSkillController extends GetxController {
           volExperience.value = volExperienceData
               .map((e) => VolunteerExperience.fromJson(e))
               .toList();
+        } else {
+          volExperience.value = [];
+        }
+        if (alldata["educations"] == null && alldata["experiences"] == null) {
+          awardController.assosiatedListdata.value = [];
         }
       }
       profileDataLoading.value = false;

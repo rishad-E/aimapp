@@ -33,7 +33,6 @@ class AimcetContainer extends StatelessWidget {
           stops: [0.0, 0.4531, 1.0],
         ),
       ),
-    
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -63,7 +62,8 @@ class AimcetContainer extends StatelessWidget {
               child: Obx(
                 () {
                   if (controller.testDone.value == 'done') {
-                    controller.aimcetTestResultFunction(userId: id, userName: userName);
+                    controller.aimcetTestResultFunction(
+                        userId: id, userName: userName);
                     return ElevatedButton.icon(
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
@@ -90,10 +90,8 @@ class AimcetContainer extends StatelessWidget {
                           controller.fetchPersonalityReport(userId: id);
                           controller.fetchTraitReport(userId: id);
                         });
-                        Get.to(() => AIMCETResultScreen(
-                              userName: userName,
-                              uId: id,
-                            ));
+                        Get.to(() =>
+                            AIMCETResultScreen(userName: userName, uId: id));
                       },
                     );
                   } else if (controller.testDone.value == 'continue') {

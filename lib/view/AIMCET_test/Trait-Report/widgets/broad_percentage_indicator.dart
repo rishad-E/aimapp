@@ -240,4 +240,3 @@ class TraitPercentageIndicatorBroad extends StatelessWidget {
     return percentage;
   }
 }
-

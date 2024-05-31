@@ -137,6 +137,37 @@ class ProfileProjectController extends GetxController {
     }
   }
 
+  Future<void> deleteProjectFunction(
+      {required String prID, required String uId}) async {
+    String? res =
+        await UpdateProjectInfoService().deleteProjectInfo(prID: prID);
+    if (res == 'Project deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    }
+  }
+
   Future<void> datePicker(BuildContext context, {bool? start}) async {
     final DateTime? picked = await showDatePicker(
       context: context,

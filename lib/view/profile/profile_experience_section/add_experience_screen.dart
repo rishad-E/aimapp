@@ -52,7 +52,7 @@ class AddExperienceScreen extends StatelessWidget {
       controller.profileController.text =
           experience?.profile.toString() ?? controller.profileController.text;
       exID = experience?.id.toString();
-      if (experience?.endDate == null||experience?.endDate =="currently_working") {
+      if (experience?.endDate == "currently_working") {
         controller.currentlyWorking.value = true;
         controller.update(['EX-currentlyworkingButton']);
         log(controller.currentlyWorking.toString(), name: 'currenlyworking-ex');
@@ -412,6 +412,16 @@ class AddExperienceScreen extends StatelessWidget {
                         );
                       },
                     ),
+                    hMBox,
+                    experience == null
+                        ? shrinked
+                        : deleteSectionWidget(
+                            onPressed: () => controller.deleteExperienceSection(
+                                exID: exID.toString(),
+                                uId: uId,
+                                company: controller.companyController.text),
+                            section: 'Experience',
+                          ),
                   ],
                 ),
               ),

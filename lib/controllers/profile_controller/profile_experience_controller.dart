@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_experience_info_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -156,6 +157,39 @@ class ProfileExperienceController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> deleteExperienceSection(
+      {required String exID, required String uId,required String company}) async {
+    String? res =
+        await UpdateExperienceInfoService().deleteExperienceInfo(exID: exID);
+    final awardC = Get.put(ProfileHonorsAwardsController());
+    if (res == 'Experience deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+      awardC.assosiatedListdata.remove(company);
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
     }
   }
 

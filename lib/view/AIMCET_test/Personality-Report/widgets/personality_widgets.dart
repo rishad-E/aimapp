@@ -48,7 +48,7 @@ BoxDecoration personConDecoration() {
 }
 
 Widget personSkillContainer(
-    {required String image, required String text, required String text2}) {
+    {required String image, required String title, required String description}) {
   return Container(
     margin: const EdgeInsets.only(right: 8),
     padding: const EdgeInsets.fromLTRB(20, 7, 20, 10),
@@ -67,8 +67,8 @@ Widget personSkillContainer(
           image,
           fit: BoxFit.contain,
         ),
-        boldText(text: text, size: 14),
-        primarytxt(text2, 12)
+        boldText(text: title, size: 14),
+        primarytxt(description, 12)
       ],
     ),
   );

@@ -418,6 +418,13 @@ class ProfileAddSkillScreen extends StatelessWidget {
                             ],
                           );
                         }),
+                    hBox,
+                    Align(
+                      alignment: Alignment.center,
+                      child: deleteSectionWidget(
+                          onPressed: () => controller.deleteSkillFuntion(skID: skID.toString(), uId: uId),
+                          section: 'Skill'),
+                    )
                   ],
                 ),
               ),

@@ -17,7 +17,7 @@ class TraitReportService {
       );
 
       if (response.statusCode == 200) {
-        log(response.data.toString(), name: 'trait report');
+        // log(response.data.toString(), name: 'trait report');
         Map<String, dynamic> responseBody = response.data;
         return TraitReportModel.fromJson(responseBody);
       } else if (response.statusCode != 200) {

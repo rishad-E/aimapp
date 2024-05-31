@@ -40,7 +40,7 @@ class ProfilePublicationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -84,7 +84,7 @@ class ProfilePublicationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() =>  ProfileHomeScreen(id:uId));
+      Get.off(() => ProfileHomeScreen(id: uId));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -96,6 +96,37 @@ class ProfilePublicationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
+    }
+  }
+
+  Future<void> deletePublicationFuntion(
+      {required String pbID, required String uId}) async {
+    String? res =
+        await UpdatePublicationService().deletePublicationInfo(pbID: pbID);
+    if (res == 'Publication deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
     }
   }
 

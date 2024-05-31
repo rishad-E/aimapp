@@ -1,5 +1,6 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -70,7 +71,7 @@ InputDecoration infoFieldDecoration(
         ? const Color.fromARGB(255, 116, 118, 119).withOpacity(0.2)
         : null,
     suffixIcon: suffixWidget,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 10,vertical: 8),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
     hintStyle: TextStyle(
         color: kblack.withOpacity(0.4),
         fontSize: 12,
@@ -120,6 +121,18 @@ Widget actionContainer(
               color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
         )),
       ),
+    ),
+  );
+}
+
+Widget deleteSectionWidget(
+    {required void Function()? onPressed, required String section}) {
+  return TextButton(
+    onPressed: onPressed,
+    child: semiBoldChoiceText(
+      text: "Delete $section",
+      size: 11.sp,
+      color: textFieldColor,
     ),
   );
 }

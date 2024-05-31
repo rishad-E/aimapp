@@ -10,6 +10,7 @@ import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/add_media_screen.dart';
+import 'package:aimshala/view/profile/profile_honorsawards_section/widgets/assosiated_bottomsheet.dart';
 import 'package:aimshala/view/profile/profile_honorsawards_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -84,19 +85,27 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                     ),
                     honorsawardsInfoFiled(
                       text: primarytxt3('Associated with', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.assosiatedController,
-                        validator: (value) => controller.filedValidation(value),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value) {
-                          controller.allFieldSelect();
-                          controller.update(['update-HonorAwardsbutton']);
-                        },
-                        decoration: infoFieldDecoration(
-                            hintText: 'Please Select',
-                            suffixWidget:
-                                const Icon(Icons.keyboard_arrow_down)),
-                        style: const TextStyle(fontSize: 13),
+                      textField: GestureDetector(
+                        onTap: () => showAssosiatedOptions(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: controller.assosiatedController,
+                            validator: (value) =>
+                                controller.filedValidation(value),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              controller.allFieldSelect();
+                              controller.update(['update-HonorAwardsbutton']);
+                            },
+                            decoration: infoFieldDecoration(
+                                hintText: 'Please Select',
+                                suffixWidget:
+                                    const Icon(Icons.keyboard_arrow_down)),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                       ),
                     ),
                     honorsawardsInfoFiled(
@@ -252,6 +261,14 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                         );
                       },
                     ),
+                    hBox,
+                    award == null
+                        ? shrinked
+                        : deleteSectionWidget(
+                            onPressed: () => controller.deleteAwardFunction(
+                                awardID: awardID.toString(), uId: uId),
+                            section: 'Award',
+                          )
                   ],
                 ),
               ),
@@ -316,6 +333,15 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
             ],
           ),
         );
+      },
+    );
+  }
+
+  void showAssosiatedOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const AwardAssosiatedBottomsheet();
       },
     );
   }

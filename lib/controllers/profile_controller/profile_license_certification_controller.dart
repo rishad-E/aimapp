@@ -42,21 +42,20 @@ class ProfileLicenseCertificationController extends GetxController {
     required List<String> mediaDescription,
     required List<String> mediaLink,
   }) async {
-    String? res =
-        await UpdateLicenseCertificationService().saveLicenseCertificationInfo(
-      uId: uId,
-      name: name,
-      organization: organization,
-      issueDate: issueDate,
-      expiryDate: expiryDate,
-      credID: credID,
-      credURL: credURL,
-      media: media,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      skills: skills,
-      mediaLink: mediaLink
-    );
+    String? res = await UpdateLicenseCertificationService()
+        .saveLicenseCertificationInfo(
+            uId: uId,
+            name: name,
+            organization: organization,
+            issueDate: issueDate,
+            expiryDate: expiryDate,
+            credID: credID,
+            credURL: credURL,
+            media: media,
+            mediaTitle: mediaTitle,
+            mediaDescription: mediaDescription,
+            skills: skills,
+            mediaLink: mediaLink);
     if (res == 'License & Certificate details added successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -100,20 +99,19 @@ class ProfileLicenseCertificationController extends GetxController {
   }) async {
     String? res = await UpdateLicenseCertificationService()
         .updateLicenseCertificationInfo(
-      lcID: lcID,
-      uId: uId,
-      name: name,
-      organization: organization,
-      issueDate: issueDate,
-      expiryDate: expiryDate,
-      credID: credID,
-      credURL: credURL,
-      media: media,
-      skills: skills,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink
-    );
+            lcID: lcID,
+            uId: uId,
+            name: name,
+            organization: organization,
+            issueDate: issueDate,
+            expiryDate: expiryDate,
+            credID: credID,
+            credURL: credURL,
+            media: media,
+            skills: skills,
+            mediaTitle: mediaTitle,
+            mediaDescription: mediaDescription,
+            mediaLink: mediaLink);
     if (res == 'License & Certificate details updated successfully.') {
       Get.showSnackbar(
         GetSnackBar(
@@ -138,6 +136,37 @@ class ProfileLicenseCertificationController extends GetxController {
         ),
       );
     }
+  }
+
+  Future<void> deleteLicenseFunction(
+      {required String licenseID, required String uId}) async {
+    String? res = await UpdateLicenseCertificationService()
+        .deleteLicenseInfo(licenseId: licenseID);
+    if (res == 'License deleted successfully') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      }
   }
 
   Future<void> datePicker(BuildContext context, {bool? expiry}) async {

@@ -137,6 +137,38 @@ class ProfileVolunteerController extends GetxController {
     }
   }
 
+  Future<void> deleteVolunteerFunction(
+      {required String vtID, required String uId}) async {
+    String? res =
+        await UpdateVolunteerInfoService().deleteVolunteerExperienceInfo(volunteerID: vtID);
+    if (res == 'Volunteer Experience deleted successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+
+    }
+  }
+
   Future<void> datePicker(BuildContext context, {bool? start}) async {
     final DateTime? picker = await showDatePicker(
       context: context,

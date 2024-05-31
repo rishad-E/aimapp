@@ -56,7 +56,6 @@ class UpdateProjectInfoService {
         ),
       );
       Map<String, dynamic> responseData = response.data;
-      // log(responseData.toString(), name: 'save project info');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         log(successMessage, name: 'save project info success');
@@ -136,42 +135,23 @@ class UpdateProjectInfoService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
-      if (response.statusCode == 200) {
-        Map<String, dynamic> responseData = response.data;
-        if (responseData.containsKey('success')) {
-          String successMessage = responseData['success'];
-          log(successMessage, name: 'update project info success');
-          return successMessage;
-        }
-      } else {
-        if (response.statusCode == 500) {
-          log('Server error: ${response.data}',
-              name: 'update project info error 500');
-          return 'Server error occurred';
-          // throw Exception('Server error occurred');
-        } else {
-          Map<String, dynamic> responseData = response.data;
-          if (responseData.containsKey('error')) {
-            final errorData = responseData['error'] as Map<String, dynamic>;
-            final List<dynamic> errorMessages = errorData.values.first;
-            final errorMessage = errorMessages.join('\n');
-            log(errorMessage.toString(), name: 'update publication error data');
-            return errorMessage;
-          }
-        }
+      Map<String, dynamic> responseData = response.data;
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        log(successMessage, name: 'update project info success');
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        final errorData = responseData['error'] as Map<String, dynamic>;
+        final List<dynamic> errorMessages = errorData.values.first;
+        final errorMessage = errorMessages.join('\n');
+        log(errorMessage.toString(), name: 'update publication error data');
+        return errorMessage;
       }
-      // log(response.statusCode.toString(), name: 'update project info');
-      // if (responseData.containsKey('success')) {
-      //   String successMessage = responseData['success'];
-      //   log(successMessage, name: 'update project info success');
-      //   return successMessage;
-      // }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         log('Server error: ${e.message}',
             name: 'update project info error 500');
-        return 'Server error occurred';
-        // throw Exception('Server error occurred');
+        throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
             name: 'update project info error');
@@ -179,6 +159,49 @@ class UpdateProjectInfoService {
     } catch (e) {
       // Handle other exceptions
       log('error :${e.toString()}', name: 'update project info error catch');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<String?> deleteProjectInfo({required String prID}) async {
+    String path = Apis().aimUrl + Apis().deleteProjects;
+    try {
+      Response response = await dio.post(
+        path,
+        data: {"project_id": prID},
+        options: Options(validateStatus: (status) => status! < 599),
+      );
+      Map<String, dynamic> responseData = response.data;
+
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        log(successMessage, name: 'delete project success');
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete project section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}', name: 'delete project error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error:${e.response?.data}', name: 'delete project error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'delete project error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

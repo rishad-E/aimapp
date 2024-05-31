@@ -41,7 +41,7 @@ class UpdatePublicationService {
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
         log(errorMessage.toString(), name: 'save publication error data');
-          return errorMessage;
+        return errorMessage;
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
@@ -74,7 +74,7 @@ class UpdatePublicationService {
     try {
       Response response = await dio.post(path,
           data: {
-            "publication_id":pbID,
+            "publication_id": pbID,
             "user_id": uId,
             "title": title,
             "publication": publication,
@@ -97,7 +97,7 @@ class UpdatePublicationService {
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
         log(errorMessage.toString(), name: 'update publication error data');
-          return errorMessage;
+        return errorMessage;
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
@@ -110,6 +110,49 @@ class UpdatePublicationService {
     } catch (e) {
       // Handle other exceptions
       log('error :${e.toString()}', name: 'update publication error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<String?> deletePublicationInfo({required String pbID}) async {
+    String path = Apis().aimUrl + Apis().deletePublications;
+    try {
+      Response response = await dio.post(path,
+          data: {"publication_id": pbID},
+          options: Options(
+            validateStatus: (status) => status! < 599,
+          ));
+      Map<String, dynamic> responseData = response.data;
+
+      if (responseData.containsKey('success')) {
+        String successMessage = responseData['success'];
+        log(successMessage, name: 'delete publication success');
+        return successMessage;
+      } else if (responseData.containsKey('error')) {
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete publication section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}', name: 'delete publication error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error:${e.response?.data}', name: 'delete publication error');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'delete publication error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

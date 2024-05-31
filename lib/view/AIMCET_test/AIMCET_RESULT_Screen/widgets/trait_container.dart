@@ -94,9 +94,7 @@ class TraitContainer extends StatelessWidget {
                   controller.gp.value != "trait-e") {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(() => TraitReportScreen(
-                          userName: userName,
-                        ));
+                    Get.to(() => TraitReportScreen(userName: userName));
                     // log(controller.gp.value,name: 'gp');
                   },
                   child: Row(

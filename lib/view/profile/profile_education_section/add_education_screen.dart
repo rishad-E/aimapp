@@ -28,21 +28,41 @@ class AddEducationScreen extends StatelessWidget {
     log(edu.toString(), name: 'educational data');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.schoolController.text =
-          edu?.school.toString() ?? controller.schoolController.text;
+          controller.schoolController.text.isEmpty && edu?.school != null
+              ? edu?.school.toString() as String
+              : controller.schoolController.text;
+
       controller.degreeController.text =
-          edu?.degree.toString() ?? controller.degreeController.text;
+          controller.degreeController.text.isEmpty && edu?.degree != null
+              ? edu?.degree.toString() as String
+              : controller.degreeController.text;
       controller.studyFiledController.text =
-          edu?.studyField.toString() ?? controller.studyFiledController.text;
+          controller.studyFiledController.text.isEmpty &&
+                  edu?.studyField != null
+              ? edu?.studyField.toString() as String
+              : controller.studyFiledController.text;
       controller.startdateController.text =
-          edu?.startDate.toString() ?? controller.startdateController.text;
+          controller.startdateController.text.isEmpty && edu?.startDate != null
+              ? edu?.startDate.toString() as String
+              : controller.startdateController.text;
       controller.endDateController.text =
-          edu?.endDate.toString() ?? controller.endDateController.text;
+          controller.endDateController.text.isEmpty && edu?.endDate != null
+              ? edu?.endDate.toString() as String
+              : controller.endDateController.text;
       controller.gradeController.text =
-          edu?.grade.toString() ?? controller.gradeController.text;
+          controller.gradeController.text.isEmpty && edu?.grade != null
+              ? edu?.grade.toString() as String
+              : controller.gradeController.text;
       controller.activitiesController.text =
-          edu?.activities.toString() ?? controller.activitiesController.text;
+          controller.activitiesController.text.isEmpty &&
+                  edu?.activities != null
+              ? edu?.activities.toString() as String
+              : controller.activitiesController.text;
       controller.descriptionController.text =
-          edu?.description.toString() ?? controller.descriptionController.text;
+          controller.descriptionController.text.isEmpty &&
+                  edu?.description != null
+              ? edu?.description.toString() as String
+              : controller.descriptionController.text;
       eduID = edu?.id.toString();
       // List<String>? resList = edu?.skills?.split(',');
       // if (resList != null) {
@@ -353,6 +373,14 @@ class AddEducationScreen extends StatelessWidget {
                             ],
                           );
                         }),
+                    hMBox,
+                    edu == null
+                        ? shrinked
+                        : deleteSectionWidget(
+                            onPressed: () => controller.deleteEducationFunction(school: controller.schoolController.text,
+                                  eduID: eduID.toString(), uId: uId),
+                            section: 'Education',
+                          ),
                   ],
                 ),
               ),
