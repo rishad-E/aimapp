@@ -85,6 +85,7 @@ PreferredSizeWidget aimcetResultAppBar() {
   return AppBar(
     surfaceTintColor: Colors.white,
     elevation: 7,
+    iconTheme: IconThemeData(color: mainPurple),
     shadowColor: Colors.black.withOpacity(0.5),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -130,6 +131,34 @@ BoxDecoration report3Container() {
       colors: [
         Color.fromRGBO(255, 245, 255, 1.0),
         Color.fromRGBO(241, 248, 248, 1.0),
+      ],
+      stops: [0.0, 1.0],
+    ),
+  );
+}
+
+BoxDecoration colorGradient3() {
+  return const BoxDecoration(
+      gradient: LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      Color.fromRGBO(255, 247, 255, 1.0),
+      Color.fromRGBO(241, 248, 248, 1.0),
+      Color.fromRGBO(255, 247, 255, 1.0),
+    ],
+    stops: [0.0, 0.5, 1.0],
+  ));
+}
+
+BoxDecoration personalityTrairContainerGradient() {
+  return const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color.fromRGBO(241, 248, 248, 1.0),
+        Color.fromRGBO(255, 245, 255, 1.0),
       ],
       stops: [0.0, 1.0],
     ),

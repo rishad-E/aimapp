@@ -2,11 +2,12 @@ import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 
-Widget uploadMediaWidget({void Function()? onTap,required String item}) {
+Widget uploadMediaWidget({void Function()? onTap, required String item}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -42,13 +43,19 @@ Widget uploadMediaWidget({void Function()? onTap,required String item}) {
           ),
         ),
       ),
-      regularText("Supported formats for upload: .pdf, .doc, .docx", 10.6.sp)
+      item == 'Resume'
+          ? regularText(
+              "Supported formats for upload: .pdf, .doc, .docx", 10.6.sp)
+          : regularText(
+              "Supported formats for upload: .mp4, .mov, .avi", 10.6.sp)
     ],
   );
 }
 
 Widget mediaContainWidget(
-    {required String fileName, required String fileSize,void Function()? onTapDelete}) {
+    {required String fileName,
+    required String fileSize,
+    void Function()? onTapDelete}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -110,5 +117,63 @@ Widget mediaContainWidget(
       ),
       regularText("Supported formats for upload: .pdf, .doc, .docx", 10.6.sp)
     ],
+  );
+}
+
+Widget finalAgreementText(
+    {void Function()? onTapTerms, void Function()? onTapPrivacy}) {
+  return RichText(
+    text: TextSpan(
+      text: 'I agree to Aimshala\'s mentoring ',
+      style: const TextStyle(
+          color: Color.fromARGB(255, 132, 131, 131), fontSize: 11),
+      children: [
+        TextSpan(
+          text: 'terms and conditions',
+          style: const TextStyle(
+              color: Colors.black,
+              decoration: TextDecoration.underline,
+              fontSize: 11),
+          recognizer: TapGestureRecognizer()..onTap = onTapTerms,
+        ),
+        const TextSpan(
+          text: ' and ',
+          style: TextStyle(
+              color: Color.fromARGB(255, 132, 131, 131), fontSize: 11),
+        ),
+        TextSpan(
+          text: 'privacy policy.',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 11,
+            decoration: TextDecoration.underline,
+          ),
+          recognizer: TapGestureRecognizer()..onTap = onTapPrivacy,
+        ),
+      ],
+    ),
+  );
+}
+
+Widget finalAgreeContainer({required bool agree}) {
+  return Container(
+    height: 20,
+    width: 20,
+    decoration: BoxDecoration(
+      color: agree == true ? mainPurple : kwhite,
+      border: agree == false
+          ? Border.all(
+              width: 1, color: const Color.fromARGB(255, 195, 197, 198))
+          : null,
+      borderRadius: BorderRadius.circular(6),
+    ),
+    child: agree
+        ? Center(
+            child: Icon(
+            Icons.done,
+            color: kwhite,
+            size: 13,
+          ))
+        : null,
   );
 }

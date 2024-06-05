@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_personal_info_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -14,12 +15,22 @@ import 'package:sizer/sizer.dart';
 
 class ProfilePersonalInfoScreen extends StatelessWidget {
   final String id;
-  final String? username;
-  ProfilePersonalInfoScreen({super.key, required this.id, this.username});
+  final User? user;
+  ProfilePersonalInfoScreen({super.key, required this.id, this.user});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(PerosnalInfoController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (user != null) {
+        controller.nameController.text = user?.name as String;
+        controller.userNameController.text = user?.username as String;
+        controller.dateController.text = user?.dob as String;
+        controller.genderController.text = user?.gender as String;
+        controller.aboutController.text = user?.about as String;
+        controller.update(['update-personalinfo']);
+      }
+    });
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
@@ -59,15 +70,14 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                     perosnalInfoFiled(
                       text: primarytxt3('Username', 9.5.sp),
                       textField: TextFormField(
-                        controller: controller.userNameController
-                          ..text = username.toString(),
+                        controller: controller.userNameController,
                         onChanged: (value) =>
                             controller.update(['update-personalinfo']),
                         validator: (value) => controller.fieldValidator(value),
                         style: const TextStyle(fontSize: 12),
                         decoration: infoFieldDecoration(
                             hintText: 'User Name',
-                            fill: username != null ? true : false),
+                            fill: user?.username != null ? true : false),
                       ),
                     ),
                     perosnalInfoFiled(

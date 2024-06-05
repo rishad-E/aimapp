@@ -17,6 +17,7 @@ class TraitPieChart extends StatelessWidget {
       "Enterprising": double.parse(riasec!.enterprising.toString()),
       "Conventional": double.parse(riasec!.conventional.toString()),
     };
+
     return Scaffold(
       body: Center(
         child: PieChart(
@@ -26,6 +27,7 @@ class TraitPieChart extends StatelessWidget {
           chartValuesOptions: ChartValuesOptions(
             showChartValues: true,
             decimalPlaces: 0,
+            showChartValuesInPercentage: true,
             chartValueBackgroundColor: Colors.transparent,
             chartValueStyle: TextStyle(
               color: kwhite,

@@ -36,14 +36,32 @@ class ProfileHomeController extends GetxController {
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage == null) return;
       File? image = File(pickedImage.path);
-      dynamic data = await UpdateProfilePhotoService()
+      Map<String, dynamic>? data = await UpdateProfilePhotoService()
           .updateProfile(uId: uId, file: image);
       if (data != null) {
-        String resImage = data["user"]["image"];
-        final profilePic = "http://154.26.130.161/elearning/$resImage";
-        log(profilePic, name: 'update profilepic co');
-        selectedImage.value = profilePic;
-        
+        if (data.containsKey("message")) {
+          String resImage = data["user"]["image"];
+          final profilePic = "http://154.26.130.161/elearning/$resImage";
+          log(profilePic, name: 'update profilepic co');
+          selectedImage.value = profilePic;
+        } else if (data.containsKey("error")) {
+          Map<String, dynamic> errors = data['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'update pro pic error co');
+            Get.showSnackbar(
+              GetSnackBar(
+                snackStyle: SnackStyle.FLOATING,
+                message: errorMessage,
+                borderRadius: 4,
+                margin: const EdgeInsets.all(10),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        }
       }
     } catch (e) {
       // log(data.toString(), name: 'update profilepic co');
@@ -56,7 +74,7 @@ class ProfileHomeController extends GetxController {
           await UpdateProfilePhotoService().deleteProfilePicService(uId: uId);
       if (data != null) {
         String msg = data["message"];
-         String resImage = data["user"]["image"];
+        String resImage = data["user"]["image"];
         log(msg, name: 'delete msg');
         if (msg == "Profile image removed successfully") {
           Get.showSnackbar(

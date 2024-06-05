@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/city_bottom_sheet.dart';
+import 'package:aimshala/view/profile/profile_contact_section/widgets/country_bottomsheet.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/state_bottom_sheet.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +16,29 @@ import 'package:sizer/sizer.dart';
 
 class ProfileContactInfoScreen extends StatelessWidget {
   final String id;
-  final String? userName;
-  ProfileContactInfoScreen({super.key, required this.id, this.userName});
+  final User? user;
+  ProfileContactInfoScreen({super.key, required this.id, this.user});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UpdateContactInfo());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (user != null) {
+        controller.mobController.text = user?.phone as String;
+        controller.usernameController.text = user?.username as String;
+        controller.emailController.text = user?.email as String;
+        controller.addressController.text = user?.address as String;
+        // controller.pincodeController.text = user?.pin as String;/
+        controller.stateController.text = user?.state as String;
+        controller.cityController.text = user?.city as String;
+        controller.countryController.text = user?.country as String;
+        controller.facebookController.text = user?.facebook as String;
+        controller.instagramController.text = user?.instagram as String;
+        controller.twitterController.text = user?.twitter as String;
+        controller.update(['update-contactInfo']);
+      }
+      log('call back chekc');
+    });
     return Scaffold(
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
       body: Container(
@@ -55,7 +74,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(
-                        hintText: '9729665668',
                         prefix: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -79,8 +97,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   contactInfoFiled(
                     text: primarytxt3('Username', 9.5.sp),
                     textField: TextFormField(
-                      controller: controller.usernameController
-                        ..text = userName.toString(),
+                      controller: controller.usernameController,
                       validator: (value) => controller.fieldValidator(value),
                       onChanged: (value) {
                         controller.allFieldSelect();
@@ -90,7 +107,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(
                           hintText: 'johndoe123',
-                          fill: userName != null ? true : false),
+                          fill: user?.username != null ? true : false),
                     ),
                   ),
                   contactInfoFiled(
@@ -141,7 +158,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   contactInfoFiled(
                     text: primarytxt3('State', 9.5.sp),
                     textField: GestureDetector(
-                      onTap: () => showStateCountryBottomsheet(context: context,filed: 'State'),
+                      onTap: () => showStateBottomsheet(context: context),
                       child: AbsorbPointer(
                         child: TextFormField(
                           readOnly: true,
@@ -191,7 +208,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   contactInfoFiled(
                     text: primarytxt3('Country', 9.5.sp),
                     textField: GestureDetector(
-                      onTap: () => showStateCountryBottomsheet(context: context,filed: 'Country'),
+                      onTap: () => showCountryBottomsheet(context: context),
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: controller.countryController,
@@ -290,18 +307,19 @@ class ProfileContactInfoScreen extends StatelessWidget {
                               if (formKey.currentState!.validate()) {
                                 log('validate');
                                 c.saveContactInfoFunction(
-                                    uId: id.toString(),
-                                    userName: userName.toString(),
-                                    mobNumber: c.mobController.text,
-                                    email: c.emailController.text,
-                                    address: c.addressController.text,
-                                    pincode: c.pincodeController.text,
-                                    city: c.cityController.text,
-                                    state: c.stateController.text,
-                                    country: c.countryController.text,
-                                    facebook: c.facebookController.text,
-                                    instagram: c.instagramController.text,
-                                    twitter: c.twitterController.text);
+                                  uId: id.toString(),
+                                  userName: c.usernameController.text,
+                                  mobNumber: c.mobController.text,
+                                  email: c.emailController.text,
+                                  address: c.addressController.text,
+                                  pincode: c.pincodeController.text,
+                                  city: c.cityController.text,
+                                  state: c.stateController.text,
+                                  country: c.countryController.text,
+                                  facebook: c.facebookController.text,
+                                  instagram: c.instagramController.text,
+                                  twitter: c.twitterController.text,
+                                );
                               }
                             },
                           ),
@@ -318,11 +336,20 @@ class ProfileContactInfoScreen extends StatelessWidget {
     );
   }
 
-  void showStateCountryBottomsheet({required BuildContext context,required String filed}) {
+  void showStateBottomsheet({required BuildContext context}) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return StateBottomSheetClass(filed: filed);
+        return const StateBottomSheetClass();
+      },
+    );
+  }
+
+  void showCountryBottomsheet({required BuildContext context}) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const CountryBottomSheet();
       },
     );
   }

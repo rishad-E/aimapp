@@ -19,7 +19,7 @@ class TraitContainer extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       // height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Container(

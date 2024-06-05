@@ -13,8 +13,8 @@ class DiscoveryContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 25),
+      margin: const EdgeInsets.only(right: 10),
       width: 39.5.w,
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill),

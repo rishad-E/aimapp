@@ -42,11 +42,11 @@ TextStyle errorStyle() {
       color: Colors.red, fontSize: 10.sp, fontWeight: FontWeight.w400);
 }
 
-Text boldText({required String text, required double size}) {
+Text boldText({required String text, required double size, Color? color}) {
   return Text(
     text,
     style: TextStyle(
-      color: kblack,
+      color: color ?? kblack,
       fontSize: size,
       fontWeight: FontWeight.bold,
     ),

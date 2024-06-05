@@ -26,58 +26,63 @@ class CareerHomeBottomSheet extends StatelessWidget {
       child: SizedBox(
         height: 45.h,
         // height: 301,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                trailing: GestureDetector(
-                  onTap: () => Get.back(),
-                  child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Image.asset(
-                        'assets/images/close.png',
-                        fit: BoxFit.cover,
-                      )),
-                ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              trailing: GestureDetector(
+                onTap: () => Get.back(),
+                child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: Image.asset(
+                      'assets/images/close.png',
+                      fit: BoxFit.cover,
+                    )),
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: bottomHeading(
-                    'Select your role', 18, FontWeight.w700, kblack),
-              ),
-              ...List.generate(valueListTile.length, (index) {
-                return ListTile(
-                  shape: const Border(
-                      bottom: BorderSide(
-                          color: Color.fromARGB(255, 202, 201, 201))),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(valueListTile[index], style: optionText()),
-                  trailing: Checkbox(
-                    side: BorderSide.none,
-                    activeColor: mainPurple,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    value:
-                        controller.careerSelectedRole == valueListTile[index],
-                    onChanged: (value) {
-                      if (value != null && value) {
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: bottomHeading(
+                  'Select your role', 18, FontWeight.w700, kblack),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(valueListTile.length, (index) {
+                    return ListTile(
+                      shape: const Border(
+                          bottom: BorderSide(
+                              color: Color.fromARGB(255, 202, 201, 201))),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(valueListTile[index], style: optionText()),
+                      trailing: Checkbox(
+                        side: BorderSide.none,
+                        activeColor: mainPurple,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        value:
+                            controller.careerSelectedRole == valueListTile[index],
+                        onChanged: (value) {
+                          if (value != null && value) {
+                            bottomSheetListValueOnchanged(
+                                controller, valueListTile[index]);
+                          }
+                        },
+                      ),
+                      onTap: () {
                         bottomSheetListValueOnchanged(
                             controller, valueListTile[index]);
-                      }
-                    },
-                  ),
-                  onTap: () {
-                    bottomSheetListValueOnchanged(
-                        controller, valueListTile[index]);
-                    controller.checkAllfieldCareerHome();
-                  },
-                );
-              })
-            ],
-          ),
+                        controller.checkAllfieldCareerHome();
+                      },
+                    );
+                  }),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -15,8 +15,16 @@ Decoration boxdecoration(double radius) {
 
 PreferredSizeWidget careerAppBar() {
   return AppBar(
-    backgroundColor: Colors.transparent,
-    surfaceTintColor: Colors.transparent,
+    // backgroundColor: Colors.transparent,
+    // surfaceTintColor: Colors.transparent,
+    surfaceTintColor: Colors.white,
+    elevation: 7,
+    iconTheme: IconThemeData(color: mainPurple),
+    shadowColor: Colors.black.withOpacity(0.5),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+    ),
     title: const Text(
       "Book Career Counselling Call",
       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),

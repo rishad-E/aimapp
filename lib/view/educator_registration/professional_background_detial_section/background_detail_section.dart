@@ -142,7 +142,7 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text}',
                                           name: 'edu-backgroundpage');
-                                          Get.to(()=>EducatorSubjectCourseSelectPage());
+                                          Get.to(()=>const EducatorSubjectCourseSelectPage());
                                     }
                                   },
                                 ),

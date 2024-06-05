@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class UpdateProfilePhotoService {
   Dio dio = Dio();
 
-  Future<dynamic> updateProfile(
+  Future<Map<String, dynamic>?> updateProfile(
       {required String uId, required File file}) async {
     String path = Apis().aimUrl + Apis().updateProfilePic;
     log('UID=>$uId  file=>$file path=>$path', name: 'update profile service');
@@ -25,9 +25,13 @@ class UpdateProfilePhotoService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
-      if (response.statusCode == 200) {
-        // log(response.data.toString(), name: 'update profilepic res');
-        return response.data;
+      Map<String, dynamic> responseData = response.data;
+      if (responseData.containsKey("message")) {
+        // String success = responseData['message'];
+        // log(success, name: 'update profilepic res');
+        return responseData;
+      } else if (responseData.containsKey("error")) {
+        return responseData;
       } else {
         return null;
       }

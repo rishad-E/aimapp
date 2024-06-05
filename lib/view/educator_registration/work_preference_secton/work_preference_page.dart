@@ -141,8 +141,8 @@ class EducatorWorkPreferencePage extends StatelessWidget {
                                       name: 'work preference');
                                   if (c.workMode.isNotEmpty &&
                                       c.teachingMode.isNotEmpty) {
-                                    Get.to(
-                                        () => EducatorAvailabilitySelectPage());
+                                    Get.to(() =>
+                                        const EducatorAvailabilitySelectPage());
                                   }
                                 },
                               ),

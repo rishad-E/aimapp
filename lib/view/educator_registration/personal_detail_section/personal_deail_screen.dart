@@ -52,10 +52,10 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                         textfiled: TextFormField(
                           controller: controller.emailController,
                           validator: (value) =>
-                              controller.fieldValidation(value),
+                              controller.fieldValidation(value,email: true),
                           onChanged: (value) =>
                               controller.update(['edu-personalinfo']),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          // autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           decoration: infoFieldDecoration(
                               hintText: 'Enter Email Address'),

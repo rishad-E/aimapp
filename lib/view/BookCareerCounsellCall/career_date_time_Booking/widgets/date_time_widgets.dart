@@ -61,7 +61,7 @@ Widget timeContainer(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
     decoration: BoxDecoration(
       color: colorbb,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(400),
       border: select == false
           ? Border.all(
               color: const Color.fromARGB(255, 229, 226, 226), width: 1)

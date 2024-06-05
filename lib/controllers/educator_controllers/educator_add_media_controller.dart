@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,10 @@ import 'package:get/get.dart';
 class EducatorMediaAddController extends GetxController {
   TextEditingController linkedInController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
+  Rx<Color> nextText = Rx<Color>(textFieldColor);
+  Rx<Color> nextBG = Rx<Color>(buttonColor);
 
+  RxBool agree = false.obs;
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
   RxString fileSize = ''.obs;
@@ -15,6 +17,10 @@ class EducatorMediaAddController extends GetxController {
   RxString videofilePath = ''.obs;
   RxString videofileName = ''.obs;
   RxString videofileSize = ''.obs;
+
+  RxString errorTextLink = ''.obs;
+  RxString errorTextVideo = ''.obs;
+  RxString errorAgreement = ''.obs;
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -27,7 +33,8 @@ class EducatorMediaAddController extends GetxController {
     filePath.value = path!;
     fileName.value = file.name;
     fileSize.value = formatBytes(file.size);
-    log('fileName=>$fileName filePath=>$filePath fileSize=>$fileSize');
+    // log('fileName=>$fileName filePath=>$filePath fileSize=>$fileSize');
+    errorTextLink.value = '';
   }
 
   String formatBytes(int bytes) {
@@ -43,7 +50,7 @@ class EducatorMediaAddController extends GetxController {
   Future<void> pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['mp4', 'mov', 'avi', 'mkv'],
+      allowedExtensions: ['mp4', 'mov', 'avi'],
       allowCompression: false,
       withData: true,
       // allowedMimeType: ['video/*'],
@@ -61,8 +68,34 @@ class EducatorMediaAddController extends GetxController {
     videofilePath.value = path;
     videofileName.value = selectedVideo.name;
     videofileSize.value = formatBytes(selectedVideo.size);
-    // fileName.value = file.name;
-    // fileExtension.value = file.extension!;
-    // fileSize.value = formatBytes(file.size);
+    errorTextVideo.value = '';
   }
+
+  void toggleAggrement() {
+    agree.value = !agree.value;
+    if (agree.value == true) {
+      errorAgreement.value = '';
+    }
+    update(['update-agreement']);
+  }
+
+  String? fieldValidation(String? value) {
+    if (filePath.isEmpty && (value == null || value.isEmail)) {
+      return 'Please Enter LinkedIn Profile Link';
+    } else if (filePath.isEmpty && !value!.isURL) {
+      return 'Please Enter a Valid LinkedIn Profile Link';
+    }
+    return null;
+  }
+
+  String? fieldValidationVideo(String? value) {
+    if (videofilePath.isEmpty && (value == null || value.isEmail)) {
+      return 'Please Enter Video Link';
+    } else if (filePath.isEmpty && !value!.isURL) {
+      return 'Please Enter a Valid Video Link';
+    }
+    return null;
+  }
+
+  void checkAllFields() {}
 }

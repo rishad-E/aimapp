@@ -8,6 +8,12 @@ SizedBox hMBox = const SizedBox(height: 15);
 SizedBox hLBox = const SizedBox(height: 25);
 
 SizedBox shrinked = const SizedBox.shrink();
+Widget choiceSizedBox({double? height, double? width}) {
+  return SizedBox(
+    height: height,
+    width: width,
+  );
+}
 
 InputDecoration decorTextfield(
     {String? labeltext, Widget? prefixWidget, String? hintText}) {

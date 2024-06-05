@@ -16,11 +16,19 @@ class EducatorReferenceController extends GetxController {
   RxString otherRelation1 = ''.obs;
   RxString otherRelation2 = ''.obs;
 
-  String? filedValidation(String? value, {bool? mob}) {
+  String? filedValidation(String? value) {
     if (value == null || value.isEmpty) {
       return "Please Enter This Field";
     }
-    if (value.isNotEmpty && mob == true && value.length < 10) {
+
+    return null;
+  }
+
+  String? mobileValidation(String? value) {
+    if (value == null ||
+        value.isEmpty ||
+        value.length < 10 ||
+        !value.isNumericOnly) {
       return 'Enter a 10 digit Valid Number';
     }
     return null;

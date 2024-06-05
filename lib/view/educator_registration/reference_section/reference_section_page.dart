@@ -103,7 +103,7 @@ class EducatorReferencePage extends StatelessWidget {
                         textfiled: TextFormField(
                           controller: controller.mobileController1,
                           validator: (value) =>
-                              controller.filedValidation(value, mob: true),
+                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);
@@ -203,7 +203,7 @@ class EducatorReferencePage extends StatelessWidget {
                         textfiled: TextFormField(
                           controller: controller.mobileController2,
                           validator: (value) =>
-                              controller.filedValidation(value, mob: true),
+                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);

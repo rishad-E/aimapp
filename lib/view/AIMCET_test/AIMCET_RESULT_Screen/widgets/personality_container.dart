@@ -18,7 +18,7 @@ class PersonalityContainer extends StatelessWidget {
         border: Border.all(color: const Color.fromARGB(255, 230, 228, 228)),
       ),
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Container(

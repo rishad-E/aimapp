@@ -98,7 +98,8 @@ Widget reviewDateContainer({required String time,required String date}) {
             Text(
               date,
               // textAlign: TextAlign.center,
-              style: const TextStyle(
+              style:  TextStyle(
+                color: textFieldColor,
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
               ),

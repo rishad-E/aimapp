@@ -120,7 +120,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                   onTap: () {
                                     log('edit personal info');
                                     Get.to(() => ProfilePersonalInfoScreen(
-                                        id: id, username: data?.username));
+                                        user: data, id: id));
                                   },
                                   child: Icon(
                                     Icons.edit,
@@ -169,7 +169,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                         Get.put(UpdateContactInfo())
                                             .fetchCountryStates();
                                         Get.to(() => ProfileContactInfoScreen(
-                                            id: id, userName: data?.username));
+                                            user: data, id: id));
                                       },
                                       child: Icon(
                                         Icons.edit,

@@ -14,7 +14,7 @@ class QualificationBottomSheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SizedBox(
-        height: 45.h,
+        height: 45.h, 
         // height: 363,
         child: SingleChildScrollView(
           child: Column(
@@ -61,6 +61,7 @@ class QualificationBottomSheet extends StatelessWidget {
                                 ),
                                 trailing: Checkbox(
                                   side: BorderSide.none,
+                                  activeColor: mainPurple,
                                   value: aimcetController.qualify.value ==
                                       data.title.toString(),
                                   onChanged: (value) {

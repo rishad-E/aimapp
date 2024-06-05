@@ -1,3 +1,4 @@
+import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -48,7 +49,10 @@ class TempScreen extends StatelessWidget {
             
             hMBox,
             elevatedButtonItems(
-              onPressed: ()=>Get.to(()=>EducatorPersonalDetailPage()),
+              onPressed: () {
+                Get.put(EducatorPersonalDetailController()).clearAllfields();
+                Get.to(()=>EducatorPersonalDetailPage());
+              },
               item: 'Educator',
             ),
           ],
