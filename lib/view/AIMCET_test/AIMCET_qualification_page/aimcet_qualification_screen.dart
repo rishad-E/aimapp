@@ -6,7 +6,7 @@ import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_bottomsheet/qualification_bottomsheet.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

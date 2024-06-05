@@ -76,6 +76,7 @@ InputDecoration infoFieldDecoration(
         color: kblack.withOpacity(0.4),
         fontSize: 12,
         height: 1.2,
+        overflow: TextOverflow.clip,
         fontWeight: FontWeight.w400),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),

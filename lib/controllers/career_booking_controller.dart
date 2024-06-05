@@ -8,7 +8,7 @@ import 'package:aimshala/services/career_counsell_services/get_aim_service.dart'
 import 'package:aimshala/services/career_counsell_services/get_booking_date_time_service.dart';
 import 'package:aimshala/services/career_counsell_services/slot_booking_save_service.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/view/BookCareerCounsellCall/career_home_aimScreen/widgets/model/microaim_model.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/model/microaim_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

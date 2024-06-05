@@ -1,9 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_screen.dart';
 import 'package:aimshala/view/profile/profile_add_course_section/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
 import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
@@ -29,67 +28,28 @@ class TempScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ElevatedButton.icon(
-              style: ButtonStyle(
-                  shape: buttonShape(round: 8),
-                  side:
-                      MaterialStatePropertyAll(BorderSide(color: mainPurple))),
+            elevatedButtonItems(
               onPressed: () =>
                   Get.to(() => ProfileAddLanguageScreen(uId: id.toString())),
-              icon: Text(
-                "Languages ",
-                style: TextStyle(
-                    fontSize: 11.sp,
-                    color: mainPurple,
-                    fontWeight: FontWeight.w600),
-              ),
-              label: Icon(
-                Icons.arrow_forward_ios_sharp,
-                size: 11.sp,
-                color: mainPurple,
-              ),
+              item: "Languages",
             ),
-            hLBox,
-            ElevatedButton.icon(
-              style: ButtonStyle(
-                  shape: buttonShape(round: 8),
-                  side:
-                      MaterialStatePropertyAll(BorderSide(color: mainPurple))),
-              onPressed: () =>
-                  Get.to(() => ProfileAddVolunteerExperienceScreen(uId: id.toString())),
-              icon: Text(
-                "volunteer experience ",
-                style: TextStyle(
-                    fontSize: 11.sp,
-                    color: mainPurple,
-                    fontWeight: FontWeight.w600),
-              ),
-              label: Icon(
-                Icons.arrow_forward_ios_sharp,
-                size: 11.sp,
-                color: mainPurple,
-              ),
+            hMBox,
+            elevatedButtonItems(
+              onPressed: () => Get.to(() =>
+                  ProfileAddVolunteerExperienceScreen(uId: id.toString())),
+              item: "volunteer experience",
             ),
-            hLBox,
-            ElevatedButton.icon(
-              style: ButtonStyle(
-                  shape: buttonShape(round: 8),
-                  side:
-                      MaterialStatePropertyAll(BorderSide(color: mainPurple))),
+            hMBox,
+            elevatedButtonItems(
               onPressed: () =>
                   Get.to(() => ProfileAddCourseScreen(uId: id.toString())),
-              icon: Text(
-                "Course ",
-                style: TextStyle(
-                    fontSize: 11.sp,
-                    color: mainPurple,
-                    fontWeight: FontWeight.w600),
-              ),
-              label: Icon(
-                Icons.arrow_forward_ios_sharp,
-                size: 11.sp,
-                color: mainPurple,
-              ),
+              item: "Course",
+            ),
+            
+            hMBox,
+            elevatedButtonItems(
+              onPressed: ()=>Get.to(()=>EducatorPersonalDetailPage()),
+              item: 'Educator',
             ),
           ],
         ),
@@ -98,7 +58,25 @@ class TempScreen extends StatelessWidget {
   }
 }
 
-
+Widget elevatedButtonItems(
+    {required void Function()? onPressed, required String item}) {
+  return ElevatedButton.icon(
+    style: ButtonStyle(
+        shape: buttonShape(round: 8),
+        side: MaterialStatePropertyAll(BorderSide(color: mainPurple))),
+    onPressed: onPressed,
+    icon: Text(
+      item,
+      style: TextStyle(
+          fontSize: 11.sp, color: mainPurple, fontWeight: FontWeight.w600),
+    ),
+    label: Icon(
+      Icons.arrow_forward_ios_sharp,
+      size: 11.sp,
+      color: mainPurple,
+    ),
+  );
+}
 
  // Future firstFunction() async {
     //   List<int> k = [];
