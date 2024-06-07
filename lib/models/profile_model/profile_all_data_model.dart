@@ -625,6 +625,11 @@ class VolunteerExperience {
   String? startDate;
   String? endDate;
   String? description;
+  String? mediaTitle;
+  String? mediaDescription;
+  String? mediaLink;
+  String? media;
+  dynamic profileHeadline;
   DateTime? createdAt;
   DateTime? updatedAt;
   int? lmsId;
@@ -638,6 +643,11 @@ class VolunteerExperience {
     this.startDate,
     this.endDate,
     this.description,
+    this.mediaTitle,
+    this.mediaDescription,
+    this.mediaLink,
+    this.media,
+    this.profileHeadline,
     this.createdAt,
     this.updatedAt,
     this.lmsId,
@@ -653,6 +663,11 @@ class VolunteerExperience {
         startDate: json["start_date"],
         endDate: json["end_date"],
         description: json["description"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
+        mediaLink: json["media_link"],
+        media: json["media"],
+        profileHeadline: json["profile_headline"],
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -671,6 +686,11 @@ class VolunteerExperience {
         "start_date": startDate,
         "end_date": endDate,
         "description": description,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
+        "media_link": mediaLink,
+        "media": media,
+        "profile_headline": profileHeadline,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,

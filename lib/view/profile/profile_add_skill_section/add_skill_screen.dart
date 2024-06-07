@@ -163,8 +163,18 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                 spacing: 4,
                                 //  spacing: 6,
                                 runSpacing: 8,
-                                children: List.generate(data.length,
-                                    (index) => suggestedSkills(data[index])),
+                                children: List.generate(
+                                    data.length,
+                                    (index) => GestureDetector(
+                                          onTap: () {
+                                            log('Ontap suggested skill=>${data[index]}');
+                                            controller.skillController.text =
+                                                data[index];
+                                            controller.update(
+                                                ['update-skilladdButton']);
+                                          },
+                                          child: suggestedSkills(data[index]),
+                                        )),
                               );
                             }
                           }),
@@ -419,12 +429,15 @@ class ProfileAddSkillScreen extends StatelessWidget {
                           );
                         }),
                     hBox,
-                    Align(
-                      alignment: Alignment.center,
-                      child: deleteSectionWidget(
-                          onPressed: () => controller.deleteSkillFuntion(skID: skID.toString(), uId: uId),
-                          section: 'Skill'),
-                    )
+                    skill == null
+                        ? shrinked
+                        : Align(
+                            alignment: Alignment.center,
+                            child: deleteSectionWidget(
+                                onPressed: () => controller.deleteSkillFuntion(
+                                    skID: skID.toString(), uId: uId),
+                                section: 'Skill'),
+                          )
                   ],
                 ),
               ),

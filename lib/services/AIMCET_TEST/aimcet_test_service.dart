@@ -21,6 +21,7 @@ class AIMCETTestService {
       } else if (response.statusCode == 500) {
         SnackbarPopUps.popUpB(
             'Error fetching data...Please try after sometime');
+        return null;
       }
     } on DioException catch (e) {
       // Handle other exceptions
@@ -111,6 +112,7 @@ class AIMCETTestService {
         SnackbarPopUps.popUpB(
             'Error fetching data...Please try after sometime');
       }
+      return null;
     } on DioException catch (e) {
       // Handle other exceptions
       log('Exception: ${e.toString()}', name: 'aimcet test result error');

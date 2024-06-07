@@ -156,7 +156,8 @@ class AddProjectSkillScreen extends StatelessWidget {
                                 side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
-                                value: false,
+                                value: c.addedProjectSkill
+                                    .any((i) => i == skills[index]),
                                 onChanged: (value) {
                                   if (value != null) {
                                     projectSkillsAdding(skills[index], c);

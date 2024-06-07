@@ -52,6 +52,16 @@ class AddExperienceScreen extends StatelessWidget {
       controller.profileController.text =
           experience?.profile.toString() ?? controller.profileController.text;
       exID = experience?.id.toString();
+      if (controller.addedSkillEX.isEmpty && experience?.skills != null) {
+        List<String>? resSkill = experience?.skills?.split(',').toList();
+        if (resSkill != null) {
+          for (var i in resSkill) {
+            if (!controller.addedSkillEX.contains(i)) {
+              controller.addedSkillEX.add(i);
+            }
+          }
+        }
+      }
       if (experience?.endDate == "currently_working") {
         controller.currentlyWorking.value = true;
         controller.update(['EX-currentlyworkingButton']);

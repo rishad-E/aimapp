@@ -1,3 +1,4 @@
+import 'package:aimshala/controllers/profile_controller/profile_publications_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
@@ -47,8 +48,10 @@ class PublicationsSectionScreen extends StatelessWidget {
                         skill: "Skills: Coach, Training",
                         description: edSubText,
                         end: publication.length - 1 == index,
-                        onTap: () => Get.to(() => ProfileAddPublicationScreen(
-                            uId: data.userId.toString(), publication: data)),
+                        onTap: () {
+                          Get.to(() => ProfileAddPublicationScreen(
+                              uId: data.userId.toString(), publication: data));
+                        },
                       );
                     },
                   )),

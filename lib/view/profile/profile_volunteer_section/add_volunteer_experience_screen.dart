@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -9,6 +8,7 @@ import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/profile/profile_volunteer_section/volunteer_link_screen.dart';
 import 'package:aimshala/view/profile/profile_volunteer_section/volunteer_media_screen.dart';
+import 'package:aimshala/view/profile/profile_volunteer_section/widgets/role_bottomsheet.dart';
 import 'package:aimshala/view/profile/profile_volunteer_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,17 +28,60 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       vtID = volunteer?.id.toString();
       controller.organizationController.text =
-          volunteer?.organization.toString() ??
-              controller.organizationController.text;
+          controller.organizationController.text.isEmpty &&
+                  volunteer?.organization != null
+              ? volunteer?.organization as String
+              : controller.organizationController.text;
       controller.volunteerRoleController.text =
-          volunteer?.role.toString() ?? controller.volunteerRoleController.text;
+          controller.volunteerRoleController.text.isEmpty &&
+                  volunteer?.role != null
+              ? volunteer?.role as String
+              : controller.volunteerRoleController.text;
       controller.causeController.text =
-          volunteer?.cause.toString() ?? controller.causeController.text;
-      controller.startdateController.text = volunteer?.startDate.toString() ??
-          controller.startdateController.text;
+          controller.causeController.text.isEmpty && volunteer?.cause != null
+              ? volunteer?.cause as String
+              : controller.causeController.text;
+      controller.startdateController.text =
+          controller.startdateController.text.isEmpty &&
+                  volunteer?.startDate != null
+              ? volunteer?.startDate as String
+              : controller.startdateController.text;
       controller.descriptionController.text =
-          volunteer?.description.toString() ??
-              controller.descriptionController.text;
+          controller.descriptionController.text.isEmpty &&
+                  volunteer?.description != null
+              ? volunteer?.description as String
+              : controller.descriptionController.text;
+      // if (volunteer?.media != null && controller.volunteerMedia.isEmpty) {
+      //   //===========================//
+      //   List<String> mediaList =
+      //       List<String>.from(jsonDecode(volunteer!.media as String));
+      //   List<String> mediaTitles = volunteer?.mediaTitle?.split(',') ?? [];
+      //   List<String> mediaDescriptions =
+      //       volunteer?.mediaDescription?.split(',') ?? [];
+      //   List<AddMediaModel> mediaItems = [];
+      //   for (int i = 0; i < mediaList.length; i++) {
+      //     String filename = mediaList[i];
+      //     String title =
+      //         i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      //     String description = i < mediaDescriptions.length
+      //         ? mediaDescriptions[i]
+      //         : "Description for $filename";
+      //     if (!mediaItems.any((i) => i.title == title)) {
+      //       mediaItems.add(AddMediaModel(
+      //           title: title, description: description, url: filename));
+      //     }
+      //     // log(mediaItems[i].url.toString(), name: 'check filename from response');
+      //   }
+      //   controller.volunteerMedia.addAll(mediaItems);
+      //   //============================//
+      //   log(mediaList.toString(), name: 'check media from response');
+      //   log(mediaTitles.toString(), name: 'check mediaTitle from response');
+      //   log(mediaDescriptions.toString(),
+      //       name: 'check mediaDescr from response');
+      //   log(mediaItems.toString(), name: 'check final list from response');
+      //   log(controller.volunteerMedia[0].url.toString(),
+      //       name: 'check meia list');
+      // }
       if (volunteer?.endDate.toString() == 'currently_working') {
         controller.currentlyWorking.value = true;
         controller.update(['currentlyWorking-volunteer']);
@@ -84,20 +127,27 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                       ),
                       volunteerInfoFiled(
                         text: primarytxt3('Role', 9.5.sp),
-                        textField: TextFormField(
-                          controller: controller.volunteerRoleController,
-                          validator: (value) =>
-                              controller.fieldValidation(value),
-                          onChanged: (value) {
-                            controller.allFieldSelected();
-                            controller.update(['update-volunteerInfo']);
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: infoFieldDecoration(
-                              hintText: 'Ex: Fundraising Volunteer',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
-                          style: const TextStyle(fontSize: 13),
+                        textField: GestureDetector(
+                          onTap: () => showRoleOptions(context),
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              readOnly: true,
+                              controller: controller.volunteerRoleController,
+                              validator: (value) =>
+                                  controller.fieldValidation(value),
+                              onChanged: (value) {
+                                controller.allFieldSelected();
+                                controller.update(['update-volunteerInfo']);
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: infoFieldDecoration(
+                                  hintText: 'Ex: Fundraising Volunteer',
+                                  suffixWidget:
+                                      const Icon(Icons.keyboard_arrow_down)),
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
                         ),
                       ),
                       volunteerInfoFiled(
@@ -112,9 +162,10 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
-                              hintText: 'Please Select',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
+                            hintText: 'Ex: Microsoft',
+                            // suffixWidget:
+                            //     const Icon(Icons.keyboard_arrow_down)
+                          ),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -220,9 +271,15 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                 children: List.generate(
                                     controller.volunteerMedia.length, (index) {
                                   final data = controller.volunteerMedia;
+                                  String? mediaUrl;
+                                  // if (data[index].url != null) {
+                                  //   mediaUrl = "http://154.26.130.161/elearning/public/uploads/userinfo/user-avatar/1717591455.jpg";
+                                  //       // "http://154.26.130.161/elearning/api/public/uploads/${data[index].url}";
+                                  // }
                                   return addedMediaHomeVolunteer(
                                       onTapClose: () => data.removeAt(index),
-                                      file: data[index].file!,
+                                      file: data[index].file,
+                                      mediaUrl: mediaUrl,
                                       mediaTitle: data[index].title,
                                       mediaDescription:
                                           data[index].description);
@@ -332,6 +389,12 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showRoleOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => const RoleBottomSheetVolunteer());
   }
 
   void showMediaOptions(BuildContext context,

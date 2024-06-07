@@ -44,6 +44,16 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
           license?.credentialUrl.toString() ??
               controller.credentialurlController.text;
       liID = license?.id.toString();
+      if (controller.addedLicenseSkill.isEmpty && license?.skills != null) {
+        List<String>? resSkill = license?.skills?.split(',');
+        if (resSkill != null) {
+          for (var i in resSkill) {
+            if (!controller.addedLicenseSkill.contains(i)) {
+              controller.addedLicenseSkill.add(i);
+            }
+          }
+        }
+      }
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -302,7 +312,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         ? shrinked
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteLicenseFunction(
-                                  licenseID: liID.toString(), uId: uId),
+                                licenseID: liID.toString(), uId: uId),
                             section: 'License',
                           )
                   ],
@@ -345,6 +355,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () => controller.pickImageMedia().then((value) {
                   if (value != null) {
+                    controller.mediaTitleController.clear();
+                    controller.mediaDescriptionController.clear();
                     Get.to(() => AddLicenseMediaScreen(
                           image: value,
                           uId: uId,
@@ -359,6 +371,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () => controller.pickCameraMedia().then((value) {
                   if (value != null) {
+                    controller.mediaTitleController.clear();
+                    controller.mediaDescriptionController.clear();
                     Get.to(() => AddLicenseMediaScreen(
                           image: value,
                           uId: uId,
@@ -367,14 +381,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         ));
                   }
                 }),
-                // onTap: () {
-                //   // controller.pickCameraMedia().then((value) {
-                //   //   return Get.to(() => AddProfileMediaScreen(
-                //   //         image: value,
-                //   //         uId: uId,
-                //   //       ));
-                //   // });
-                // },
               ),
             ],
           ),

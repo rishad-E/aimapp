@@ -45,8 +45,10 @@ class EducationSectionScreen extends StatelessWidget {
                         skill: "Skills: ${data.skills.toString()}",
                         description: data.description.toString(),
                         end: education.length - 1 == index,
-                        onTap: () => Get.to(() => AddEducationScreen(
-                            uId: data.userId.toString(), edu: data)),
+                        onTap: () {
+                          Get.to(() => AddEducationScreen(
+                              uId: data.userId.toString(), edu: data));
+                        },
                       );
                     },
                   ),

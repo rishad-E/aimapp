@@ -31,7 +31,6 @@ class AddEducationScreen extends StatelessWidget {
           controller.schoolController.text.isEmpty && edu?.school != null
               ? edu?.school.toString() as String
               : controller.schoolController.text;
-
       controller.degreeController.text =
           controller.degreeController.text.isEmpty && edu?.degree != null
               ? edu?.degree.toString() as String
@@ -64,14 +63,18 @@ class AddEducationScreen extends StatelessWidget {
               ? edu?.description.toString() as String
               : controller.descriptionController.text;
       eduID = edu?.id.toString();
-      // List<String>? resList = edu?.skills?.split(',');
-      // if (resList != null) {
-      //   for (String skill in resList) {
-      //     if (!controller.addedSkill.contains(skill)) {
-      //       controller.addedSkill.addAll(resList);
-      //     }
-      //   }
-      // }
+      if (controller.addedSkill.isEmpty && edu?.skills != null) {
+        List<String>? resList = edu?.skills?.split(',');
+        log(resList.toString(),
+            name: 'chekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+        if (resList != null) {
+          for (String skill in resList) {
+            if (!controller.addedSkill.contains(skill)) {
+              controller.addedSkill.add(skill);
+            }
+          }
+        }
+      }
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -377,8 +380,10 @@ class AddEducationScreen extends StatelessWidget {
                     edu == null
                         ? shrinked
                         : deleteSectionWidget(
-                            onPressed: () => controller.deleteEducationFunction(school: controller.schoolController.text,
-                                  eduID: eduID.toString(), uId: uId),
+                            onPressed: () => controller.deleteEducationFunction(
+                                school: controller.schoolController.text,
+                                eduID: eduID.toString(),
+                                uId: uId),
                             section: 'Education',
                           ),
                   ],
@@ -439,6 +444,8 @@ class AddEducationScreen extends StatelessWidget {
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
                     if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
                       return Get.to(() => AddProfileMediaScreen(
                           image: value,
                           uId: uId,

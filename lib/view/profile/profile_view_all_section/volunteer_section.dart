@@ -48,9 +48,10 @@ class VolunteerSectionScreen extends StatelessWidget {
                         skill: "Skills: ",
                         description: data.description.toString(),
                         end: volunteer.length - 1 == index,
-                        onTap: () => Get.to(() =>
-                            ProfileAddVolunteerExperienceScreen(
-                                uId: data.userId.toString(), volunteer: data)),
+                        onTap: () {
+                          Get.to(() => ProfileAddVolunteerExperienceScreen(
+                              uId: data.userId.toString(), volunteer: data));
+                        },
                       );
                     },
                   )),

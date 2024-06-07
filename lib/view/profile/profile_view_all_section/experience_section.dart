@@ -45,8 +45,10 @@ class ExperienceSectionScreen extends StatelessWidget {
                         skill: "Skills: ${data.skills}",
                         description: data.description.toString(),
                         end: experience.length - 1 == index,
-                        onTap: () => Get.to(() => AddExperienceScreen(
-                            uId: data.userId.toString(), experience: data)));
+                        onTap: () {
+                          Get.to(() => AddExperienceScreen(
+                              uId: data.userId.toString(), experience: data));
+                        });
                   },
                 ),
               ),

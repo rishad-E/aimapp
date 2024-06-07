@@ -167,4 +167,11 @@ class ProfilePublicationController extends GetxController {
     }
     return null;
   }
+  void clearControllers(){
+    titleController.clear();
+    publicationController.clear();
+    publicationDateController.clear();
+    publicationURLController.clear();
+    publicationDescriptionController.clear();
+  }
 }

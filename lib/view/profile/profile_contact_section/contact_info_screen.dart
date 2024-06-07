@@ -28,13 +28,14 @@ class ProfileContactInfoScreen extends StatelessWidget {
         controller.usernameController.text = user?.username as String;
         controller.emailController.text = user?.email as String;
         controller.addressController.text = user?.address as String;
-        // controller.pincodeController.text = user?.pin as String;/
+        controller.pincodeController.text = user?.zip as String;
         controller.stateController.text = user?.state as String;
         controller.cityController.text = user?.city as String;
         controller.countryController.text = user?.country as String;
         controller.facebookController.text = user?.facebook as String;
         controller.instagramController.text = user?.instagram as String;
         controller.twitterController.text = user?.twitter as String;
+        controller.allFieldSelect();
         controller.update(['update-contactInfo']);
       }
       log('call back chekc');

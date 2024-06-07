@@ -45,8 +45,11 @@ class ProjectSectionScreen extends StatelessWidget {
                         description: data.description.toString(),
                         skills: "Skills: ${data.skills.toString()}",
                         end: index == project.length - 1,
-                        onTap: () => Get.to(() => ProfileAddProjectScreen(
-                            uId: data.userId.toString(), project: data)),
+                        onTap: () {
+                          
+                          Get.to(() => ProfileAddProjectScreen(
+                              uId: data.userId.toString(), project: data));
+                        },
                       );
                     },
                   ),

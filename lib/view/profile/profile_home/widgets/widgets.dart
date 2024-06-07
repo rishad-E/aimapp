@@ -35,7 +35,9 @@ Widget buildTopContent(
 }
 
 Widget buildProfileImage(
-        {required double profileHeight, required void Function()? onPressed,ImageProvider<Object>? image}) =>
+        {required double profileHeight,
+        required void Function()? onPressed,
+        ImageProvider<Object>? image}) =>
     Stack(
       alignment: Alignment.bottomRight,
       clipBehavior: Clip.none,
@@ -45,8 +47,8 @@ Widget buildProfileImage(
           padding: const EdgeInsets.all(3),
           child: CircleAvatar(
             radius: profileHeight / 2,
-            backgroundColor:kwhite,
-            backgroundImage:image ,
+            backgroundColor: kwhite,
+            backgroundImage: image,
           ),
         ),
         Positioned(
@@ -179,7 +181,8 @@ Widget profileDataContainer(
     void Function()? onTapEdit,
     void Function()? onTapAdd,
     required List<Widget> sectionData,
-    required void Function()? onPressedViewAll}) {
+    required Widget viewAll
+    }) {
   return infoContainer(
     child: Column(
       children: [
@@ -212,19 +215,20 @@ Widget profileDataContainer(
         ),
         hBox,
         ...sectionData,
-        TextButton(
-          onPressed: onPressedViewAll,
-          style: const ButtonStyle(
-              visualDensity: VisualDensity.compact,
-              padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-          child: Text(
-            "View All",
-            style: TextStyle(
-                color: mainPurple,
-                fontWeight: FontWeight.w600,
-                fontSize: 8.5.sp),
-          ),
-        )
+        // TextButton(
+        //   onPressed: onPressedViewAll,
+        //   style: const ButtonStyle(
+        //       visualDensity: VisualDensity.compact,
+        //       padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+        //   child: Text(
+        //     "View All",
+        //     style: TextStyle(
+        //         color: mainPurple,
+        //         fontWeight: FontWeight.w600,
+        //         fontSize: 8.5.sp),
+        //   ),
+        // )
+        viewAll
       ],
     ),
   );
@@ -301,22 +305,17 @@ Widget loadingWidget() {
 String getMonthName(DateTime? date) {
   return DateFormat.MMMM().format(date!);
 }
-//                     Image.network(
-//   'your_image_url_here',
-//   loadingBuilder: (context, child, loadingProgress) {
-//     if (loadingProgress == null) {
-//       return child;
-//     }
-//     return Center(
-//       child: CircularProgressIndicator(
-//         value: loadingProgress.expectedTotalBytes != null
-//             ? loadingProgress.cumulativeBytesLoaded /
-//                 loadingProgress.expectedTotalBytes!
-//             : null,
-//       ),
-//     );
-//   },
-//   errorBuilder: (context, error, stackTrace) {
-//     return Icon(Icons.error); // Placeholder icon for error
-//   },
-// ),
+
+Widget viewAllButton({required void Function()? onPressedViewAll}) {
+  return TextButton(
+    onPressed: onPressedViewAll,
+    style: const ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        padding: MaterialStatePropertyAll(EdgeInsets.zero)),
+    child: Text(
+      "View All",
+      style: TextStyle(
+          color: mainPurple, fontWeight: FontWeight.w600, fontSize: 8.5.sp),
+    ),
+  );
+}

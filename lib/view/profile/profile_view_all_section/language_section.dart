@@ -48,10 +48,11 @@ class LanguageSectionScreen extends StatelessWidget {
                                 level: data.proficiency.toString(),
                               ),
                               GestureDetector(
-                                onTap: () => Get.to(() =>
-                                    ProfileAddLanguageScreen(
-                                        uId: data.userId.toString(),
-                                        language: data)),
+                                onTap: () {
+                                  Get.to(() => ProfileAddLanguageScreen(
+                                      uId: data.userId.toString(),
+                                      language: data));
+                                },
                                 child: Icon(
                                   Icons.edit,
                                   size: 14.sp,

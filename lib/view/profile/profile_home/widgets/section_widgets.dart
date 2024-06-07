@@ -11,7 +11,8 @@ Widget languageWidget(
     {required String section,
     void Function()? onTapEdit,
     void Function()? onTapAdd,
-    required List<Widget> languageData}) {
+    required List<Widget> languageData,
+    required Widget viewAll}) {
   return infoContainer(
     child: Column(
       children: [
@@ -43,7 +44,8 @@ Widget languageWidget(
           ],
         ),
         hBox,
-        ...languageData
+        ...languageData,
+        viewAll
       ],
     ),
   );

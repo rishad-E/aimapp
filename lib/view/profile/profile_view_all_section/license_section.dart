@@ -48,9 +48,11 @@ class LicenseSectionScreen extends StatelessWidget {
                         skill: "Skills: ${data.skills}",
                         description: edSubText,
                         end: license.length - 1 == index,
-                        onTap: () => Get.to(() =>
-                            AddLicenseCertificationsScreen(
-                                uId: data.userId.toString(), license: data)),
+                        onTap: () {
+                        
+                          Get.to(() => AddLicenseCertificationsScreen(
+                              uId: data.userId.toString(), license: data));
+                        },
                       );
                     },
                   )),

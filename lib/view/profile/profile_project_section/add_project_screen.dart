@@ -11,6 +11,7 @@ import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_link_screen.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_media.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_skill.dart';
+import 'package:aimshala/view/profile/profile_project_section/widgets/assosiated_bottosheet.dart';
 import 'package:aimshala/view/profile/profile_project_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -46,7 +47,17 @@ class ProfileAddProjectScreen extends StatelessWidget {
         controller.endDateController.text =
             project?.endDate.toString() ?? controller.endDateController.text;
       }
-      // controller.toggleCurrentlyWorking();
+      if (controller.addedProjectSkill.isEmpty && project?.skills != null) {
+        List<String>? resSkill = project?.skills?.split(',');
+        if (resSkill != null) {
+          for (var i in resSkill) {
+            if (!controller.addedProjectSkill.contains(i)) {
+              controller.addedProjectSkill.add(i);
+            }
+          }
+        }
+      }
+      controller.update(['update-projectInfo']);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -223,15 +234,23 @@ class ProfileAddProjectScreen extends StatelessWidget {
                             )))),
                     projectInfoFiled(
                       text: primarytxt3('Associated with', 9.5.sp),
-                      textField: TextFormField(
-                        controller: controller.projectAssosiatedController,
-                        validator: (value) => controller.filedValidation(value),
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: infoFieldDecoration(
-                            hintText: 'Please Select',
-                            suffixWidget:
-                                const Icon(Icons.keyboard_arrow_down)),
-                        style: const TextStyle(fontSize: 13),
+                      textField: GestureDetector(
+                        onTap: () => showAssosiatedWithOptions(context),
+                        child: AbsorbPointer(
+                          child: TextFormField(
+                            readOnly: true,
+                            controller: controller.projectAssosiatedController,
+                            validator: (value) =>
+                                controller.filedValidation(value),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            decoration: infoFieldDecoration(
+                                hintText: 'Please Select',
+                                suffixWidget:
+                                    const Icon(Icons.keyboard_arrow_down)),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                       ),
                     ),
                     hMBox,
@@ -322,10 +341,12 @@ class ProfileAddProjectScreen extends StatelessWidget {
                           );
                         }),
                     hBox,
-                    deleteSectionWidget(
-                        onPressed: () => controller.deleteProjectFunction(
-                            prID: prID.toString(), uId: uId),
-                        section: 'Project')
+                    project == null
+                        ? shrinked
+                        : deleteSectionWidget(
+                            onPressed: () => controller.deleteProjectFunction(
+                                prID: prID.toString(), uId: uId),
+                            section: 'Project')
                   ],
                 ),
               ),
@@ -334,6 +355,12 @@ class ProfileAddProjectScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showAssosiatedWithOptions(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => const AssociatedBottomSheetProject());
   }
 
   void showMediaOptions(BuildContext context,
@@ -367,6 +394,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 onTap: () {
                   controller.pickImageMedia().then((value) {
                     if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
                       Get.to(() => AddProjectMediaScreen(
                           image: value,
                           uId: uId,
@@ -381,11 +410,15 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() => AddProjectMediaScreen(
-                        image: value,
-                        uId: uId,
-                        controller: controller,
-                        project: project));
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      return Get.to(() => AddProjectMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          project: project));
+                    }
                   });
                 },
               ),

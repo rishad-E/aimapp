@@ -1,4 +1,3 @@
-import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
@@ -41,8 +40,6 @@ class SkillsSectionScreen extends StatelessWidget {
                         position: data.skillName.toString(),
                         end: skill.length - 1 == index,
                         onTap: () {
-                          Get.put(ProfileSkillController())
-                              .getSuggestedSkillsFunction();
                           Get.to(() => ProfileAddSkillScreen(
                               uId: data.userId.toString(), skill: data));
                         },

@@ -244,4 +244,13 @@ class LanguageAndCourseController extends GetxController {
     }
     return null;
   }
+  void clearLanguageControllers(){
+    languageController.clear();
+    proficiencyController.clear();
+  }
+  void clearCourseController(){
+    courseController.clear();
+    courseNoController.clear();
+    courseAssosiatedController.clear();
+  }
 }

@@ -43,7 +43,6 @@ Widget currentlyWorkingVolunteer({required bool working}) {
   );
 }
 
-
 Widget volunteerAdditional(
     {required String heading,
     required String subText,
@@ -106,7 +105,8 @@ Widget volunteerAdditional(
 }
 
 Widget addedMediaHomeVolunteer({
-   required File file,
+  required File? file,
+  String? mediaUrl,
   void Function()? onTapClose,
   required String mediaTitle,
   required String mediaDescription,
@@ -135,10 +135,25 @@ Widget addedMediaHomeVolunteer({
               SizedBox(
                 height: 29,
                 width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
+                // decoration: BoxDecoration(
+                //   color: Colors.yellow,
+                //   image: DecorationImage(
+                //     fit: BoxFit.fill,
+                //       image: file != null
+                //           ? FileImage(file)
+                //           : NetworkImage(mediaUrl!) as ImageProvider),
+                          
+                // ),
+                // child: file != null
+                //     ? Image.file(
+                //         file,
+                //         fit: BoxFit.fill,
+                //       )
+                //     : Image.network(
+                //         mediaUrl!,
+                //         fit: BoxFit.fill,
+                //       ),
+                child: Image.file(file!),
               ),
               wBox,
               Expanded(
@@ -163,7 +178,6 @@ Widget addedMediaHomeVolunteer({
   );
 }
 
-
 Widget mediaListTileVol(
     {required String title, void Function()? onTap, Widget? leading}) {
   return ListTile(
@@ -179,4 +193,3 @@ Widget mediaListTileVol(
     contentPadding: EdgeInsets.zero,
   );
 }
-

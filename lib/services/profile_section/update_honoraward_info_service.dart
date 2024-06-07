@@ -65,7 +65,7 @@ class UpdateHonorAwardService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
+            log(errorMessage, name: 'delete Award section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {

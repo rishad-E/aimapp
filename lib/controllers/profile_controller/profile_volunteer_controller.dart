@@ -139,8 +139,8 @@ class ProfileVolunteerController extends GetxController {
 
   Future<void> deleteVolunteerFunction(
       {required String vtID, required String uId}) async {
-    String? res =
-        await UpdateVolunteerInfoService().deleteVolunteerExperienceInfo(volunteerID: vtID);
+    String? res = await UpdateVolunteerInfoService()
+        .deleteVolunteerExperienceInfo(volunteerID: vtID);
     if (res == 'Volunteer Experience deleted successfully') {
       Get.showSnackbar(
         GetSnackBar(
@@ -165,7 +165,6 @@ class ProfileVolunteerController extends GetxController {
         ),
       );
       Get.off(() => ProfileHomeScreen(id: uId));
-
     }
   }
 
@@ -264,5 +263,15 @@ class ProfileVolunteerController extends GetxController {
       return 'Please Enter a Valid URL';
     }
     return null;
+  }
+
+  void clearControllers() {
+    organizationController.clear();
+    volunteerRoleController.clear();
+    causeController.clear();
+    startdateController.clear();
+    endDateController.clear();
+    descriptionController.clear();
+    volunteerMedia.clear();
   }
 }

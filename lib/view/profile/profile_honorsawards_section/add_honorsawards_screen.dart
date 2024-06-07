@@ -309,11 +309,15 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/gallery.svg'),
                 onTap: () {
                   controller.pickImageMedia().then((value) {
-                    return Get.to(() => AddHonorAwardsMediaScreen(
-                        image: value,
-                        uId: uId,
-                        controller: controller,
-                        award: award));
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      return Get.to(() => AddHonorAwardsMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          award: award));
+                    }
                   });
                 },
               ),
@@ -322,11 +326,15 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                 leading: SvgPicture.asset('assets/images/camera.svg'),
                 onTap: () {
                   controller.pickCameraMedia().then((value) {
-                    return Get.to(() => AddHonorAwardsMediaScreen(
-                        image: value,
-                        uId: uId,
-                        controller: controller,
-                        award: award));
+                    if (value != null) {
+                      controller.mediaTitleController.clear();
+                      controller.mediaDescriptionController.clear();
+                      return Get.to(() => AddHonorAwardsMediaScreen(
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          award: award));
+                    }
                   });
                 },
               ),

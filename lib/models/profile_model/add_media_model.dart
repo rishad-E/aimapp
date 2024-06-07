@@ -2,13 +2,15 @@ import 'dart:io';
 
 class AddMediaModel {
   AddMediaModel({
-    required this.file,
+    this.file,
+     this.url,
     required this.title,
     required this.description,
     this.mediaLink,
   });
   String? mediaLink;
   File? file;
+  String? url;
   String title;
   String description;
 }

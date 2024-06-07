@@ -143,30 +143,30 @@ class ProfileLicenseCertificationController extends GetxController {
     String? res = await UpdateLicenseCertificationService()
         .deleteLicenseInfo(licenseId: licenseID);
     if (res == 'License deleted successfully') {
-        Get.showSnackbar(
-          GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: res,
-            borderRadius: 4,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        Get.off(() => ProfileHomeScreen(id: uId));
-      } else {
-        Get.showSnackbar(
-          GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: res,
-            borderRadius: 4,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        Get.off(() => ProfileHomeScreen(id: uId));
-      }
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    }
   }
 
   Future<void> datePicker(BuildContext context, {bool? expiry}) async {
@@ -207,10 +207,6 @@ class ProfileLicenseCertificationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile == null) return null;
     selectedImage = File(pickedFile.path);
-    // allLicenseMedias.add(selectedImage);
-    // allMediasFiles.add(pickedFile.path.split('/').last);
-    // log(selectedImage.toString(), name: 'gallery');
-
     return selectedImage;
   }
 
@@ -219,8 +215,6 @@ class ProfileLicenseCertificationController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
-    // allLicenseMedias.add(selectedCamera);
-    // log(selectedCamera.toString(), name: 'camera');
     return selectedCamera;
   }
 
@@ -268,5 +262,7 @@ class ProfileLicenseCertificationController extends GetxController {
     credentialIDController.clear();
     credentialurlController.clear();
     allLicenseMedias.clear();
+    addedLicenseSkill.clear();
+    update(['update-licenseButton']);
   }
 }
