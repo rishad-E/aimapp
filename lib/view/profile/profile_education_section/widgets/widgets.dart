@@ -132,7 +132,8 @@ Widget addedskillHome(String skill, {void Function()? onTap}) {
 }
 
 Widget addedMediaHome(
-    {required File file,
+    {required File? file,
+    String? mediaUrl,
     void Function()? onTapClose,
     required String mediaTitle,
     required String mediaDescription}) {
@@ -160,10 +161,15 @@ Widget addedMediaHome(
               SizedBox(
                 height: 29,
                 width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.network(
+                        mediaUrl!,
+                        fit: BoxFit.fill,
+                      ),
               ),
               wBox,
               Expanded(

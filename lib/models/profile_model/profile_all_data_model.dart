@@ -116,13 +116,18 @@ class Project {
   String? title;
   String? description;
   String? skills;
+  String? mediaTitle;
+  String? mediaDescription;
+  String? mediaLink;
   String? media;
   String? startDate;
   String? endDate;
   String? associated;
+  dynamic issuer;
   DateTime? createdAt;
   DateTime? updatedAt;
   int? lmsId;
+  String? imagePath;
 
   Project({
     this.id,
@@ -131,74 +136,9 @@ class Project {
     this.title,
     this.description,
     this.skills,
-    this.media,
-    this.startDate,
-    this.endDate,
-    this.associated,
-    this.createdAt,
-    this.updatedAt,
-    this.lmsId,
-  });
-  factory Project.fromJson(Map<String, dynamic> json) => Project(
-        id: json["id"],
-        userId: json["user_id"],
-        type: json["type"],
-        title: json["title"],
-        description: json["description"],
-        skills: json["skills"],
-        media: json["media"],
-        startDate: json["start_date"],
-        endDate: json["end_date"],
-        associated: json["associated"],
-        createdAt: json["created_at"] == null
-            ? null
-            : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
-        lmsId: json["lms_id"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "type": type,
-        "title": title,
-        "description": description,
-        "skills": skills,
-        "media": media,
-        "start_date": startDate,
-        "end_date": endDate,
-        "associated": associated,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-      };
-}
-
-class Award {
-  int? id;
-  int? userId;
-  String? type;
-  String? title;
-  String? description;
-  dynamic skills;
-  String? media;
-  String? startDate;
-  dynamic endDate;
-  String? associated;
-  String? issuer;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  int? lmsId;
-
-  Award({
-    this.id,
-    this.userId,
-    this.type,
-    this.title,
-    this.description,
-    this.skills,
+    this.mediaTitle,
+    this.mediaDescription,
+    this.mediaLink,
     this.media,
     this.startDate,
     this.endDate,
@@ -207,15 +147,19 @@ class Award {
     this.createdAt,
     this.updatedAt,
     this.lmsId,
+    this.imagePath,
   });
 
-  factory Award.fromJson(Map<String, dynamic> json) => Award(
+  factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
         userId: json["user_id"],
         type: json["type"],
         title: json["title"],
         description: json["description"],
         skills: json["skills"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
+        mediaLink: json["media_link"],
         media: json["media"],
         startDate: json["start_date"],
         endDate: json["end_date"],
@@ -228,6 +172,7 @@ class Award {
             ? null
             : DateTime.parse(json["updated_at"]),
         lmsId: json["lms_id"],
+        imagePath: json["image_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -237,6 +182,9 @@ class Award {
         "title": title,
         "description": description,
         "skills": skills,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
+        "media_link": mediaLink,
         "media": media,
         "start_date": startDate,
         "end_date": endDate,
@@ -245,6 +193,95 @@ class Award {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,
+        "image_path": imagePath,
+      };
+}
+
+class Award {
+  int? id;
+  int? userId;
+  String? type;
+  String? title;
+  String? description;
+  dynamic skills;
+  String? mediaTitle;
+  String? mediaDescription;
+  String? mediaLink;
+  String? media;
+  String? startDate;
+  dynamic endDate;
+  String? associated;
+  String? issuer;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? lmsId;
+  String? imagePath;
+
+  Award({
+    this.id,
+    this.userId,
+    this.type,
+    this.title,
+    this.description,
+    this.skills,
+    this.mediaTitle,
+    this.mediaDescription,
+    this.mediaLink,
+    this.media,
+    this.startDate,
+    this.endDate,
+    this.associated,
+    this.issuer,
+    this.createdAt,
+    this.updatedAt,
+    this.lmsId,
+    this.imagePath,
+  });
+
+  factory Award.fromJson(Map<String, dynamic> json) => Award(
+        id: json["id"],
+        userId: json["user_id"],
+        type: json["type"],
+        title: json["title"],
+        description: json["description"],
+        skills: json["skills"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
+        mediaLink: json["media_link"],
+        media: json["media"],
+        startDate: json["start_date"],
+        endDate: json["end_date"],
+        associated: json["associated"],
+        issuer: json["issuer"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        lmsId: json["lms_id"],
+        imagePath: json["image_path"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "type": type,
+        "title": title,
+        "description": description,
+        "skills": skills,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
+        "media_link": mediaLink,
+        "media": media,
+        "start_date": startDate,
+        "end_date": endDate,
+        "associated": associated,
+        "issuer": issuer,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "lms_id": lmsId,
+        "image_path": imagePath,
       };
 }
 
@@ -308,10 +345,14 @@ class Education {
   String? activities;
   String? description;
   String? skills;
+  String? mediaLink;
+  String? mediaTitle;
+  String? mediaDescription;
   String? media;
   DateTime? createdAt;
   DateTime? updatedAt;
   int? lmsId;
+  String? imagePath;
 
   Education({
     this.id,
@@ -325,10 +366,14 @@ class Education {
     this.activities,
     this.description,
     this.skills,
+    this.mediaLink,
+    this.mediaTitle,
+    this.mediaDescription,
     this.media,
     this.createdAt,
     this.updatedAt,
     this.lmsId,
+    this.imagePath,
   });
 
   factory Education.fromJson(Map<String, dynamic> json) => Education(
@@ -343,6 +388,9 @@ class Education {
         activities: json["activities"],
         description: json["description"],
         skills: json["skills"],
+        mediaLink: json["media_link"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
         media: json["media"],
         createdAt: json["created_at"] == null
             ? null
@@ -351,6 +399,7 @@ class Education {
             ? null
             : DateTime.parse(json["updated_at"]),
         lmsId: json["lms_id"],
+        imagePath: json["image_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -365,10 +414,14 @@ class Education {
         "activities": activities,
         "description": description,
         "skills": skills,
+        "media_link": mediaLink,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
         "media": media,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,
+        "image_path": imagePath,
       };
 }
 
@@ -385,10 +438,14 @@ class Experience {
   String? description;
   String? profile;
   String? skills;
+  String? mediaLink;
+  String? mediaTitle;
+  String? mediaDescription;
   String? media;
   DateTime? createdAt;
   DateTime? updatedAt;
   int? lmsId;
+  String? imagePath;
 
   Experience({
     this.id,
@@ -403,10 +460,14 @@ class Experience {
     this.description,
     this.profile,
     this.skills,
+    this.mediaLink,
+    this.mediaTitle,
+    this.mediaDescription,
     this.media,
     this.createdAt,
     this.updatedAt,
     this.lmsId,
+    this.imagePath,
   });
 
   factory Experience.fromJson(Map<String, dynamic> json) => Experience(
@@ -422,6 +483,9 @@ class Experience {
         description: json["description"],
         profile: json["profile"],
         skills: json["skills"],
+        mediaLink: json["media_link"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
         media: json["media"],
         createdAt: json["created_at"] == null
             ? null
@@ -430,6 +494,7 @@ class Experience {
             ? null
             : DateTime.parse(json["updated_at"]),
         lmsId: json["lms_id"],
+        imagePath: json["image_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -445,10 +510,14 @@ class Experience {
         "description": description,
         "profile": profile,
         "skills": skills,
+        "media_link": mediaLink,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
         "media": media,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,
+        "image_path": imagePath,
       };
 }
 
@@ -501,28 +570,40 @@ class License {
   int? userId;
   String? name;
   String? organization;
+  dynamic issuer;
   String? issueDate;
   String? expireDate;
   String? credentialId;
   String? credentialUrl;
   String? skills;
+  String? mediaTitle;
+  String? mediaDescription;
+  String? mediaLink;
   String? media;
   DateTime? createdAt;
   DateTime? updatedAt;
+  int? lmsId;
+  String? imagePath;
 
   License({
     this.id,
     this.userId,
     this.name,
     this.organization,
+    this.issuer,
     this.issueDate,
     this.expireDate,
     this.credentialId,
     this.credentialUrl,
     this.skills,
+    this.mediaTitle,
+    this.mediaDescription,
+    this.mediaLink,
     this.media,
     this.createdAt,
     this.updatedAt,
+    this.lmsId,
+    this.imagePath,
   });
 
   factory License.fromJson(Map<String, dynamic> json) => License(
@@ -530,11 +611,15 @@ class License {
         userId: json["user_id"],
         name: json["name"],
         organization: json["organization"],
+        issuer: json["issuer"],
         issueDate: json["issue_date"],
         expireDate: json["expire_date"],
         credentialId: json["credential_id"],
         credentialUrl: json["credential_url"],
         skills: json["skills"],
+        mediaTitle: json["media_title"],
+        mediaDescription: json["media_description"],
+        mediaLink: json["media_link"],
         media: json["media"],
         createdAt: json["created_at"] == null
             ? null
@@ -542,6 +627,8 @@ class License {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        lmsId: json["lms_id"],
+        imagePath: json["image_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -549,14 +636,20 @@ class License {
         "user_id": userId,
         "name": name,
         "organization": organization,
+        "issuer": issuer,
         "issue_date": issueDate,
         "expire_date": expireDate,
         "credential_id": credentialId,
         "credential_url": credentialUrl,
         "skills": skills,
+        "media_title": mediaTitle,
+        "media_description": mediaDescription,
+        "media_link": mediaLink,
         "media": media,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "lms_id": lmsId,
+        "image_path": imagePath,
       };
 }
 
@@ -633,6 +726,7 @@ class VolunteerExperience {
   DateTime? createdAt;
   DateTime? updatedAt;
   int? lmsId;
+  String? imagePath;
 
   VolunteerExperience({
     this.id,
@@ -651,6 +745,7 @@ class VolunteerExperience {
     this.createdAt,
     this.updatedAt,
     this.lmsId,
+    this.imagePath,
   });
 
   factory VolunteerExperience.fromJson(Map<String, dynamic> json) =>
@@ -675,6 +770,7 @@ class VolunteerExperience {
             ? null
             : DateTime.parse(json["updated_at"]),
         lmsId: json["lms_id"],
+        imagePath: json["image_path"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -694,6 +790,7 @@ class VolunteerExperience {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "lms_id": lmsId,
+        "image_path": imagePath,
       };
 }
 

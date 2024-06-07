@@ -18,7 +18,7 @@ Widget projectInfoFiled({required Widget text, required Widget textField}) {
   );
 }
 
-Widget addedskillHomeProject(String skill,{void Function()? onTap}) {
+Widget addedskillHomeProject(String skill, {void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -55,7 +55,8 @@ Widget addedskillHomeProject(String skill,{void Function()? onTap}) {
 }
 
 Widget addedMediaHomeProject(
-    {required File file,
+    {required File? file,
+    String? mediaUrl,
     void Function()? onTap,
     required String title,
     required String desc}) {
@@ -83,10 +84,15 @@ Widget addedMediaHomeProject(
               SizedBox(
                 height: 29,
                 width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.network(
+                        mediaUrl!,
+                        fit: BoxFit.fill,
+                      ),
               ),
               wBox,
               Expanded(

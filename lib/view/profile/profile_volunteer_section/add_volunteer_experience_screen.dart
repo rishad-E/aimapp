@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -27,66 +29,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     final controller = Get.put(ProfileVolunteerController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       vtID = volunteer?.id.toString();
-      controller.organizationController.text =
-          controller.organizationController.text.isEmpty &&
-                  volunteer?.organization != null
-              ? volunteer?.organization as String
-              : controller.organizationController.text;
-      controller.volunteerRoleController.text =
-          controller.volunteerRoleController.text.isEmpty &&
-                  volunteer?.role != null
-              ? volunteer?.role as String
-              : controller.volunteerRoleController.text;
-      controller.causeController.text =
-          controller.causeController.text.isEmpty && volunteer?.cause != null
-              ? volunteer?.cause as String
-              : controller.causeController.text;
-      controller.startdateController.text =
-          controller.startdateController.text.isEmpty &&
-                  volunteer?.startDate != null
-              ? volunteer?.startDate as String
-              : controller.startdateController.text;
-      controller.descriptionController.text =
-          controller.descriptionController.text.isEmpty &&
-                  volunteer?.description != null
-              ? volunteer?.description as String
-              : controller.descriptionController.text;
-      // if (volunteer?.media != null && controller.volunteerMedia.isEmpty) {
-      //   //===========================//
-      //   List<String> mediaList =
-      //       List<String>.from(jsonDecode(volunteer!.media as String));
-      //   List<String> mediaTitles = volunteer?.mediaTitle?.split(',') ?? [];
-      //   List<String> mediaDescriptions =
-      //       volunteer?.mediaDescription?.split(',') ?? [];
-      //   List<AddMediaModel> mediaItems = [];
-      //   for (int i = 0; i < mediaList.length; i++) {
-      //     String filename = mediaList[i];
-      //     String title =
-      //         i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
-      //     String description = i < mediaDescriptions.length
-      //         ? mediaDescriptions[i]
-      //         : "Description for $filename";
-      //     if (!mediaItems.any((i) => i.title == title)) {
-      //       mediaItems.add(AddMediaModel(
-      //           title: title, description: description, url: filename));
-      //     }
-      //     // log(mediaItems[i].url.toString(), name: 'check filename from response');
-      //   }
-      //   controller.volunteerMedia.addAll(mediaItems);
-      //   //============================//
-      //   log(mediaList.toString(), name: 'check media from response');
-      //   log(mediaTitles.toString(), name: 'check mediaTitle from response');
-      //   log(mediaDescriptions.toString(),
-      //       name: 'check mediaDescr from response');
-      //   log(mediaItems.toString(), name: 'check final list from response');
-      //   log(controller.volunteerMedia[0].url.toString(),
-      //       name: 'check meia list');
-      // }
-      if (volunteer?.endDate.toString() == 'currently_working') {
-        controller.currentlyWorking.value = true;
-        controller.update(['currentlyWorking-volunteer']);
-      }
-      controller.update(['update-volunteerInfo']);
+      initializeFormFields(controller, volunteer);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -265,26 +208,27 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                         secSub: 'Learn more about media file types supported',
                         onTap: () =>
                             showMediaOptions(context, controller, volunteer),
-                        selected: Obx(() => controller.volunteerMedia.isEmpty
-                            ? shrinked
-                            : Column(
-                                children: List.generate(
-                                    controller.volunteerMedia.length, (index) {
-                                  final data = controller.volunteerMedia;
-                                  String? mediaUrl;
-                                  // if (data[index].url != null) {
-                                  //   mediaUrl = "http://154.26.130.161/elearning/public/uploads/userinfo/user-avatar/1717591455.jpg";
-                                  //       // "http://154.26.130.161/elearning/api/public/uploads/${data[index].url}";
-                                  // }
-                                  return addedMediaHomeVolunteer(
-                                      onTapClose: () => data.removeAt(index),
-                                      file: data[index].file,
-                                      mediaUrl: mediaUrl,
-                                      mediaTitle: data[index].title,
-                                      mediaDescription:
-                                          data[index].description);
-                                }),
-                              )),
+                        selected: Obx(() {
+                          final data = controller.volunteerMedia;
+                          return data.isEmpty
+                              ? shrinked
+                              : Column(
+                                  children: List.generate(data.length, (index) {
+                                    String? mediaUrl;
+                                    if (data[index].url != null) {
+                                      mediaUrl =
+                                          "http://154.26.130.161/elearning/${volunteer?.imagePath}/${data[index].url}";
+                                    }
+                                    return addedMediaHomeVolunteer(
+                                        onTapClose: () => data.removeAt(index),
+                                        file: data[index].file,
+                                        mediaUrl: mediaUrl,
+                                        mediaTitle: data[index].title,
+                                        mediaDescription:
+                                            data[index].description);
+                                  }),
+                                );
+                        }),
                       ),
                       hMBox,
                       GetBuilder<ProfileVolunteerController>(
@@ -465,5 +409,75 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void initializeFormFields(
+      ProfileVolunteerController controller, VolunteerExperience? volunteer) {
+    if (volunteer == null) return;
+
+    controller.organizationController.text =
+        controller.organizationController.text.isEmpty &&
+                volunteer.organization != null
+            ? volunteer.organization as String
+            : controller.organizationController.text;
+    controller.volunteerRoleController.text =
+        controller.volunteerRoleController.text.isEmpty &&
+                volunteer.role != null
+            ? volunteer.role as String
+            : controller.volunteerRoleController.text;
+    controller.causeController.text =
+        controller.causeController.text.isEmpty && volunteer.cause != null
+            ? volunteer.cause as String
+            : controller.causeController.text;
+    controller.startdateController.text =
+        controller.startdateController.text.isEmpty &&
+                volunteer.startDate != null
+            ? volunteer.startDate as String
+            : controller.startdateController.text;
+    controller.descriptionController.text =
+        controller.descriptionController.text.isEmpty &&
+                volunteer.description != null
+            ? volunteer.description as String
+            : controller.descriptionController.text;
+
+    if (volunteer.media != null && controller.volunteerMedia.isEmpty) {
+      List<AddMediaModel> mediaItems = _parseMediaItems(volunteer);
+      controller.volunteerMedia.addAll(mediaItems);
+    }
+
+    if (volunteer.endDate == 'currently_working') {
+      controller.currentlyWorking.value = true;
+    } else {
+      controller.endDateController.text =
+          controller.endDateController.text.isEmpty && volunteer.endDate != null
+              ? volunteer.endDate as String
+              : controller.endDateController.text;
+    }
+
+    controller.allFieldSelected();
+    controller.update(['update-volunteerInfo']);
+  }
+
+  List<AddMediaModel> _parseMediaItems(VolunteerExperience volunteer) {
+    List<String> mediaList = List<String>.from(jsonDecode(volunteer.media!));
+    List<String> mediaTitles = volunteer.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions =
+        volunteer.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+
+    return mediaItems;
   }
 }

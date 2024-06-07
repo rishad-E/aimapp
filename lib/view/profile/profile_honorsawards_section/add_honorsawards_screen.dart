@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -28,16 +30,17 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
     log(award.toString(), name: 'award data');
     String? awardID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.titileController.text =
-          award?.title.toString() ?? controller.titileController.text;
-      controller.assosiatedController.text =
-          award?.associated.toString() ?? controller.assosiatedController.text;
-      controller.issuerController.text =
-          award?.issuer.toString() ?? controller.issuerController.text;
-      controller.startdateController.text =
-          award?.startDate.toString() ?? controller.startdateController.text;
-      controller.descriptionController.text = award?.description.toString() ??
-          controller.descriptionController.text;
+      initializeFormFields(controller, award);
+      // controller.titileController.text =
+      //     award?.title.toString() ?? controller.titileController.text;
+      // controller.assosiatedController.text =
+      //     award?.associated.toString() ?? controller.assosiatedController.text;
+      // controller.issuerController.text =
+      //     award?.issuer.toString() ?? controller.issuerController.text;
+      // controller.startdateController.text =
+      //     award?.startDate.toString() ?? controller.startdateController.text;
+      // controller.descriptionController.text = award?.description.toString() ??
+      //     controller.descriptionController.text;
       awardID = award?.id.toString();
     });
     return PopScope(
@@ -176,8 +179,14 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               ? shrinked
                               : Column(
                                   children: List.generate(data.length, (index) {
+                                    String? mediaUrl;
+                                    if (data[index].url != null) {
+                                      mediaUrl =
+                                          "http://154.26.130.161/elearning/${award?.imagePath}/${data[index].url}";
+                                    }
                                     return addedMediaHomeHonorAward(
-                                      file: data[index].file!,
+                                      file: data[index].file,
+                                      mediaUrl: mediaUrl,
                                       onTap: () {
                                         data.removeAt(index);
                                         controller.update(
@@ -277,6 +286,56 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormFields(ProfileHonorsAwardsController c, Award? award) {
+    if (award == null) return;
+    c.titileController.text =
+        c.titileController.text.isEmpty && award.title != null
+            ? award.title as String
+            : c.titileController.text;
+    c.assosiatedController.text =
+        c.assosiatedController.text.isEmpty && award.associated != null
+            ? award.associated as String
+            : c.assosiatedController.text;
+    c.issuerController.text =
+        c.issuerController.text.isEmpty && award.issuer != null
+            ? award.issuer as String
+            : c.issuerController.text;
+    c.startdateController.text =
+        c.startdateController.text.isEmpty && award.startDate != null
+            ? award.startDate as String
+            : c.startdateController.text;
+    c.descriptionController.text =
+        c.descriptionController.text.isEmpty && award.description != null
+            ? award.description as String
+            : c.descriptionController.text;
+    if (c.allAwardMedias.isEmpty && award.media != null) {
+      List<AddMediaModel> mediaList = parseMediaItems(award);
+      c.allAwardMedias.addAll(mediaList);
+    }
+    c.allFieldSelect();
+    c.update(['update-HonorAwardsbutton']);
+  }
+
+  List<AddMediaModel> parseMediaItems(Award award) {
+    List<String> mediaList = List<String>.from(jsonDecode(award.media!));
+    List<String> mediaTitles = award.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions = award.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+    return mediaItems;
   }
 
   void showMediaOptions(BuildContext context,

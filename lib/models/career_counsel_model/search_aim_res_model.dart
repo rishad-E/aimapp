@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//     final searchAimResponseModel = searchAimResponseModelFromJson(jsonString);
-// import 'dart:convert';
-// SearchAimResponseModel searchAimResponseModelFromJson(String str) => SearchAimResponseModel.fromJson(json.decode(str));
-// String searchAimResponseModelToJson(SearchAimResponseModel data) => json.encode(data.toJson());
 
 class SearchAimResponseModel {
     List<Aim>? aims;

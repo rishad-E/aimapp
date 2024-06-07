@@ -104,7 +104,7 @@ Widget currentlyWorking({required bool working}) {
   );
 }
 
-Widget addedskillHomeEX(String skill,{void Function()? onTap}) {
+Widget addedskillHomeEX(String skill, {void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -141,7 +141,8 @@ Widget addedskillHomeEX(String skill,{void Function()? onTap}) {
 }
 
 Widget addedMediaHomeEX({
-  required File file,
+  required File? file,
+  String? mediaUrl,
   void Function()? onTapClose,
   required String mediaTitle,
   required String mediaDescription,
@@ -168,13 +169,17 @@ Widget addedMediaHomeEX({
               ),
               wBox,
               SizedBox(
-                height: 29,
-                width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
-              ),
+                  height: 29,
+                  width: 45,
+                  child: file != null
+                      ? Image.file(
+                          file,
+                          fit: BoxFit.fill,
+                        )
+                      : Image.network(
+                          mediaUrl!,
+                          fit: BoxFit.fill,
+                        )),
               wBox,
               Expanded(
                 child: Column(

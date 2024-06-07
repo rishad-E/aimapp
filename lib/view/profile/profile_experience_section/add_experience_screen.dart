@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -29,44 +31,8 @@ class AddExperienceScreen extends StatelessWidget {
     String? exID;
     log(experience.toString(), name: 'experience detial');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.titleController.text =
-          controller.titleController.text.isEmpty && experience?.title != null
-              ? experience?.title.toString() as String
-              : controller.titleController.text;
-      controller.employmentController.text =
-          experience?.employmentType.toString() ??
-              controller.employmentController.text;
-      controller.companyController.text = experience?.companyName.toString() ??
-          controller.companyController.text;
-      controller.locationController.text =
-          experience?.location.toString() ?? controller.locationController.text;
-      controller.locationTypeController.text =
-          experience?.locationType.toString() ??
-              controller.locationTypeController.text;
-      controller.startDateController.text = experience?.startDate.toString() ??
-          controller.startDateController.text;
-      controller.endDateController.text = experience?.endDate.toString() ?? '';
-      controller.descriptionController.text =
-          experience?.description.toString() ??
-              controller.descriptionController.text;
-      controller.profileController.text =
-          experience?.profile.toString() ?? controller.profileController.text;
       exID = experience?.id.toString();
-      if (controller.addedSkillEX.isEmpty && experience?.skills != null) {
-        List<String>? resSkill = experience?.skills?.split(',').toList();
-        if (resSkill != null) {
-          for (var i in resSkill) {
-            if (!controller.addedSkillEX.contains(i)) {
-              controller.addedSkillEX.add(i);
-            }
-          }
-        }
-      }
-      if (experience?.endDate == "currently_working") {
-        controller.currentlyWorking.value = true;
-        controller.update(['EX-currentlyworkingButton']);
-        log(controller.currentlyWorking.toString(), name: 'currenlyworking-ex');
-      }
+      initializeFormFields(controller, experience);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -315,23 +281,32 @@ class AddExperienceScreen extends StatelessWidget {
                       secSub: 'Learn more about media file types supported',
                       onTap: () =>
                           showMediaOptions(context, controller, experience),
-                      selected: Obx(() => controller.allMediasEX.isEmpty
-                          ? const SizedBox.shrink()
-                          : Column(
-                              children: List.generate(
-                                  controller.allMediasEX.length, (index) {
-                                final data = controller.allMediasEX;
-                                return addedMediaHomeEX(
-                                    file: data[index].file!,
-                                    onTapClose: () {
-                                      data.removeAt(index);
-                                      controller
-                                          .update(['update-experienceInfo']);
-                                    },
-                                    mediaTitle: data[index].title,
-                                    mediaDescription: data[index].description);
-                              }),
-                            )),
+                      selected: Obx(() {
+                        final data = controller.allMediasEX;
+                        return data.isEmpty
+                            ? const SizedBox.shrink()
+                            : Column(
+                                children: List.generate(data.length, (index) {
+                                  String? mediaUrl;
+                                  if (data[index].url != null) {
+                                    mediaUrl =
+                                        "http://154.26.130.161/elearning/${experience?.imagePath}/${data[index].url}";
+                                  }
+                                  return addedMediaHomeEX(
+                                      file: data[index].file,
+                                      mediaUrl: mediaUrl,
+                                      onTapClose: () {
+                                        data.removeAt(index);
+                                        controller.updateSaveButtonEX();
+                                        controller
+                                            .update(['update-experienceInfo']);
+                                      },
+                                      mediaTitle: data[index].title,
+                                      mediaDescription:
+                                          data[index].description);
+                                }),
+                              );
+                      }),
                     ),
                     hMBox,
                     GetBuilder<ProfileExperienceController>(
@@ -440,6 +415,89 @@ class AddExperienceScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormFields(
+      ProfileExperienceController c, Experience? experience) {
+    if (experience == null) return;
+    c.titleController.text =
+        c.titleController.text.isEmpty && experience.title != null
+            ? experience.title as String
+            : c.titleController.text;
+    c.employmentController.text =
+        c.employmentController.text.isEmpty && experience.employmentType != null
+            ? experience.employmentType as String
+            : c.employmentController.text;
+    c.companyController.text =
+        c.companyController.text.isEmpty && experience.companyName != null
+            ? experience.companyName as String
+            : c.companyController.text;
+    c.locationController.text =
+        c.locationController.text.isEmpty && experience.location != null
+            ? experience.location as String
+            : c.locationController.text;
+    c.locationTypeController.text =
+        c.locationTypeController.text.isEmpty && experience.locationType != null
+            ? experience.locationType as String
+            : c.locationTypeController.text;
+    c.startDateController.text =
+        c.startDateController.text.isEmpty && experience.startDate != null
+            ? experience.startDate as String
+            : c.startDateController.text;
+    c.endDateController.text =
+        c.endDateController.text.isEmpty && experience.endDate != null
+            ? experience.endDate as String
+            : c.endDateController.text;
+    c.descriptionController.text =
+        c.descriptionController.text.isEmpty && experience.description != null
+            ? experience.description as String
+            : c.descriptionController.text;
+    c.profileController.text =
+        c.profileController.text.isEmpty && experience.profile != null
+            ? experience.profile as String
+            : c.profileController.text;
+    if (experience.endDate == "currently_working") {
+      c.currentlyWorking.value = true;
+      c.update(['EX-currentlyworkingButton']);
+    }
+    if (c.addedSkillEX.isEmpty && experience.skills != null) {
+      List<String>? resSkill = experience.skills?.split(',').toList();
+      if (resSkill != null) {
+        for (var i in resSkill) {
+          if (!c.addedSkillEX.contains(i)) {
+            c.addedSkillEX.add(i);
+          }
+        }
+      }
+    }
+    if (c.allMediasEX.isEmpty && experience.media != null) {
+      List<AddMediaModel> mediaList = parseMediaItems(experience);
+      c.allMediasEX.addAll(mediaList);
+    }
+    c.updateSaveButtonEX();
+    c.update(['update-experienceInfo']);
+  }
+
+  List<AddMediaModel> parseMediaItems(Experience experience) {
+    List<String> mediaList = List<String>.from(jsonDecode(experience.media!));
+    List<String> mediaTitles = experience.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions =
+        experience.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+    return mediaItems;
   }
 
   void showMediaOptions(BuildContext context,

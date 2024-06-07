@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final bookingTimeResponseModel = bookingTimeResponseModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// BookingTimeResponseModel bookingTimeResponseModelFromJson(String str) => BookingTimeResponseModel.fromJson(json.decode(str));
-
-// String bookingTimeResponseModelToJson(BookingTimeResponseModel data) => json.encode(data.toJson());
 
 class BookingTimeResponseModel {
     List<Slot>? slots;

@@ -1,12 +1,3 @@
-// // To parse this JSON data, do
-// //
-// //     final counselCallBookedModel = counselCallBookedModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// CounselCallBookedModel counselCallBookedModelFromJson(String str) => CounselCallBookedModel.fromJson(json.decode(str));
-
-// String counselCallBookedModelToJson(CounselCallBookedModel data) => json.encode(data.toJson());
 
 class CounselCallBookedModel {
     int? status;

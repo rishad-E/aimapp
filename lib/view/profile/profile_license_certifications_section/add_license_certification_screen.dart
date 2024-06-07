@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -28,32 +30,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     log(license.toString(), name: 'license data');
     String? liID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.nameController.text =
-          license?.name.toString() ?? controller.nameController.text;
-      controller.organizationController.text =
-          license?.organization.toString() ??
-              controller.organizationController.text;
-      controller.issuedateController.text =
-          license?.issueDate.toString() ?? controller.issuedateController.text;
-      controller.expirydateController.text = license?.expireDate.toString() ??
-          controller.expirydateController.text;
-      controller.credentialIDController.text =
-          license?.credentialId.toString() ??
-              controller.credentialIDController.text;
-      controller.credentialurlController.text =
-          license?.credentialUrl.toString() ??
-              controller.credentialurlController.text;
       liID = license?.id.toString();
-      if (controller.addedLicenseSkill.isEmpty && license?.skills != null) {
-        List<String>? resSkill = license?.skills?.split(',');
-        if (resSkill != null) {
-          for (var i in resSkill) {
-            if (!controller.addedLicenseSkill.contains(i)) {
-              controller.addedLicenseSkill.add(i);
-            }
-          }
-        }
-      }
+      initializeFormFields(controller, license);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -221,8 +199,14 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                             ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
+                                  String? mediaUrl;
+                                  if (data[index].url != null) {
+                                    mediaUrl =
+                                        "http://154.26.130.161/elearning/${license?.imagePath}/${data[index].url}";
+                                  }
                                   return addedLicenseMediaHome(
-                                      file: data[index].file!,
+                                      file: data[index].file,
+                                      mediaUrl: mediaUrl,
                                       onTapClose: () => data.removeAt(index),
                                       title: data[index].title,
                                       desc: data[index].description);
@@ -387,5 +371,70 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void initializeFormFields(
+      ProfileLicenseCertificationController c, License? license) {
+    if (license == null) return;
+    c.nameController.text =
+        c.nameController.text.isEmpty && license.name != null
+            ? license.name as String
+            : c.nameController.text;
+    c.organizationController.text =
+        c.organizationController.text.isEmpty && license.organization != null
+            ? license.organization as String
+            : c.organizationController.text;
+    c.issuedateController.text =
+        c.issuedateController.text.isEmpty && license.issueDate != null
+            ? license.issueDate as String
+            : c.issuedateController.text;
+    c.expirydateController.text =
+        c.expirydateController.text.isEmpty && license.expireDate != null
+            ? license.expireDate as String
+            : c.expirydateController.text;
+    c.credentialIDController.text =
+        c.credentialIDController.text.isEmpty && license.credentialId != null
+            ? license.credentialId as String
+            : c.credentialIDController.text;
+    c.credentialurlController.text =
+        c.credentialurlController.text.isEmpty && license.credentialUrl != null
+            ? license.credentialUrl as String
+            : c.credentialurlController.text;
+    if (c.addedLicenseSkill.isEmpty && license.skills != null) {
+      List<String>? resSkill = license.skills?.split(',');
+      if (resSkill != null) {
+        for (var i in resSkill) {
+          if (!c.addedLicenseSkill.contains(i)) {
+            c.addedLicenseSkill.add(i);
+          }
+        }
+      }
+    }
+    if (c.allLicenseMedias.isEmpty && license.media != null) {
+      List<AddMediaModel> mediaList = parseMediaItems(license);
+      c.allLicenseMedias.addAll(mediaList);
+    }
+    c.updateLicenseButton();
+    c.update(['update-licenseButton']);
+  }
+
+  List<AddMediaModel> parseMediaItems(License license) {
+    List<String> mediaList = List<String>.from(jsonDecode(license.media!));
+    List<String> mediaTitles = license.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions = license.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+    return mediaItems;
   }
 }

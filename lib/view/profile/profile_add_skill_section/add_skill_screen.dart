@@ -22,67 +22,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
     String? skID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       skID = skill?.id.toString();
-      controller.skillController.text =
-          skill?.skillName.toString() ?? controller.skillController.text;
-      List<String>? experience = skill?.experiencesId;
-      if (experience != null && experience.isNotEmpty) {
-        for (var item in experience) {
-          if (!controller.exSkillIdList.contains(item)) {
-            controller.exSkillIdList.add(item);
-            controller.update(['update-ExID']);
-          }
-        }
-      }
-      List<String>? education = skill?.educationsId;
-      if (education != null && education.isNotEmpty) {
-        for (var item in education) {
-          if (!controller.edSchoolIdList.contains(item)) {
-            controller.edSchoolIdList.add(item);
-            controller.update(['update-EdID']);
-          }
-        }
-      }
-      List<String>? license = skill?.licensesId;
-      if (license != null && license.isNotEmpty) {
-        for (var item in license) {
-          if (!controller.liscenseidList.contains(item)) {
-            controller.liscenseidList.add(item);
-            controller.update(['update-LiID']);
-          }
-        }
-      }
-      List<String>? project = skill?.projectsId;
-      if (project != null && project.isNotEmpty) {
-        for (var item in project) {
-          if (!controller.projectIdList.contains(item)) {
-            controller.projectIdList.add(item);
-            controller.update(['update-PrID']);
-          }
-        }
-      }
-      List<String>? course = skill?.coursesId;
-      if (course != null && course.isNotEmpty) {
-        for (var item in course) {
-          if (!controller.courseIdList.contains(item)) {
-            controller.courseIdList.add(item);
-            controller.update(['update-courseID']);
-          }
-        }
-      }
-      List<String>? award = skill?.awardsId;
-      if (award != null && award.isNotEmpty) {
-        for (var item in award) {
-          if (!controller.awardIdList.contains(item)) {
-            controller.awardIdList.add(item);
-            controller.update(['update-awardIDs']);
-          }
-        }
-      }
-      if (skill?.followupPermission.toString() == "yes") {
-        controller.permission = true;
-        controller.update(['update-permission']);
-      }
-      controller.update(['update-skilladdButton']);
+      initializeFields(controller, skill);
     });
     return Scaffold(
       // extendBodyBehindAppBar: true,
@@ -446,5 +386,69 @@ class ProfileAddSkillScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFields(ProfileSkillController c, Skill? skill) {
+    if (skill == null) return;
+    c.skillController.text = skill.skillName.toString();
+    List<String>? experience = skill.experiencesId;
+    if (experience != null && experience.isNotEmpty) {
+      for (var item in experience) {
+        if (!c.exSkillIdList.contains(item)) {
+          c.exSkillIdList.add(item);
+          c.update(['update-ExID']);
+        }
+      }
+    }
+    List<String>? education = skill.educationsId;
+    if (education != null && education.isNotEmpty) {
+      for (var item in education) {
+        if (!c.edSchoolIdList.contains(item)) {
+          c.edSchoolIdList.add(item);
+          c.update(['update-EdID']);
+        }
+      }
+    }
+    List<String>? license = skill.licensesId;
+    if (license != null && license.isNotEmpty) {
+      for (var item in license) {
+        if (!c.liscenseidList.contains(item)) {
+          c.liscenseidList.add(item);
+          c.update(['update-LiID']);
+        }
+      }
+    }
+    List<String>? project = skill.projectsId;
+    if (project != null && project.isNotEmpty) {
+      for (var item in project) {
+        if (!c.projectIdList.contains(item)) {
+          c.projectIdList.add(item);
+          c.update(['update-PrID']);
+        }
+      }
+    }
+    List<String>? course = skill.coursesId;
+    if (course != null && course.isNotEmpty) {
+      for (var item in course) {
+        if (!c.courseIdList.contains(item)) {
+          c.courseIdList.add(item);
+          c.update(['update-courseID']);
+        }
+      }
+    }
+    List<String>? award = skill.awardsId;
+    if (award != null && award.isNotEmpty) {
+      for (var item in award) {
+        if (!c.awardIdList.contains(item)) {
+          c.awardIdList.add(item);
+          c.update(['update-awardIDs']);
+        }
+      }
+    }
+    if (skill.followupPermission.toString() == "yes") {
+      c.permission = true;
+      c.update(['update-permission']);
+    }
+    c.update(['update-skilladdButton']);
   }
 }

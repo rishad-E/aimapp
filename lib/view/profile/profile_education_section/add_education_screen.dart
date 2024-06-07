@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -27,54 +29,8 @@ class AddEducationScreen extends StatelessWidget {
     String? eduID;
     log(edu.toString(), name: 'educational data');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.schoolController.text =
-          controller.schoolController.text.isEmpty && edu?.school != null
-              ? edu?.school.toString() as String
-              : controller.schoolController.text;
-      controller.degreeController.text =
-          controller.degreeController.text.isEmpty && edu?.degree != null
-              ? edu?.degree.toString() as String
-              : controller.degreeController.text;
-      controller.studyFiledController.text =
-          controller.studyFiledController.text.isEmpty &&
-                  edu?.studyField != null
-              ? edu?.studyField.toString() as String
-              : controller.studyFiledController.text;
-      controller.startdateController.text =
-          controller.startdateController.text.isEmpty && edu?.startDate != null
-              ? edu?.startDate.toString() as String
-              : controller.startdateController.text;
-      controller.endDateController.text =
-          controller.endDateController.text.isEmpty && edu?.endDate != null
-              ? edu?.endDate.toString() as String
-              : controller.endDateController.text;
-      controller.gradeController.text =
-          controller.gradeController.text.isEmpty && edu?.grade != null
-              ? edu?.grade.toString() as String
-              : controller.gradeController.text;
-      controller.activitiesController.text =
-          controller.activitiesController.text.isEmpty &&
-                  edu?.activities != null
-              ? edu?.activities.toString() as String
-              : controller.activitiesController.text;
-      controller.descriptionController.text =
-          controller.descriptionController.text.isEmpty &&
-                  edu?.description != null
-              ? edu?.description.toString() as String
-              : controller.descriptionController.text;
       eduID = edu?.id.toString();
-      if (controller.addedSkill.isEmpty && edu?.skills != null) {
-        List<String>? resList = edu?.skills?.split(',');
-        log(resList.toString(),
-            name: 'chekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-        if (resList != null) {
-          for (String skill in resList) {
-            if (!controller.addedSkill.contains(skill)) {
-              controller.addedSkill.add(skill);
-            }
-          }
-        }
-      }
+      initializeFormFields(controller, edu);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -279,8 +235,14 @@ class AddEducationScreen extends StatelessWidget {
                             ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
+                                  String? mediaUrl;
+                                  if (data[index].url != null) {
+                                    mediaUrl =
+                                        "http://154.26.130.161/elearning/${edu?.imagePath}/${data[index].url}";
+                                  }
                                   return addedMediaHome(
-                                    file: data[index].file!,
+                                    file: data[index].file,
+                                    mediaUrl: mediaUrl,
                                     mediaTitle: data[index].title,
                                     mediaDescription: data[index].description,
                                     onTapClose: () {
@@ -394,6 +356,79 @@ class AddEducationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormFields(ProfileEducationController c, Education? edu) {
+    if (edu == null) return;
+
+    c.schoolController.text =
+        c.schoolController.text.isEmpty && edu.school != null
+            ? edu.school as String
+            : c.schoolController.text;
+    c.degreeController.text =
+        c.degreeController.text.isEmpty && edu.degree != null
+            ? edu.degree as String
+            : c.degreeController.text;
+    c.studyFiledController.text =
+        c.studyFiledController.text.isEmpty && edu.studyField != null
+            ? edu.studyField as String
+            : c.studyFiledController.text;
+    c.startdateController.text =
+        c.startdateController.text.isEmpty && edu.startDate != null
+            ? edu.startDate as String
+            : c.startdateController.text;
+    c.endDateController.text =
+        c.endDateController.text.isEmpty && edu.endDate != null
+            ? edu.endDate as String
+            : c.endDateController.text;
+    c.gradeController.text = c.gradeController.text.isEmpty && edu.grade != null
+        ? edu.grade as String
+        : c.gradeController.text;
+    c.activitiesController.text =
+        c.activitiesController.text.isEmpty && edu.activities != null
+            ? edu.activities as String
+            : c.activitiesController.text;
+    c.descriptionController.text =
+        c.descriptionController.text.isEmpty && edu.description != null
+            ? edu.description as String
+            : c.descriptionController.text;
+    if (c.addedSkill.isEmpty && edu.skills != null) {
+      List<String>? resList = edu.skills?.split(',');
+      if (resList != null) {
+        for (String skill in resList) {
+          if (!c.addedSkill.contains(skill)) {
+            c.addedSkill.add(skill);
+          }
+        }
+      }
+    }
+    if (c.allMediasModel.isEmpty && edu.media != null) {
+      List<AddMediaModel> mediaList = parseMediaItems(edu);
+      c.allMediasModel.addAll(mediaList);
+    }
+    c.updateSaveButton();
+    c.update(['update-educationInfo']);
+  }
+
+  List<AddMediaModel> parseMediaItems(Education edu) {
+    List<String> mediaList = List<String>.from(jsonDecode(edu.media!));
+    List<String> mediaTitles = edu.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions = edu.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+    return mediaItems;
   }
 
   void showMediaOptions(BuildContext context,

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/common/text_common.dart';
@@ -29,35 +31,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
     log(project.toString(), name: 'project data');
     String? prID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.projectnameController.text =
-          project?.title.toString() ?? controller.projectnameController.text;
-      controller.projectDescriptionController.text =
-          project?.description.toString() ??
-              controller.projectDescriptionController.text;
-      controller.startdateController.text =
-          project?.startDate.toString() ?? controller.startdateController.text;
-      controller.projectAssosiatedController.text =
-          project?.associated.toString() ??
-              controller.projectAssosiatedController.text;
       prID = project?.id.toString();
-      if (project?.endDate.toString() == 'currently_working') {
-        controller.currentlyWorking.value = true;
-        controller.update(['currentlyWorking-project']);
-      } else {
-        controller.endDateController.text =
-            project?.endDate.toString() ?? controller.endDateController.text;
-      }
-      if (controller.addedProjectSkill.isEmpty && project?.skills != null) {
-        List<String>? resSkill = project?.skills?.split(',');
-        if (resSkill != null) {
-          for (var i in resSkill) {
-            if (!controller.addedProjectSkill.contains(i)) {
-              controller.addedProjectSkill.add(i);
-            }
-          }
-        }
-      }
-      controller.update(['update-projectInfo']);
+      initializeFormFields(controller, project);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -152,8 +127,15 @@ class ProfileAddProjectScreen extends StatelessWidget {
                               ? shrinked
                               : Column(
                                   children: List.generate(data.length, (index) {
+                                    String? mediaUrl;
+                                    if (data[index].url != null) {
+                                      mediaUrl =
+                                          "http://154.26.130.161/elearning/${project?.imagePath}/${data[index].url}";
+                                      // "http://154.26.130.161/elearning/${volunteer?.imagePath}/${data[index].url}";
+                                    }
                                     return addedMediaHomeProject(
-                                        file: data[index].file!,
+                                        file: data[index].file,
+                                        mediaUrl: mediaUrl,
                                         title: data[index].title,
                                         desc: data[index].description,
                                         onTap: () {
@@ -427,5 +409,73 @@ class ProfileAddProjectScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void initializeFormFields(ProfileProjectController c, Project? project) {
+    if (project == null) return;
+    c.projectnameController.text =
+        c.projectnameController.text.isEmpty && project.title != null
+            ? project.title as String
+            : c.projectnameController.text;
+    c.projectDescriptionController.text =
+        c.projectDescriptionController.text.isEmpty &&
+                project.description != null
+            ? project.description as String
+            : c.projectDescriptionController.text;
+    c.startdateController.text =
+        c.startdateController.text.isEmpty && project.startDate != null
+            ? project.startDate as String
+            : c.startdateController.text;
+    c.projectAssosiatedController.text =
+        c.projectAssosiatedController.text.isEmpty && project.associated != null
+            ? project.associated as String
+            : c.projectAssosiatedController.text;
+
+    if (project.media != null && c.allProjectMedias.isEmpty) {
+      List<AddMediaModel> mediaItems = parseMediaItems(project);
+      c.allProjectMedias.addAll(mediaItems);
+    }
+    if (c.addedProjectSkill.isEmpty && project.skills != null) {
+      List<String>? resSkill = project.skills?.split(',');
+      if (resSkill != null) {
+        for (var i in resSkill) {
+          if (!c.addedProjectSkill.contains(i)) {
+            c.addedProjectSkill.add(i);
+          }
+        }
+      }
+    }
+    if (project.endDate.toString() == 'currently_working') {
+      c.currentlyWorking.value = true;
+      c.update(['currentlyWorking-project']);
+    } else {
+      c.endDateController.text =
+          c.endDateController.text.isEmpty && project.endDate != null
+              ? project.endDate as String
+              : c.endDateController.text;
+    }
+    c.allFiledSelected();
+    c.update(['update-projectInfo']);
+  }
+
+  List<AddMediaModel> parseMediaItems(Project project) {
+    List<String> mediaList =
+        List<String>.from(jsonDecode(project.media as String));
+    List<String> mediaTitles = project.mediaTitle?.split(',') ?? [];
+    List<String> mediaDescriptions = project.mediaDescription?.split(',') ?? [];
+    List<AddMediaModel> mediaItems = [];
+    for (int i = 0; i < mediaList.length; i++) {
+      String filename = mediaList[i];
+      String title =
+          i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
+      String description = i < mediaDescriptions.length
+          ? mediaDescriptions[i]
+          : "Description for $filename";
+      if (!mediaItems.any((i) => i.title == title)) {
+        mediaItems.add(AddMediaModel(
+            title: title, description: description, url: filename));
+      }
+    }
+    return mediaItems;
   }
 }

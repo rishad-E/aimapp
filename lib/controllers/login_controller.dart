@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   final storage = const FlutterSecureStorage();
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
-  
+
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
   UserDataModel? userData;
@@ -85,7 +85,7 @@ class LoginController extends GetxController {
         !word.isNumericOnly) {
       return 'Please enter a Valid Mobile Number';
     }
-   
+
     return null;
   }
 
@@ -100,19 +100,6 @@ class LoginController extends GetxController {
   }
 
   void updateButtonColor() {
-    // int numberOfFilledFields = 0;
-
-    // if (otpController1.text.isNotEmpty) numberOfFilledFields++;
-    // if (otpController2.text.isNotEmpty) numberOfFilledFields++;
-    // if (otpController3.text.isNotEmpty) numberOfFilledFields++;
-    // if (otpController4.text.isNotEmpty) numberOfFilledFields++;
-
-    // filledOtpFields.value = numberOfFilledFields;
-
-    // buttonColor.value = numberOfFilledFields == 4 ? kpurple : bbColor;
-    // buttonTextColor.value =
-    //     numberOfFilledFields == 4 ? Colors.white : Colors.black;
-
     buttonColor.value = otpController.text.length == 4 ? kpurple : bbColor;
     buttonTextColor.value = otpController.text.length == 4 ? kwhite : kblack;
 
@@ -121,41 +108,5 @@ class LoginController extends GetxController {
 
   clearotpControllers() {
     otpController.clear();
-    // otpController2.clear();
-    // otpController3.clear();
-    // otpController4.clear();
   }
-
-  // @override
-  // void dispose() {
-  //   phoneController.dispose();
-  //   otpController1.dispose();
-  //   otpController2.dispose();
-  //   otpController3.dispose();
-  //   otpController4.dispose();
-
-  //   super.dispose();
-  // }
 }
-
-
-
-
-
-  // OtpService().validateOTP(mobileNo: '91$mobileNo', otp: otp).then(
-    //       (value) => {
-    //         if (value == true)
-    //           {
-    //             LoginService()
-    //                 .verifyUserExist(mobileNo: mobileNo)
-    //                 .then((value) => {
-    //                       if (value?.token != null)
-    //                         {Get.offAll(() => const HomeScreen())}
-    //                       else
-    //                         {Get.offAll(() => SignUpScreen(mobileNo: mobileNo))}
-    //                     })
-    //           }
-    //         else
-    //           {validationMessage.value = 'Please enter valid code'}
-    //       },
-    //     );

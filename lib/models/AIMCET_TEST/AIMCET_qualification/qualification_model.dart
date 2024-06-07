@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final qualificationResponseModel = qualificationResponseModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// QualificationResponseModel qualificationResponseModelFromJson(String str) => QualificationResponseModel.fromJson(json.decode(str));
-
-// String qualificationResponseModelToJson(QualificationResponseModel data) => json.encode(data.toJson());
 
 class QualificationResponseModel {
     List<Qualification>? qualifications;

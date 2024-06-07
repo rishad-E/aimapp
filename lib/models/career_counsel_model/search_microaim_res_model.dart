@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//     final searchMicroaimResponseModel = searchMicroaimResponseModelFromJson(jsonString);
-// import 'dart:convert';
-// SearchMicroaimResponseModel searchMicroaimResponseModelFromJson(String str) => SearchMicroaimResponseModel.fromJson(json.decode(str));
-// String searchMicroaimResponseModelToJson(SearchMicroaimResponseModel data) => json.encode(data.toJson());
 
 class SearchMicroaimResponseModel {
     List<MicroAim>? microAims;

@@ -273,6 +273,7 @@ class ProfileProjectController extends GetxController {
     projectAssosiatedController.clear();
     addedProjectSkill.clear();
     allProjectMedias.clear();
+    allFiledSelected();
     update(['update-projectInfo']);
   }
 }

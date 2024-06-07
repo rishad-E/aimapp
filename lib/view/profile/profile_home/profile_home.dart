@@ -746,7 +746,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                     headingText: 'Courses',
                                     subText: "No Courses included yet",
                                     onPressed: () {
-                                      crController.clearLanguageControllers();
+                                      crController.clearCourseController();
                                       Get.to(() =>
                                           ProfileAddCourseScreen(uId: id));
                                     },
@@ -754,12 +754,12 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Courses",
                                     onTapAdd: () {
-                                      crController.clearLanguageControllers();
+                                      crController.clearCourseController();
                                       Get.to(() =>
                                           ProfileAddCourseScreen(uId: id));
                                     },
                                     onTapEdit: () {
-                                      crController.clearLanguageControllers();
+                                      crController.clearCourseController();
                                       if (data.length < 2) {
                                         Get.to(() => ProfileAddCourseScreen(
                                             uId: id, course: data[0]));

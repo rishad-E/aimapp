@@ -181,8 +181,7 @@ Widget profileDataContainer(
     void Function()? onTapEdit,
     void Function()? onTapAdd,
     required List<Widget> sectionData,
-    required Widget viewAll
-    }) {
+    required Widget viewAll}) {
   return infoContainer(
     child: Column(
       children: [
@@ -215,19 +214,6 @@ Widget profileDataContainer(
         ),
         hBox,
         ...sectionData,
-        // TextButton(
-        //   onPressed: onPressedViewAll,
-        //   style: const ButtonStyle(
-        //       visualDensity: VisualDensity.compact,
-        //       padding: MaterialStatePropertyAll(EdgeInsets.zero)),
-        //   child: Text(
-        //     "View All",
-        //     style: TextStyle(
-        //         color: mainPurple,
-        //         fontWeight: FontWeight.w600,
-        //         fontSize: 8.5.sp),
-        //   ),
-        // )
         viewAll
       ],
     ),

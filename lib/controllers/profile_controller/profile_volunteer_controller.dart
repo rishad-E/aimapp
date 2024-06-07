@@ -178,13 +178,10 @@ class ProfileVolunteerController extends GetxController {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: Colors.purple, // Header background color
-              onPrimary: Colors.white, // Header text color
-              //   surface: Colors.grey.shade300, // Calendar background color
-              //   onSurface: Colors.black, // Calendar text color
+              primary: Colors.purple,
+              onPrimary: Colors.white,
             ),
-
-            dialogBackgroundColor: Colors.white, // Dialog background color
+            dialogBackgroundColor: Colors.white,
           ),
           child: child!,
         );
@@ -273,5 +270,7 @@ class ProfileVolunteerController extends GetxController {
     endDateController.clear();
     descriptionController.clear();
     volunteerMedia.clear();
+    allFieldSelected();
+    update(['update-volunteerInfo']);
   }
 }

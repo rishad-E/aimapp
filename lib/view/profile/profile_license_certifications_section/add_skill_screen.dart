@@ -159,12 +159,14 @@ class AddLicenseSkillScreen extends StatelessWidget {
                                 onChanged: (value) {
                                   if (value != null) {
                                     addLicenseSkill(skills[index], c);
+                                    c.updateLicenseButton();
                                     c.update(['add-licenseSkill']);
                                   }
                                 },
                               ),
                               onTap: () {
                                 addLicenseSkill(skills[index], c);
+                                c.updateLicenseButton();
                                 c.update(['add-licenseSkill']);
                               },
                             ),

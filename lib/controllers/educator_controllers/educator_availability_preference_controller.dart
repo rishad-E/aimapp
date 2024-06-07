@@ -16,7 +16,6 @@ class EducatorAvailabilityController extends GetxController {
   }
 
   void selectPreferedTime(String time) {
-    // selectedTime = time;
     if (!selectedTimes.contains(time)) {
       selectedTimes.add(time);
     } else {

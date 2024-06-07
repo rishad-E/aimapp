@@ -62,7 +62,6 @@ class AIMCETController extends GetxController {
               List<Question>.from(value.map((x) => Question.fromJson(x)));
         });
         testRes = res;
-        // Merge all lists of questions into a single list
         allQuestions = [];
         for (var questions in testRes!.values) {
           allQuestions!.addAll(questions);
@@ -70,13 +69,7 @@ class AIMCETController extends GetxController {
 
         if (allQuestions!.isEmpty) {
           end.value = 'done';
-          // testDone.value = 'done';
         }
-        // else if (allQuestions!.isNotEmpty && allQuestions!.length < 70) {
-        //   testDone.value = 'continue';
-        // } else if (allQuestions!.length == 70) {
-        //   testDone.value = 'no';
-        // }
       }
     }
 
@@ -190,7 +183,6 @@ class AIMCETController extends GetxController {
           await PersonalityReportService().getPersonalityReport(userId: userId);
       if (report != null) {
         personalityReport = report;
-        // log(personalityReport.toString(),name: 'report personality controller');
         update();
       }
     } catch (e) {

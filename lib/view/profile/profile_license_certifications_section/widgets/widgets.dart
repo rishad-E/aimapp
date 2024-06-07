@@ -18,7 +18,6 @@ Widget licenseInfoFiled({required Widget text, required Widget textField}) {
   );
 }
 
-
 Widget licenseAdditional(
     {required String heading,
     required String subText,
@@ -80,9 +79,8 @@ Widget licenseAdditional(
   );
 }
 
-
-
-Widget selectedLicenseSkill({required String skill, required Function()? onTap}) {
+Widget selectedLicenseSkill(
+    {required String skill, required Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -98,9 +96,7 @@ Widget selectedLicenseSkill({required String skill, required Function()? onTap})
             child: Text(
               skill,
               style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,color: kblack
-              ),
+                  fontSize: 14, fontWeight: FontWeight.w500, color: kblack),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -116,7 +112,7 @@ Widget selectedLicenseSkill({required String skill, required Function()? onTap})
   );
 }
 
-Widget addedLicenseSkillHome(String skill,{void Function()? onTap}) {
+Widget addedLicenseSkillHome(String skill, {void Function()? onTap}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -168,8 +164,12 @@ Widget mediaLicenseListTile(
   );
 }
 
-
-Widget addedLicenseMediaHome({required File file,void Function()? onTapClose,required String title,required String desc}) {
+Widget addedLicenseMediaHome(
+    {required File? file,
+    void Function()? onTapClose,
+    required String title,
+    required String desc,
+    String? mediaUrl}) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -194,11 +194,17 @@ Widget addedLicenseMediaHome({required File file,void Function()? onTapClose,req
               SizedBox(
                 height: 29,
                 width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
-              ),wBox,
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.network(
+                        mediaUrl!,
+                        fit: BoxFit.fill,
+                      ),
+              ),
+              wBox,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

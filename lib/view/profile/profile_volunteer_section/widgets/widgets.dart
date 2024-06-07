@@ -135,25 +135,16 @@ Widget addedMediaHomeVolunteer({
               SizedBox(
                 height: 29,
                 width: 45,
-                // decoration: BoxDecoration(
-                //   color: Colors.yellow,
-                //   image: DecorationImage(
-                //     fit: BoxFit.fill,
-                //       image: file != null
-                //           ? FileImage(file)
-                //           : NetworkImage(mediaUrl!) as ImageProvider),
-                          
-                // ),
-                // child: file != null
-                //     ? Image.file(
-                //         file,
-                //         fit: BoxFit.fill,
-                //       )
-                //     : Image.network(
-                //         mediaUrl!,
-                //         fit: BoxFit.fill,
-                //       ),
-                child: Image.file(file!),
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.network(
+                        mediaUrl!,
+                        fit: BoxFit.fill,
+                      ),
+                // child: Image.file(file!),
               ),
               wBox,
               Expanded(

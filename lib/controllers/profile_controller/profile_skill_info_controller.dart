@@ -3,6 +3,7 @@ import 'package:aimshala/controllers/profile_controller/profile_honoraward_contr
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/model/skill_models.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,6 @@ class ProfileSkillController extends GetxController {
   TextEditingController skillController = TextEditingController();
   RxList<String> suggestedSkills = <String>[].obs;
   ProfileAlldataModel? alldataModel;
-  // Rx<UserProfile?> userProfile = Rx<UserProfile?>(null);
-  // String? profilePhoto;
   RxBool loading = true.obs;
   RxBool profileDataLoading = true.obs;
   RxString? error;
@@ -358,6 +357,7 @@ class ProfileSkillController extends GetxController {
       profileDataLoading.value = false;
     } catch (e) {
       log('Error fetching profile data: $e', name: 'profile-alldata');
+      SnackbarPopUps.popUpB("Error fetching profile data: $e'");
       profileDataLoading.value = false;
     } finally {
       profileDataLoading.value = false;
@@ -457,30 +457,3 @@ class ProfileSkillController extends GetxController {
     awardIdList.clear();
   }
 }
-
-
-
-
-//  /* -------extracting experience---------- */
-//         List<dynamic> experiencedata = alldata["experiences"];
-//         if (experiencedata.isNotEmpty) {
-//           experience =
-//               experiencedata.map((json) => Experience.fromJson(json)).toList();
-//           // log(experience.toString(), name: 'all data');
-//           if (experience.isNotEmpty) {
-//             for (var i = 0; i < experience.length; i++) {
-//               String skill = experience[i].skills.toString();
-//               List<String> skillsSplit = skill.split(',');
-//               // skillsList.addAll(skillsSplit);
-//               for (var split in skillsSplit) {
-//                 if (!exSkillsList.contains(split)) {
-//                   exSkillsList.add(split);
-//                   log('added', name: 'add to EXskill list');
-//                 } else {
-//                   log('contais', name: 'add to EXskill list');
-//                 }
-//               }
-//               log(exSkillsList.toString(), name: 'newskills c');
-//             }
-//           }
-//         }

@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getMicroAimResponseModel = getMicroAimResponseModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// GetMicroAimResponseModel getMicroAimResponseModelFromJson(String str) => GetMicroAimResponseModel.fromJson(json.decode(str));
-
-// String getMicroAimResponseModelToJson(GetMicroAimResponseModel data) => json.encode(data.toJson());
 
 class GetMicroAimResponseModel {
     List<SubCategory>? subCategories;

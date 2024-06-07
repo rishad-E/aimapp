@@ -291,5 +291,6 @@ class ProfileEducationController extends GetxController {
     descriptionController.clear();
     addedSkill.clear();
     allMediasModel.clear();
+    updateSaveButton();
   }
 }

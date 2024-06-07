@@ -12,7 +12,6 @@ class EducatorWorkPreferenceController extends GetxController {
     if (val == false && relocate == true) {
       relocate = false;
     }
-    // relocate = !relocate;
     update(['update-relocate']);
     update(['edu-WorkPreference']);
   }

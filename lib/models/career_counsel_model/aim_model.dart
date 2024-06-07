@@ -1,12 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getAimResponseModel = getAimResponseModelFromJson(jsonString);
-
-// import 'dart:convert';
-
-// GetAimResponseModel getAimResponseModelFromJson(String str) => GetAimResponseModel.fromJson(json.decode(str));
-
-// String getAimResponseModelToJson(GetAimResponseModel data) => json.encode(data.toJson());
 
 class GetAimResponseModel {
   List<Category>? categories;

@@ -90,15 +90,5 @@ class PerosnalInfoController extends GetxController {
     return null;
   }
 
-  /* ------ all field validator------ */
-  // void allFieldSelect() {
-  //   bool isAllFiledSelect = nameController.text.isNotEmpty &&
-  //       userNameController.text.isNotEmpty &&
-  //       dateController.text.isNotEmpty;
-
-  //   saveText.value = isAllFiledSelect ? kwhite : textFieldColor;
-  //   saveBG.value = isAllFiledSelect ? mainPurple : buttonColor;
-
-  //   update(['update-personalinfo']);
-  // }
+  
 }

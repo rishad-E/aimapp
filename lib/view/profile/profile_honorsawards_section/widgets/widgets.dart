@@ -81,7 +81,8 @@ Widget honorsawardsAdditional(
 }
 
 Widget addedMediaHomeHonorAward(
-    {required File file,
+    {required File? file,
+    String? mediaUrl,
     void Function()? onTap,
     required String title,
     required String desc}) {
@@ -109,10 +110,15 @@ Widget addedMediaHomeHonorAward(
               SizedBox(
                 height: 29,
                 width: 45,
-                child: Image.file(
-                  file,
-                  fit: BoxFit.fill,
-                ),
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : Image.network(
+                        mediaUrl!,
+                        fit: BoxFit.fill,
+                      ),
               ),
               wBox,
               Expanded(

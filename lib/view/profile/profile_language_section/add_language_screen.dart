@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
@@ -67,18 +66,26 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                       ),
                       languageInfoFiled(
                         text: primarytxt3('Proficiency', 9.5.sp),
-                        textField: TextFormField(
-                          controller: controller.proficiencyController,
-                          validator: (value) =>
-                              controller.fieldValidation(value),
-                          onChanged: (value) =>
-                              controller.update(['update-LanguageInfo']),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: infoFieldDecoration(
-                              hintText: 'Please Select',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
-                          style: const TextStyle(fontSize: 13),
+                        textField: GestureDetector(
+                          onTap: () =>
+                              showProficiencyOptions(context, controller),
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              controller: controller.proficiencyController,
+                              readOnly: true,
+                              validator: (value) =>
+                                  controller.fieldValidation(value),
+                              onChanged: (value) =>
+                                  controller.update(['update-LanguageInfo']),
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              decoration: infoFieldDecoration(
+                                  hintText: 'Please Select',
+                                  suffixWidget:
+                                      const Icon(Icons.keyboard_arrow_down)),
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
                         ),
                       ),
                       hMBox,
@@ -155,6 +162,92 @@ class ProfileAddLanguageScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showProficiencyOptions(
+      BuildContext context, LanguageAndCourseController controller) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        List<String> proficiencyList = ['Beginner', 'Intermediate', 'Advanced'];
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  trailing: GestureDetector(
+                    onTap: () => Get.back(),
+                    child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                          'assets/images/close.png',
+                          fit: BoxFit.cover,
+                        )),
+                  ),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: Text(
+                    'Select your Country',
+                    style: TextStyle(
+                      color: kblack,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Column(
+                  children: List.generate(
+                    proficiencyList.length,
+                    (index) {
+                      return ListTile(
+                        shape: const Border(
+                            bottom: BorderSide(
+                                color: Color.fromARGB(255, 202, 201, 201))),
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          proficiencyList[index],
+                          style: TextStyle(
+                            color: kblack,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        trailing: Checkbox(
+                          side: BorderSide.none,
+                          activeColor: mainPurple,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          value: controller.proficiencyController.text ==
+                              proficiencyList[index],
+                          onChanged: (value) {
+                            if (value != null && value) {
+                              controller.proficiencyController.text =
+                                  proficiencyList[index];
+                              controller.update(['update-LanguageInfo']);
+                              Get.back();
+                            }
+                          },
+                        ),
+                        onTap: () {
+                          controller.proficiencyController.text =
+                              proficiencyList[index];
+                          controller.update(['update-LanguageInfo']);
+                          Get.back();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

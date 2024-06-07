@@ -1,30 +1,3 @@
-// class ApiResponse {
-//   final Map<String, List<Question>> data;
-//   final int indexVal;
-//   final int questionAttempt;
-
-//   ApiResponse({
-//     required this.data,
-//     required this.indexVal,
-//     required this.questionAttempt,
-//   });
-
-//   factory ApiResponse.fromJson(Map<String, dynamic> json) {
-//     // Parse the data section
-//     Map<String, dynamic> data = json['data'];
-//     Map<String, List<Question>> parsedData = {};
-//     data.forEach((key, value) {
-//       parsedData[key] =
-//           List<Question>.from(value.map((x) => Question.fromJson(x)));
-//     });
-
-//     return ApiResponse(
-//       data: parsedData,
-//       indexVal: json['indexval'],
-//       questionAttempt: json['question_attempt'],
-//     );
-//   }
-// }
 
 class Question {
   final int id;
