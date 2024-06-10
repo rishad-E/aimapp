@@ -18,7 +18,7 @@ class CareerAimService {
     try {
       Response response = await dio.get(path);
       // log(response.data.toString(), name: 'get aim res');
-      
+
       List<dynamic> data = response.data['Categories'];
 
       final res = data.map((e) => Category.fromJson(e)).toList();
@@ -52,15 +52,25 @@ class CareerAimService {
   Future<List<Aim>> getAimSearchResult({required String query}) async {
     String path = Apis().aimUrl + Apis().searchAim;
     try {
-      Response response = await dio.post(path, data: {"aim_category": query});
+      Response response = await dio.post(
+        path,
+        data: {"aim_category": query},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+        ),
+      );
       // log(response.data.toString(), name: 'search aim res');
-      List<dynamic> data = response.data['Aims'];
-      final res = data.map((json) => Aim.fromJson(json)).toList();
-      return res;
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['Aims'];
+        final res = data.map((json) => Aim.fromJson(json)).toList();
+        return res;
+      } else {
+        return [];
+      }
     } catch (e) {
       log(e.toString(), name: 'search aim error');
+      return [];
     }
-    return [];
   }
 
   Future<List<MicroAim>> getMicroAimSearchResult(

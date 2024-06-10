@@ -31,16 +31,6 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
     String? awardID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFormFields(controller, award);
-      // controller.titileController.text =
-      //     award?.title.toString() ?? controller.titileController.text;
-      // controller.assosiatedController.text =
-      //     award?.associated.toString() ?? controller.assosiatedController.text;
-      // controller.issuerController.text =
-      //     award?.issuer.toString() ?? controller.issuerController.text;
-      // controller.startdateController.text =
-      //     award?.startDate.toString() ?? controller.startdateController.text;
-      // controller.descriptionController.text = award?.description.toString() ??
-      //     controller.descriptionController.text;
       awardID = award?.id.toString();
     });
     return PopScope(
@@ -180,7 +170,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null) {
+                                    if (data[index].url != null&& award?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${award?.imagePath}/${data[index].url}";
                                     }

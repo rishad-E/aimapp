@@ -83,7 +83,7 @@ class EducatorSubmitFinalPage extends StatelessWidget {
                         color: mainPurple),
                     choiceSizedBox(height: 8),
                     GestureDetector(
-                      onTap: () => Get.to(()=>const HomeScreen()),
+                      onTap: () => Get.offAll(()=>const HomeScreen()),
                       child: Container(
                         height: 4.h,
                         decoration: BoxDecoration(

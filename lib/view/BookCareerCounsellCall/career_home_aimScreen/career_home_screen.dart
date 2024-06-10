@@ -108,8 +108,8 @@ class BookCareerHomePage extends StatelessWidget {
                             return TextButton(
                               onPressed: () {
                                 if (careerFormKey.currentState!.validate()) {
-                                  Get.to(() => BookCareerAimPage());
                                   career.searchAimOptions(query: '');
+                                  Get.to(() => BookCareerAimPage());
                                 }
                               },
                               style: ButtonStyle(

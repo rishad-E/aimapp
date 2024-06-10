@@ -3,13 +3,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class EducatorMediaAddController extends GetxController {
+class MentorAddMediaController extends GetxController {
   TextEditingController linkedInController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
   Rx<Color> nextText = Rx<Color>(textFieldColor);
   Rx<Color> nextBG = Rx<Color>(buttonColor);
 
-  RxBool agree = false.obs;
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
   RxString fileSize = ''.obs;
@@ -21,6 +20,8 @@ class EducatorMediaAddController extends GetxController {
   RxString errorTextLink = ''.obs;
   RxString errorTextVideo = ''.obs;
   RxString errorAgreement = ''.obs;
+
+  RxBool agree = false.obs;
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -35,16 +36,6 @@ class EducatorMediaAddController extends GetxController {
     fileSize.value = formatBytes(file.size);
     // log('fileName=>$fileName filePath=>$filePath fileSize=>$fileSize');
     errorTextLink.value = '';
-  }
-
-  String formatBytes(int bytes) {
-    if (bytes == 0) return '0 B';
-
-    final kb = bytes / 1024;
-    final mb = kb / 1024;
-    final filesize =
-        mb >= 1 ? '${mb.toStringAsFixed(2)} MB' : '${kb.toStringAsFixed(2)} KB';
-    return filesize;
   }
 
   Future<void> pickVideo() async {
@@ -76,25 +67,22 @@ class EducatorMediaAddController extends GetxController {
     if (agree.value == true) {
       errorAgreement.value = '';
     }
-    update(['update-agreement']);
+    update(['update-mentorAgreement']);
+  }
+
+  String formatBytes(int bytes) {
+    if (bytes == 0) return '0 B';
+    final kb = bytes / 1024;
+    final mb = kb / 1024;
+    final filesize =
+        mb >= 1 ? '${mb.toStringAsFixed(2)} MB' : '${kb.toStringAsFixed(2)} KB';
+    return filesize;
   }
 
   String? fieldValidation(String? value) {
-    if (filePath.isEmpty && (value == null || value.isEmail)) {
-      return 'Please Enter LinkedIn Profile Link';
-    } else if (filePath.isEmpty && !value!.isURL) {
-      return 'Please Enter a Valid LinkedIn Profile Link';
+    if (value == null || value.isEmpty) {
+      return 'Please Enter this Field';
     }
     return null;
   }
-
-  String? fieldValidationVideo(String? value) {
-    if (videofilePath.isEmpty && (value == null || value.isEmail)) {
-      return 'Please Enter Video Link';
-    } else if (filePath.isEmpty && !value!.isURL) {
-      return 'Please Enter a Valid Video Link';
-    }
-    return null;
-  }
-
 }

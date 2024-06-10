@@ -215,7 +215,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null) {
+                                    if (data[index].url != null && volunteer?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${volunteer?.imagePath}/${data[index].url}";
                                     }

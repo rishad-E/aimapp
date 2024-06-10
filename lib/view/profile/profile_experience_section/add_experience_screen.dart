@@ -29,10 +29,12 @@ class AddExperienceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileExperienceController());
     String? exID;
+    String? path;
     log(experience.toString(), name: 'experience detial');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       exID = experience?.id.toString();
       initializeFormFields(controller, experience);
+      path = experience?.imagePath.toString();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -288,7 +290,7 @@ class AddExperienceScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null) {
+                                  if (data[index].url != null && experience?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${experience?.imagePath}/${data[index].url}";
                                   }

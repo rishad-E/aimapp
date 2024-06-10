@@ -60,18 +60,11 @@ class EducatorMediaAddPage extends StatelessWidget {
                         () => controller.filePath.isEmpty
                             ? uploadMediaWidget(
                                 item: 'Resume',
-                                onTap: () {
-                                  log('UPLOAD a file', name: 'file-picker');
-                                  controller.pickFile();
-                                },
+                                onTap: () => controller.pickFile(),
                               )
                             : mediaContainWidget(
-                                fileName: controller.filePath.isNotEmpty
-                                    ? controller.fileName.value
-                                    : 'Resume.pdf',
-                                fileSize: controller.filePath.isNotEmpty
-                                    ? controller.fileSize.value
-                                    : '2MB',
+                                fileName: controller.fileName.value,
+                                fileSize: controller.fileSize.value,
                                 onTapDelete: () =>
                                     controller.filePath.value = '',
                               ),
@@ -118,18 +111,11 @@ class EducatorMediaAddPage extends StatelessWidget {
                         () => controller.videofilePath.isEmpty
                             ? uploadMediaWidget(
                                 item: 'Video',
-                                onTap: () {
-                                  log('UPLOAD a file', name: 'file-picker');
-                                  controller.pickVideo();
-                                },
+                                onTap: () => controller.pickVideo(),
                               )
                             : mediaContainWidget(
-                                fileName: controller.videofilePath.isNotEmpty
-                                    ? controller.videofileName.value
-                                    : 'Resume.pdf',
-                                fileSize: controller.videofilePath.isNotEmpty
-                                    ? controller.videofileSize.value
-                                    : '2MB',
+                                fileName: controller.videofileName.value,
+                                fileSize: controller.videofileSize.value,
                                 onTapDelete: () =>
                                     controller.videofilePath.value = '',
                               ),
@@ -237,9 +223,9 @@ class EducatorMediaAddPage extends StatelessWidget {
                                         controller.filePath.value.isNotEmpty) &&
                                     (controller.mediaLinkController.text
                                             .isNotEmpty ||
-                                        controller.videofilePath.value.isNotEmpty)) {
-                                  log('allllddddddddddddonnnnnnnnnnnnnneeeeeeeeeeeeeee');
-                                  Get.to(()=>const EducatorSubmitFinalPage());
+                                        controller
+                                            .videofilePath.value.isNotEmpty)) {
+                                  Get.to(() => const EducatorSubmitFinalPage());
                                 }
                               },
                             ),

@@ -28,6 +28,7 @@ class AddEducationScreen extends StatelessWidget {
     final controller = Get.put(ProfileEducationController());
     String? eduID;
     log(edu.toString(), name: 'educational data');
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       eduID = edu?.id.toString();
       initializeFormFields(controller, edu);
@@ -231,12 +232,13 @@ class AddEducationScreen extends StatelessWidget {
                       secSub: 'Learn more about media file types supported',
                       selected: Obx(() {
                         final data = controller.allMediasModel;
+                        log('${edu?.imagePath}', name: 'edu-imagepath');
                         return data.isEmpty
                             ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null) {
+                                  if (data[index].url != null && edu?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${edu?.imagePath}/${data[index].url}";
                                   }
@@ -288,6 +290,7 @@ class AddEducationScreen extends StatelessWidget {
                                         .toList();
                                     List<String> mediaLinks = c.allMediasModel
                                         .map((i) => i.mediaLink)
+                                        .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
                                     edu == null

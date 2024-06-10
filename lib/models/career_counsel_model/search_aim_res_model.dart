@@ -17,14 +17,14 @@ class SearchAimResponseModel {
 
 class Aim {
     int? id;
-    String? categoryName;
+    String? name;
     int? parentId;
     DateTime? createdAt;
     int? lmsId;
 
     Aim({
         this.id,
-        this.categoryName,
+        this.name,
         this.parentId,
         this.createdAt,
         this.lmsId,
@@ -32,7 +32,7 @@ class Aim {
 
     factory Aim.fromJson(Map<String, dynamic> json) => Aim(
         id: json["id"],
-        categoryName: json["category_name"],
+        name: json["name"],
         parentId: json["parent_id"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         lmsId: json["lms_id"],
@@ -40,7 +40,7 @@ class Aim {
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "category_name": categoryName,
+        "name": name,
         "parent_id": parentId,
         "created_at": createdAt?.toIso8601String(),
         "lms_id": lmsId,

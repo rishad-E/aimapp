@@ -128,10 +128,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null) {
+                                    if (data[index].url != null && project?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${project?.imagePath}/${data[index].url}";
-                                      // "http://154.26.130.161/elearning/${volunteer?.imagePath}/${data[index].url}";
                                     }
                                     return addedMediaHomeProject(
                                         file: data[index].file,

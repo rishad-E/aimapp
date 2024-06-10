@@ -169,17 +169,47 @@ Widget addedMediaHomeEX({
               ),
               wBox,
               SizedBox(
-                  height: 29,
-                  width: 45,
-                  child: file != null
-                      ? Image.file(
-                          file,
-                          fit: BoxFit.fill,
-                        )
-                      : Image.network(
-                          mediaUrl!,
-                          fit: BoxFit.fill,
-                        )),
+                height: 29,
+                width: 45,
+                child: file != null
+                    ? Image.file(
+                        file,
+                        fit: BoxFit.fill,
+                      )
+                    : mediaUrl != null
+                        ? Image.network(
+                            mediaUrl,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              }
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.broken_image,
+                              color: Colors.grey,
+                            ),
+                          ),
+              ),
               wBox,
               Expanded(
                 child: Column(

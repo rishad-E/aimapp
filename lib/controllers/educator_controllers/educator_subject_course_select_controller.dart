@@ -8,15 +8,21 @@ class EducatorSubjectCourseController extends GetxController {
   RxList<String> seletedTopic = <String>[].obs;
 
   void addSubject({required String sub}) {
-    if (!seletedSubject.contains(sub) && sub.isNotEmpty) {
-      seletedSubject.add(sub);
+    String formattedSub = sub.trim().isNotEmpty
+        ? '${sub.trim()[0].toUpperCase()}${sub.trim().substring(1).toLowerCase()}'
+        : '';
+    if (!seletedSubject.contains(formattedSub) && formattedSub.isNotEmpty) {
+      seletedSubject.add(formattedSub);
     }
     update(['edu-SubjectCourseinfo']);
   }
 
   void addTopic({required String sub}) {
-    if (!seletedTopic.contains(sub) && sub.isNotEmpty) {
-      seletedTopic.add(sub);
+    String formattedSub = sub.trim().isNotEmpty
+        ? '${sub.trim()[0].toUpperCase()}${sub.trim().substring(1).toLowerCase()}'
+        : '';
+    if (!seletedTopic.contains(formattedSub) && formattedSub.isNotEmpty) {
+      seletedTopic.add(formattedSub);
     }
     update(['edu-SubjectCourseinfo']);
   }

@@ -200,7 +200,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null) {
+                                  if (data[index].url != null && license?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${license?.imagePath}/${data[index].url}";
                                   }

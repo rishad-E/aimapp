@@ -247,11 +247,13 @@ class ProfileHomeScreen extends StatelessWidget {
                                       Get.to(() => AddEducationScreen(uId: id));
                                     },
                                     onTapEdit: () {
-                                      eduController.clearallFields();
+                                      // eduController.clearallFields();
                                       if (data.length < 2) {
+                                        eduController.clearallFields();
                                         Get.to(() => AddEducationScreen(
                                             uId: id, edu: data[0]));
                                       } else {
+                                        eduController.clearallFields();
                                         Get.to(() => EducationSectionScreen(
                                             uId: id, education: data));
                                       }

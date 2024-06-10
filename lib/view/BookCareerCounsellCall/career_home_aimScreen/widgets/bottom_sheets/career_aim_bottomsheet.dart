@@ -60,7 +60,7 @@ class CareerAimBottomsheet extends StatelessWidget {
                                     ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.zero,
-                                      title: Text(data.categoryName.toString(),
+                                      title: Text(data.name.toString(),
                                           style: optionText()),
                                       trailing: Checkbox(
                                         side: BorderSide.none,
@@ -71,19 +71,19 @@ class CareerAimBottomsheet extends StatelessWidget {
                                                 BorderRadius.circular(5)),
                                         value: controller
                                                 .careerAimSelectedRole.value ==
-                                            data.categoryName,
+                                            data.name,
                                         onChanged: (value) {
                                           if (value != null && value) {
                                             aimBottomsheetListvaluechange(
                                                 controller,
-                                                data.categoryName.toString());
+                                                data.name.toString());
                                           }
                                         },
                                       ),
                                       onTap: () async {
                                         aimBottomsheetListvaluechange(
                                             controller,
-                                            data.categoryName.toString());
+                                            data.name.toString());
                                         controller.aimId = data.id.toString();
                                         log(data.id.toString(), name: 'id');
                                         controller.searchMicroAimOptions(
