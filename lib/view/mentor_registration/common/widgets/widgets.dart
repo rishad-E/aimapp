@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget educatorAppBar({required String title}) {
+PreferredSizeWidget mentorAppbar({required String title}) {
   return AppBar(
     title: Text(
       title,
@@ -19,7 +19,19 @@ PreferredSizeWidget educatorAppBar({required String title}) {
   );
 }
 
-Widget educatorBGContainer({Widget? child}) => Container(
+Widget mentorFields({required Widget item, required Widget textfiled}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Column(
+      children: [
+        Align(alignment: Alignment.centerLeft, child: item),
+        textfiled
+      ],
+    ),
+  );
+}
+
+Widget mentorBGContainer({Widget? child}) => Container(
       height: double.infinity,
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -29,7 +41,7 @@ Widget educatorBGContainer({Widget? child}) => Container(
       child: child,
     );
 
-Widget educatorSectionContainer({Widget? child}) {
+Widget mentorSectionContainer({Widget? child}) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.only(
@@ -40,17 +52,5 @@ Widget educatorSectionContainer({Widget? child}) {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
     margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
     child: child,
-  );
-}
-
-Widget educatorFields({required Widget item, required Widget textfiled}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 3),
-    child: Column(
-      children: [
-        Align(alignment: Alignment.centerLeft, child: item),
-        textfiled
-      ],
-    ),
   );
 }

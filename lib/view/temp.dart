@@ -4,6 +4,7 @@ import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_screen.dart';
+import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
 import 'package:aimshala/view/profile/profile_add_course_section/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
 import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
@@ -46,14 +47,20 @@ class TempScreen extends StatelessWidget {
                   Get.to(() => ProfileAddCourseScreen(uId: id.toString())),
               item: "Course",
             ),
-            
             hMBox,
             elevatedButtonItems(
               onPressed: () {
                 Get.put(EducatorPersonalDetailController()).clearAllfields();
-                Get.to(()=>EducatorPersonalDetailPage());
+                Get.to(() => EducatorPersonalDetailPage());
               },
               item: 'Educator',
+            ),
+            elevatedButtonItems(
+              onPressed: () {
+                // Get.put(EducatorPersonalDetailController()).clearAllfields();
+                Get.to(() => MentorPersonalDetailPage());
+              },
+              item: 'Mentor',
             ),
           ],
         ),
