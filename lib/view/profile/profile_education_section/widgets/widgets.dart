@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -188,8 +188,8 @@ Widget addedMediaHome(
                             },
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
-                                Icons.error,
-                                color: Colors.red,
+                                Icons.broken_image,
+                                color: Colors.grey,
                               );
                             },
                           )

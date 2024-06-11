@@ -1,5 +1,5 @@
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';

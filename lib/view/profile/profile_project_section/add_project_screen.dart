@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -128,7 +128,8 @@ class ProfileAddProjectScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null && project?.imagePath != null) {
+                                    if (data[index].url != null &&
+                                        project?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${project?.imagePath}/${data[index].url}";
                                     }
@@ -269,6 +270,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                         .toList();
                                     List<String> mediaLink = c.allProjectMedias
                                         .map((i) => i.mediaLink)
+                                        .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
                                     String currenly =
@@ -434,7 +436,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
       List<AddMediaModel> mediaItems = parseMediaItems(project);
       c.allProjectMedias.addAll(mediaItems);
     }
-    if (c.addedProjectSkill.isEmpty && project.skills != null) {
+    if (c.addedProjectSkill.isEmpty &&
+        project.skills != null &&
+        project.skills != "") {
       List<String>? resSkill = project.skills?.split(',');
       if (resSkill != null) {
         for (var i in resSkill) {
@@ -458,8 +462,15 @@ class ProfileAddProjectScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(Project project) {
-    List<String> mediaList =
-        List<String>.from(jsonDecode(project.media as String));
+    List<String> mediaList = [];
+    if (project.media != null && project.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(project.media as String));
+      } catch (e) {
+        log('Error decoding media: $e');
+      }
+    }
+    // List<String> mediaList =
     List<String> mediaTitles = project.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions = project.mediaDescription?.split(',') ?? [];
     List<AddMediaModel> mediaItems = [];

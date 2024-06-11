@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/services/AMY_chat_bot/chat_bot_service.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/chatbot/widgets/amy_chat_widgets.dart';
 import 'package:aimshala/view/chatbot/widgets/amy_radial_gradient.dart';
 import 'package:aimshala/view/chatbot/widgets/chat_model.dart';

@@ -133,10 +133,11 @@ class UpdateEducationInfoService {
       "grade": grade,
       "activities": activities,
       "description": description,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDescription,
-      "media_links[]": mediaLinks,
-      "skills[]": skills,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]":
+          mediaDescription.isEmpty ? null : mediaDescription,
+      "media_links[]": mediaLinks.isEmpty ? null : mediaLinks,
+      "skills[]": skills.isEmpty ? null : skills,
     });
     if (images.isNotEmpty) {
       for (int i = 0; i < images.length; i++) {
@@ -147,6 +148,8 @@ class UpdateEducationInfoService {
               filename: image.path.split('/').last),
         ));
       }
+    } else {
+      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(

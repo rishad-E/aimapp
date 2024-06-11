@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -170,7 +170,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null&& award?.imagePath != null) {
+                                    if (data[index].url != null &&
+                                        award?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${award?.imagePath}/${data[index].url}";
                                     }
@@ -217,6 +218,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                       .toList();
                                   List<String> mediaLinks = c.allAwardMedias
                                       .map((i) => i.mediaLink)
+                                      .where((mediaLink) => mediaLink != null)
                                       .cast<String>()
                                       .toList();
                                   List<String> mediaTitles = c.allAwardMedias
@@ -309,7 +311,15 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(Award award) {
-    List<String> mediaList = List<String>.from(jsonDecode(award.media!));
+    List<String> mediaList = [];
+    if (award.media != null && award.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(award.media!));
+      } catch (e) {
+        log('Error decoding media: $e');
+      }
+    }
+    // List<String> mediaList =
     List<String> mediaTitles = award.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions = award.mediaDescription?.split(',') ?? [];
     List<AddMediaModel> mediaItems = [];

@@ -1,5 +1,5 @@
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';

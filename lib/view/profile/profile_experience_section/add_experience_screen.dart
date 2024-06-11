@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_experience_section/add_link_screen.dart';
@@ -29,12 +29,12 @@ class AddExperienceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileExperienceController());
     String? exID;
-    String? path;
+    // String? path;
     log(experience.toString(), name: 'experience detial');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       exID = experience?.id.toString();
       initializeFormFields(controller, experience);
-      path = experience?.imagePath.toString();
+      // path = experience?.imagePath.toString();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -290,7 +290,8 @@ class AddExperienceScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null && experience?.imagePath != null) {
+                                  if (data[index].url != null &&
+                                      experience?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${experience?.imagePath}/${data[index].url}";
                                   }
@@ -344,6 +345,7 @@ class AddExperienceScreen extends StatelessWidget {
                                       .toList();
                                   List<String> mediaLinks = c.allMediasEX
                                       .map((i) => i.mediaLink)
+                                      .where((mediaLink) => mediaLink != null)
                                       .cast<String>()
                                       .toList();
                                   String currently =
@@ -462,7 +464,7 @@ class AddExperienceScreen extends StatelessWidget {
       c.currentlyWorking.value = true;
       c.update(['EX-currentlyworkingButton']);
     }
-    if (c.addedSkillEX.isEmpty && experience.skills != null) {
+    if (c.addedSkillEX.isEmpty && experience.skills != null&& experience.skills != "") {
       List<String>? resSkill = experience.skills?.split(',').toList();
       if (resSkill != null) {
         for (var i in resSkill) {
@@ -481,7 +483,16 @@ class AddExperienceScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(Experience experience) {
-    List<String> mediaList = List<String>.from(jsonDecode(experience.media!));
+    List<String> mediaList = [];
+    if (experience.media != null && experience.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(experience.media!));
+      } catch (e) {
+        log('Error decoding media: $e');
+      }
+    }
+
+    // List<String> mediaList = List<String>.from(jsonDecode(experience.media!));
     List<String> mediaTitles = experience.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions =
         experience.mediaDescription?.split(',') ?? [];

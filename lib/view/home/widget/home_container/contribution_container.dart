@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';

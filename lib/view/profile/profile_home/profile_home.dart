@@ -10,8 +10,8 @@ import 'package:aimshala/controllers/profile_controller/profile_project_controll
 import 'package:aimshala/controllers/profile_controller/profile_publications_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:aimshala/models/profile_model/cities_model.dart';
 import 'package:aimshala/models/profile_model/country_state_model.dart';
 import 'package:aimshala/services/profile_section/update_contact_info_service.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

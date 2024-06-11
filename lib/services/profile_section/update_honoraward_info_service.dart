@@ -113,9 +113,10 @@ class UpdateHonorAwardService {
       "issuer": issuer,
       "start_date": startdate,
       "description": description,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDescription,
-      "media_links[]": mediaLink,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]":
+          mediaDescription.isEmpty ? null : mediaDescription,
+      "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {
@@ -127,6 +128,8 @@ class UpdateHonorAwardService {
                   filename: image.path.split('/').last)),
         );
       }
+    }else{
+      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/city_bottom_sheet.dart';

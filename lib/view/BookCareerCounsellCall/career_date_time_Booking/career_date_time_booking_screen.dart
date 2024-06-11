@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/career_booking_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_date_time_Booking/widgets/date_time_widgets.dart';

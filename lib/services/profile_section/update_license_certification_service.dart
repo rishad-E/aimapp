@@ -123,10 +123,11 @@ class UpdateLicenseCertificationService {
       "expire_date": expiryDate,
       "credential_id": credID,
       "credential_url": credURL,
-      "skills[]": skills,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDescription,
-      "media_links[]": mediaLink,
+      "skills[]": skills.isEmpty ? null : skills,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]":
+          mediaDescription.isEmpty ? null : mediaDescription,
+      "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
     if (media.isNotEmpty) {
       for (int i = 0; i < media.length; i++) {
@@ -137,6 +138,8 @@ class UpdateLicenseCertificationService {
               filename: image.path.split('/').last),
         ));
       }
+    } else {
+      formData.fields.add(const MapEntry('images[]', ''));
     }
 
     try {

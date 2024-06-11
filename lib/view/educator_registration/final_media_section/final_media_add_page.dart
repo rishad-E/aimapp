@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/educator_controllers/educator_add_media_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/educator_registration/final_media_section/widgets/widgets.dart';

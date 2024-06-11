@@ -109,9 +109,9 @@ class UpdateVolunteerInfoService {
       "end_date": endDate,
       "currently_working": currentlyWorking,
       "description": description,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDesc,
-      "media_links[]": mediaLink,
+      "media_titles[]": mediaTitle.isEmpty?null:mediaTitle,
+      "media_descriptions[]": mediaDesc.isEmpty?null:mediaDesc,
+      "media_links[]": mediaLink.isEmpty?null:mediaLink,
     });
     if (media.isNotEmpty) {
       for (var i = 0; i < media.length; i++) {
@@ -122,6 +122,8 @@ class UpdateVolunteerInfoService {
               filename: image.path.split('/').join()),
         ));
       }
+    }else{
+      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(path,

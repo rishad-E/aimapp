@@ -1,7 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -170,6 +171,7 @@ Widget addedLicenseMediaHome(
     required String title,
     required String desc,
     String? mediaUrl}) {
+  log(mediaUrl.toString(), name: 'lllllllllllllllllllll');
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 3),
     width: double.infinity,
@@ -221,8 +223,8 @@ Widget addedLicenseMediaHome(
                             },
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
-                                Icons.error,
-                                color: Colors.red,
+                                Icons.broken_image,
+                                color: Colors.grey,
                               );
                             },
                           )

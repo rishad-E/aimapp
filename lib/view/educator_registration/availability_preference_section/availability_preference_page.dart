@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/educator_controllers/educator_availability_preference_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/additional_information_section/additional_information_page.dart';
 import 'package:aimshala/view/educator_registration/availability_preference_section/widgets/widgets.dart';

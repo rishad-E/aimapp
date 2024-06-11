@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_link_screen.dart';
@@ -238,7 +238,8 @@ class AddEducationScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null && edu?.imagePath != null) {
+                                  if (data[index].url != null &&
+                                      edu?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${edu?.imagePath}/${data[index].url}";
                                   }
@@ -395,7 +396,7 @@ class AddEducationScreen extends StatelessWidget {
         c.descriptionController.text.isEmpty && edu.description != null
             ? edu.description as String
             : c.descriptionController.text;
-    if (c.addedSkill.isEmpty && edu.skills != null) {
+    if (c.addedSkill.isEmpty && edu.skills != null && edu.skills != "") {
       List<String>? resList = edu.skills?.split(',');
       if (resList != null) {
         for (String skill in resList) {
@@ -414,7 +415,17 @@ class AddEducationScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(Education edu) {
-    List<String> mediaList = List<String>.from(jsonDecode(edu.media!));
+   
+    List<String> mediaList = [];
+    if (edu.media != null && edu.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(edu.media!));
+      } catch (e) {
+        log('Error decoding media: $e');
+        // Handle the error (e.g., log it, set mediaList to an empty list, etc.)
+      }
+    }
+
     List<String> mediaTitles = edu.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions = edu.mediaDescription?.split(',') ?? [];
     List<AddMediaModel> mediaItems = [];

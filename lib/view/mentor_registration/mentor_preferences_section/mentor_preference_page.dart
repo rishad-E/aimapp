@@ -1,6 +1,6 @@
 import 'package:aimshala/controllers/mentor_controllers/mentor_preference_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/mentor_registration/mentor_availability_preference_section/mentor_availability_preference_page.dart';
@@ -183,7 +183,7 @@ class MentorPreferencePage extends StatelessWidget {
                                     if (c.mentorMode.isNotEmpty &&
                                         c.seletedSubject.isNotEmpty &&
                                         c.seletedTopic.isNotEmpty) {
-                                          Get.to(()=>MentorAvailabilityPreferencePage());
+                                          Get.to(()=>const MentorAvailabilityPreferencePage());
                                         }
                                   },
                                 ),

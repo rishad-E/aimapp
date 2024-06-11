@@ -1,5 +1,5 @@
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 

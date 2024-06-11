@@ -1,5 +1,5 @@
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/AIMCET_test/Trait-Report/widgets/trait_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';

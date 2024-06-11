@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/mentor_controllers/mentor_reference_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/mentor_registration/mentor_final_media_section/mentor_final_media_page.dart';
@@ -116,26 +116,8 @@ class MentorReferencesPage extends StatelessWidget {
                             LengthLimitingTextInputFormatter(10)
                           ],
                           decoration: infoFieldDecoration(
-                            // hintText: '9729665668',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
-                          ),
+                              // hintText: '9729665668',
+                              prefix: phoneIcon()),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -219,25 +201,7 @@ class MentorReferencesPage extends StatelessWidget {
                             LengthLimitingTextInputFormatter(10)
                           ],
                           decoration: infoFieldDecoration(
-                            // hintText: '9729665668',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
+                            prefix: phoneIcon(),
                           ),
                           style: const TextStyle(fontSize: 13),
                         ),
@@ -265,7 +229,7 @@ class MentorReferencesPage extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       log('name1=${c.nameController1.text} relation1=${c.relationController1.text} mob=>${c.mobileController1.text} name2=${c.nameController2.text} relation2=${c.relationController2.text} mob2=>${c.mobileController2.text}',
                                           name: 'reference page');
-                                      Get.to(()=>MentorMediaPage());
+                                      Get.to(() => const MentorMediaPage());
                                     }
                                   },
                                 ),

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/chatbot/amy_chat_screen.dart';
 import 'package:aimshala/view/temp.dart';

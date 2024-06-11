@@ -2,7 +2,7 @@ import 'package:aimshala/controllers/home_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/upcomingmodel/upcomingevent.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/home/widget/const.dart';
 import 'package:aimshala/view/home/widget/drawer_home.dart';

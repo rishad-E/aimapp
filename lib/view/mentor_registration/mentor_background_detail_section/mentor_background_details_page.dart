@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/mentor_controllers/mentor_background_detail_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/text_widgets.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';

@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/mentor_controllers/mentor_experience_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/mentor_registration/mentor_experience_section/widgets/widgets.dart';
@@ -145,7 +145,7 @@ class MentorExperiencePage extends StatelessWidget {
                                       log('Relocate=>${c.relocate} experience=>${c.experienceController.text}',
                                           name: 'edu-personalpage');
                                       c.relocteSelected.value = '';
-                                          Get.to(()=>MentorPreferencePage());
+                                          Get.to(()=>const MentorPreferencePage());
                                     } else {
                                       c.relocteSelected.value = 'no';
                                     }

@@ -1,5 +1,5 @@
 import 'package:aimshala/controllers/career_booking_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/career_home_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';

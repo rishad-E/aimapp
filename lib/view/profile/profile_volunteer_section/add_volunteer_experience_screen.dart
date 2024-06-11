@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -215,7 +216,8 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                               : Column(
                                   children: List.generate(data.length, (index) {
                                     String? mediaUrl;
-                                    if (data[index].url != null && volunteer?.imagePath != null) {
+                                    if (data[index].url != null &&
+                                        volunteer?.imagePath != null) {
                                       mediaUrl =
                                           "http://154.26.130.161/elearning/${volunteer?.imagePath}/${data[index].url}";
                                     }
@@ -268,6 +270,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                         .toList();
                                     List<String> mediaLinks = c.volunteerMedia
                                         .map((i) => i.mediaLink)
+                                        .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
                                     volunteer == null
@@ -459,7 +462,15 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> _parseMediaItems(VolunteerExperience volunteer) {
-    List<String> mediaList = List<String>.from(jsonDecode(volunteer.media!));
+    List<String> mediaList = [];
+    if (volunteer.media != null && volunteer.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(volunteer.media!));
+      } catch (e) {
+        log('Error decoding media: $e');
+      }
+    }
+    // List<String> mediaList = List<String>.from(jsonDecode(volunteer.media!));
     List<String> mediaTitles = volunteer.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions =
         volunteer.mediaDescription?.split(',') ?? [];

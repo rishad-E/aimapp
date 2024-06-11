@@ -1,5 +1,5 @@
 import 'package:aimshala/controllers/educator_controllers/educator_background_detail_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

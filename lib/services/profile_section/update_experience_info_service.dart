@@ -130,10 +130,11 @@ class UpdateExperienceInfoService {
       "end_date": endDate,
       "description": description,
       "profile": profile,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDescription,
-      "media_links[]": mediaLink,
-      "skills[]": skillsEX,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]":
+          mediaDescription.isEmpty ? null : mediaDescription,
+      "media_links[]": mediaLink.isEmpty ? null : mediaLink,
+      "skills[]": skillsEX.isEmpty ? null : skillsEX,
     });
     if (imagesEX.isNotEmpty) {
       for (int i = 0; i < imagesEX.length; i++) {
@@ -144,6 +145,8 @@ class UpdateExperienceInfoService {
               filename: image.path.split('/').last),
         ));
       }
+    } else {
+      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(

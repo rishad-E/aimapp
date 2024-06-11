@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/text_widgets.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
@@ -92,24 +92,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                           ],
                           decoration: infoFieldDecoration(
                             hintText: 'Enter Mobile Number',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
+                            prefix:phoneIcon()
                           ),
                           style: const TextStyle(fontSize: 13),
                         ),

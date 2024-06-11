@@ -1,6 +1,6 @@
 import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/login/otp_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';

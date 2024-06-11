@@ -111,10 +111,11 @@ class UpdateProjectInfoService {
       "description": description,
       "associated": assosiated,
       "currently_working": currentlyWorking,
-      "skills[]": skills,
-      "media_titles[]": mediaTitle,
-      "media_descriptions[]": mediaDescription,
-      "media_links[]": mediaLink,
+      "skills[]": skills.isEmpty ? null : skills,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]":
+          mediaDescription.isEmpty ? null : mediaDescription,
+      "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
     if (medias.isNotEmpty) {
       for (int i = 0; i < medias.length; i++) {
@@ -125,6 +126,8 @@ class UpdateProjectInfoService {
               filename: media.path.split('/').last),
         ));
       }
+    } else {
+      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(

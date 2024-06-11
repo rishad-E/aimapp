@@ -1,4 +1,4 @@
-import 'package:aimshala/utils/common/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 
 SizedBox wBox = const SizedBox(width: 5);
@@ -80,5 +80,24 @@ MaterialStateProperty<OutlinedBorder?> buttonShape({required double round}) {
     RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(round),
     ),
+  );
+}
+
+Widget phoneIcon() {
+  return Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      const SizedBox(width: 8),
+      Text(
+        '+91',
+        style: TextStyle(fontSize: 14, color: kblack.withOpacity(0.4)),
+      ),
+      Icon(
+        Icons.keyboard_arrow_down,
+        size: 26,
+        color: kblack.withOpacity(0.4),
+      ),
+      wBox
+    ],
   );
 }

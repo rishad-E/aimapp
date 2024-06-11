@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
-import 'package:aimshala/utils/common/colors_common.dart';
-import 'package:aimshala/utils/common/text_common.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
@@ -242,6 +242,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                       .toList();
                                   List<String> mediaLinks = c.allLicenseMedias
                                       .map((i) => i.mediaLink)
+                                      .where((mediaLink) => mediaLink != null)
                                       .cast<String>()
                                       .toList();
                                   List<String> mediaTitles = c.allLicenseMedias
@@ -400,7 +401,9 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
         c.credentialurlController.text.isEmpty && license.credentialUrl != null
             ? license.credentialUrl as String
             : c.credentialurlController.text;
-    if (c.addedLicenseSkill.isEmpty && license.skills != null) {
+    if (c.addedLicenseSkill.isEmpty &&
+        license.skills != null &&
+        license.skills != "") {
       List<String>? resSkill = license.skills?.split(',');
       if (resSkill != null) {
         for (var i in resSkill) {
@@ -419,7 +422,15 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(License license) {
-    List<String> mediaList = List<String>.from(jsonDecode(license.media!));
+    List<String> mediaList = [];
+    if (license.media != null && license.media!.isNotEmpty) {
+      try {
+        mediaList = List<String>.from(jsonDecode(license.media!));
+      } catch (e) {
+        log(e.toString(), name: 'media parse li');
+      }
+    }
+    // List<String> mediaList = List<String>.from(jsonDecode(license.media!));
     List<String> mediaTitles = license.mediaTitle?.split(',') ?? [];
     List<String> mediaDescriptions = license.mediaDescription?.split(',') ?? [];
     List<AddMediaModel> mediaItems = [];
