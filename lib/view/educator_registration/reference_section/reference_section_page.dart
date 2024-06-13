@@ -20,7 +20,8 @@ class EducatorReferencePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorReferenceController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+       appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
+
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -48,9 +49,8 @@ class EducatorReferencePage extends StatelessWidget {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);
                           },
-                          decoration: infoFieldDecoration(
-                            hintText: 'Enter Name',
-                          ),
+                          decoration:
+                              infoFieldDecoration(hintText: 'Enter Name'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -79,24 +79,25 @@ class EducatorReferencePage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Obx(() => controller.otherRelation1.value ==
-                              "Other(Please Specify)"
-                          ? TextFormField(
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              controller: controller.otherRelationController1,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
-                              onChanged: (value) {
-                                controller.checkAlFields();
-                                controller.update(['edu-referenceInfo']);
-                              },
-                              decoration: infoFieldDecoration(
-                                  hintText: 'Enter Relationship'),
-                              style: const TextStyle(fontSize: 13),
-                            )
-                          : shrinked),
-                      // hBox,
+                      Obx(
+                        () => controller.otherRelation1.value ==
+                                "Other(Please Specify)"
+                            ? TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                controller: controller.otherRelationController1,
+                                validator: (value) =>
+                                    controller.filedValidation(value),
+                                onChanged: (value) {
+                                  controller.checkAlFields();
+                                  controller.update(['edu-referenceInfo']);
+                                },
+                                decoration: infoFieldDecoration(
+                                    hintText: 'Enter Relationship'),
+                                style: const TextStyle(fontSize: 13),
+                              )
+                            : shrinked,
+                      ),
                       hBox,
                       educatorFields(
                         item: primarytxt3('Mobile Number', 9.5.sp),
@@ -112,27 +113,7 @@ class EducatorReferencePage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(
-                            hintText: '9729665668',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
-                          ),
+                          decoration: infoFieldDecoration(prefix: phoneIcon()),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -212,27 +193,7 @@ class EducatorReferencePage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(
-                            hintText: '9729665668',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
-                          ),
+                          decoration: infoFieldDecoration(prefix: phoneIcon()),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -257,7 +218,22 @@ class EducatorReferencePage extends StatelessWidget {
                                   boxColor: c.nextBG.value,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('name1=${c.nameController1.text} relation1=${c.relationController1.text} mob=>${c.mobileController1.text} name2=${c.nameController2.text} relation2=${c.relationController2.text} mob2=>${c.mobileController2.text}',
+                                      // log('name1=${c.nameController1.text} relation1=${c.relationController1.text} mob=>${c.mobileController1.text} name2=${c.nameController2.text} relation2=${c.relationController2.text} mob2=>${c.mobileController2.text} other1=>${c.otherRelationController1.text} other2=>${c.otherRelationController2.text}',
+                                      //     name: 'reference page');
+                                      c.addtoLists(
+                                          refName1: c.nameController1.text,
+                                          refRelation1:
+                                              c.relationController1.text,
+                                          refPhone1: c.mobileController1.text,
+                                          refName2: c.nameController2.text,
+                                          refRelation2:
+                                              c.relationController2.text,
+                                          refPhone2: c.mobileController2.text,
+                                          otherRelation1:
+                                              c.otherRelationController1.text,
+                                          otherRelation2:
+                                              c.otherRelationController2.text);
+                                      log('nameList=${c.referenceNames} relationList=${c.referenceRelation} mobList=>${c.referencePhone}  otherRelList=>${c.otherRelation}',
                                           name: 'reference page');
                                       Get.to(() => EducatorMediaAddPage());
                                     }

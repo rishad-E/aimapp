@@ -5,7 +5,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/common/widgets/text_widgets.dart';
 import 'package:aimshala/view/educator_registration/common/widgets/widgets.dart';
-import 'package:aimshala/view/educator_registration/professional_background_detial_section/background_detail_section.dart';
+import 'package:aimshala/view/educator_registration/professional_background_detial_section/background_detail_page.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorPersonalDetailController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -91,24 +91,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                           ],
                           decoration: infoFieldDecoration(
                             hintText: 'Enter Mobile Number',
-                            prefix: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(width: 8),
-                                Text(
-                                  '+91',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: kblack.withOpacity(0.4)),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 26,
-                                  color: kblack.withOpacity(0.4),
-                                ),
-                                wBox
-                              ],
-                            ),
+                            prefix:phoneIcon(),
                           ),
                           style: const TextStyle(fontSize: 13),
                         ),

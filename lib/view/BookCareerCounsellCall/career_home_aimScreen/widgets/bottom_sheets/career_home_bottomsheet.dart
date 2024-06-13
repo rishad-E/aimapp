@@ -96,10 +96,10 @@ void bottomSheetListValueOnchanged(
   controller.careerSelectedRole = type;
   if (type == "Other") {
     controller.otherRole.value = type;
-    log(controller.otherRole.value, name: 'other');
+    // log(controller.otherRole.value, name: 'other');
   } else {
     controller.otherRole.value = '';
-    log(controller.otherRole.value, name: 'not other');
+    // log(controller.otherRole.value, name: 'not other');
   }
   controller.update(['button-careerHome']);
 }

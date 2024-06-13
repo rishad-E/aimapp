@@ -60,7 +60,7 @@ class CareerAimBottomsheet extends StatelessWidget {
                                     ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.zero,
-                                      title: Text(data.name.toString(),
+                                      title: Text(data.categoryName.toString(),
                                           style: optionText()),
                                       trailing: Checkbox(
                                         side: BorderSide.none,
@@ -71,27 +71,24 @@ class CareerAimBottomsheet extends StatelessWidget {
                                                 BorderRadius.circular(5)),
                                         value: controller
                                                 .careerAimSelectedRole.value ==
-                                            data.name,
+                                            data.categoryName,
                                         onChanged: (value) {
                                           if (value != null && value) {
                                             aimBottomsheetListvaluechange(
                                                 controller,
-                                                data.name.toString());
+                                                data.categoryName.toString());
                                           }
                                         },
                                       ),
                                       onTap: () async {
                                         aimBottomsheetListvaluechange(
                                             controller,
-                                            data.name.toString());
+                                            data.categoryName.toString());
                                         controller.aimId = data.id.toString();
-                                        log(data.id.toString(), name: 'id');
                                         controller.searchMicroAimOptions(
                                             query: '',
                                             parentId: data.id.toString());
                                         controller.check.clear();
-                                        log(controller.check.toString(),
-                                            name: 'list after aim change');
                                         controller.update(['button-careerAim']);
                                       },
                                     ),

@@ -119,17 +119,22 @@ Widget infoHeading(String text) {
   );
 }
 
-Widget contactInfos({required String text, required String svg}) {
+Widget contactInfos(
+    {required String text,
+    required String svg,
+    double? height,
+    double? width,required BoxFit fit}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 2),
     child: Row(
       // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 20,
-          width: 20,
+          height: height ?? 20,
+          width: width ?? 20,
           child: SvgPicture.asset(
             svg,
+           fit: fit,
             colorFilter: ColorFilter.mode(kpurple, BlendMode.srcIn),
           ),
         ),

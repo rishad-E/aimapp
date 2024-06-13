@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget educatorAppBar({required String title}) {
+PreferredSizeWidget educatorAppBar({required String title,required bool backArrow}) {
   return AppBar(
     title: Text(
       title,
@@ -11,6 +11,7 @@ PreferredSizeWidget educatorAppBar({required String title}) {
     centerTitle: true,
     surfaceTintColor: Colors.white,
     elevation: 7,
+    automaticallyImplyLeading: backArrow,
     shadowColor: Colors.black.withOpacity(0.5),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(

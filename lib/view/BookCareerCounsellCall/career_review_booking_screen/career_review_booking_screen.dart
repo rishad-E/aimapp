@@ -207,10 +207,7 @@ void showDialogBoxFunction(BuildContext context, String userId,
     context: context,
     builder: (context) {
       controller.checkCounsellcallBookingFuntion(userId: userId);
-      return BookingDialogueBox(
-        id: userId,
-        userName: name,
-      );
+      return BookingDialogueBox(id: userId, userName: name);
     },
   );
 }

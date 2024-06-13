@@ -21,7 +21,7 @@ class EducatorWorkPreferencePage extends StatelessWidget {
     List<String> workModeList = ["Work from Home", "Work from Office", "Both"];
     List<String> teachingModeList = ["Online Courses", "Institute Near Me"];
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Column(

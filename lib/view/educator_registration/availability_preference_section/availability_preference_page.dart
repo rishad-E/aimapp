@@ -33,7 +33,8 @@ class EducatorAvailabilitySelectPage extends StatelessWidget {
       "Night (8-12)"
     ];
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
+
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Column(

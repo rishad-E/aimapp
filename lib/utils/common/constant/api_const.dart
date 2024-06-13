@@ -19,6 +19,8 @@ class Apis {
   final String traitReport = '/trait-report';
   final String checkAimcet = '/test-check';
   final String checkCounsellcall = '/slot-check';
+
+  /*-------- apis for save profile sections */
   final String savepersonalInfo = '/add-personal-info';
   final String saveContactInfo = '/add-contact-info';
   final String saveEducation = '/add-education';
@@ -49,4 +51,7 @@ class Apis {
   final String deleteLanguages = '/destroy-language';
   final String deleteCourses = '/destroy-course';
   final String deleteVolunteerEX = '/destroy-volunteer-experience';
+
+  final String educator= '/educator';
+  final String mentor= '/mentor';
 }

@@ -19,7 +19,7 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorBackgroundDetailController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -34,7 +34,8 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                           text1: 'Professional', text2: 'Background'),
                       hLBox,
                       educatorFields(
-                        item: semiBoldChoiceText(text: 'Highest Degree Earned', size: 9.5.sp),
+                        item: semiBoldChoiceText(
+                            text: 'Highest Degree Earned', size: 9.5.sp),
                         textfiled: GestureDetector(
                           onTap: () => showDegreeOptions(context),
                           child: AbsorbPointer(
@@ -48,7 +49,7 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                               onChanged: (value) =>
                                   controller.update(['edu-backgroundinfo']),
                               decoration: infoFieldDecoration(
-                                  hintText: 'Enter Full Name',
+                                  hintText: 'Please Select',
                                   suffixWidget:
                                       const Icon(Icons.keyboard_arrow_down)),
                               style: const TextStyle(fontSize: 13),
@@ -56,8 +57,25 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Obx(
+                        () => controller.other.value == 'Others'
+                            ? TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                controller: controller.otherDegreeController,
+                                validator: (value) =>
+                                    controller.fieldValidation(value),
+                                onChanged: (value) =>
+                                    controller.update(['edu-backgroundinfo']),
+                                decoration: infoFieldDecoration(
+                                    hintText: 'Enter highest earned degree'),
+                                style: const TextStyle(fontSize: 13),
+                              )
+                            : shrinked,
+                      ),
                       educatorFields(
-                        item: semiBoldChoiceText(text: 'Field of Expertise',size:  9.5.sp),
+                        item: semiBoldChoiceText(
+                            text: 'Field of Expertise', size: 9.5.sp),
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.expertiesController,
@@ -71,8 +89,9 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                         ),
                       ),
                       educatorFields(
-                        item: semiBoldChoiceText(text: 
-                            'Years of Professional Experience',size:  9.5.sp),
+                        item: semiBoldChoiceText(
+                            text: 'Years of Professional Experience',
+                            size: 9.5.sp),
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.professionalController,
@@ -81,15 +100,16 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                           onChanged: (value) =>
                               controller.update(['edu-backgroundinfo']),
                           decoration: infoFieldDecoration(
-                              hintText: 'Please Select',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
+                            hintText: 'Enter Years of Professional Experience',
+                            // suffixWidget: const Icon(Icons.keyboard_arrow_down),
+                          ),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
                       educatorFields(
-                        item: semiBoldChoiceText(text: 
-                            'Current/Last Institution Affiliated With',size:  9.5.sp),
+                        item: semiBoldChoiceText(
+                            text: 'Current/Last Institution Affiliated With',
+                            size: 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.affiliatedController,
                           validator: (value) =>
@@ -140,9 +160,10 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                                       : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text}',
+                                      log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text} otherD=>${c.otherDegreeController.text}',
                                           name: 'edu-backgroundpage');
-                                          Get.to(()=>const EducatorSubjectCourseSelectPage());
+                                      Get.to(() =>
+                                          const EducatorSubjectCourseSelectPage());
                                     }
                                   },
                                 ),

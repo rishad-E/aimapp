@@ -17,14 +17,14 @@ class SearchMicroaimResponseModel {
 
 class MicroAim {
     int? id;
-    String? name;
+    String? categoryName;
     int? parentId;
     DateTime? createdAt;
     int? lmsId;
 
     MicroAim({
         this.id,
-        this.name,
+        this.categoryName,
         this.parentId,
         this.createdAt,
         this.lmsId,
@@ -32,7 +32,7 @@ class MicroAim {
 
     factory MicroAim.fromJson(Map<String, dynamic> json) => MicroAim(
         id: json["id"],
-        name: json["name"],
+        categoryName: json["category_name"],
         parentId: json["parent_id"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
         lmsId: json["lms_id"],
@@ -40,7 +40,7 @@ class MicroAim {
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "category_name": categoryName,
         "parent_id": parentId,
         "created_at": createdAt?.toIso8601String(),
         "lms_id": lmsId,

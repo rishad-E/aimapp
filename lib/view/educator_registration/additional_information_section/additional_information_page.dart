@@ -18,7 +18,8 @@ class EducatorAdditionalInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorAdditionalInfoController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+       appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
+
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -99,9 +100,12 @@ class EducatorAdditionalInfoPage extends StatelessWidget {
                                           : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('description=${c.descriptionController.text} whyJoin=${c.joinAimshalaController.text}',
+                                      log('questions=>${c.questions}  answers=>${c.answers}',
                                           name: 'addition-info page');
-                                          Get.to(()=>EducatorReferencePage());
+                                      c.addAnswers(
+                                          ans1: c.descriptionController.text,
+                                          ans2: c.joinAimshalaController.text);
+                                      Get.to(() => EducatorReferencePage());
                                     }
                                   },
                                 ),

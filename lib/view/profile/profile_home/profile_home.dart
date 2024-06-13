@@ -120,15 +120,10 @@ class ProfileHomeScreen extends StatelessWidget {
                               children: [
                                 infoHeading("Personal Info"),
                                 GestureDetector(
-                                  onTap: () {
-                                    log('edit personal info');
-                                    Get.to(() => ProfilePersonalInfoScreen(
-                                        user: data, id: id));
-                                  },
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: kpurple,
-                                  ),
+                                  onTap: () => Get.to(() =>
+                                      ProfilePersonalInfoScreen(
+                                          user: data, id: id)),
+                                  child: Icon(Icons.edit, color: kpurple),
                                 )
                               ],
                             ),
@@ -174,10 +169,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                         Get.to(() => ProfileContactInfoScreen(
                                             user: data, id: id));
                                       },
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: kpurple,
-                                      ),
+                                      child: Icon(Icons.edit, color: kpurple),
                                     )
                                   ],
                                 ),
@@ -187,16 +179,21 @@ class ProfileHomeScreen extends StatelessWidget {
                                       ? "-"
                                       : '+91 ${data?.phone}',
                                   svg: 'assets/images/call.svg',
+                                  height: 22,
+                                  fit: BoxFit.fitHeight,
                                 ),
                                 contactInfos(
                                   text: data?.email ?? '_',
                                   svg: 'assets/images/email.svg',
+                                  fit: BoxFit.contain,
                                 ),
                                 contactInfos(
                                   text: data?.address == null
                                       ? "-"
                                       : "${data?.address}, ${data?.city}, ${data?.state}",
                                   svg: 'assets/images/location.svg',
+                                  height: 27,
+                                  fit: BoxFit.fitHeight,
                                 ),
                                 contactInfos(
                                   text: data?.instagram == "" ||
@@ -204,6 +201,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                       ? "_"
                                       : "${data?.instagram}",
                                   svg: 'assets/images/Instagram.svg',
+                                  fit: BoxFit.contain,
                                 ),
                                 contactInfos(
                                   text: data?.facebook == "" ||
@@ -211,6 +209,8 @@ class ProfileHomeScreen extends StatelessWidget {
                                       ? "_"
                                       : "${data?.facebook}",
                                   svg: 'assets/images/facebook.svg',
+                                  height: 23,
+                                  fit: BoxFit.contain,
                                 ),
                                 contactInfos(
                                   text: data?.twitter == "" ||
@@ -218,6 +218,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                       ? "_"
                                       : "${data?.twitter}",
                                   svg: 'assets/images/twitter.svg',
+                                  fit: BoxFit.contain,
                                 ),
                               ],
                             ),
@@ -242,12 +243,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Education",
                                     onTapAdd: () {
-                                      log('onPress', name: 'onTap Save');
                                       eduController.clearallFields();
                                       Get.to(() => AddEducationScreen(uId: id));
                                     },
                                     onTapEdit: () {
-                                      // eduController.clearallFields();
                                       if (data.length < 2) {
                                         eduController.clearallFields();
                                         Get.to(() => AddEducationScreen(
@@ -309,7 +308,6 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Experience",
                                     onTapAdd: () {
-                                      log('onPress', name: 'onTap add');
                                       exController.clearallFieldController();
                                       Get.to(
                                           () => AddExperienceScreen(uId: id));
@@ -381,7 +379,6 @@ class ProfileHomeScreen extends StatelessWidget {
                                 : profileDataContainer(
                                     section: "Honors & awards",
                                     onTapAdd: () {
-                                      log('onPress', name: 'onTap add');
                                       awController.clearallFieldController();
                                       Get.to(() =>
                                           ProfileAddHonorsandAwardsScreen(

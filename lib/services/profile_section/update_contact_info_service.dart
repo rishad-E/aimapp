@@ -45,7 +45,7 @@ class UpdateContactInfoService {
           ));
       log(response.data.toString(),name:'save contact info res' );
       if (response.statusCode == 200) {
-        log(response.data.toString(), name: 'save contact info');
+        // log(response.data.toString(), name: 'save contact info');
         return true;
       }
     } on DioException catch (e) {

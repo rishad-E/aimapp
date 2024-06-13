@@ -19,7 +19,7 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorSubjectCourseController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Column(
@@ -30,8 +30,9 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                     boldText(text: 'Teaching Subjects/Courses', size: 15.sp),
                     hLBox,
                     educatorFields(
-                      item: semiBoldChoiceText(text: 
-                          'Subjects/Fields You Can Mentor In',size:  9.5.sp),
+                      item: semiBoldChoiceText(
+                          text: 'Subjects/Fields You Can Mentor In',
+                          size: 9.5.sp),
                       textfiled: Obx(
                         () => subjectMainContainer(
                           child: Wrap(
@@ -58,6 +59,9 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                 height: 3.5.h,
                                 child: TextFormField(
                                   controller: controller.subjectController,
+                                  style: const TextStyle(fontSize: 13),
+                                  cursorColor: mainPurple,
+                                  cursorWidth: 1.5,
                                   onFieldSubmitted: (value) {
                                     if (value.isNotEmpty) {
                                       controller.addSubject(
@@ -71,9 +75,10 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                       border: InputBorder.none,
                                       hintText: 'Add more...',
                                       hintStyle: TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 116, 118, 119),
-                                          fontSize: 12)),
+                                        color:
+                                            Color.fromARGB(255, 116, 118, 119),
+                                        fontSize: 12,
+                                      )),
                                 ),
                               ))
                             ],
@@ -82,8 +87,9 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                       ),
                     ),
                     educatorFields(
-                      item: semiBoldChoiceText(text: 
-                          'Specific Topics Within Those Fields',size:  9.5.sp),
+                      item: semiBoldChoiceText(
+                          text: 'Specific Topics Within Those Fields',
+                          size: 9.5.sp),
                       textfiled: Obx(
                         () => subjectMainContainer(
                           child: Wrap(
@@ -110,6 +116,9 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                 height: 3.5.h,
                                 child: TextFormField(
                                   controller: controller.topicController,
+                                  style: const TextStyle(fontSize: 13),
+                                  cursorColor: mainPurple,
+                                  cursorWidth: 1.5,
                                   onFieldSubmitted: (value) {
                                     if (value.isNotEmpty) {
                                       controller.addTopic(
@@ -158,9 +167,11 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                     ? mainPurple
                                     : buttonColor,
                                 onTap: () {
-                                  if (c.seletedSubject.isNotEmpty && c.seletedTopic.isNotEmpty) {
-                                    log('selected SUB=>${c.seletedSubject} selected TOP=>${c.seletedTopic}',name: 'sub&&Top scren');
-                                    Get.to(()=>EducatorWorkPreferencePage());
+                                  if (c.seletedSubject.isNotEmpty &&
+                                      c.seletedTopic.isNotEmpty) {
+                                    log('selected SUB=>${c.seletedSubject} selected TOP=>${c.seletedTopic}',
+                                        name: 'sub&&Top scren');
+                                    Get.to(() => EducatorWorkPreferencePage());
                                   }
                                 },
                               ),

@@ -58,7 +58,7 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final data = controller.searchMicorAimRes[index];
                       final model = MicroModel(
-                        microAim: data.name.toString(),
+                        microAim: data.categoryName.toString(),
                         aimId: data.id.toString(),
                       );
                       return Column(
@@ -67,7 +67,7 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                             dense: true,
                             contentPadding: EdgeInsets.zero,
                             title: Text(
-                              data.name.toString(),
+                              data.categoryName.toString(),
                               style: optionText(),
                             ),
                             trailing: Checkbox(
@@ -77,7 +77,7 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               value: controller.check.any(
-                                (item) => item.microAim == data.name,
+                                (item) => item.microAim == data.categoryName,
                               ),
                               onChanged: (value) {
                                 if (value != null && value) {

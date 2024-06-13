@@ -152,9 +152,9 @@ class AIMCETController extends GetxController {
           careers = [];
         }
 
-        log(personality.toString(), name: 'personality');
-        log(degrees.toString(), name: 'degree');
-        log(careers.toString(), name: 'careers');
+        // log(personality.toString(), name: 'personality');
+        // log(degrees.toString(), name: 'degree');
+        // log(careers.toString(), name: 'careers');
       }
     } else if (result is String) {
       log('result is string');

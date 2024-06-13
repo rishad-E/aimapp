@@ -29,13 +29,12 @@ class PerosnalInfoController extends GetxController {
     required String statement,
   }) async {
     bool? res = await UpdatePersonalInfoService().updatePersonalInfo(
-      uId: uId,
-      fullName: fullName,
-      userName: userName,
-      dOB: dOB,
-      gender: gender,
-      statement: statement
-    );
+        uId: uId,
+        fullName: fullName,
+        userName: userName,
+        dOB: dOB,
+        gender: gender,
+        statement: statement);
     if (res == true) {
       Get.off(() => ProfileHomeScreen(id: uId));
     } else {
@@ -62,13 +61,10 @@ class PerosnalInfoController extends GetxController {
         return Theme(
           data: ThemeData.dark().copyWith(
             colorScheme: const ColorScheme.dark(
-              primary: Colors.purple, // Header background color
-              onPrimary: Colors.white, // Header text color
-              //   surface: Colors.grey.shade300, // Calendar background color
-              //   onSurface: Colors.black, // Calendar text color
+              primary: Colors.purple,
+              onPrimary: Colors.white,
             ),
-
-            dialogBackgroundColor: Colors.white, // Dialog background color
+            dialogBackgroundColor: Colors.white, 
           ),
           child: child!,
         );
@@ -81,14 +77,12 @@ class PerosnalInfoController extends GetxController {
       update(['update-personalinfo']);
     }
   }
-
   /* ------ date picker for personal info------ */
+  
   String? fieldValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'please select a date';
     }
     return null;
   }
-
-  
 }

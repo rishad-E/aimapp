@@ -46,7 +46,7 @@ class BookCareerCounsellController extends GetxController {
   Future<List<Aim>?> searchAimOptions({required String query}) async {
     searchAimRes.value =
         await CareerAimService().getAimSearchResult(query: query);
-    log(searchAimRes.toString(), name: 'aim search');
+    // log(searchAimRes.toString(), name: 'aim search');
     return searchAimRes;
   }
 

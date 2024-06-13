@@ -29,10 +29,6 @@ class AIMCETTestService {
       throw SnackbarPopUps.popUpB(
           'Error fetching data...Please try after sometime');
     }
-
-    // catch (e) {
-    //   log(e.toString(), name: 'aimcet test error');
-    // }
     return null;
   }
 

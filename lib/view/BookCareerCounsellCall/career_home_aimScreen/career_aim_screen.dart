@@ -98,50 +98,32 @@ class BookCareerAimPage extends StatelessWidget {
                                       children: [
                                         Expanded(
                                           child: Wrap(
-                                            spacing: 5,
-                                            runSpacing: 4,
-                                            children: List.generate(
-                                              careerController.check.length,
-                                              (index) {
-                                                final data =
-                                                    careerController.check;
-                                                if (index == data.length - 1) {
-                                                  return Row(
-                                                    children: [
-                                                      Flexible(
-                                                        child: checking(
-                                                          microAim: data[index]
-                                                              .microAim
-                                                              .toString(),
-                                                          onTap: () {
-                                                            log("delete onTap");
-                                                            data.removeAt(
-                                                                index);
-                                                            careerController
-                                                                .update([
-                                                              'button-careerAim'
-                                                            ]);
-                                                          },
-                                                        ),
-                                                      ),
-                                                      addmoreText()
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return checking(
-                                                    microAim:
-                                                        data[index].microAim,
-                                                    onTap: () {
-                                                      data.removeAt(index);
-                                                      log("delte ontap");
-                                                      careerController.update(
-                                                          ['button-careerAim']);
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                          ),
+                                              spacing: 5,
+                                              runSpacing: 4,
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              children: [
+                                                ...List.generate(
+                                                  careerController.check.length,
+                                                  (index) {
+                                                    final data =
+                                                        careerController.check;
+                                                    return checking(
+                                                      microAim:
+                                                          data[index].microAim,
+                                                      onTap: () {
+                                                        data.removeAt(index);
+                                                        log("delte ontap");
+                                                        careerController
+                                                            .update([
+                                                          'button-careerAim'
+                                                        ]);
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                                addmoreText()
+                                              ]),
                                         ),
                                         const Icon(Icons.keyboard_arrow_down),
                                       ],
@@ -168,7 +150,6 @@ class BookCareerAimPage extends StatelessWidget {
                           return TextButton(
                             onPressed: () {
                               if (careeraimFormKey.currentState!.validate()) {
-                                log("fst ${careerController.aimController.text}+name${careerController.roleController.text}");
                                 Get.to(
                                     () => const CareerDateTimeBookingScreen());
                               }

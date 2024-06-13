@@ -177,3 +177,47 @@ Widget finalAgreeContainer({required bool agree}) {
         : null,
   );
 }
+
+Widget submitButton(
+    {required Widget child,
+    Color? borderColor,
+    required Color boxColor,
+    void Function()? onTap}) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+          height: 4.h,
+          decoration: BoxDecoration(
+            color: boxColor,
+            border: borderColor != null
+                ? Border.all(width: 1, color: borderColor)
+                : null,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: child),
+    ),
+  );
+}
+
+Widget submitLoadingButton() {
+  return Center(
+      child: Padding(
+    padding: const EdgeInsets.symmetric(vertical: 6),
+    child: CircularProgressIndicator(
+      strokeWidth: 2,
+      color: kwhite,
+    ),
+  ));
+}
+
+Widget submitText({Color? color}) {
+  return Center(
+      child: Text(
+    'Submit',
+    style: TextStyle(
+        color: color,
+        fontWeight: FontWeight.w600,
+        fontSize: 14),
+  ));
+}

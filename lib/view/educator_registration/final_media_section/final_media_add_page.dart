@@ -5,7 +5,6 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/educator_registration/final_media_section/widgets/widgets.dart';
-import 'package:aimshala/view/educator_registration/submitted_section/submitted_final_page.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class EducatorMediaAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorMediaAddController());
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration'),
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -193,17 +192,20 @@ class EducatorMediaAddPage extends StatelessWidget {
                           ),
                           wMBox,
                           Obx(
-                            () => actionContainer(
-                              text: 'Submit',
-                              textColor: controller.agree.value
-                                  ? kwhite
-                                  : textFieldColor,
+                            () => submitButton(
+                              child: controller.saveDataLoading.value &&
+                                      controller.agree.value
+                                  ? submitLoadingButton()
+                                  : submitText(
+                                      color: controller.agree.value
+                                          ? kwhite
+                                          : textFieldColor,
+                                    ),
                               boxColor: controller.agree.value
                                   ? mainPurple
                                   : buttonColor,
                               onTap: () {
-                                // if (formKey.currentState!.validate()) {}
-
+                                if (formKey.currentState!.validate()) {}
                                 if (controller
                                         .linkedInController.text.isEmpty &&
                                     controller.filePath.value.isEmpty) {
@@ -225,7 +227,7 @@ class EducatorMediaAddPage extends StatelessWidget {
                                             .isNotEmpty ||
                                         controller
                                             .videofilePath.value.isNotEmpty)) {
-                                  Get.to(() => const EducatorSubmitFinalPage());
+                                  controller.fetchAlldatas();
                                 }
                               },
                             ),
@@ -243,3 +245,39 @@ class EducatorMediaAddPage extends StatelessWidget {
     );
   }
 }
+//  actionContainer(
+//   text: 'Submit',
+//   textColor: controller.agree.value
+//       ? kwhite
+//       : textFieldColor,
+//   boxColor: controller.agree.value
+//       ? mainPurple
+//       : buttonColor,
+//   onTap: () {
+//     // if (formKey.currentState!.validate()) {}
+
+//     if (controller
+//             .linkedInController.text.isEmpty &&
+//         controller.filePath.value.isEmpty) {
+//       controller.errorTextLink.value = 'no data';
+//     }
+//     if (controller
+//             .mediaLinkController.text.isEmpty &&
+//         controller.videofilePath.value.isEmpty) {
+//       controller.errorTextVideo.value = 'no data';
+//     }
+//     if (controller.agree.value == false) {
+//       controller.errorAgreement.value = 'not';
+//     }
+//     if (controller.agree.value &&
+//         (controller.linkedInController.text
+//                 .isNotEmpty ||
+//             controller.filePath.value.isNotEmpty) &&
+//         (controller.mediaLinkController.text
+//                 .isNotEmpty ||
+//             controller
+//                 .videofilePath.value.isNotEmpty)) {
+//       controller.fetchAlldatas();
+//     }
+//   },
+// ),

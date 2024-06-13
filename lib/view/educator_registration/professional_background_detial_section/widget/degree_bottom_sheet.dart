@@ -74,16 +74,12 @@ class EducatorDegreeBottomSheet extends StatelessWidget {
                           degreeItems[index],
                       onChanged: (value) {
                         if (value != null && value) {
-                          controller.degreeController.text = degreeItems[index];
-                          controller.update(['edu-backgroundinfo']);
-                          Get.back();
+                          listValueChanges(controller, degreeItems[index]);
                         }
                       },
                     ),
                     onTap: () {
-                      controller.degreeController.text = degreeItems[index];
-                      controller.update(['edu-backgroundinfo']);
-                      Get.back();
+                      listValueChanges(controller, degreeItems[index]);
                     },
                   );
                 },
@@ -93,5 +89,12 @@ class EducatorDegreeBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void listValueChanges(EducatorBackgroundDetailController c, String item) {
+    c.degreeController.text = item;
+    c.update(['edu-backgroundinfo']);
+    c.other.value = item;
+    Get.back();
   }
 }
