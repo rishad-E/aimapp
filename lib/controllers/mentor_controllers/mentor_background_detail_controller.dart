@@ -6,6 +6,9 @@ class MentorBackgroundDetailController extends GetxController {
   TextEditingController expertiesController = TextEditingController();
   TextEditingController professionalController = TextEditingController();
   TextEditingController affiliatedController = TextEditingController();
+  TextEditingController otherDegreecontroller = TextEditingController();
+  
+  RxString other = ''.obs;
 
   String? fieldValidation(String? value) {
     if (value == null || value.isEmpty) {

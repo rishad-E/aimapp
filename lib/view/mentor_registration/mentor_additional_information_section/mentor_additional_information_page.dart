@@ -18,7 +18,7 @@ class MentorAdditionalInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorAdditionalInfoController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+    appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -73,7 +73,6 @@ class MentorAdditionalInfoPage extends StatelessWidget {
                       ),
                       hLBox,
                       GetBuilder<MentorAdditionalInfoController>(
-                          init: MentorAdditionalInfoController(),
                           id: 'mentor-additionalInfo',
                           builder: (c) {
                             return Row(
@@ -101,7 +100,8 @@ class MentorAdditionalInfoPage extends StatelessWidget {
                                           : buttonColor,
                                   onTap: () {
                                     if (formkey.currentState!.validate()) {
-                                      log('philossophy=>${c.philosophyController.text}  whymentor=>${c.mentorController.text}');
+                                      c.addAnswers(ans1: c.philosophyController.text, ans2: c.mentorController.text);
+                                      log('qustions=>${c.qustions} answers=>${c.answers}');
                                       Get.to(()=>MentorReferencesPage());
                                     }
                                   },

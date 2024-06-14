@@ -19,7 +19,7 @@ class MentorExperiencePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorExperienceController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+     appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -44,23 +44,23 @@ class MentorExperiencePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GetBuilder<MentorExperienceController>(
-                                  id: 'update-relocateMentor',
+                                  id: 'update-rewardMentor',
                                   builder: (c) {
                                     return GestureDetector(
-                                      onTap: () => c.toggleRelocate(val: true),
-                                      child: relocateTrueMentor(
-                                        relocate: c.relocate.value,
+                                      onTap: () => c.toggleReward(val: true),
+                                      child: rewardTrueMentor(
+                                        relocate: c.reward.value,
                                       ),
                                     );
                                   }),
                               wMBox,
                               GetBuilder<MentorExperienceController>(
-                                  id: 'update-relocateMentor',
+                                  id: 'update-rewardMentor',
                                   builder: (c) {
                                     return GestureDetector(
-                                      onTap: () => c.toggleRelocate(val: false),
-                                      child: relocateFalseMentor(
-                                        relocate: c.relocate.value,
+                                      onTap: () => c.toggleReward(val: false),
+                                      child: rewardFalseMentor(
+                                        relocate: c.reward.value,
                                       ),
                                     );
                                   }),
@@ -70,7 +70,7 @@ class MentorExperiencePage extends StatelessWidget {
                       ),
                       Obx(() {
                         return Visibility(
-                          visible: controller.relocteSelected.value == 'no',
+                          visible: controller.rewardSelected.value == 'no',
                           child: const Padding(
                             padding: EdgeInsets.only(top: 5),
                             child: Text(
@@ -82,7 +82,7 @@ class MentorExperiencePage extends StatelessWidget {
                       }),
                       hBox,
                       Obx(() {
-                        final data = controller.relocate;
+                        final data = controller.reward;
                         return Visibility(
                           visible: data.value != null && data.value == true,
                           child: mentorFields(
@@ -123,31 +123,32 @@ class MentorExperiencePage extends StatelessWidget {
                                 wMBox,
                                 actionContainer(
                                   text: 'Next',
-                                  textColor: c.relocate.value != null &&
-                                          c.relocate.value == false
+                                  textColor: c.reward.value != null &&
+                                          c.reward.value == false
                                       ? kwhite
-                                      : c.relocate.value != null &&
+                                      : c.reward.value != null &&
                                               c.experienceController.text
                                                   .isNotEmpty
                                           ? kwhite
                                           : textFieldColor,
-                                  boxColor: c.relocate.value != null &&
-                                          c.relocate.value == false
+                                  boxColor: c.reward.value != null &&
+                                          c.reward.value == false
                                       ? mainPurple
-                                      : c.relocate.value != null &&
+                                      : c.reward.value != null &&
                                               c.experienceController.text
                                                   .isNotEmpty
                                           ? mainPurple
                                           : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate() &&
-                                        c.relocate.value != null) {
-                                      log('Relocate=>${c.relocate} experience=>${c.experienceController.text}',
+                                        c.reward.value != null) {
+                                      log('RewardEarn=>${c.reward} experience=>${c.experienceController.text}',
                                           name: 'edu-personalpage');
-                                      c.relocteSelected.value = '';
-                                          Get.to(()=>const MentorPreferencePage());
-                                    } else {
-                                      c.relocteSelected.value = 'no';
+                                      c.rewardSelected.value = '';
+                                      Get.to(
+                                          () => const MentorPreferencePage());
+                                    } else if (c.reward.value == null) {
+                                      c.rewardSelected.value = 'no';
                                     }
                                   },
                                 ),

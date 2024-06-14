@@ -20,6 +20,16 @@ class MentorPersonalDetailController extends GetxController {
     return null;
   }
 
+  String? mobileValidation(String? value) {
+    if (value == null ||
+        value.isEmpty ||
+        value.length < 10 ||
+        !value.isNumericOnly) {
+      return 'Enter a 10 digit Valid Number';
+    }
+    return null;
+  }
+
   void clearAllfields() {
     nameController.clear();
     emailController.clear();

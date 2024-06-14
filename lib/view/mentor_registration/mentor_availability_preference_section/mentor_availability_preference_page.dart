@@ -35,7 +35,7 @@ class MentorAvailabilityPreferencePage extends StatelessWidget {
       "Night (8-12)"
     ];
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Column(

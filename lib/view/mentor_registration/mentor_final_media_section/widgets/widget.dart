@@ -2,7 +2,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
-import 'package:aimshala/view/mentor_registration/mentor_final_media_section/widgets/dotted_container_pain.dart';
+import 'package:aimshala/view/mentor_registration/mentor_final_media_section/widgets/dotted_container_paint.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -235,6 +235,47 @@ Widget errorAgreementText() {
             size: 11,
             color: kred),
       ],
+    ),
+  );
+}
+
+Widget mentorSubmit( {required Widget child,
+    Color? borderColor,
+    required Color boxColor,
+    void Function()? onTap}) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+          height: 4.h,
+          decoration: BoxDecoration(
+            color: boxColor,
+            border: borderColor != null
+                ? Border.all(width: 1, color: borderColor)
+                : null,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: child),
+    ),
+  );
+}
+
+Widget submitTextMentor({Color? color}) {
+  return Center(
+      child: Text(
+    'Submit',
+    style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 14),
+  ));
+}
+
+Widget submitLoadingMentor() {
+  return Center(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        color: kwhite,
+      ),
     ),
   );
 }

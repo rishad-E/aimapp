@@ -170,90 +170,91 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 // padding: EdgeInsets.only(right: 5),
                 child: BottomNavigationBar(
-                    currentIndex: c.currentStep,
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: kwhite,
-                    selectedItemColor: mainPurple,
-                    unselectedItemColor: Colors.grey,
-                    showSelectedLabels: true,
-                    showUnselectedLabels: true,
-                    selectedLabelStyle:
-                        TextStyle(color: mainPurple, fontSize: 10),
-                    unselectedLabelStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 10),
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: SvgPicture.asset(
-                            "assets/images/search.svg",
-                            // color: Colors.purple,
-                          ),
+                  currentIndex: c.currentStep,
+                  type: BottomNavigationBarType.fixed,
+                  backgroundColor: kwhite,
+                  selectedItemColor: mainPurple,
+                  unselectedItemColor: Colors.grey,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  selectedLabelStyle:
+                      TextStyle(color: mainPurple, fontSize: 10),
+                  unselectedLabelStyle:
+                      const TextStyle(color: Colors.grey, fontSize: 10),
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          "assets/images/search.svg",
+                          // color: Colors.purple,
                         ),
-                        label: 'Explore',
                       ),
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          // child: SvgPicture.asset(
-                          //   "assets/images/prepare.svg",
-                          //   // color: Colors.purple,
-                          // ),
-                          child: Image.asset(
-                            "assets/images/prepare.png",
-                            // color: Colors.purple,
-                          ),
+                      label: 'Explore',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        // child: SvgPicture.asset(
+                        //   "assets/images/prepare.svg",
+                        //   // color: Colors.purple,
+                        // ),
+                        child: Image.asset(
+                          "assets/images/prepare.png",
+                          // color: Colors.purple,
                         ),
-                        label: 'Prepare',
                       ),
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: SvgPicture.asset(
-                            "assets/images/Contribute.svg",
-                            // color: Colors.purple,
-                          ),
+                      label: 'Prepare',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          "assets/images/Contribute.svg",
+                          // color: Colors.purple,
                         ),
-                        label: 'Contribute',
                       ),
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: SvgPicture.asset(
-                            "assets/images/mentorship.svg",
-                            // color: Colors.purple,
-                          ),
+                      label: 'Contribute',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          "assets/images/mentorship.svg",
+                          // color: Colors.purple,
                         ),
-                        label: 'Mentorship',
                       ),
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: SvgPicture.asset(
-                            "assets/images/Engage.svg",
-                            // color: Colors.purple,
-                          ),
+                      label: 'Mentorship',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          "assets/images/Engage.svg",
+                          // color: Colors.purple,
                         ),
-                        label: 'Engage',
                       ),
-                      BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 25,
-                          width: 25,
-                          child: SvgPicture.asset(
-                            "assets/images/nearyou.svg",
-                            // color: Colors.purple,
-                          ),
+                      label: 'Engage',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset(
+                          "assets/images/nearyou.svg",
+                          // color: Colors.purple,
                         ),
-                        label: 'Near you',
                       ),
-                    ],
-                    onTap: (int index) => c.toggelNav(index)),
+                      label: 'Near you',
+                    ),
+                  ],
+                  // onTap: (int index) => c.toggelNav(index),
+                ),
               );
             }),
       ),

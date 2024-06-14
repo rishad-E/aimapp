@@ -16,6 +16,46 @@ class MentorReferencesController extends GetxController {
   RxString otherRelation1 = ''.obs;
   RxString otherRelation2 = ''.obs;
 
+  List<String> referenceNames = [];
+  List<String> referenceRelation = [];
+  List<String> referencePhone = [];
+  List<String?> otherRelation = [];
+
+  void addReferenceFields(
+      {required String refName1,
+      required String refRelation1,
+      required String refPhone1,
+      required String refName2,
+      required String refRelation2,
+      required String refPhone2,
+      String? otherRelation1,
+      String? otherRelation2}) {
+    if (!referenceNames.contains(refName1)) {
+      referenceNames.add(refName1);
+    }
+    if (!referenceNames.contains(refName2)) {
+      referenceNames.add(refName2);
+    }
+    if (!referenceRelation.contains(refRelation1)) {
+      referenceRelation.add(refRelation1);
+    }
+    if (!referenceRelation.contains(refRelation2)) {
+      referenceRelation.add(refRelation2);
+    }
+    if (!referencePhone.contains(refPhone1)) {
+      referencePhone.add(refPhone1);
+    }
+    if (!referencePhone.contains(refPhone2)) {
+      referencePhone.add(refPhone2);
+    }
+    if (!otherRelation.contains(otherRelation1)) {
+      otherRelation.add(otherRelation1);
+    }
+    if (!otherRelation.contains(otherRelation2)) {
+      otherRelation.add(otherRelation2);
+    }
+  }
+
   String? filedValidation(String? value) {
     if (value == null || value.isEmpty) {
       return "Please Enter This Field";

@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 class MentorExperienceController extends GetxController {
   TextEditingController experienceController = TextEditingController();
 
-  Rxn<bool> relocate = Rxn<bool>();
-  RxString relocteSelected = ''.obs;
+  Rxn<bool> reward = Rxn<bool>();
+  RxString rewardSelected = ''.obs;
 
-  void toggleRelocate({required bool val}) {
-    relocate.value = val;
-    relocteSelected.value = 'yes';
+  void toggleReward({required bool val}) {
+    reward.value = val;
+    rewardSelected.value = 'yes';
     if (val == false) {
       experienceController.clear();
     }
-    update(['update-relocateMentor']);
+    update(['update-rewardMentor']);
     update(['mentor-experience']);
   }
 

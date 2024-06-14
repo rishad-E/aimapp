@@ -19,7 +19,7 @@ class MentorBackgroundDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorBackgroundDetailController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -57,6 +57,22 @@ class MentorBackgroundDetailPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      Obx(
+                        () => controller.other.value == "Others"
+                            ? TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                controller: controller.otherDegreecontroller,
+                                validator: (value) =>
+                                    controller.fieldValidation(value),
+                                onChanged: (value) => controller
+                                    .update(['mentor-backgroundinfo']),
+                                decoration: infoFieldDecoration(
+                                    hintText: 'Enter Field of Expertise'),
+                                style: const TextStyle(fontSize: 13),
+                              )
+                            : shrinked,
+                      ),
                       mentorFields(
                         item: semiBoldChoiceText(
                             text: 'Field of Expertise', size: 9.5.sp),
@@ -84,10 +100,10 @@ class MentorBackgroundDetailPage extends StatelessWidget {
                           onChanged: (value) =>
                               controller.update(['mentor-backgroundinfo']),
                           decoration: infoFieldDecoration(
-                              hintText: 'Enter Years of Professional Experience',
-                              // suffixWidget:
-                              //     const Icon(Icons.keyboard_arrow_down)
-                              ),
+                            hintText: 'Enter Years of Professional Experience',
+                            // suffixWidget:
+                            //     const Icon(Icons.keyboard_arrow_down)
+                          ),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -145,9 +161,9 @@ class MentorBackgroundDetailPage extends StatelessWidget {
                                       : buttonColor,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text}',
+                                      log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text} other=>${c.otherDegreecontroller.text}',
                                           name: 'edu-backgroundpage');
-                                      Get.to(()=> MentorExperiencePage());
+                                      Get.to(() => MentorExperiencePage());
                                     }
                                   },
                                 ),

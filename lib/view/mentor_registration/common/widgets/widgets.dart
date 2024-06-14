@@ -1,7 +1,7 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget mentorAppbar({required String title}) {
+PreferredSizeWidget mentorAppbar({required String title,required bool backArrow}) {
   return AppBar(
     title: Text(
       title,
@@ -10,6 +10,7 @@ PreferredSizeWidget mentorAppbar({required String title}) {
     ),
     centerTitle: true,
     surfaceTintColor: Colors.white,
+    automaticallyImplyLeading:backArrow ,
     elevation: 7,
     shadowColor: Colors.black.withOpacity(0.5),
     shape: const RoundedRectangleBorder(

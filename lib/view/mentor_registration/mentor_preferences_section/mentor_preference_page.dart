@@ -19,7 +19,7 @@ class MentorPreferencePage extends StatelessWidget {
     final controller = Get.put(MentorPreferenceController());
     List<String> mentorModeList = ["Online", "Face-to-Face", "Both"];
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+     appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -88,6 +88,7 @@ class MentorPreferencePage extends StatelessWidget {
                                   height: 3.5.h,
                                   child: TextFormField(
                                     controller: controller.subjectController,
+                                    cursorColor: mainPurple,
                                     onFieldSubmitted: (value) {
                                       if (value.isNotEmpty) {
                                         controller.addSubject(
@@ -136,6 +137,7 @@ class MentorPreferencePage extends StatelessWidget {
                                   height: 3.5.h,
                                   child: TextFormField(
                                       controller: controller.topicController,
+                                    cursorColor: mainPurple,
                                       onFieldSubmitted: (value) {
                                         if (value.isNotEmpty) {
                                           controller.addTopic(

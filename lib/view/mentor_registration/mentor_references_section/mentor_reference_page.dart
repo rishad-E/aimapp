@@ -20,7 +20,7 @@ class MentorReferencesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorReferencesController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -48,9 +48,8 @@ class MentorReferencesPage extends StatelessWidget {
                             controller.checkAlFields();
                             controller.update(['mentor-reference']);
                           },
-                          decoration: infoFieldDecoration(
-                            hintText: 'Enter Name',
-                          ),
+                          decoration:
+                              infoFieldDecoration(hintText: 'Enter Name'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -115,9 +114,7 @@ class MentorReferencesPage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(
-                              // hintText: '9729665668',
-                              prefix: phoneIcon()),
+                          decoration: infoFieldDecoration(prefix: phoneIcon()),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -168,9 +165,7 @@ class MentorReferencesPage extends StatelessWidget {
                       ),
                       Obx(() => controller.otherRelation2.value ==
                               "Other(Please Specify)"
-                          ? mentorFields(
-                              item: choiceSizedBox(height: 5),
-                              textfiled: TextFormField(
+                          ? TextFormField(
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 controller: controller.otherRelationController2,
@@ -183,7 +178,7 @@ class MentorReferencesPage extends StatelessWidget {
                                 decoration: infoFieldDecoration(
                                     hintText: 'Enter Relationship'),
                                 style: const TextStyle(fontSize: 13),
-                              ))
+                              )
                           : shrinked),
                       hBox,
                       mentorFields(
@@ -227,7 +222,21 @@ class MentorReferencesPage extends StatelessWidget {
                                   boxColor: c.nextBG.value,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('name1=${c.nameController1.text} relation1=${c.relationController1.text} mob=>${c.mobileController1.text} name2=${c.nameController2.text} relation2=${c.relationController2.text} mob2=>${c.mobileController2.text}',
+                                      c.addReferenceFields(
+                                        refName1: c.nameController1.text,
+                                        refRelation1:
+                                            c.relationController1.text,
+                                        refPhone1: c.mobileController1.text,
+                                        refName2: c.nameController2.text,
+                                        refRelation2:
+                                            c.relationController2.text,
+                                        refPhone2: c.mobileController2.text,
+                                        otherRelation1:
+                                            c.otherRelationController1.text,
+                                        otherRelation2:
+                                            c.otherRelationController2.text,
+                                      );
+                                      log('nameList=${c.referenceNames} relationList=${c.referenceRelation} mobList=>${c.referencePhone}  otherRelList=>${c.otherRelation}',
                                           name: 'reference page');
                                       Get.to(() => const MentorMediaPage());
                                     }

@@ -6,7 +6,6 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/mentor_registration/mentor_final_media_section/widgets/widget.dart';
-import 'package:aimshala/view/mentor_registration/mentor_final_submit_page/mentor_final_submit_page.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ class MentorMediaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorAddMediaController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registraion'),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
           child: SingleChildScrollView(
         child: Column(
@@ -124,8 +123,10 @@ class MentorMediaPage extends StatelessWidget {
                       wBox,
                       Expanded(
                           child: agreeTextMentor(
-                        onTapTerms: () => log('Terms and Conditions', name: 'ontap-terms'),
-                        onTapPrivacy: () => log('Privacy policy', name: 'ontap-privacy'),
+                        onTapTerms: () =>
+                            log('Terms and Conditions', name: 'ontap-terms'),
+                        onTapPrivacy: () =>
+                            log('Privacy policy', name: 'ontap-privacy'),
                       ))
                     ],
                   ),
@@ -135,22 +136,27 @@ class MentorMediaPage extends StatelessWidget {
                         : shrinked,
                   ),
                   hLBox,
-                  Obx(
-                    () => Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        actionContainer(
-                          text: 'Previous',
-                          textColor: mainPurple,
-                          boxColor: kwhite,
-                          borderColor: mainPurple,
-                          onTap: () => Get.back(),
-                        ),
-                        wMBox,
-                        actionContainer(
-                          text: 'Submit',
-                          textColor:
-                              controller.agree.value ? kwhite : textFieldColor,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      actionContainer(
+                        text: 'Previous',
+                        textColor: mainPurple,
+                        boxColor: kwhite,
+                        borderColor: mainPurple,
+                        onTap: () => Get.back(),
+                      ),
+                      wMBox,
+                      Obx(
+                        () => mentorSubmit(
+                          child: controller.saveDataLoading.value &&
+                                  controller.agree.value
+                              ? submitLoadingMentor()
+                              : submitTextMentor(
+                                  color: controller.agree.value
+                                      ? kwhite
+                                      : textFieldColor,
+                                ),
                           boxColor:
                               controller.agree.value ? mainPurple : buttonColor,
                           onTap: () {
@@ -172,14 +178,13 @@ class MentorMediaPage extends StatelessWidget {
                                 (controller
                                         .mediaLinkController.text.isNotEmpty ||
                                     controller.videofilePath.isNotEmpty)) {
-                              log("alllllllllll sssssssssseeeeeeeeeeeeeeeeettttttttttttttttttt");
-                              Get.to(()=>const MentorFinalSubmitPage());
+                              controller.fetchDataAndSubmit();
                             }
                           },
-                        )
-                      ],
-                    ),
-                  )
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),

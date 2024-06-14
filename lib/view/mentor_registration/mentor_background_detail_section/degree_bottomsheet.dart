@@ -74,16 +74,12 @@ class MentorDegreeBottomsheet extends StatelessWidget {
                           degreeItems[index],
                       onChanged: (value) {
                         if (value != null && value) {
-                          controller.degreeController.text = degreeItems[index];
-                          controller.update(['mentor-backgroundinfo']);
-                          Get.back();
+                          listValueChange(controller, degreeItems[index]);
                         }
                       },
                     ),
                     onTap: () {
-                      controller.degreeController.text = degreeItems[index];
-                      controller.update(['mentor-backgroundinfo']);
-                      Get.back();
+                      listValueChange(controller, degreeItems[index]);
                     },
                   );
                 },
@@ -93,5 +89,12 @@ class MentorDegreeBottomsheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void listValueChange(MentorBackgroundDetailController c, String item) {
+    c.degreeController.text = item;
+    c.update(['mentor-backgroundinfo']);
+    c.other.value = item;
+    Get.back();
   }
 }

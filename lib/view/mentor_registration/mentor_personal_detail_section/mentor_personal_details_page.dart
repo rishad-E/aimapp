@@ -19,7 +19,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorPersonalDetailController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration'),
+      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -83,7 +83,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                         textfiled: TextFormField(
                           controller: controller.mobileController,
                           validator: (value) =>
-                              controller.fieldValidation(value, phone: true),
+                              controller.mobileValidation(value),
                           onChanged: (value) =>
                               controller.update(['mentor-personalinfo']),
                           keyboardType: TextInputType.phone,
@@ -91,9 +91,8 @@ class MentorPersonalDetailPage extends StatelessWidget {
                             LengthLimitingTextInputFormatter(10)
                           ],
                           decoration: infoFieldDecoration(
-                            hintText: 'Enter Mobile Number',
-                            prefix:phoneIcon()
-                          ),
+                              hintText: 'Enter Mobile Number',
+                              prefix: phoneIcon()),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -132,7 +131,8 @@ class MentorPersonalDetailPage extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       log('Name=>${c.nameController.text} email=>${c.emailController.text} location=>${c.locationController.text} mob=>${c.mobileController.text}',
                                           name: 'edu-personalpage');
-                                          Get.to(()=>MentorBackgroundDetailPage());
+                                      Get.to(
+                                          () => MentorBackgroundDetailPage());
                                     }
                                   },
                                 ),
