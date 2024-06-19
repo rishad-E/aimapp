@@ -44,17 +44,16 @@ Widget sectionMainContainer({
   );
 }
 
-Widget edexlipbSectionWidget({
-  required String image,
-  required String school,
-  required String degree,
-  required String year,
-  required String grade,
-  required String skill,
-  required String description,
-  required bool end,
-  void Function()? onTap
-}) {
+Widget edexlipbSectionWidget(
+    {required String image,
+    required String school,
+    required String degree,
+    required String year,
+    required String grade,
+    required String skill,
+    required String description,
+    required bool end,
+    void Function()? onTap}) {
   return Column(
     children: [
       Row(
@@ -80,7 +79,7 @@ Widget edexlipbSectionWidget({
                 regularText(degree, 9.sp, color: kblack),
                 regularText(year, 8.sp),
                 regularText(grade, 8.sp),
-                regularText(skill, 8.sp),
+                skill == 'no' ? shrinked : regularText(skill, 8.sp),
                 regularText(description, 8),
               ],
             ),

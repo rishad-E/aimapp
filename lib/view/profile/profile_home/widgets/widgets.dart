@@ -123,7 +123,8 @@ Widget contactInfos(
     {required String text,
     required String svg,
     double? height,
-    double? width,required BoxFit fit}) {
+    double? width,
+    required BoxFit fit}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 2),
     child: Row(
@@ -134,7 +135,7 @@ Widget contactInfos(
           width: width ?? 20,
           child: SvgPicture.asset(
             svg,
-           fit: fit,
+            fit: fit,
             colorFilter: ColorFilter.mode(kpurple, BlendMode.srcIn),
           ),
         ),
@@ -268,7 +269,9 @@ Widget sectionDataWidget(
                 regularText(secSubTitle, 9.sp, color: color),
                 regularText(secSubTitle2, 8.sp),
                 regularText(secSubTitle3, 8.sp),
-                regularText(secSubTitle4, 8.sp),
+                secSubTitle4 == 'no'
+                    ? shrinked
+                    : regularText(secSubTitle4, 8.sp),
                 regularText(
                   secSubTitle5,
                   8,

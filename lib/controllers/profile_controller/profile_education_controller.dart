@@ -150,7 +150,9 @@ class ProfileEducationController extends GetxController {
   }
 
   Future<void> deleteEducationFunction(
-      {required String eduID, required String uId,required String school}) async {
+      {required String eduID,
+      required String uId,
+      required String school}) async {
     String? res =
         await UpdateEducationInfoService().deleteEducationInfo(eduID: eduID);
     final awardC = Get.put(ProfileHonorsAwardsController());
@@ -272,9 +274,7 @@ class ProfileEducationController extends GetxController {
         endDateController.text.isNotEmpty &&
         gradeController.text.isNotEmpty &&
         activitiesController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty &&
-        addedSkill.isNotEmpty &&
-        allMediasModel.isNotEmpty;
+        descriptionController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['update-educationInfo']);

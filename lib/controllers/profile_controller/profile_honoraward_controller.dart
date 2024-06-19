@@ -238,8 +238,7 @@ class ProfileHonorsAwardsController extends GetxController {
         assosiatedController.text.isNotEmpty &&
         issuerController.text.isNotEmpty &&
         startdateController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty &&
-        allAwardMedias.isNotEmpty;
+        descriptionController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

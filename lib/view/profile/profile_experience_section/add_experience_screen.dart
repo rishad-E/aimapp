@@ -448,10 +448,7 @@ class AddExperienceScreen extends StatelessWidget {
         c.startDateController.text.isEmpty && experience.startDate != null
             ? experience.startDate as String
             : c.startDateController.text;
-    c.endDateController.text =
-        c.endDateController.text.isEmpty && experience.endDate != null
-            ? experience.endDate as String
-            : c.endDateController.text;
+
     c.descriptionController.text =
         c.descriptionController.text.isEmpty && experience.description != null
             ? experience.description as String
@@ -462,9 +459,17 @@ class AddExperienceScreen extends StatelessWidget {
             : c.profileController.text;
     if (experience.endDate == "currently_working") {
       c.currentlyWorking.value = true;
+      c.endDateController.clear();
       c.update(['EX-currentlyworkingButton']);
+    } else {
+      c.endDateController.text =
+          c.endDateController.text.isEmpty && experience.endDate != null
+              ? experience.endDate as String
+              : c.endDateController.text;
     }
-    if (c.addedSkillEX.isEmpty && experience.skills != null&& experience.skills != "") {
+    if (c.addedSkillEX.isEmpty &&
+        experience.skills != null &&
+        experience.skills != "") {
       List<String>? resSkill = experience.skills?.split(',').toList();
       if (resSkill != null) {
         for (var i in resSkill) {

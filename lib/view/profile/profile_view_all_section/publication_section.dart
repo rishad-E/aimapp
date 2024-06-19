@@ -44,7 +44,7 @@ class PublicationsSectionScreen extends StatelessWidget {
                         year:
                             parseDateMonthYear(data.publicationDate.toString()),
                         grade: "Education",
-                        skill: "Skills: Coach, Training",
+                        skill: "no",
                         description: edSubText,
                         end: publication.length - 1 == index,
                         onTap: () {

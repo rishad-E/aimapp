@@ -114,7 +114,7 @@ class UpdateExperienceInfoService {
     required List<String> skillsEX,
   }) async {
     String path = Apis().aimUrl + Apis().saveExperience;
-    log('exID=>$exID title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate=> description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription currenly=>$currentlyWorking mediaLnk=>$mediaLink',
+    log('exID=>$exID title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate => description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription currenly=>$currentlyWorking mediaLnk=>$mediaLink',
         name: 'add-EX service update');
 
     FormData formData = FormData.fromMap({

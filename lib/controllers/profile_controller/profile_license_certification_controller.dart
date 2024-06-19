@@ -248,9 +248,7 @@ class ProfileLicenseCertificationController extends GetxController {
         issuedateController.text.isNotEmpty &&
         expirydateController.text.isNotEmpty &&
         credentialIDController.text.isNotEmpty &&
-        credentialurlController.text.isNotEmpty &&
-        allLicenseMedias.isNotEmpty &&
-        addedLicenseSkill.isNotEmpty;
+        credentialurlController.text.isNotEmpty ;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

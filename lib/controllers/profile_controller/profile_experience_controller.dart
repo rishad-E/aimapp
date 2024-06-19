@@ -161,7 +161,9 @@ class ProfileExperienceController extends GetxController {
   }
 
   Future<void> deleteExperienceSection(
-      {required String exID, required String uId,required String company}) async {
+      {required String exID,
+      required String uId,
+      required String company}) async {
     String? res =
         await UpdateExperienceInfoService().deleteExperienceInfo(exID: exID);
     final awardC = Get.put(ProfileHonorsAwardsController());
@@ -286,9 +288,7 @@ class ProfileExperienceController extends GetxController {
         locationTypeController.text.isNotEmpty &&
         startDateController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
-        profileController.text.isNotEmpty &&
-        addedSkillEX.isNotEmpty &&
-        allMediasEX.isNotEmpty;
+        profileController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

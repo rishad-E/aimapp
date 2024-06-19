@@ -25,34 +25,36 @@ class ExperienceSectionScreen extends StatelessWidget {
           decoration: profileMainContainer(),
           height: double.infinity,
           width: double.infinity,
-          child: Column(
-            children: [
-              sectionMainContainer(
-                section: "Experience",
-                onTapAdd: () => Get.to(() => AddExperienceScreen(uId: uId)),
-                child: List.generate(
-                  experience.length,
-                  (index) {
-                    final data = experience[index];
-                    return edexlipbSectionWidget(
-                        image: "assets/images/upEvent1.png",
-                        school: data.employmentType.toString(),
-                        degree: data.companyName.toString(),
-                        year: data.endDate.toString() == 'currently_working'
-                            ? "${parseDateMonthYear(data.startDate.toString())} - On-going"
-                            : "${parseDateMonthYear(data.startDate.toString())}-${parseDateMonthYear(data.endDate.toString())}",
-                        grade: "${data.locationType},${data.location}",
-                        skill: "Skills: ${data.skills}",
-                        description: data.description.toString(),
-                        end: experience.length - 1 == index,
-                        onTap: () {
-                          Get.to(() => AddExperienceScreen(
-                              uId: data.userId.toString(), experience: data));
-                        });
-                  },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                sectionMainContainer(
+                  section: "Experience",
+                  onTapAdd: () => Get.to(() => AddExperienceScreen(uId: uId)),
+                  child: List.generate(
+                    experience.length,
+                    (index) {
+                      final data = experience[index];
+                      return edexlipbSectionWidget(
+                          image: "assets/images/upEvent1.png",
+                          school: data.employmentType.toString(),
+                          degree: data.companyName.toString(),
+                          year: data.endDate.toString() == 'currently_working'
+                              ? "${parseDateMonthYear(data.startDate.toString())} - On-going"
+                              : "${parseDateMonthYear(data.startDate.toString())}-${parseDateMonthYear(data.endDate.toString())}",
+                          grade: "${data.locationType},${data.location}",
+                          skill: "Skills: ${data.skills}",
+                          description: data.description.toString(),
+                          end: experience.length - 1 == index,
+                          onTap: () {
+                            Get.to(() => AddExperienceScreen(
+                                uId: data.userId.toString(), experience: data));
+                          });
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

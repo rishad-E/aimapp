@@ -87,9 +87,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                               controller.update(['update-publication']),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
-                              hintText: 'Ex: Harvard Business Review',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
+                              hintText: 'Ex: Harvard Business Review'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),

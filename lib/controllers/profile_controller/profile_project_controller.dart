@@ -258,9 +258,7 @@ class ProfileProjectController extends GetxController {
     bool isAllFiledSelected = projectnameController.text.isNotEmpty &&
         projectDescriptionController.text.isNotEmpty &&
         startdateController.text.isNotEmpty &&
-        projectAssosiatedController.text.isNotEmpty &&
-        addedProjectSkill.isNotEmpty &&
-        allProjectMedias.isNotEmpty;
+        projectAssosiatedController.text.isNotEmpty ;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

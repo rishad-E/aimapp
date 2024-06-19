@@ -552,7 +552,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                           secSubTitle3: data[index]
                                               .publicationUrl
                                               .toString(),
-                                          secSubTitle4: "Skills: ",
+                                          secSubTitle4: "no",
                                           secSubTitle5: edSubText,
                                           end: data.length < 2
                                               ? data.length - 1 == index

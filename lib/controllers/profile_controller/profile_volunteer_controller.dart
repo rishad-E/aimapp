@@ -239,8 +239,7 @@ class ProfileVolunteerController extends GetxController {
         volunteerRoleController.text.isNotEmpty &&
         causeController.text.isNotEmpty &&
         startdateController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty &&
-        volunteerMedia.isNotEmpty;
+        descriptionController.text.isNotEmpty;
     saveText.value = isAllfieldSelected ? kwhite : textFieldColor;
     saveBG.value = isAllfieldSelected ? mainPurple : buttonColor;
   }
