@@ -24,12 +24,12 @@ class EducatorMediaAddController extends GetxController {
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
   RxString fileSize = ''.obs;
-  File? cv;
+  PlatformFile? cv;
 
   RxString videofilePath = ''.obs;
   RxString videofileName = ''.obs;
   RxString videofileSize = ''.obs;
-  File? videoFile;
+  PlatformFile? videoFile;
 
   RxString errorTextLink = ''.obs;
   RxString errorTextVideo = ''.obs;
@@ -43,9 +43,10 @@ class EducatorMediaAddController extends GetxController {
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result == null) return;
+    cv = result.files.single;
     PlatformFile? file = result.files.single;
     String? path = file.path;
-    cv = File(file.path!);
+    // cv = File(file.path!);
     filePath.value = path!;
     fileName.value = file.name;
     fileSize.value = formatBytes(file.size);
@@ -67,7 +68,7 @@ class EducatorMediaAddController extends GetxController {
       type: FileType.custom,
       allowedExtensions: ['mp4', 'mov', 'avi'],
       allowCompression: false,
-      withData: true,
+      // withData: true,
       // allowedMimeType: ['video/*'],
     );
 
@@ -78,8 +79,8 @@ class EducatorMediaAddController extends GetxController {
     }).toList();
     if (videoFiles.isEmpty) return;
     PlatformFile selectedVideo = videoFiles.first;
+    videoFile = selectedVideo;
     String path = selectedVideo.path!;
-    videoFile = File(selectedVideo.path!);
     videofilePath.value = path;
     videofileName.value = selectedVideo.name;
     videofileSize.value = formatBytes(selectedVideo.size);
@@ -145,13 +146,12 @@ class EducatorMediaAddController extends GetxController {
       List<String> refPhones = referenceController.referencePhone;
       List<String?> otherRelations = referenceController.otherRelation;
 
-      // String name;
-      log('''name=>$name email=>$email location=>$address phone=>$phone highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
-         experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
-         teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
-         refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations linkedIn=>${linkedInController.text}
-         resume=>$cv videoLink=>${mediaLinkController.text} videoFile=>$videoFile videoFile=>$videofilePath  ''',
-          name: 'all-fields');
+      // log('''name=>$name email=>$email location=>$address phone=>$phone highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
+      //    experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
+      //    teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
+      //    refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations linkedIn=>${linkedInController.text}
+      //    resume=>$cv videoLink=>${mediaLinkController.text} videoFile=>$videoFile videoFile=>$videofilePath  ''',
+      //     name: 'all-fields');
       String? res =
           await EducatorRegistrationService().saveEducatorRegistration(
         name: name,
@@ -182,30 +182,30 @@ class EducatorMediaAddController extends GetxController {
         videoFile: videoFile,
       );
       saveDataLoading.value = false;
-      if (res == "Educator created successfully.") {
-        Get.showSnackbar(
-          GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: res,
-            borderRadius: 4,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: Colors.green,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-        Get.to(() => const EducatorSubmitFinalPage());
-      } else {
-        Get.showSnackbar(
-          GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: res,
-            borderRadius: 4,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
+      // if (res == "Educator created successfully.") {
+      //   Get.showSnackbar(
+      //     GetSnackBar(
+      //       snackStyle: SnackStyle.FLOATING,
+      //       message: res,
+      //       borderRadius: 4,
+      //       margin: const EdgeInsets.all(10),
+      //       backgroundColor: Colors.green,
+      //       duration: const Duration(seconds: 2),
+      //     ),
+      //   );
+      //   Get.to(() => const EducatorSubmitFinalPage());
+      // } else {
+      //   Get.showSnackbar(
+      //     GetSnackBar(
+      //       snackStyle: SnackStyle.FLOATING,
+      //       message: res,
+      //       borderRadius: 4,
+      //       margin: const EdgeInsets.all(10),
+      //       backgroundColor: Colors.red,
+      //       duration: const Duration(seconds: 2),
+      //     ),
+      //   );
+      // }
     } catch (e) {
       saveDataLoading.value = false;
       log(e.toString(), name: 'educator submit data error');

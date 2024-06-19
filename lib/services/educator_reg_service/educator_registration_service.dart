@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:http_parser/http_parser.dart';
 
 class EducatorRegistrationService {
   Dio dio = Dio();
@@ -32,11 +32,11 @@ class EducatorRegistrationService {
     required List<String?> otherRelations,
     required String linkedInLink,
     required String videoLink,
-    File? cv,
-    File? videoFile,
+    PlatformFile? cv,
+    PlatformFile? videoFile,
   }) async {
     String path = Apis().aimUrl + Apis().educator;
-
+log(name);
     FormData formData = FormData.fromMap({
       "name": name,
       "email": email,
@@ -64,19 +64,24 @@ class EducatorRegistrationService {
       "video_link": videoLink,
     });
     if (cv != null) {
+      log(cv.path.toString());
       formData.files.add(
         MapEntry(
-            'cv',
-            await MultipartFile.fromFile(cv.path,
-                filename: cv.path.split('/').last)),
+          'cv',
+          await MultipartFile.fromFile(cv.path!,
+              contentType: MediaType.parse(('application/pdf'))),
+        ),
       );
     }
     if (videoFile != null) {
+      log(videoFile.path.toString());
       formData.files.add(
         MapEntry(
             'video_file',
-            await MultipartFile.fromFile(videoFile.path,
-                filename: videoFile.path.split('/').last)),
+            await MultipartFile.fromFile(
+              videoFile.path!,
+              contentType: MediaType.parse('video/mp4'),
+            )),
       );
     }
     try {
@@ -85,6 +90,7 @@ class EducatorRegistrationService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
+          headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
       log(response.data.toString(), name: 'educator response');
@@ -94,7 +100,8 @@ class EducatorRegistrationService {
         // log(successMessage, name: 'educator response sucess');
         return successMessage;
       } else if (responseData.containsKey('error')) {
-        if (response.data is Map) {
+        dynamic error = responseData['error'];
+        if (error is Map) {
           Map<String, dynamic> errors = responseData['error'];
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
@@ -104,7 +111,7 @@ class EducatorRegistrationService {
           }
         } else {
           String errorMessage = response.data["error"];
-          log(errorMessage);
+          log(errorMessage, name: 'error res string');
         }
       }
     } on DioException catch (e) {

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:aimshala/controllers/mentor_controllers/mentor_additional_info_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_availability_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_background_detail_controller.dart';
@@ -23,12 +22,14 @@ class MentorAddMediaController extends GetxController {
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
   RxString fileSize = ''.obs;
-  File? cv;
+  RxString extenstion = ''.obs;
+  PlatformFile? cvNew;
+
 
   RxString videofilePath = ''.obs;
   RxString videofileName = ''.obs;
   RxString videofileSize = ''.obs;
-  File? video;
+  PlatformFile? video;
 
   RxString errorTextLink = ''.obs;
   RxString errorTextVideo = ''.obs;
@@ -36,17 +37,21 @@ class MentorAddMediaController extends GetxController {
 
   RxBool agree = false.obs;
   RxBool saveDataLoading = false.obs;
+  // late MentorRegistrationFormData model;
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
+      allowMultiple: false,
       allowedExtensions: ['pdf', 'doc', 'docx'],
     );
     if (result == null) return;
+    cvNew = result.files.single;
     PlatformFile? file = result.files.single;
+    // log(cvNew!.toString(), name: 'selected file');
     String? path = file.path;
-    cv = File(file.path!);
     filePath.value = path!;
+    extenstion.value = file.extension.toString();
     fileName.value = file.name;
     fileSize.value = formatBytes(file.size);
     errorTextLink.value = '';
@@ -57,7 +62,7 @@ class MentorAddMediaController extends GetxController {
       type: FileType.custom,
       allowedExtensions: ['mp4', 'mov', 'avi'],
       allowCompression: false,
-      withData: true,
+      // withData: true,
       // allowedMimeType: ['video/*'],
     );
 
@@ -70,7 +75,7 @@ class MentorAddMediaController extends GetxController {
     if (videoFiles.isEmpty) return;
     PlatformFile selectedVideo = videoFiles.first;
     String path = selectedVideo.path!;
-    video = File(selectedVideo.path!);
+    video = selectedVideo;
     videofilePath.value = path;
     videofileName.value = selectedVideo.name;
     videofileSize.value = formatBytes(selectedVideo.size);
@@ -138,19 +143,6 @@ class MentorAddMediaController extends GetxController {
       List<String> refPhones = mRefController.referencePhone;
       List<String?> refOtherRel = mRefController.otherRelation;
 
-      log('''name=>$name email=>$email phone=>$phone address=$address
-highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
-earn=>$earnReward  rewardDes=>$rewardDescription
-mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
-prefDays=>$prefDays prefTimes=>$prefTimes
-questions=>$questions answers=>$answers
-refName=>$refNames refRel=>$refRelations refPhone=>$refPhones refOther=>$refOtherRel
-linkedINLink=>${linkedInController.text} videoLink=>${mediaLinkController.text}
-cvFileX=>$filePath
-cvFileFile=>$cv
-videoX=>$videofilePath
-videoFile=>$video''');
-
       String? res = await MentorRegistrationService().saveMentorRegistraion(
         name: name,
         email: email,
@@ -176,7 +168,7 @@ videoFile=>$video''');
         refOtherRelations: refOtherRel,
         linkedInLink: linkedInController.text,
         videoLink: mediaLinkController.text,
-        cv: cv,
+        cv: cvNew,
         video: video,
       );
       saveDataLoading.value = false;
@@ -210,3 +202,22 @@ videoFile=>$video''');
     }
   }
 }
+
+
+
+
+
+
+
+//       log('''name=>$name email=>$email phone=>$phone address=$address
+// highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
+// earn=>$earnReward  rewardDes=>$rewardDescription
+// mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
+// prefDays=>$prefDays prefTimes=>$prefTimes
+// questions=>$questions answers=>$answers
+// refName=>$refNames refRel=>$refRelations refPhone=>$refPhones refOther=>$refOtherRel
+// linkedINLink=>${linkedInController.text} videoLink=>${mediaLinkController.text}
+// cvFileX=>$filePath
+// cvFileFile=>$cv
+// videoX=>$videofilePath
+// videoFile=>$video''');

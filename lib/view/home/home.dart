@@ -2,8 +2,8 @@ import 'package:aimshala/controllers/home_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/upcomingmodel/upcomingevent.dart';
-import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/home/widget/bottom_nav.dart';
 import 'package:aimshala/view/home/widget/const.dart';
 import 'package:aimshala/view/home/widget/drawer_home.dart';
 import 'package:aimshala/view/home/widget/home_container/aimcet_container.dart';
@@ -17,7 +17,6 @@ import 'package:aimshala/view/home/widget/home_container/upsession_container.dar
 import 'package:aimshala/view/home/widget/home_container/yourjourney_container.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -156,107 +155,17 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20.0),
-          topRight: Radius.circular(20.0),
-        ),
+        bottomNavigationBar: bottomNavContainer(
         child: GetBuilder<HomeController>(
-            init: HomeController(),
-            id: 'bottom-nav',
-            builder: (c) {
-              return SizedBox(
-                height: 80,
-                width: double.infinity,
-                // padding: EdgeInsets.only(right: 5),
-                child: BottomNavigationBar(
-                  currentIndex: c.currentStep,
-                  type: BottomNavigationBarType.fixed,
-                  backgroundColor: kwhite,
-                  selectedItemColor: mainPurple,
-                  unselectedItemColor: Colors.grey,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  selectedLabelStyle:
-                      TextStyle(color: mainPurple, fontSize: 10),
-                  unselectedLabelStyle:
-                      const TextStyle(color: Colors.grey, fontSize: 10),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset(
-                          "assets/images/search.svg",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Explore',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        // child: SvgPicture.asset(
-                        //   "assets/images/prepare.svg",
-                        //   // color: Colors.purple,
-                        // ),
-                        child: Image.asset(
-                          "assets/images/prepare.png",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Prepare',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset(
-                          "assets/images/Contribute.svg",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Contribute',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset(
-                          "assets/images/mentorship.svg",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Mentorship',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset(
-                          "assets/images/Engage.svg",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Engage',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset(
-                          "assets/images/nearyou.svg",
-                          // color: Colors.purple,
-                        ),
-                      ),
-                      label: 'Near you',
-                    ),
-                  ],
-                  // onTap: (int index) => c.toggelNav(index),
-                ),
-              );
-            }),
+          init: HomeController(),
+          id: 'bottom-nav',
+          builder: (c) {
+            return homeBottomNav(
+              currentIndex: c.currentStep,
+              // onTap: (index) => c.toggelNav(index),
+            );
+          },
+        ),
       ),
     );
   }

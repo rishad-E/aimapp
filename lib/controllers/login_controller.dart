@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
   UserDataModel? userData;
-  Rx<Color> buttonColor = Rx<Color>(bbColor);
+  Rx<Color> buttonColor = Rx<Color>(const Color.fromARGB(255, 244, 244, 244));
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
 
 /*---------- sending OTP to Mobile Number ---------*/
@@ -100,7 +100,7 @@ class LoginController extends GetxController {
   }
 
   void updateButtonColor() {
-    buttonColor.value = otpController.text.length == 4 ? kpurple : bbColor;
+    buttonColor.value = otpController.text.length == 4 ? kpurple : const Color.fromARGB(255, 244, 244, 244);
     buttonTextColor.value = otpController.text.length == 4 ? kwhite : kblack;
 
     update(['button-otp']);

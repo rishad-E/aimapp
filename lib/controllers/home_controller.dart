@@ -5,8 +5,8 @@ class HomeController extends GetxController {
 
   
 
-  void toggelNav(int intex) {
-    currentStep = intex;
+  void toggelNav(int index) {
+    currentStep = index;
     update(['bottom-nav']);
   }
 }
