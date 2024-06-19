@@ -79,8 +79,8 @@ class EducatorMediaAddController extends GetxController {
     }).toList();
     if (videoFiles.isEmpty) return;
     PlatformFile selectedVideo = videoFiles.first;
-    videoFile = selectedVideo;
     String path = selectedVideo.path!;
+    videoFile = selectedVideo;
     videofilePath.value = path;
     videofileName.value = selectedVideo.name;
     videofileSize.value = formatBytes(selectedVideo.size);
@@ -146,12 +146,13 @@ class EducatorMediaAddController extends GetxController {
       List<String> refPhones = referenceController.referencePhone;
       List<String?> otherRelations = referenceController.otherRelation;
 
-      // log('''name=>$name email=>$email location=>$address phone=>$phone highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
-      //    experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
-      //    teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
-      //    refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations linkedIn=>${linkedInController.text}
-      //    resume=>$cv videoLink=>${mediaLinkController.text} videoFile=>$videoFile videoFile=>$videofilePath  ''',
-      //     name: 'all-fields');
+      log('''name=>$name email=>$email location=>$address phone=>$phone highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
+         experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
+         teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
+         refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations 
+         linkedIn=>${linkedInController.text}  resume=>$cv 
+         videoLink=>${mediaLinkController.text} videoFile=>$videoFile ''',
+          name: 'all-fields');
       String? res =
           await EducatorRegistrationService().saveEducatorRegistration(
         name: name,
@@ -182,30 +183,30 @@ class EducatorMediaAddController extends GetxController {
         videoFile: videoFile,
       );
       saveDataLoading.value = false;
-      // if (res == "Educator created successfully.") {
-      //   Get.showSnackbar(
-      //     GetSnackBar(
-      //       snackStyle: SnackStyle.FLOATING,
-      //       message: res,
-      //       borderRadius: 4,
-      //       margin: const EdgeInsets.all(10),
-      //       backgroundColor: Colors.green,
-      //       duration: const Duration(seconds: 2),
-      //     ),
-      //   );
-      //   Get.to(() => const EducatorSubmitFinalPage());
-      // } else {
-      //   Get.showSnackbar(
-      //     GetSnackBar(
-      //       snackStyle: SnackStyle.FLOATING,
-      //       message: res,
-      //       borderRadius: 4,
-      //       margin: const EdgeInsets.all(10),
-      //       backgroundColor: Colors.red,
-      //       duration: const Duration(seconds: 2),
-      //     ),
-      //   );
-      // }
+      if (res == "Educator created successfully.") {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.to(() => const EducatorSubmitFinalPage());
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     } catch (e) {
       saveDataLoading.value = false;
       log(e.toString(), name: 'educator submit data error');

@@ -36,7 +36,7 @@ class EducatorRegistrationService {
     PlatformFile? videoFile,
   }) async {
     String path = Apis().aimUrl + Apis().educator;
-log(name);
+    log(name);
     FormData formData = FormData.fromMap({
       "name": name,
       "email": email,
@@ -84,6 +84,8 @@ log(name);
             )),
       );
     }
+
+    
     try {
       Response response = await dio.post(
         path,
