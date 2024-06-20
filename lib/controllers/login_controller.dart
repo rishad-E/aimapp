@@ -2,6 +2,7 @@ import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/otp_service/otp_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/view/login/otp_screen.dart';
 import 'package:aimshala/view/signup/signup_screen.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +16,35 @@ class LoginController extends GetxController {
 
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
+  RxBool otpVerified = false.obs;
   UserDataModel? userData;
   Rx<Color> buttonColor = Rx<Color>(const Color.fromARGB(255, 244, 244, 244));
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
 
 /*---------- sending OTP to Mobile Number ---------*/
   Future<void> sendOTPFunction({required String mobileNo}) async {
-    OtpService().sendOTP(mobileNo: mobileNo);
+    // log('message');
+    String? res = await OtpService().sendOTP(mobileNo: mobileNo);
+    if (res == 'success') {
+      Get.to(() => OTPScreen(mobileNo: mobileNo));
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
     clearotpControllers();
   }
 
 /*---------- verify OTP ---------*/
   Future<void> verifyOTPFunction(
       {required String mobileNo, required String otp}) async {
+    otpVerified.value = true;
     bool? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
     if (val == true) {
       String mobileWithoutCountryCode = mobileNo.substring(2);
@@ -41,7 +58,9 @@ class LoginController extends GetxController {
       } else {
         Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
       }
+      otpVerified.value = false;
     } else {
+      otpVerified.value = false;
       validationMessage.value = 'Please enter valid code';
     }
   }
@@ -100,7 +119,9 @@ class LoginController extends GetxController {
   }
 
   void updateButtonColor() {
-    buttonColor.value = otpController.text.length == 4 ? kpurple : const Color.fromARGB(255, 244, 244, 244);
+    buttonColor.value = otpController.text.length == 4
+        ? kpurple
+        : const Color.fromARGB(255, 244, 244, 244);
     buttonTextColor.value = otpController.text.length == 4 ? kwhite : kblack;
 
     update(['button-otp']);

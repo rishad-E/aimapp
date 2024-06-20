@@ -1,40 +1,19 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
+import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-Widget signUPContainer({
-  required BuildContext context,
-  required Widget textfield,
-  required Widget twoText,
-  required Widget fieldText,
-  Widget? button,
-  ButtonStyle? style,
-}) {
+Widget signUPContainer({required Widget child}) {
   return Container(
-    padding: const EdgeInsets.only(top: 8, bottom: 8),
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
       color: kwhite,
     ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        twoText,
-        fieldText,
-        textfield,
-        Container(
-          width: 79.w,
-          height: 4.5.h,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-          child: button,
-        ),
-      ],
-    ),
+    child: child,
   );
 }
 
@@ -66,5 +45,46 @@ InputDecoration roleContainer({String? hintText, Widget? suffixWidget}) {
 Widget signupBox({required Widget text, required Widget textField}) {
   return Column(
     children: [Align(alignment: Alignment.centerLeft, child: text), textField],
+  );
+}
+
+Widget aimshalaContainerSignUp() {
+  return Container(
+    // color: kwhite,
+    padding: const EdgeInsets.symmetric(horizontal: 5),
+    // height: 20.h,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: 61.w,
+          height: 7.h,
+          child: Image.asset('assets/images/aimshala-logo.png'),
+        ),
+        const SizedBox(height: 12),
+        primarytxt2(
+            'We envision a world where individuals are equipped to Take charge of their lives, realise their aspirations, and make meaningful contributions to society, fostering a future of limitless possibilities.',
+            9.sp),
+        const SizedBox(height: 12)
+      ],
+    ),
+  );
+}
+
+Widget signUpButton(
+    {MaterialStateProperty<Color?>? backgroundColor,
+    Color? textColor,
+    required void Function()? onPressed}) {
+  return TextButton(
+    style: ButtonStyle(
+      backgroundColor: backgroundColor,
+      shape: buttonShape(round: 10),
+    ),
+    onPressed: onPressed,
+    child: Text(
+      'Sign up',
+      style: TextStyle(
+          color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
+    ),
   );
 }

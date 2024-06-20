@@ -10,10 +10,10 @@ class OtpService {
   String retryType = 'text';
 
 /*---------- send otp service ---------*/
-  Future<void> sendOTP({required String mobileNo}) async {
+  Future<String?> sendOTP({required String mobileNo}) async {
     try {
       String path = '${Apis().baseUrlOtp}otp';
-      
+
       Response response = await dio.get(
         path,
         queryParameters: {
@@ -23,23 +23,34 @@ class OtpService {
         },
       );
       log(response.data.toString());
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('type')) {
+          String message = resData['type'];
+          log(message.toString());
+          return message;
+        } else {
+          String message = 'OTP request failed';
+          return message;
+        }
+      }
     } catch (e) {
       log(e.toString(), error: 'sendOtp error');
     }
+    return null;
   }
 
   /*---------- validate otp serviece---------*/
   Future<bool?> validateOTP(
       {required String otp, required String mobileNo}) async {
     try {
-    
       String path = '${Apis().baseUrlOtp}otp/verify';
       Response response = await dio.get(path, queryParameters: {
         'otp': otp,
         'authkey': authKey,
         'mobile': mobileNo,
       });
-      log(response.data.toString(),name:'otp validation');
+      log(response.data.toString(), name: 'otp validation');
       String data = response.data['message'];
       if (data == 'OTP verified success') {
         return true;
@@ -63,8 +74,8 @@ class OtpService {
         'retrytype': retryType,
       });
       log(response.data.toString(), name: 'resend');
-       String data = response.data['message'];
-       return data;
+      String data = response.data['message'];
+      return data;
       //  if (data =='retry send successfully') {
       //    return true;
       //  }else{

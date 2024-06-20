@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:aimshala/controllers/educator_controllers/educator_additional_info_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_availability_preference_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_background_detail_controller.dart';
