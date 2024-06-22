@@ -1,12 +1,13 @@
 import 'dart:developer';
 
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
 
 class SignUpService {
   Dio dio = Dio();
   String path = 'http://154.26.130.161/elearning/api/user-registeration';
 
-  Future<String?> signUpUser(
+  Future<Map<String, dynamic>?> signUpUser(
       {required String email,
       required String mobile,
       required String name}) async {
@@ -26,25 +27,24 @@ class SignUpService {
         },
       );
       log(response.data.toString(), name: 'signup');
-      dynamic res = response.data;
-      if (res is Map) {
-        Map<String, dynamic> resData = response.data;
-        if (resData.containsKey('message')) {
-          String message = resData['message'];
-          // "message": "User registered successfully"
-          return message;
-        } else if (resData.containsKey('error')) {
-          Map<String, dynamic> errors = resData['error'];
-          String first = errors.keys.first;
-          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
-            String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'sign up  error');
-            return errorMessage;
-          }
-        }
+      if (response.data < 499) {
+        Map<String, dynamic> res = response.data;
+        return res;
+      } else if (response.statusCode == 500) {
+        log('Server error:${response.data}', name: 'sign up error');
+        SnackbarPopUps.popUpB('Server error occured');
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        log('Server error: ${e.message}', name: 'sign up error');
+        throw Exception('Server error occurred');
+      } else {
+        log('error:${e.response?.data}', name: 'sign up error');
       }
     } catch (e) {
-      log(e.toString(), name: 'signup error');
+      // Handle other exceptions
+      log('error :${e.toString()}', name: 'sign up error');
+      throw Exception('error occurred ${e.toString()}');
     }
     return null;
   }

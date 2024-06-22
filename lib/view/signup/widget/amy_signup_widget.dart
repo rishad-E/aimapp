@@ -1,6 +1,5 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/signup/widget/custom_textfiled.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
@@ -31,9 +30,9 @@ Widget sendcardSignup(context, String mssg, String time) {
         constraints:
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
         child: Container(
-          decoration: BoxDecoration(
-            color: mainPurple,
-            borderRadius: const BorderRadius.only(
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 241, 242, 246),
+            borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(5),
                 bottomRight: Radius.circular(5),
                 topLeft: Radius.circular(5)),
@@ -42,7 +41,7 @@ Widget sendcardSignup(context, String mssg, String time) {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             child: Text(
               mssg,
-              style: TextStyle(color: kwhite),
+              style: TextStyle(color: textFieldColor),
             ),
           ),
         ),
@@ -53,24 +52,27 @@ Widget sendcardSignup(context, String mssg, String time) {
   );
 }
 
-Widget replaycardSignup(context, String mssg, String time, {bool? type}) {
+Widget replaycardSignup(context, String mssg, String time, bool isFirst,
+    {bool? type}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
         height: 28,
         width: 28,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 255, 223, 169),
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(140),
-              bottomRight: Radius.circular(140),
-              topRight: Radius.circular(140)),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/images/person.png'),
-          ),
-        ),
+        decoration: isFirst == true
+            ? const BoxDecoration(
+                color: Color.fromARGB(255, 255, 223, 169),
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(140),
+                    bottomRight: Radius.circular(140),
+                    topRight: Radius.circular(140)),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/person.png'),
+                ),
+              )
+            : null,
       ),
       wBox,
       Expanded(
@@ -79,9 +81,10 @@ Widget replaycardSignup(context, String mssg, String time, {bool? type}) {
           children: [
             Container(
               width: type != null ? null : double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 241, 242, 246),
-                borderRadius: BorderRadius.only(
+              decoration:  BoxDecoration(
+                // color: Color.fromARGB(255, 241, 242, 246),
+                color: mainPurple,
+                borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(5),
                     bottomRight: Radius.circular(5),
                     topRight: Radius.circular(5)),
@@ -91,11 +94,19 @@ Widget replaycardSignup(context, String mssg, String time, {bool? type}) {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                 child: Text(
                   mssg,
-                  style: TextStyle(color: textFieldColor),
+                  style: TextStyle(color: kwhite),
                 ),
               ),
             ),
-            Text(time, style: TextStyle(fontSize: 10, color: textFieldColor)),
+            time == 'no'
+                ? choiceSizedBox(height: 3)
+                : Text(
+                    time,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: textFieldColor,
+                    ),
+                  ),
             // hBox,
           ],
         ),
@@ -139,10 +150,58 @@ Widget sendMsgContainer() {
 InputDecoration amyTextfieldDecor({bool isAskingDOB = false}) {
   return InputDecoration(
       border: InputBorder.none,
-      hintText: isAskingDOB ? "Enter DOB in DD/MM/YYYY" : "Type here...",
+      hintText: isAskingDOB ? "DD/MM/YYYY" : "Type here...",
       hintStyle: TextStyle(
         fontSize: 13,
         color: textFieldColor,
         fontWeight: FontWeight.normal,
       ));
+}
+
+Widget amyOptionContainer({required String option}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+    margin: const EdgeInsets.only(right: 7),
+    decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 244, 244, 244),
+        borderRadius: BorderRadius.circular(8)),
+    child: Text(
+      option,
+      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+    ),
+  );
+}
+
+Widget skipText() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: const Color.fromARGB(255, 251, 237, 250)),
+    child: const Text(
+      "Skip all questions for now",
+      style: TextStyle(
+          color: Color.fromARGB(255, 182, 56, 175),
+          fontSize: 12,
+          fontWeight: FontWeight.w600),
+    ),
+  );
+}
+
+Widget goHomeContainer() {
+  return Container(
+    // height: 35,
+    margin: const EdgeInsets.symmetric(vertical: 12),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: const Color.fromARGB(255, 251, 237, 250)),
+    child: const Text(
+      "Go to Homepage",
+      style: TextStyle(
+          color: Color.fromARGB(255, 182, 56, 175),
+          fontSize: 12,
+          fontWeight: FontWeight.w600),
+    ),
+  );
 }

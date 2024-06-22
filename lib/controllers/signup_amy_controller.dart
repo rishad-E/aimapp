@@ -1,5 +1,6 @@
 import 'dart:developer';
-
+import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
+import 'package:aimshala/services/signup_service/amy_signup_service.dart';
 import 'package:aimshala/view/signup/widget/amy_signup_chat_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,15 +9,20 @@ import 'package:intl/intl.dart';
 class AmySignUpController extends GetxController {
   final String name;
   final String email;
-  AmySignUpController(this.name, this.email);
+  final String uId;
+  AmySignUpController(this.name, this.email, this.uId);
   TextEditingController chatController = TextEditingController();
+  TextEditingController otherOptionController = TextEditingController();
   ScrollController scrollController = ScrollController();
   RxList<ChatMessageSignup> msgs = <ChatMessageSignup>[].obs;
   bool isTyping = false;
   bool isAskingDOB = false;
   bool isAskingGender = false;
+  int qusId = 0;
+  bool skipQuestion = false;
 
-  List<String> genders = ["Male", "Female", "Other", "Prefer not to say"];
+  List<Option> otherOptionList = [];
+  List<String> genderOptionList = [];
 
   @override
   void onInit() {
@@ -29,7 +35,7 @@ class AmySignUpController extends GetxController {
     String currentTime = DateFormat('h:mm a').format(time);
     String defaultMsg =
         "Hi $name, I'm Amy, your virtual career assistant.Thanks for verifying your mobile number. Let's get to know each other better! Now, could you tell me your date of birth? (Please enter in DD/MM/YYYY format)";
-    msgs.add(ChatMessageSignup(false, defaultMsg, currentTime));
+    msgs.add(ChatMessageSignup(false, defaultMsg, currentTime, true));
     isAskingDOB = true;
   }
 
@@ -37,12 +43,17 @@ class AmySignUpController extends GetxController {
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
     String userMessage = chatController.text;
+    String otheroptionMsg = otherOptionController.text;
     chatController.clear();
-    // bool res = isValidDOB(userMessage);
-    isAskingGender = false;
-    log(isAskingGender.toString(), name: 'boooooooooooooooooooooooooool');
+
     if (userMessage.isNotEmpty) {
-      msgs.insert(0, ChatMessageSignup(true, userMessage, currentTime));
+      if (qusId > 1) {
+        msgs.insert(
+            0, ChatMessageSignup(true, otheroptionMsg, currentTime, false));
+      } else {
+        msgs.insert(
+            0, ChatMessageSignup(true, userMessage, currentTime, false));
+      }
       isTyping = false;
       scrollController.animateTo(0.0,
           duration: const Duration(seconds: 1), curve: Curves.easeOut);
@@ -51,13 +62,30 @@ class AmySignUpController extends GetxController {
         FocusScope.of(context).unfocus();
       }
       isTyping = true;
-      String res = await replyMessageGender();
-      if (res.isNotEmpty) {
-        if (res == "Great! Now, could you please tell me your gender?" &&
-            !isAskingGender) {
-          isAskingGender = true;
+      Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
+          uId: uId, msg: userMessage, qusId: qusId.toString());
+      if (res != null) {
+        qusId = res["upd_ques_index"];
+        String resMsg = res["bot_reply"];
+        log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
+        if (qusId == 1) {
+          genderOptionList.clear();
+          List<dynamic> resOption = res["options"];
+          genderOptionList.addAll(resOption.cast<String>());
+        } else {
+          // AmyRegisterModel model = AmyRegisterModel.fromJson(res);
+          otherOptionList.clear();
+          List<dynamic> data = res["options"];
+          List<Option> optionsModel =
+              data.map((e) => Option.fromJson(e)).toList();
+          log("items=>$optionsModel", name: 'checkkkkkkk option');
+          otherOptionList.addAll(optionsModel);
         }
-        msgs.insert(0, ChatMessageSignup(false, res, currentTime));
+        List<String> parts = resMsg.split('#');
+        // String part1 = parts[0];
+        // String part2 = parts[1];
+        msgs.insert(0, ChatMessageSignup(false, parts[0], 'no', true));
+        msgs.insert(0, ChatMessageSignup(false, parts[1], currentTime, false));
         scrollController.animateTo(0.0,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
         isTyping = false;
@@ -77,13 +105,33 @@ class AmySignUpController extends GetxController {
     update(['send-to-amy']);
   }
 
-  Future<String> replyMessageGender() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return "Great! Now, could you please tell me your gender?";
-  }
-
   bool isValidDOB(String dob) {
     // Add validation logic for DOB format (DD/MM/YYYY)
     return RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(dob);
   }
 }
+
+// Future<String> replyMessageGender() async {
+//   await Future.delayed(const Duration(seconds: 2));
+//   return "Great! Now, could you please tell me your gender?";
+// }
+
+// if (res.isNotEmpty) {
+//   if (res == "Great! Now, could you please tell me your gender?" &&
+//       !isAskingGender) {
+//     isAskingGender = true;
+//   }
+//   msgs.insert(0, ChatMessageSignup(false, res, currentTime));
+//   scrollController.animateTo(0.0,duration: const Duration(seconds: 1), curve: Curves.easeOut);
+//   isTyping = false;update(['send-to-amy']);
+// } else {
+//   Get.showSnackbar(
+//     const GetSnackBar(
+//       snackStyle: SnackStyle.FLOATING,
+//       message: 'Some error occurred, please try again!',
+//       margin: EdgeInsets.all(10),
+//       backgroundColor: Colors.red,
+//       duration: Duration(seconds: 2),
+//     ),
+//   );
+// }

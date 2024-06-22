@@ -48,16 +48,25 @@ class LoginController extends GetxController {
     bool? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
     if (val == true) {
       String mobileWithoutCountryCode = mobileNo.substring(2);
-      userData = await LoginService()
+      // userData = await LoginService()
+      //     .verifyUserExist(mobileNo: mobileWithoutCountryCode);
+      Map<String, dynamic> res = await LoginService()
           .verifyUserExist(mobileNo: mobileWithoutCountryCode);
-      if (userData?.token != null) {
-        storage.write(key: 'token', value: userData?.token.toString());
-        storage.write(key: 'phone', value: userData?.user?.phone.toString());
+      if (res.containsKey('status')) {
+        storage.write(key: 'phone', value: mobileWithoutCountryCode);
         Get.offAll(() => const SplashScreen());
-        phoneController.clear();
-      } else {
+      } else if (res.containsKey('error')) {
         Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
+      } else if (res.containsKey('token')) {
+        userData = UserDataModel.fromJson(res);
+        if (userData != null) {
+          storage.write(key: 'token', value: userData?.token.toString());
+          storage.write(key: 'phone', value: userData?.user?.phone.toString());
+          Get.offAll(() => const SplashScreen());
+          phoneController.clear();
+        }
       }
+
       otpVerified.value = false;
     } else {
       otpVerified.value = false;

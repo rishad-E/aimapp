@@ -5,8 +5,6 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/login/login_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
-import 'package:aimshala/view/signup/signup_amy_screen.dart';
-import 'package:aimshala/view/signup/widget/signup_dialoguebox.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -91,22 +89,11 @@ class SignUpScreen extends StatelessWidget {
                                     String mobileWithoutCountryCode =
                                         mobileNo.substring(2);
                                     log('name=>${c.nameController.text} email=>${c.emailController.text} mobile=>$mobileWithoutCountryCode');
-                                    Get.to(() => SignUpAmyScreen(
-                                          name: c.nameController.text,
-                                          email: c.emailController.text,
-                                        ));
-                                    // c
-                                    //     .signUpUserFunction(
-                                    //       name: c.nameController.text,
-                                    //       email: c.emailController.text,
-                                    //       mobileNo: mobileWithoutCountryCode,
-                                    //     )
-                                    //     .then(
-                                    //       (value) => {
-                                    //         if (value == true)
-                                    //           {showSignUpDialogueBox(context)}
-                                    //       },
-                                    //     );
+                                    c.signUpUserFunction(
+                                      name: c.nameController.text,
+                                      email: c.emailController.text,
+                                      mobileNo: mobileWithoutCountryCode,
+                                    );
                                   }
                                 },
                                 backgroundColor:
@@ -144,12 +131,12 @@ class SignUpScreen extends StatelessWidget {
 //   );
 // }
 
-void showSignUpDialogueBox(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return const SignUpDialogueBox();
-    },
-  );
-}
+// void showSignUpDialogueBox(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     barrierDismissible: false,
+//     builder: (context) {
+//       return const SignUpDialogueBox();
+//     },
+//   );
+// }
