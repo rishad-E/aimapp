@@ -76,9 +76,6 @@ class SignUpAmyScreen extends StatelessWidget {
                 return c.skipQuestion
                     ? GestureDetector(
                         onTap: () {
-                          // c.skipQuestion = true;
-                          // c.update(['send-to-amy']);
-                          // log('${c.skipQuestion}');
                           Get.to(() => const SplashScreen());
                         },
                         child: goHomeContainer(),

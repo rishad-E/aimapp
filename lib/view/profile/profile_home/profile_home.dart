@@ -138,15 +138,15 @@ class ProfileHomeScreen extends StatelessWidget {
                             ),
                             infoText(
                               text1: 'Date of Birth:',
-                              text2: data?.dob ?? '',
+                              text2: data?.dob ?? '_',
                             ),
                             infoText(
                               text1: 'Gender:',
-                              text2: data?.gender ?? '',
+                              text2: data?.gender ?? '_',
                             ),
                             hBox,
                             hBox,
-                            regularText(data?.about ?? '', 12)
+                            regularText(data?.about ?? '_', 12)
                           ],
                         );
                       })),
@@ -277,8 +277,10 @@ class ProfileHomeScreen extends StatelessWidget {
                                                 "${yearFormatter(data[index].startDate.toString())}-${yearFormatter(data[index].endDate.toString())}",
                                             secSubTitle3:
                                                 "Grade: ${data[index].grade.toString()}",
-                                            secSubTitle4:
-                                                "Skills: ${data[index].skills.toString()}",
+                                            secSubTitle4: data[index].skills ==
+                                                    null
+                                                ? 'Skill: _'
+                                                : "Skills: ${data[index].skills.toString()}",
                                             secSubTitle5: data[index]
                                                 .description
                                                 .toString(),
@@ -335,8 +337,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
                                           image: "assets/images/upEvent1.png",
-                                          secTitle:
-                                              data[index].title.toString(),
+                                          secTitle: data[index]
+                                              .title
+                                              .toString(),
                                           secSubTitle: data[index]
                                               .companyName
                                               .toString(),
@@ -348,8 +351,11 @@ class ProfileHomeScreen extends StatelessWidget {
                                               : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           secSubTitle3:
                                               "${data[index].locationType.toString()},${data[index].location.toString()}",
-                                          secSubTitle4:
-                                              "Skills:${data[index].skills.toString()}",
+                                          secSubTitle4: data[index]
+                                                      .skills ==
+                                                  null
+                                              ? "Skills:_"
+                                              : "Skills:${data[index].skills.toString()}",
                                           secSubTitle5: data[index]
                                               .description
                                               .toString(),
@@ -454,9 +460,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                       if (data.length < 2) {
                                         Get.to(() =>
                                             AddLicenseCertificationsScreen(
-                                              uId: id,
-                                              license: data[0],
-                                            ));
+                                                uId: id, license: data[0]));
                                       } else {
                                         Get.to(() => LicenseSectionScreen(
                                             uId: id, license: data));
@@ -553,7 +557,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                               .publicationUrl
                                               .toString(),
                                           secSubTitle4: "no",
-                                          secSubTitle5: edSubText,
+                                          secSubTitle5: data[index]
+                                              .description
+                                              .toString(),
                                           end: data.length < 2
                                               ? data.length - 1 == index
                                               : index == 1),

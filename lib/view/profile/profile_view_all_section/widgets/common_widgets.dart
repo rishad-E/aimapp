@@ -78,7 +78,7 @@ Widget edexlipbSectionWidget(
                 ),
                 regularText(degree, 9.sp, color: kblack),
                 regularText(year, 8.sp),
-                regularText(grade, 8.sp),
+                grade == 'no' ? shrinked : regularText(grade, 8.sp),
                 skill == 'no' ? shrinked : regularText(skill, 8.sp),
                 regularText(description, 8),
               ],

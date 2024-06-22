@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -153,6 +151,7 @@ class AddProjectSkillScreen extends StatelessWidget {
                                 ),
                               ),
                               trailing: Checkbox(
+                                activeColor: mainPurple,
                                 side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
@@ -188,10 +187,9 @@ class AddProjectSkillScreen extends StatelessWidget {
 void projectSkillsAdding(String skill, ProfileProjectController controller) {
   if (!controller.addedProjectSkill.contains(skill)) {
     controller.addedProjectSkill.add(skill);
-    controller.update(['update-educationInfo']);
-    log("skill added to list");
   } else {
-    log("skill already exists in the list");
+    controller.addedProjectSkill.remove(skill);
   }
+  controller.update(['update-educationInfo']);
   controller.update(['add-projectSkill']);
 }

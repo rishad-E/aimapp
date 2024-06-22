@@ -1,6 +1,5 @@
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/signup_service/signup_service.dart';
-import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/signup/signup_amy_screen.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';

@@ -151,6 +151,7 @@ class AddLicenseSkillScreen extends StatelessWidget {
                                 ),
                               ),
                               trailing: Checkbox(
+                                activeColor: mainPurple,
                                 side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
@@ -188,7 +189,8 @@ void addLicenseSkill(String skill, ProfileLicenseCertificationController c) {
     c.addedLicenseSkill.add(skill);
     log("skill added to list");
   } else {
-    log("skill already exists in the list");
+    c.addedLicenseSkill.remove(skill);
+    // log("skill already exists in the list");
   }
   c.update(['add-licenseSkill']);
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_personal_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
+import 'package:aimshala/services/profile_section/update_personal_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -22,14 +23,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(PerosnalInfoController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (user != null) {
-        controller.nameController.text = user?.name as String;
-        controller.userNameController.text = user?.username as String;
-        controller.dateController.text = user?.dob as String;
-        controller.genderController.text = user?.gender as String;
-        controller.aboutController.text = user?.about as String;
-        controller.update(['update-personalinfo']);
-      }
+      initializeFormFields(controller, user);
     });
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -194,6 +188,16 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormFields(PerosnalInfoController c, User? user) {
+    if (user == null) return;
+    c.nameController.text = user.name ?? c.nameController.text;
+    c.userNameController.text = user.username ?? c.userNameController.text;
+    c.dateController.text = user.dob ?? c.dateController.text;
+    c.genderController.text = user.gender ?? c.genderController.text;
+    c.aboutController.text = user.about ?? c.aboutController.text;
+    c.update(['update-personalinfo']);
   }
 
   void showGenderOptions(BuildContext context) {

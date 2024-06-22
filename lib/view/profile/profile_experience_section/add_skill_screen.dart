@@ -32,7 +32,8 @@ class AddExperienceSkillScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed: () => Get.off(() => AddExperienceScreen(uId: uId,experience: ex)),
+            onPressed: () =>
+                Get.off(() => AddExperienceScreen(uId: uId, experience: ex)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
@@ -53,7 +54,8 @@ class AddExperienceSkillScreen extends StatelessWidget {
                         color: textFieldColor.withOpacity(0.3), width: 1),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 child: Obx(
                   () {
                     final data = controller.addedSkillEX;
@@ -72,7 +74,6 @@ class AddExperienceSkillScreen extends StatelessWidget {
                                     onTap: () {
                                       data.removeAt(index);
                                       controller.update(['skill-experience']);
-                                      controller.updateSaveButtonEX();
                                     },
                                   );
                                 },
@@ -111,6 +112,7 @@ class AddExperienceSkillScreen extends StatelessWidget {
                         ),
                       ),
                       trailing: Checkbox(
+                        activeColor: mainPurple,
                         side: const BorderSide(color: Colors.grey),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6)),
@@ -134,14 +136,16 @@ class AddExperienceSkillScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Additional Skill',
-                            style: TextStyle(fontSize: 11, color: textFieldColor),
+                            style:
+                                TextStyle(fontSize: 11, color: textFieldColor),
                           ),
                           ...List.generate(
                             skills.length,
                             (index) => ListTile(
                               shape: const Border(
                                   bottom: BorderSide(
-                                      color: Color.fromARGB(255, 202, 201, 201))),
+                                      color:
+                                          Color.fromARGB(255, 202, 201, 201))),
                               contentPadding: EdgeInsets.zero,
                               title: Text(
                                 skills[index],
@@ -152,6 +156,7 @@ class AddExperienceSkillScreen extends StatelessWidget {
                               ),
                               trailing: Checkbox(
                                 side: const BorderSide(color: Colors.grey),
+                                activeColor: mainPurple,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
                                 value: c.addedSkillEX
@@ -186,7 +191,7 @@ class AddExperienceSkillScreen extends StatelessWidget {
       controller.addedSkillEX.add(skill);
       log("skill added to list", name: 'EX');
     } else {
-      log("skill already exists in the list", name: 'EX');
+      controller.addedSkillEX.remove(skill);
     }
   }
 }

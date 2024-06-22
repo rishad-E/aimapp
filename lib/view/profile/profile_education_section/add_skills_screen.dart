@@ -155,6 +155,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
                                 ),
                               ),
                               trailing: Checkbox(
+                                activeColor: mainPurple,
                                 side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
@@ -194,6 +195,7 @@ void skillsAdding(String skill, ProfileEducationController controller) {
     controller.update(['update-educationInfo']);
     log("skill added to list");
   } else {
+    controller.addedSkill.remove(skill);
     log("skill already exists in the list");
   }
   controller.update(['add-skill']);

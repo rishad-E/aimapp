@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
 // import 'package:get/get.dart';

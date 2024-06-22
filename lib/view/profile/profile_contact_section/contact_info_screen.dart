@@ -23,22 +23,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(UpdateContactInfo());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (user != null) {
-        controller.mobController.text = user?.phone as String;
-        controller.usernameController.text = user?.username as String;
-        controller.emailController.text = user?.email as String;
-        controller.addressController.text = user?.address as String;
-        controller.pincodeController.text = user?.zip as String;
-        controller.stateController.text = user?.state as String;
-        controller.cityController.text = user?.city as String;
-        controller.countryController.text = user?.country as String;
-        controller.facebookController.text = user?.facebook as String;
-        controller.instagramController.text = user?.instagram as String;
-        controller.twitterController.text = user?.twitter as String;
-        controller.allFieldSelect();
-        controller.update(['update-contactInfo']);
-      }
-      log('call back chekc');
+      initializeFormFields(controller, user);
     });
     return Scaffold(
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
@@ -75,23 +60,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       keyboardType: TextInputType.phone,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(
-                        prefix: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const SizedBox(width: 8),
-                            Text(
-                              '+91',
-                              style: TextStyle(
-                                  fontSize: 14, color: kblack.withOpacity(0.4)),
-                            ),
-                            Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 26,
-                              color: kblack.withOpacity(0.4),
-                            ),
-                            wBox
-                          ],
-                        ),
+                        prefix: phoneIcon(),
                       ),
                     ),
                   ),
@@ -107,7 +76,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(
-                          hintText: 'johndoe123',
+                          hintText: 'username',
                           fill: user?.username != null ? true : false),
                     ),
                   ),
@@ -123,8 +92,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(fontSize: 12),
-                      decoration:
-                          infoFieldDecoration(hintText: 'johndoe@gmail.com'),
+                      decoration: infoFieldDecoration(),
                     ),
                   ),
                   contactInfoFiled(
@@ -335,6 +303,23 @@ class ProfileContactInfoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormFields(UpdateContactInfo c, User? user) {
+    if (user == null) return;
+    c.mobController.text = user.phone ?? c.mobController.text;
+    c.usernameController.text = user.username ?? c.emailController.text;
+    c.emailController.text = user.email ?? c.emailController.text;
+    c.addressController.text = user.address ?? c.addressController.text;
+    c.pincodeController.text = user.zip ?? c.pincodeController.text;
+    c.stateController.text = user.state ?? c.stateController.text;
+    c.cityController.text = user.city ?? c.cityController.text;
+    c.countryController.text = user.country ?? c.countryController.text;
+    c.facebookController.text = user.facebook ?? c.facebookController.text;
+    c.instagramController.text = user.instagram ?? c.instagramController.text;
+    c.twitterController.text = user.twitter ?? c.twitterController.text;
+    c.allFieldSelect();
+    c.update(['update-contactInfo']);
   }
 
   void showStateBottomsheet({required BuildContext context}) {

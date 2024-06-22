@@ -34,7 +34,7 @@ class AddExperienceScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       exID = experience?.id.toString();
       initializeFormFields(controller, experience);
-      // path = experience?.imagePath.toString();
+      controller.toggleCurrentlyWorking();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -229,6 +229,8 @@ class AddExperienceScreen extends StatelessWidget {
                         decoration:
                             infoFieldDecoration(hintText: 'Enter Description'),
                         maxLength: 2000,
+                        minLines: 2,
+                        maxLines: null,
                         style: const TextStyle(fontSize: 13),
                       ),
                     ),
@@ -257,10 +259,8 @@ class AddExperienceScreen extends StatelessWidget {
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
-                      onTap: () => Get.to(() => AddExperienceSkillScreen(
-                            uId: uId,
-                            ex: experience,
-                          )),
+                      onTap: () => Get.to(() =>
+                          AddExperienceSkillScreen(uId: uId, ex: experience)),
                       selected: Obx(
                         () => controller.addedSkillEX.isEmpty
                             ? shrinked
@@ -300,7 +300,6 @@ class AddExperienceScreen extends StatelessWidget {
                                       mediaUrl: mediaUrl,
                                       onTapClose: () {
                                         data.removeAt(index);
-                                        controller.updateSaveButtonEX();
                                         controller
                                             .update(['update-experienceInfo']);
                                       },
@@ -457,6 +456,7 @@ class AddExperienceScreen extends StatelessWidget {
         c.profileController.text.isEmpty && experience.profile != null
             ? experience.profile as String
             : c.profileController.text;
+    c.update(['update-experienceInfo']);
     if (experience.endDate == "currently_working") {
       c.currentlyWorking.value = true;
       c.endDateController.clear();
@@ -537,10 +537,7 @@ class AddExperienceScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddExperienceLinkScreen(
-                        controller: controller,
-                        experience: ex,
-                        uId: uId,
-                      ));
+                      controller: controller, experience: ex, uId: uId));
                 },
               ),
               mediaListTileEX(
@@ -552,11 +549,10 @@ class AddExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => AddExperienceMediaScreen(
-                            image: value,
-                            uId: uId,
-                            controller: controller,
-                            ex: ex,
-                          ));
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          ex: ex));
                     }
                   });
                   Navigator.pop(context);
@@ -571,11 +567,10 @@ class AddExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => AddExperienceMediaScreen(
-                            image: value,
-                            uId: uId,
-                            controller: controller,
-                            ex: ex,
-                          ));
+                          image: value,
+                          uId: uId,
+                          controller: controller,
+                          ex: ex));
                     }
                   });
                   Navigator.pop(context);

@@ -313,5 +313,6 @@ class ProfileExperienceController extends GetxController {
     profileController.clear();
     addedSkillEX.clear();
     allMediasEX.clear();
+    updateSaveButtonEX();
   }
 }

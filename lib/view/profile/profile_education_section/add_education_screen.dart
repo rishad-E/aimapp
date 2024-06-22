@@ -201,11 +201,9 @@ class AddEducationScreen extends StatelessWidget {
                       ),
                     ),
                     educationAdditional(
-                      onTap: () {
-                        log("add skill on tap");
-                        Get.to(
-                            () => AddProfileSkillsScreen(uId: uId, edu: edu));
-                      },
+                      onTap: () => Get.to(
+                        () => AddProfileSkillsScreen(uId: uId, edu: edu),
+                      ),
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
@@ -415,7 +413,6 @@ class AddEducationScreen extends StatelessWidget {
   }
 
   List<AddMediaModel> parseMediaItems(Education edu) {
-   
     List<String> mediaList = [];
     if (edu.media != null && edu.media!.isNotEmpty) {
       try {

@@ -1,13 +1,8 @@
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
-import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
-import 'package:aimshala/view/profile/profile_add_course_section/add_course_info_screen.dart';
-import 'package:aimshala/view/profile/profile_language_section/add_language_screen.dart';
-import 'package:aimshala/view/profile/profile_volunteer_section/add_volunteer_experience_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -17,37 +12,36 @@ class TempScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? id;
-    final UserDataModel? userData = Get.put(LoginController()).userData;
-    if (userData != null) {
-      id = userData.user?.id.toString() ?? '';
-    }
+    // String? id;
+    // final UserDataModel? userData = Get.put(LoginController()).userData;
+    // if (userData != null) {
+    //   id = userData.user?.id.toString() ?? '';
+    // }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Date Picker Example'),
+        title: const Text('Temp Screen'),
       ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            elevatedButtonItems(
-              onPressed: () =>
-                  Get.to(() => ProfileAddLanguageScreen(uId: id.toString())),
-              item: "Languages",
-            ),
-            hMBox,
-            elevatedButtonItems(
-              onPressed: () => Get.to(() =>
-                  ProfileAddVolunteerExperienceScreen(uId: id.toString())),
-              item: "volunteer experience",
-            ),
-            hMBox,
-            elevatedButtonItems(
-              onPressed: () =>
-                  Get.to(() => ProfileAddCourseScreen(uId: id.toString())),
-              item: "Course",
-            ),
-            hMBox,
+            // elevatedButtonItems(
+            //   onPressed: () =>
+            //       Get.to(() => ProfileAddLanguageScreen(uId: id.toString())),
+            //   item: "Languages",
+            // ),
+            // hMBox,
+            // elevatedButtonItems(
+            //   onPressed: () => Get.to(() =>
+            //       ProfileAddVolunteerExperienceScreen(uId: id.toString())),
+            //   item: "volunteer experience",
+            // ),
+            // hMBox,
+            // elevatedButtonItems(
+            //   onPressed: () =>
+            //       Get.to(() => ProfileAddCourseScreen(uId: id.toString())),
+            //   item: "Course",
+            // ),
             elevatedButtonItems(
               onPressed: () {
                 Get.put(EducatorPersonalDetailController()).clearAllfields();
@@ -55,6 +49,7 @@ class TempScreen extends StatelessWidget {
               },
               item: 'Educator',
             ),
+            hMBox,
             elevatedButtonItems(
               onPressed: () {
                 // Get.put(EducatorPersonalDetailController()).clearAllfields();

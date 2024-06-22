@@ -50,6 +50,9 @@ class ProfileHomeController extends GetxController {
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
             log(errorMessage, name: 'update pro pic error co');
+            if (errorMessage == "The user_profile may not be greater than 2048 kilobytes.") {
+              errorMessage = "Image should not be greater than 2MB";
+            }
             Get.showSnackbar(
               GetSnackBar(
                 snackStyle: SnackStyle.FLOATING,
