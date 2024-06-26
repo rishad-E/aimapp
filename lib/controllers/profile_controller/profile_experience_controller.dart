@@ -34,6 +34,9 @@ class ProfileExperienceController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
+  String? startdateBackend;
+  String? enddateBackend;
+
   Future<void> saveExperienceInfoFunction({
     required String uId,
     required String title,
@@ -220,10 +223,12 @@ class ProfileExperienceController extends GetxController {
     if (picker != null && picker != dateTime) {
       if (start == true) {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        startdateBackend = DateFormat('yyyy-MM-dd').format(picker);
         startDateController.text = formatedDate;
         updateSaveButtonEX();
       } else {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        enddateBackend = DateFormat('yyyy-MM-dd').format(picker);
         endDateController.text = formatedDate;
         updateSaveButtonEX();
       }

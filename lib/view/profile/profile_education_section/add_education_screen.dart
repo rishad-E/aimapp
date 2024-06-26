@@ -16,6 +16,7 @@ import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddEducationScreen extends StatelessWidget {
@@ -276,6 +277,7 @@ class AddEducationScreen extends StatelessWidget {
                                 boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
+                                    log('stardate for backend=>${c.startdateBackend}  enddate for backend=>${c.enddateBackend}');
                                     List<File> imagesList = c.allMediasModel
                                         .map((media) => media.file)
                                         .where((image) => image != null)
@@ -300,8 +302,9 @@ class AddEducationScreen extends StatelessWidget {
                                             studyfield:
                                                 c.studyFiledController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             grade: c.gradeController.text,
                                             activities:
                                                 c.activitiesController.text,
@@ -321,8 +324,9 @@ class AddEducationScreen extends StatelessWidget {
                                             studyfield:
                                                 c.studyFiledController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             grade: c.gradeController.text,
                                             activities:
                                                 c.activitiesController.text,
@@ -377,11 +381,11 @@ class AddEducationScreen extends StatelessWidget {
             : c.studyFiledController.text;
     c.startdateController.text =
         c.startdateController.text.isEmpty && edu.startDate != null
-            ? edu.startDate as String
+            ? convertDateFormat(edu.startDate!)
             : c.startdateController.text;
     c.endDateController.text =
         c.endDateController.text.isEmpty && edu.endDate != null
-            ? edu.endDate as String
+            ? convertDateFormat(edu.endDate!)
             : c.endDateController.text;
     c.gradeController.text = c.gradeController.text.isEmpty && edu.grade != null
         ? edu.grade as String
@@ -410,6 +414,16 @@ class AddEducationScreen extends StatelessWidget {
     }
     c.updateSaveButton();
     c.update(['update-educationInfo']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> parseMediaItems(Education edu) {

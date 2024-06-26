@@ -1,5 +1,6 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 SizedBox wBox = const SizedBox(width: 5);
 SizedBox hBox = const SizedBox(height: 5);
@@ -99,5 +100,13 @@ Widget phoneIcon() {
       ),
       wBox
     ],
+  );
+}
+
+Widget calendarIcon() {
+  return SvgPicture.asset(
+    'assets/images/calendar-booked.svg',
+    colorFilter: ColorFilter.mode(kblack, BlendMode.srcIn),
+    fit: BoxFit.scaleDown,
   );
 }

@@ -10,7 +10,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class MentorFinalSubmitPage extends StatelessWidget {
-  const MentorFinalSubmitPage({super.key});
+  final String name;
+  const MentorFinalSubmitPage({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class MentorFinalSubmitPage extends StatelessWidget {
                     hLBox,
                     Align(
                       alignment: Alignment.center,
-                      child: boldText(text: 'Dear Sunil,', size: 9.sp),
+                      child: boldText(text: 'Dear $name,', size: 9.sp),
                     ),
                     hBox,
                     Align(

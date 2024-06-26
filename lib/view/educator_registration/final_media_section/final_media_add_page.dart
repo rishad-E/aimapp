@@ -153,12 +153,8 @@ class EducatorMediaAddPage extends StatelessWidget {
                           wBox,
                           Expanded(
                               child: finalAgreementText(
-                            onTapTerms: () {
-                              log('Terms and Conditions', name: 'ontap-terms');
-                            },
-                            onTapPrivacy: () {
-                              log('Privacy policy', name: 'ontap-privacy');
-                            },
+                            onTapTerms: () => log('Terms and Conditions', name: 'ontap-terms'),
+                            onTapPrivacy: () => log('Privacy policy', name: 'ontap-privacy'),
                           ))
                         ],
                       ),
@@ -245,39 +241,3 @@ class EducatorMediaAddPage extends StatelessWidget {
     );
   }
 }
-//  actionContainer(
-//   text: 'Submit',
-//   textColor: controller.agree.value
-//       ? kwhite
-//       : textFieldColor,
-//   boxColor: controller.agree.value
-//       ? mainPurple
-//       : buttonColor,
-//   onTap: () {
-//     // if (formKey.currentState!.validate()) {}
-
-//     if (controller
-//             .linkedInController.text.isEmpty &&
-//         controller.filePath.value.isEmpty) {
-//       controller.errorTextLink.value = 'no data';
-//     }
-//     if (controller
-//             .mediaLinkController.text.isEmpty &&
-//         controller.videofilePath.value.isEmpty) {
-//       controller.errorTextVideo.value = 'no data';
-//     }
-//     if (controller.agree.value == false) {
-//       controller.errorAgreement.value = 'not';
-//     }
-//     if (controller.agree.value &&
-//         (controller.linkedInController.text
-//                 .isNotEmpty ||
-//             controller.filePath.value.isNotEmpty) &&
-//         (controller.mediaLinkController.text
-//                 .isNotEmpty ||
-//             controller
-//                 .videofilePath.value.isNotEmpty)) {
-//       controller.fetchAlldatas();
-//     }
-//   },
-// ),

@@ -11,7 +11,9 @@ class ProfilePublicationController extends GetxController {
   TextEditingController publicationURLController = TextEditingController();
   TextEditingController publicationDescriptionController =
       TextEditingController();
+      
   DateTime dateTime = DateTime.now();
+  String? publishDate;
 
   Future<void> savePublicationFuntion({
     required String uId,
@@ -153,6 +155,7 @@ class ProfilePublicationController extends GetxController {
     );
     if (pickedDate != null && pickedDate != dateTime) {
       final dateformate = DateFormat('dd-MM-yyyy').format(pickedDate);
+      publishDate = DateFormat('yyyy-MM-dd').format(pickedDate);
       publicationDateController.text = dateformate;
       update(['update-publication']);
     }

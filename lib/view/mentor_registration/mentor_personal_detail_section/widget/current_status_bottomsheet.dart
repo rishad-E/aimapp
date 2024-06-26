@@ -1,28 +1,14 @@
-import 'dart:developer';
-
-import 'package:aimshala/controllers/educator_controllers/educator_reference_controller.dart';
+import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ReferenceRelationBottomSheet extends StatelessWidget {
-  final String reference;
-  const ReferenceRelationBottomSheet({super.key, required this.reference});
+class StatusBottomSheet extends StatelessWidget {
+  const StatusBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<EducatorReferenceController>();
-    // List<String> relationList = [
-    //   "Professional Colleague",
-    //   "Supervisor/Manager",
-    //   "Teacher/Professor",
-    //   "Mentor",
-    //   "Co-Worker",
-    //   "Client/Customer",
-    //   "Friend",
-    //   "Family",
-    //   "Other(Please Specify)",
-    // ];
+    final controller = Get.find<MentorPersonalDetailController>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -44,7 +30,7 @@ class ReferenceRelationBottomSheet extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Text(
-                'Select Relation',
+                'Select your Current Status',
                 style: TextStyle(
                   color: kblack,
                   fontSize: 16,
@@ -54,16 +40,16 @@ class ReferenceRelationBottomSheet extends StatelessWidget {
             ),
             Column(
               children: List.generate(
-                controller.relationList.length,
+                controller.statusList.length,
                 (index) {
-                  final data = controller.relationList[index];
+                  final data = controller.statusList[index];
                   return ListTile(
                     shape: const Border(
                         bottom: BorderSide(
                             color: Color.fromARGB(255, 202, 201, 201))),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      data.name.toString(),
+                      data.title.toString(),
                       style: TextStyle(
                         color: kblack,
                         fontSize: 14,
@@ -75,40 +61,19 @@ class ReferenceRelationBottomSheet extends StatelessWidget {
                       activeColor: mainPurple,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      value: reference == '1'
-                          ? controller.relationController1.text == data.name
-                          : controller.relationController2.text == data.name,
+                      value: data.title == controller.statusController.text,
                       onChanged: (value) {
                         if (value != null && value) {
-                          if (reference == '1') {
-                            controller.relationController1.text =
-                                data.name.toString();
-                            controller.otherRelation1.value =
-                                data.name.toString();
-                            controller.checkAlFields();
-                          } else {
-                            controller.relationController2.text =
-                                data.name.toString();
-                            controller.otherRelation2.value =
-                                data.name.toString();
-                            controller.checkAlFields();
-                          }
+                          controller.statusController.text =
+                              data.title.toString();
+                          controller.checkAllFileds();
                           Get.back();
                         }
                       },
                     ),
                     onTap: () {
-                      if (reference == '1') {
-                        controller.relationController1.text =
-                            data.name.toString();
-                        controller.otherRelation1.value = data.name.toString();
-                        controller.checkAlFields();
-                      } else {
-                        controller.relationController2.text =
-                            data.name.toString();
-                        controller.otherRelation2.value = data.name.toString();
-                        controller.checkAlFields();
-                      }
+                      controller.statusController.text = data.title.toString();
+                      controller.checkAllFileds();
                       Get.back();
                     },
                   );

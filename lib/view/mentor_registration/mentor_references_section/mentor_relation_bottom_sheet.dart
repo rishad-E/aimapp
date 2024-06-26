@@ -12,17 +12,17 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<MentorReferencesController>();
-    List<String> relationList = [
-      "Professional Colleague",
-      "Supervisor/Manager",
-      "Teacher/Professor",
-      "Mentor",
-      "Co-Worker",
-      "Client/Customer",
-      "Friend",
-      "Family",
-      "Other(Please Specify)",
-    ];
+    // List<String> relationList = [
+    //   "Professional Colleague",
+    //   "Supervisor/Manager",
+    //   "Teacher/Professor",
+    //   "Mentor",
+    //   "Co-Worker",
+    //   "Client/Customer",
+    //   "Friend",
+    //   "Family",
+    //   "Other(Please Specify)",
+    // ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -54,15 +54,16 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
             ),
             Column(
               children: List.generate(
-                relationList.length,
+                c.relationList.length,
                 (index) {
+                  final data = c.relationList[index];
                   return ListTile(
                     shape: const Border(
                         bottom: BorderSide(
                             color: Color.fromARGB(255, 202, 201, 201))),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      relationList[index],
+                      data.name.toString(),
                       style: TextStyle(
                         color: kblack,
                         fontSize: 14,
@@ -75,19 +76,19 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
                       value: ref == '1'
-                          ? c.relationController1.text == relationList[index]
-                          : c.relationController2.text == relationList[index],
+                          ? c.relationController1.text == data.name
+                          : c.relationController2.text == data.name,
                       onChanged: (value) {
                         if (value != null && value) {
                           if (ref == '1') {
-                            c.relationController1.text = relationList[index];
-                            c.otherRelation1.value = relationList[index];
+                            c.relationController1.text = data.name.toString();
+                            c.otherRelation1.value = data.name.toString();
                             log(c.otherRelation1.value);
                             c.checkAlFields();
                             c.update(['mentor-reference']);
                           } else {
-                            c.relationController2.text = relationList[index];
-                            c.otherRelation2.value = relationList[index];
+                            c.relationController2.text = data.name.toString();
+                            c.otherRelation2.value = data.name.toString();
                             log(c.otherRelation2.value);
                             c.checkAlFields();
                             c.update(['mentor-reference']);
@@ -98,14 +99,14 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
                     ),
                     onTap: () {
                       if (ref == '1') {
-                        c.relationController1.text = relationList[index];
-                        c.otherRelation1.value = relationList[index];
+                        c.relationController1.text = data.name.toString();
+                        c.otherRelation1.value = data.name.toString();
                         log(c.otherRelation1.value);
                         // c.checkAlFields();
                         // c.update(['edu-referenceInfo']);
                       } else {
-                        c.relationController2.text = relationList[index];
-                        c.otherRelation2.value = relationList[index];
+                        c.relationController2.text = data.name.toString();
+                        c.otherRelation2.value = data.name.toString();
                         log(c.otherRelation2.value);
                         // c.checkAlFields();
                         // c.update(['edu-referenceInfo']);

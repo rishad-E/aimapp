@@ -9,8 +9,12 @@ class MentorRegistrationService {
   Dio dio = Dio();
 
   Future<String?> saveMentorRegistraion({
+    required String uId,
     required String name,
     required String email,
+    required String dob,
+    required String gender,
+    required String status,
     required String phone,
     required String address,
     required String highDegree,
@@ -38,8 +42,12 @@ class MentorRegistrationService {
   }) async {
     String path = Apis().aimUrl + Apis().mentor;
     FormData formData = FormData.fromMap({
+      "user_id":uId,
       "name": name,
       "email": email,
+      "dob":dob,
+      "gender":gender,
+      "current_status":status,
       "phone": phone,
       "address": address,
       "high_degree": highDegree,

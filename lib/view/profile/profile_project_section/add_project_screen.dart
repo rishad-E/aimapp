@@ -18,6 +18,7 @@ import 'package:aimshala/view/profile/profile_project_section/widgets/widgets.da
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddProjectScreen extends StatelessWidget {
@@ -175,11 +176,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                             suffixWidget: GestureDetector(
                               onTap: () =>
                                   controller.datePicker(context, start: true),
-                              child: SvgPicture.asset(
-                                  'assets/images/calendar-booked.svg',
-                                  colorFilter:
-                                      ColorFilter.mode(kblack, BlendMode.srcIn),
-                                  fit: BoxFit.scaleDown),
+                              child: calendarIcon()
                             )),
                         style: const TextStyle(fontSize: 13),
                         readOnly: true,
@@ -205,11 +202,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                   hintText: 'Date',
                                   suffixWidget: GestureDetector(
                                     onTap: () => controller.datePicker(context),
-                                    child: SvgPicture.asset(
-                                        'assets/images/calendar-booked.svg',
-                                        colorFilter: ColorFilter.mode(
-                                            kblack, BlendMode.srcIn),
-                                        fit: BoxFit.scaleDown),
+                                    child: calendarIcon(),
                                   )),
                               style: const TextStyle(fontSize: 13),
                               readOnly: true,
@@ -283,8 +276,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             proName:
                                                 c.projectnameController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             description: c
                                                 .projectDescriptionController
                                                 .text,
@@ -303,8 +297,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             proName:
                                                 c.projectnameController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             description: c
                                                 .projectDescriptionController
                                                 .text,
@@ -425,7 +420,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
             : c.projectDescriptionController.text;
     c.startdateController.text =
         c.startdateController.text.isEmpty && project.startDate != null
-            ? project.startDate as String
+            ? convertDateFormat(project.startDate!)
             : c.startdateController.text;
     c.projectAssosiatedController.text =
         c.projectAssosiatedController.text.isEmpty && project.associated != null
@@ -454,11 +449,21 @@ class ProfileAddProjectScreen extends StatelessWidget {
     } else {
       c.endDateController.text =
           c.endDateController.text.isEmpty && project.endDate != null
-              ? project.endDate as String
+              ? convertDateFormat(project.endDate!)
               : c.endDateController.text;
     }
     c.allFiledSelected();
     c.update(['update-projectInfo']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> parseMediaItems(Project project) {

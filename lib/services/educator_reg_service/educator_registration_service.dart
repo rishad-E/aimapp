@@ -8,9 +8,13 @@ class EducatorRegistrationService {
   Dio dio = Dio();
 
   Future<String?> saveEducatorRegistration({
+    required String uId,
     required String name,
     required String email,
     required String phone,
+    required String dob,
+    required String gender,
+    required String status,
     required String address,
     required String highDegree,
     required String otherDegree,
@@ -38,9 +42,13 @@ class EducatorRegistrationService {
     String path = Apis().aimUrl + Apis().educator;
     log(name);
     FormData formData = FormData.fromMap({
+      "user_id": uId,
       "name": name,
       "email": email,
       "phone": phone,
+      "dob": dob,
+      "gender": gender,
+      "current_status": status,
       "address": address,
       "high_degree": highDegree,
       "other_degree": otherDegree,
@@ -85,7 +93,6 @@ class EducatorRegistrationService {
       );
     }
 
-    
     try {
       Response response = await dio.post(
         path,

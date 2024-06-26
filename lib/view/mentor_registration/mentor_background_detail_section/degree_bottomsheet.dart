@@ -9,16 +9,17 @@ class MentorDegreeBottomsheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<MentorBackgroundDetailController>();
-    List<String> degreeItems = [
-      "10th Standard",
-      "12th Standard",
-      "Deploma",
-      "Bachelor's Degree",
-      "Master's Degree",
-      "Doctorate or Ph.D.",
-      "Vocational or Technical Degree/Certificate",
-      "Others"
-    ];
+    
+    // List<String> degreeItems = [
+    //   "10th Standard",
+    //   "12th Standard",
+    //   "Deploma",
+    //   "Bachelor's Degree",
+    //   "Master's Degree",
+    //   "Doctorate or Ph.D.",
+    //   "Vocational or Technical Degree/Certificate",
+    //   "Others"
+    // ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -50,15 +51,16 @@ class MentorDegreeBottomsheet extends StatelessWidget {
             ),
             Column(
               children: List.generate(
-                degreeItems.length,
+                controller.degreeList.length,
                 (index) {
+                  final data = controller.degreeList[index];
                   return ListTile(
                     shape: const Border(
                         bottom: BorderSide(
                             color: Color.fromARGB(255, 202, 201, 201))),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      degreeItems[index],
+                      data.name.toString(),
                       style: TextStyle(
                         color: kblack,
                         fontSize: 14,
@@ -71,15 +73,15 @@ class MentorDegreeBottomsheet extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
                       value: controller.degreeController.text ==
-                          degreeItems[index],
+                          data.name,
                       onChanged: (value) {
                         if (value != null && value) {
-                          listValueChange(controller, degreeItems[index]);
+                          listValueChange(controller, data.name.toString());
                         }
                       },
                     ),
                     onTap: () {
-                      listValueChange(controller, degreeItems[index]);
+                      listValueChange(controller, data.name.toString());
                     },
                   );
                 },

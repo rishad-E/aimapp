@@ -6,6 +6,8 @@ import 'package:aimshala/controllers/educator_controllers/educator_personal_deta
 import 'package:aimshala/controllers/educator_controllers/educator_reference_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_subject_course_select_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_work_preferences_controller.dart';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/educator_reg_service/educator_registration_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/educator_registration/submitted_section/submitted_final_page.dart';
@@ -124,6 +126,9 @@ class EducatorMediaAddController extends GetxController {
       final referenceController = Get.put(EducatorReferenceController());
       String name = pController.nameController.text;
       String email = pController.emailController.text;
+      String dob = pController.dobController.text;
+      String gender = pController.selectedGender.toString();
+      String status = pController.statusController.text;
       String phone = pController.mobileController.text;
       String address = pController.locationController.text;
       String highDegree = bgController.degreeController.text;
@@ -144,19 +149,30 @@ class EducatorMediaAddController extends GetxController {
       List<String> refRelations = referenceController.referenceRelation;
       List<String> refPhones = referenceController.referencePhone;
       List<String?> otherRelations = referenceController.otherRelation;
+      String? id;
+      final UserDataModel? userData = Get.put(LoginController()).userData;
+      if (userData != null) {
+        id = userData.user?.id.toString() ?? '';
+      }
 
-      log('''name=>$name email=>$email location=>$address phone=>$phone highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
+      log('''name=>$name email=>$email location=>$address phone=>$phone dob=>$dob gender=>$gender status=>$status
+         highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
          experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
          teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
          refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations 
          linkedIn=>${linkedInController.text}  resume=>$cv 
-         videoLink=>${mediaLinkController.text} videoFile=>$videoFile ''',
-          name: 'all-fields');
+         videoLink=>${mediaLinkController.text} videoFile=>$videoFile 
+         id=>$id
+         ''', name: 'all-fields');
       String? res =
           await EducatorRegistrationService().saveEducatorRegistration(
+        uId: id.toString(),
         name: name,
         email: email,
         phone: phone,
+        dob: dob,
+        gender: gender,
+        status: status,
         address: address,
         highDegree: highDegree,
         otherDegree: otherDegree,
@@ -193,7 +209,7 @@ class EducatorMediaAddController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.to(() => const EducatorSubmitFinalPage());
+        Get.to(() => EducatorSubmitFinalPage(name: name));
       } else {
         Get.showSnackbar(
           GetSnackBar(

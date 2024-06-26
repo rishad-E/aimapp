@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_additional_info_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_availability_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_background_detail_controller.dart';
@@ -6,9 +7,10 @@ import 'package:aimshala/controllers/mentor_controllers/mentor_experience_contro
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_preference_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_reference_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/mentor_reg_service/mentor_registraion_service.dart';
-import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/mentor_registration/mentor_final_submit_page/mentor_final_submit_page.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +26,6 @@ class MentorAddMediaController extends GetxController {
   RxString fileSize = ''.obs;
   RxString extenstion = ''.obs;
   PlatformFile? cvNew;
-
 
   RxString videofilePath = ''.obs;
   RxString videofileName = ''.obs;
@@ -119,8 +120,11 @@ class MentorAddMediaController extends GetxController {
 
       String name = pController.nameController.text;
       String email = pController.emailController.text;
-      String phone = pController.mobileController.text;
       String address = pController.locationController.text;
+      String dob = pController.dobController.text;
+      String gender = pController.selectedGender.toString();
+      String status = pController.statusController.text;
+      String phone = pController.mobileController.text;
       String highDegree = bgController.degreeController.text;
       String otherDegree = bgController.otherDegreecontroller.text;
       String experties = bgController.expertiesController.text;
@@ -143,11 +147,34 @@ class MentorAddMediaController extends GetxController {
       List<String> refPhones = mRefController.referencePhone;
       List<String?> refOtherRel = mRefController.otherRelation;
 
+      String? id;
+      final UserDataModel? userData = Get.put(LoginController()).userData;
+      if (userData != null) {
+        id = userData.user?.id.toString() ?? '';
+      }
+
+      log('''name=>$name email=>$email phone=>$phone address=$address dob=>$dob gender=>$gender status=>$status
+highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
+earn=>$earnReward  rewardDes=>$rewardDescription
+mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
+prefDays=>$prefDays prefTimes=>$prefTimes
+questions=>$questions answers=>$answers
+refName=>$refNames refRel=>$refRelations refPhone=>$refPhones refOther=>$refOtherRel
+linkedINLink=>${linkedInController.text} videoLink=>${mediaLinkController.text}
+cvFileX=>$filePath
+cvFileFile=>$cvNew
+videoX=>$videofilePath
+videoFile=>$video
+id=>$id''', name: 'mentor all data');
       String? res = await MentorRegistrationService().saveMentorRegistraion(
+        uId: id.toString(),
         name: name,
         email: email,
-        phone: phone,
         address: address,
+        dob: dob,
+        gender: gender,
+        status: status,
+        phone: phone,
         highDegree: highDegree,
         otherDegree: otherDegree,
         experties: experties,
@@ -183,7 +210,7 @@ class MentorAddMediaController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.to(() => const MentorFinalSubmitPage());
+        Get.to(() => MentorFinalSubmitPage(name: name));
       } else {
         Get.showSnackbar(
           GetSnackBar(

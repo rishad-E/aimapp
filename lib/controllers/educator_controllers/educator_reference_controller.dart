@@ -1,3 +1,4 @@
+import 'package:aimshala/models/mentor_check_model/mentor_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class EducatorReferenceController extends GetxController {
   Rx<Color> nextBG = Rx<Color>(buttonColor);
   RxString otherRelation1 = ''.obs;
   RxString otherRelation2 = ''.obs;
+
+  List<RelationData> relationList = [];
 
   List<String> referenceNames = [];
   List<String> referenceRelation = [];

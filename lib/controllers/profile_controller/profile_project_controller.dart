@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_project_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_date_time_Booking/widgets/date_time_widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,9 @@ class ProfileProjectController extends GetxController {
   RxBool currentlyWorking = false.obs;
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
+
+  String? startdateBackend;
+  String? enddateBackend;
 
   Future<void> saveProjectFunction({
     required String uId,
@@ -194,10 +198,12 @@ class ProfileProjectController extends GetxController {
       final formatedDate = DateFormat('dd-MM-yyyy').format(picked);
       if (start == true) {
         startdateController.text = formatedDate;
+        startdateBackend = DateFormat('yyyy-MM-dd').format(picked);
         allFiledSelected();
         update(['update-projectInfo']);
       } else {
         endDateController.text = formatedDate;
+        enddateBackend = DateFormat('yyyy-MM-dd').format(picked);
         allFiledSelected();
         update(['update-projectInfo']);
       }
@@ -258,7 +264,7 @@ class ProfileProjectController extends GetxController {
     bool isAllFiledSelected = projectnameController.text.isNotEmpty &&
         projectDescriptionController.text.isNotEmpty &&
         startdateController.text.isNotEmpty &&
-        projectAssosiatedController.text.isNotEmpty ;
+        projectAssosiatedController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

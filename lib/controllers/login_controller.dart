@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/otp_service/otp_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/login/otp_screen.dart';
+import 'package:aimshala/view/signup/signup_amy_screen.dart';
 import 'package:aimshala/view/signup/signup_screen.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,13 @@ class LoginController extends GetxController {
   UserDataModel? userData;
   Rx<Color> buttonColor = Rx<Color>(const Color.fromARGB(255, 244, 244, 244));
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
+
+  // @override
+  // onInit() {
+  //   update(['continue-button']);
+  //   update(['button-otp']);
+  //   super.onInit();
+  // }
 
 /*---------- sending OTP to Mobile Number ---------*/
   Future<void> sendOTPFunction({required String mobileNo}) async {
@@ -48,22 +58,39 @@ class LoginController extends GetxController {
     bool? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
     if (val == true) {
       String mobileWithoutCountryCode = mobileNo.substring(2);
-      // userData = await LoginService()
-      //     .verifyUserExist(mobileNo: mobileWithoutCountryCode);
-      Map<String, dynamic> res = await LoginService()
+
+      Map<String, dynamic>? res = await LoginService()
           .verifyUserExist(mobileNo: mobileWithoutCountryCode);
-      if (res.containsKey('status')) {
-        storage.write(key: 'phone', value: mobileWithoutCountryCode);
-        Get.offAll(() => const SplashScreen());
-      } else if (res.containsKey('error')) {
-        Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
-      } else if (res.containsKey('token')) {
-        userData = UserDataModel.fromJson(res);
-        if (userData != null) {
-          storage.write(key: 'token', value: userData?.token.toString());
-          storage.write(key: 'phone', value: userData?.user?.phone.toString());
+      if (res != null) {
+        if (res.containsKey('status')) {
+          storage.write(key: 'phone', value: mobileWithoutCountryCode);
           Get.offAll(() => const SplashScreen());
-          phoneController.clear();
+        } else if (res.containsKey('error')) {
+          String errorMessage = res["error"];
+          if (errorMessage == "Please fill first three questions.") {
+            User? user = User.fromJson(res["user"]);
+            String? id = user.id.toString();
+            String? name = user.name.toString();
+            String? email = user.email.toString();
+            storage.write(key: 'email', value: user.email.toString());
+            log('name=>$name email=>$email id=>$id');
+            Get.offAll(() => SignUpAmyScreen(
+                name: name.toString(), email: email.toString(), uId: id));
+          } else {
+            Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
+          }
+        } else if (res.containsKey('token')) {
+          userData = UserDataModel.fromJson(res);
+          if (userData != null) {
+            storage.write(key: 'token', value: userData?.token.toString());
+            storage.write(
+                key: 'phone', value: userData?.user?.phone.toString());
+            storage.write(
+                key: 'email', value: userData?.user?.email.toString());
+            storage.write(key: 'name', value: userData?.user?.name.toString());
+            Get.offAll(() => const SplashScreen());
+            phoneController.clear();
+          }
         }
       }
 
@@ -139,4 +166,10 @@ class LoginController extends GetxController {
   clearotpControllers() {
     otpController.clear();
   }
+
+  // @override
+  // void dispose() {
+  //   clearController();
+  //   super.dispose();
+  // }
 }

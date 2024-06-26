@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_personal_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
-import 'package:aimshala/services/profile_section/update_personal_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';

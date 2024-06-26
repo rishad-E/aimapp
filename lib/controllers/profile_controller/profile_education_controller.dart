@@ -31,6 +31,9 @@ class ProfileEducationController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
+  String? startdateBackend;
+  String? enddateBackend;
+
   Future<void> saveEducationInfo({
     required String uId,
     required String school,
@@ -209,10 +212,12 @@ class ProfileEducationController extends GetxController {
     if (picker != null && picker != dateTime) {
       if (start == true) {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        startdateBackend = DateFormat('yyyy-MM-dd').format(picker);
         startdateController.text = formatedDate;
         update(['update-educationInfo']);
       } else {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        enddateBackend = DateFormat('yyyy-MM-dd').format(picker);
         endDateController.text = formatedDate;
         update(['update-educationInfo']);
       }

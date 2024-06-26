@@ -17,6 +17,7 @@ import 'package:aimshala/view/profile/profile_honorsawards_section/widgets/widge
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
@@ -128,11 +129,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                             hintText: 'Date',
                             suffixWidget: GestureDetector(
                               onTap: () => controller.datePicker(context),
-                              child: SvgPicture.asset(
-                                  'assets/images/calendar-booked.svg',
-                                  colorFilter:
-                                      ColorFilter.mode(kblack, BlendMode.srcIn),
-                                  fit: BoxFit.scaleDown),
+                              child: calendarIcon(),
                             )),
                         style: const TextStyle(fontSize: 13),
                       ),
@@ -234,7 +231,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           assosiated:
                                               c.assosiatedController.text,
                                           issuer: c.issuerController.text,
-                                          startdate: c.startdateController.text,
+                                          startdate: c.startdateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           media: imagesList,
@@ -248,7 +245,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           assosiated:
                                               c.assosiatedController.text,
                                           issuer: c.issuerController.text,
-                                          startdate: c.startdateController.text,
+                                          startdate: c.startdateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           media: imagesList,
@@ -296,7 +293,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
             : c.issuerController.text;
     c.startdateController.text =
         c.startdateController.text.isEmpty && award.startDate != null
-            ? award.startDate as String
+            ? convertDateFormat(award.startDate!)
             : c.startdateController.text;
     c.descriptionController.text =
         c.descriptionController.text.isEmpty && award.description != null
@@ -308,6 +305,16 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
     }
     c.allFieldSelect();
     c.update(['update-HonorAwardsbutton']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> parseMediaItems(Award award) {

@@ -16,6 +16,7 @@ import 'package:aimshala/view/profile/profile_volunteer_section/widgets/widgets.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
@@ -140,11 +141,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                               suffixWidget: GestureDetector(
                                 onTap: () =>
                                     controller.datePicker(context, start: true),
-                                child: SvgPicture.asset(
-                                    'assets/images/calendar-booked.svg',
-                                    colorFilter: ColorFilter.mode(
-                                        kblack, BlendMode.srcIn),
-                                    fit: BoxFit.scaleDown),
+                                child: calendarIcon(),
                               )),
                           style: const TextStyle(fontSize: 13),
                         ),
@@ -171,11 +168,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                   hintText: 'Date',
                                   suffixWidget: GestureDetector(
                                     onTap: () => controller.datePicker(context),
-                                    child: SvgPicture.asset(
-                                        'assets/images/calendar-booked.svg',
-                                        colorFilter: ColorFilter.mode(
-                                            kblack, BlendMode.srcIn),
-                                        fit: BoxFit.scaleDown),
+                                    child:calendarIcon(),
                                   )),
                               style: const TextStyle(fontSize: 13),
                             ),
@@ -282,8 +275,8 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                                 c.volunteerRoleController.text,
                                             volCause: c.causeController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate: c.enddateBackend.toString(),
                                             currentlyWorking: currenly,
                                             description:
                                                 c.descriptionController.text,
@@ -301,8 +294,8 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                                 c.volunteerRoleController.text,
                                             volCause: c.causeController.text,
                                             startDate:
-                                                c.startdateController.text,
-                                            endDate: c.endDateController.text,
+                                                c.startdateBackend.toString(),
+                                            endDate: c.enddateBackend.toString(),
                                             currentlyWorking: currenly,
                                             description:
                                                 c.descriptionController.text,
@@ -435,7 +428,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     controller.startdateController.text =
         controller.startdateController.text.isEmpty &&
                 volunteer.startDate != null
-            ? volunteer.startDate as String
+            ? convertDateFormat(volunteer.startDate!)
             : controller.startdateController.text;
     controller.descriptionController.text =
         controller.descriptionController.text.isEmpty &&
@@ -453,12 +446,22 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     } else {
       controller.endDateController.text =
           controller.endDateController.text.isEmpty && volunteer.endDate != null
-              ? volunteer.endDate as String
+              ? convertDateFormat(volunteer.endDate!)
               : controller.endDateController.text;
     }
 
     controller.allFieldSelected();
     controller.update(['update-volunteerInfo']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> _parseMediaItems(VolunteerExperience volunteer) {

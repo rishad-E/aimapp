@@ -9,6 +9,7 @@ import 'package:aimshala/view/profile/profile_publications_section/widgets/widge
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddPublicationScreen extends StatelessWidget {
@@ -21,22 +22,8 @@ class ProfileAddPublicationScreen extends StatelessWidget {
     final controller = Get.put(ProfilePublicationController());
     String? pbID;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.titleController.text =
-          publication?.title.toString() ?? controller.titleController.text;
-      controller.publicationController.text =
-          publication?.publication.toString() ??
-              controller.publicationController.text;
-      controller.publicationDateController.text =
-          publication?.publicationDate.toString() ??
-              controller.publicationDateController.text;
-      controller.publicationURLController.text =
-          publication?.publicationUrl.toString() ??
-              controller.publicationURLController.text;
-      controller.publicationDescriptionController.text =
-          publication?.description.toString() ??
-              controller.publicationDescriptionController.text;
+      initializeFormField(controller, publication);
       pbID = publication?.id.toString();
-      controller.update(['update-publication']);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -196,9 +183,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                               title: c.titleController.text,
                                               publication:
                                                   c.publicationController.text,
-                                              pubDate: c
-                                                  .publicationDateController
-                                                  .text,
+                                              pubDate: c.publishDate.toString(),
                                               pubURL: c.publicationURLController
                                                   .text,
                                               pubDescription: c
@@ -211,9 +196,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                               title: c.titleController.text,
                                               publication:
                                                   c.publicationController.text,
-                                              pubDate: c
-                                                  .publicationDateController
-                                                  .text,
+                                              pubDate: c.publishDate.toString(),
                                               pubURL: c.publicationURLController
                                                   .text,
                                               pubDescription: c
@@ -244,5 +227,29 @@ class ProfileAddPublicationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormField(ProfilePublicationController c, Publication? pub) {
+    if (pub == null) return;
+
+    c.titleController.text = pub.title ?? c.titleController.text;
+    c.publicationController.text =
+        pub.publication ?? c.publicationController.text;
+    c.publicationDateController.text = convertDateFormat(pub.publicationDate!);
+    c.publicationURLController.text =
+        pub.publicationUrl ?? c.publicationURLController.text;
+    c.publicationDescriptionController.text =
+        pub.description ?? c.publicationDescriptionController.text;
+    c.update(['update-publication']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 }

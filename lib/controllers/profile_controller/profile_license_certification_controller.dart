@@ -28,6 +28,9 @@ class ProfileLicenseCertificationController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
+  String? startdateBackend;
+  String? enddateBackend;
+
   Future<void> saveLicenseCertificationFunction({
     required String uId,
     required String name,
@@ -194,9 +197,11 @@ class ProfileLicenseCertificationController extends GetxController {
     if (picker != null && picker != dateTime) {
       if (expiry == true) {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        enddateBackend = DateFormat('yyyy-MM-dd').format(picker);
         expirydateController.text = formatedDate;
       } else {
         final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+        startdateBackend = DateFormat('yyyy-MM-dd').format(picker);
         issuedateController.text = formatedDate;
       }
     }
@@ -248,7 +253,7 @@ class ProfileLicenseCertificationController extends GetxController {
         issuedateController.text.isNotEmpty &&
         expirydateController.text.isNotEmpty &&
         credentialIDController.text.isNotEmpty &&
-        credentialurlController.text.isNotEmpty ;
+        credentialurlController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

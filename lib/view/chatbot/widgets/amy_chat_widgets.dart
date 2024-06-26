@@ -1,6 +1,8 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
 
 Widget sendcard(context, String mssg, String time) {
   return Column(
@@ -83,7 +85,61 @@ Widget replaycard(context, String mssg, String time, {bool? type}) {
   );
 }
 
+Widget sendMsgBox() {
+  return Container(
+    height: 4.7.h,
+    width: 10.w,
+    decoration: BoxDecoration(
+      color: mainPurple,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: SvgPicture.asset(
+      'assets/images/sent.svg',
+      fit: BoxFit.scaleDown,
+      allowDrawingOutsideViewBox: true,
+    ),
+  );
+}
 
-// constraints: BoxConstraints(
-// maxWidth: MediaQuery.of(context).size.width * 0.7,
-//),
+PreferredSizeWidget amyBotAppBar() {
+  return AppBar(
+    title: const Text(
+      "Talk to Amy",
+      style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+    ),
+    centerTitle: true,
+    surfaceTintColor: Colors.white,
+    elevation: 7,
+    shadowColor: Colors.black.withOpacity(0.5),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+    ),
+  );
+}
+
+Widget textFieldContainer({required Widget child}) {
+  return Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+        border: Border.all(
+            color: const Color.fromARGB(255, 229, 226, 226), width: 1),
+        borderRadius: BorderRadius.circular(10)),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: child,
+    ),
+  );
+}
+
+InputDecoration textFieldDecor() {
+  return InputDecoration(
+    border: InputBorder.none,
+    hintText: "Type here....",
+    hintStyle: TextStyle(
+      fontSize: 13,
+      color: textFieldColor,
+      fontWeight: FontWeight.normal,
+    ),
+  );
+}

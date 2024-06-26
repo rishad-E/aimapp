@@ -17,6 +17,7 @@ import 'package:aimshala/view/profile/profile_license_certifications_section/wid
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddLicenseCertificationsScreen extends StatelessWidget {
@@ -200,7 +201,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
-                                  if (data[index].url != null && license?.imagePath != null) {
+                                  if (data[index].url != null &&
+                                      license?.imagePath != null) {
                                     mediaUrl =
                                         "http://154.26.130.161/elearning/${license?.imagePath}/${data[index].url}";
                                   }
@@ -257,9 +259,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                           name: c.nameController.text,
                                           organization:
                                               c.organizationController.text,
-                                          issueDate: c.issuedateController.text,
+                                          issueDate:
+                                              c.startdateBackend.toString(),
                                           expiryDate:
-                                              c.expirydateController.text,
+                                              c.enddateBackend.toString(),
                                           credID: c.credentialIDController.text,
                                           credURL:
                                               c.credentialurlController.text,
@@ -274,9 +277,10 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                           name: c.nameController.text,
                                           organization:
                                               c.organizationController.text,
-                                          issueDate: c.issuedateController.text,
+                                          issueDate:
+                                              c.startdateBackend.toString(),
                                           expiryDate:
-                                              c.expirydateController.text,
+                                              c.enddateBackend.toString(),
                                           credID: c.credentialIDController.text,
                                           credURL:
                                               c.credentialurlController.text,
@@ -387,11 +391,11 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
             : c.organizationController.text;
     c.issuedateController.text =
         c.issuedateController.text.isEmpty && license.issueDate != null
-            ? license.issueDate as String
+            ? convertDateFormat(license.issueDate!)
             : c.issuedateController.text;
     c.expirydateController.text =
         c.expirydateController.text.isEmpty && license.expireDate != null
-            ? license.expireDate as String
+            ? convertDateFormat(license.expireDate!)
             : c.expirydateController.text;
     c.credentialIDController.text =
         c.credentialIDController.text.isEmpty && license.credentialId != null
@@ -419,6 +423,16 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     }
     c.updateLicenseButton();
     c.update(['update-licenseButton']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> parseMediaItems(License license) {

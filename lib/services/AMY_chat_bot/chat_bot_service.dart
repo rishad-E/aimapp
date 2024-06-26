@@ -17,6 +17,7 @@ class ChatBotService {
               "Authorization": "Bearer $apiKey",
               "Content-Type": "application/json"
             },
+            validateStatus: (status) => status! < 599,
           ),
           data: jsonEncode({
             "model": "gpt-3.5-turbo",
@@ -27,15 +28,23 @@ class ChatBotService {
             "temperature": 0.7,
             "max_tokens": 1000,
           }));
-      if (response.statusCode == 200) {
-        String resMsg = response.data["choices"][0]["message"]["content"]
-            .toString()
-            .trimLeft();
-        log(resMsg, name: 'chat bot res');
-        return resMsg;
+      if (response.statusCode == 200 && response.data != null) {
+        final choices = response.data["choices"];
+        if (choices != null && choices.isNotEmpty) {
+          final resMsd = choices[0]["message"]["content"].toString().trim();
+          if (resMsd.isNotEmpty) {
+            log(resMsd, name: 'caht bot res msg');
+            return resMsd;
+          }
+        }
+      }
+    } on DioException catch (e) {
+      log('Dio error: ${e.message}', name: 'chat error');
+      if (e.response != null) {
+        log('Dio response: ${e.response}', name: 'chat error');
       }
     } catch (e) {
-      log(e.toString(), name: 'chat error');
+      log('General error: $e', name: 'chat error');
     }
     return null;
   }

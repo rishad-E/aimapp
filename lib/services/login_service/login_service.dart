@@ -7,7 +7,7 @@ class LoginService {
   Dio dio = Dio();
   String path = 'http://154.26.130.161/elearning/api/user-login';
 
-  Future<dynamic> verifyUserExist({required String mobileNo}) async {
+  Future<Map<String, dynamic>?> verifyUserExist({required String mobileNo}) async {
     try {
       Response response = await dio.post(path,
           data: {'phone': mobileNo},
@@ -15,8 +15,8 @@ class LoginService {
             validateStatus: (status) => status! < 599,
           ));
 
-      log(response.data.toString(), name: 'userverify');
-      Map<String, dynamic> resData = response.data;
+      log(response.data['user']['name'].toString(), name: 'userverify');
+      Map<String, dynamic>? resData = response.data;
       if (response.statusCode == 200 || response.statusCode == 300) {
         return resData;
       } else if (response.statusCode == 500) {

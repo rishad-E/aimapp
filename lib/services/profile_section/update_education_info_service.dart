@@ -62,7 +62,9 @@ class UpdateEducationInfoService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
-      Map<String, dynamic> responseData = response.data;
+      
+     if (response.data is Map) {
+        Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         log(successMessage, name: 'save education info success');
@@ -85,6 +87,9 @@ class UpdateEducationInfoService {
 
         // return 'Each image must not exceed 2MB in size.';
       }
+     }else{
+      log(response.data.toString());
+     }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         log('Server error: ${e.message}', name: 'save education info error');

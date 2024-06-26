@@ -183,7 +183,7 @@ int yearFormatter(String data) {
 }
 
 String parseDateMonthYear(String dateString) {
-  DateTime date = DateFormat("dd-MM-yyyy").parse(dateString);
+  DateTime date = DateFormat("yyyy-MM-dd").parse(dateString);
   String formattedDate = DateFormat("MMM yyyy").format(date);
   return formattedDate;
 }

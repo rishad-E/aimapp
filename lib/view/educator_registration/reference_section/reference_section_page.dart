@@ -81,7 +81,7 @@ class EducatorReferencePage extends StatelessWidget {
                       ),
                       Obx(
                         () => controller.otherRelation1.value ==
-                                "Other(Please Specify)"
+                                "Other (Please Specify)"
                             ? TextFormField(
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -162,7 +162,7 @@ class EducatorReferencePage extends StatelessWidget {
                         ),
                       ),
                       Obx(() => controller.otherRelation2.value ==
-                              "Other(Please Specify)"
+                              "Other (Please Specify)"
                           ? TextFormField(
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,

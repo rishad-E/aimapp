@@ -24,6 +24,7 @@ class ProfileHonorsAwardsController extends GetxController {
   RxList<AddMediaModel> allAwardMedias = <AddMediaModel>[].obs;
   RxList<String> assosiatedListdata = <String>[].obs;
 
+  String? startdateBackend;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
@@ -185,6 +186,7 @@ class ProfileHonorsAwardsController extends GetxController {
     );
     if (picker != null && picker != dateTime) {
       final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
+      startdateBackend = DateFormat('yyyy-MM-dd').format(picker);
       startdateController.text = formatedDate;
       allFieldSelect();
       update(['update-HonorAwardsbutton']);

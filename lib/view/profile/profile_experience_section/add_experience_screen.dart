@@ -18,6 +18,7 @@ import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExperienceScreen extends StatelessWidget {
@@ -34,7 +35,7 @@ class AddExperienceScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       exID = experience?.id.toString();
       initializeFormFields(controller, experience);
-      controller.toggleCurrentlyWorking();
+      // controller.toggleCurrentlyWorking();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -179,11 +180,7 @@ class AddExperienceScreen extends StatelessWidget {
                           suffixWidget: GestureDetector(
                             onTap: () =>
                                 controller.datePicker(context, start: true),
-                            child: SvgPicture.asset(
-                                'assets/images/calendar-booked.svg',
-                                colorFilter:
-                                    ColorFilter.mode(kblack, BlendMode.srcIn),
-                                fit: BoxFit.scaleDown),
+                            child: calendarIcon(),
                           ),
                         ),
                         style: const TextStyle(fontSize: 13, height: 1.7),
@@ -205,11 +202,7 @@ class AddExperienceScreen extends StatelessWidget {
                               hintText: 'Date',
                               suffixWidget: GestureDetector(
                                 onTap: () => controller.datePicker(context),
-                                child: SvgPicture.asset(
-                                    'assets/images/calendar-booked.svg',
-                                    colorFilter: ColorFilter.mode(
-                                        kblack, BlendMode.srcIn),
-                                    fit: BoxFit.scaleDown),
+                                child: calendarIcon(),
                               ),
                             ),
                             style: const TextStyle(fontSize: 13, height: 1.7),
@@ -331,6 +324,7 @@ class AddExperienceScreen extends StatelessWidget {
                               boxColor: c.saveBG.value,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
+                                  log('stardate for backend=>${c.startdateBackend} end for backend=>${c.enddateBackend}');
                                   List<File> imagesList = c.allMediasEX
                                       .map((item) => item.file)
                                       .where((file) => file != null)
@@ -361,8 +355,9 @@ class AddExperienceScreen extends StatelessWidget {
                                           locationtype:
                                               c.locationTypeController.text,
                                           currentlyWorking: currently,
-                                          startDate: c.startDateController.text,
-                                          endDate: c.endDateController.text,
+                                          startDate:
+                                              c.startdateBackend.toString(),
+                                          endDate: c.enddateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           profile: c.profileController.text,
@@ -382,8 +377,9 @@ class AddExperienceScreen extends StatelessWidget {
                                           locationtype:
                                               c.locationTypeController.text,
                                           currentlyWorking: currently,
-                                          startDate: c.startDateController.text,
-                                          endDate: c.endDateController.text,
+                                          startDate:
+                                              c.startdateBackend.toString(),
+                                          endDate: c.enddateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           profile: c.profileController.text,
@@ -445,7 +441,7 @@ class AddExperienceScreen extends StatelessWidget {
             : c.locationTypeController.text;
     c.startDateController.text =
         c.startDateController.text.isEmpty && experience.startDate != null
-            ? experience.startDate as String
+            ? convertDateFormat(experience.startDate!)
             : c.startDateController.text;
 
     c.descriptionController.text =
@@ -464,7 +460,7 @@ class AddExperienceScreen extends StatelessWidget {
     } else {
       c.endDateController.text =
           c.endDateController.text.isEmpty && experience.endDate != null
-              ? experience.endDate as String
+              ? convertDateFormat(experience.endDate!)
               : c.endDateController.text;
     }
     if (c.addedSkillEX.isEmpty &&
@@ -485,6 +481,16 @@ class AddExperienceScreen extends StatelessWidget {
     }
     c.updateSaveButtonEX();
     c.update(['update-experienceInfo']);
+  }
+
+  String convertDateFormat(String date) {
+    try {
+      DateTime parsedDate = DateFormat('yyyy-MM-dd').parse(date);
+      String formattedDate = DateFormat('dd-MM-yyyy').format(parsedDate);
+      return formattedDate;
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   List<AddMediaModel> parseMediaItems(Experience experience) {
