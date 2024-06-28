@@ -208,7 +208,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
   void showStatusSheetEducator(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) => EducatorStatusBottomsheet(),
+      builder: (context) => const EducatorStatusBottomsheet(),
     );
   }
 }

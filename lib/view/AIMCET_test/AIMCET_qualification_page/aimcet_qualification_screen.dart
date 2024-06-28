@@ -95,6 +95,7 @@ class AIMCETQualificationScreen extends StatelessWidget {
                                 // readOnly: true,
                                 onChanged: (value) => aimcetController
                                     .update(['button-qualification']),
+                                // validator: (value) => filedValidation(value)
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please select your Qualification';
@@ -117,11 +118,8 @@ class AIMCETQualificationScreen extends StatelessWidget {
                                       onPressed: () {
                                         if (aimcetFormKey.currentState!
                                             .validate()) {
-                                          log('${c.qualificationController.text}  ${c.qualifyId}');
-                                          log(
-                                            'qualify=>${c.qualifyId}'
-                                            'userId=>$uId',
-                                          );
+                                          log('${c.qualificationController.text}  ${c.qualifyId}  qualify=>${c.qualifyId}  userId=>$uId');
+
                                           c.fetchAllTestQuestions(
                                               userId: uId,
                                               qualifyId:
@@ -174,4 +172,11 @@ void showQualificationBottomsheet(BuildContext context) {
       return const QualificationBottomSheet();
     },
   );
+}
+
+String? filedValidation(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please select your Qualification';
+  }
+  return null;
 }

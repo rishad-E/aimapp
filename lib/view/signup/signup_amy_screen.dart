@@ -75,9 +75,7 @@ class SignUpAmyScreen extends StatelessWidget {
               builder: (c) {
                 return c.skipQuestion
                     ? GestureDetector(
-                        onTap: () {
-                          Get.to(() => const SplashScreen());
-                        },
+                        onTap: () => Get.to(() => const SplashScreen()),
                         child: goHomeContainer(),
                       )
                     : Row(
@@ -149,7 +147,6 @@ class SignUpAmyScreen extends StatelessWidget {
                                                       ? shrinked
                                                       : GestureDetector(
                                                           onTap: () {
-                                                            log("ontap gestu skip text");
                                                             c.skipQuestion =
                                                                 true;
                                                             c.update([

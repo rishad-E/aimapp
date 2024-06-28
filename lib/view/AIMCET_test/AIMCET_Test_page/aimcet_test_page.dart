@@ -162,10 +162,7 @@ class AIMCETTestPage extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: GestureDetector(
-          onTap: () {
-            showsheet(context);
-            log("message");
-          },
+          onTap: () => showsheet(context),
           child: Container(
               height: 100,
               color: Colors.white,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/educator_controllers/educator_reference_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +10,6 @@ class ReferenceRelationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<EducatorReferenceController>();
-    // List<String> relationList = [
-    //   "Professional Colleague",
-    //   "Supervisor/Manager",
-    //   "Teacher/Professor",
-    //   "Mentor",
-    //   "Co-Worker",
-    //   "Client/Customer",
-    //   "Friend",
-    //   "Family",
-    //   "Other(Please Specify)",
-    // ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(

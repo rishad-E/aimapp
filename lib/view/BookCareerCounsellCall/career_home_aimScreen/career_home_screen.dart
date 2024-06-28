@@ -54,9 +54,7 @@ class BookCareerHomePage extends StatelessWidget {
                     ),
                     hMBox,
                     GestureDetector(
-                      onTap: () {
-                        showCareerRoleBottomSheet(context, careerController);
-                      },
+                      onTap: () => showCareerRoleBottomSheet(context, careerController),
                       child: AbsorbPointer(
                         child: careerHomeField(
                           text: primarytxt3('I am', 11),
@@ -68,9 +66,7 @@ class BookCareerHomePage extends StatelessWidget {
                               suffixWidget:
                                   const Icon(Icons.keyboard_arrow_down),
                             ),
-                            onChanged: (value) {
-                              careerController.checkAllfieldCareerHome();
-                            },
+                            onChanged: (value) => careerController.checkAllfieldCareerHome(),
                             validator: (value) =>
                                 careerController.roleValidation(value),
                             controller: careerController.roleController,

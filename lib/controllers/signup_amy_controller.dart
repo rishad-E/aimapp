@@ -30,13 +30,22 @@ class AmySignUpController extends GetxController {
     super.onInit();
   }
 
-  void addDefaultMessage() {
+  void addDefaultMessage() async {
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
-    String defaultMsg =
-        "Hi $name, I'm Amy, your virtual career assistant.Thanks for verifying your mobile number. Let's get to know each other better! Now, could you tell me your date of birth? (Please enter in DD/MM/YYYY format)";
-    msgs.add(ChatMessageSignup(false, defaultMsg, currentTime, true));
-    isAskingDOB = true;
+    Map<String, dynamic>? res = await AmySignUpService()
+        .sendToAmyRegister(uId: uId, msg: 'hai', qusId: '019');
+    if (res != null) {
+      qusId = int.tryParse(res["upd_ques_index"])!;
+      String resMsg = res["bot_reply"];
+      msgs.add(ChatMessageSignup(false, resMsg, currentTime, true));
+      isAskingDOB = true;
+      update(['send-to-amy']);
+    }
+    // update();
+    // String defaultMsg =
+    //     "Hi $name, I'm Amy, your virtual career assistant.Thanks for verifying your mobile number. Let's get to know each other better! Now, could you tell me your date of birth? (Please enter in DD/MM/YYYY format)";
+    // msgs.add(ChatMessageSignup(false, defaultMsg, currentTime, true));
   }
 
   void sendMessage(BuildContext context) async {
@@ -68,18 +77,46 @@ class AmySignUpController extends GetxController {
         qusId = res["upd_ques_index"];
         String resMsg = res["bot_reply"];
         log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
+
+        // if (res["options"] is Map) {
+        //   log('res[option] is map');
+        // } else {
+        //   log('res[option] is list');
+        // }
+
         if (qusId == 1) {
           genderOptionList.clear();
           List<dynamic> resOption = res["options"];
           genderOptionList.addAll(resOption.cast<String>());
         } else {
-          // AmyRegisterModel model = AmyRegisterModel.fromJson(res);
           otherOptionList.clear();
-          List<dynamic> data = res["options"];
-          List<Option> optionsModel =
-              data.map((e) => Option.fromJson(e)).toList();
-          log("items=>$optionsModel", name: 'checkkkkkkk option');
-          otherOptionList.addAll(optionsModel);
+          log("otheroptionlist=>$otherOptionList", name: 'checkkkkkkk option');
+          List<Option> list = [];
+          if (res["options"] is Map) {
+            Map<String, dynamic> data = res['options'];
+            data.forEach((key, value) {
+              list.add(Option(id: int.tryParse(key), item: value));
+            });
+          } else if(res["options"] is List) {
+            List<dynamic> data = res["options"];
+            for (int i = 0; i < data.length; i++) {
+              list.add(Option(id: i, item: data[i]));
+            }
+          }
+          otherOptionList.addAll(list);
+          log("items=>$otherOptionList", name: 'checkkkkkkk option');
+
+          // data.forEach((key, value) {
+          //   list.add(Option(id: int.tryParse(key), item: value));
+          // });
+          // otherOptionList.addAll(list);
+          // log("items=>$otherOptionList", name: 'checkkkkkkk option');
+
+          // List<dynamic> data = res["options"];
+          // List<Option> optionsModel =
+          //     data.map((e) => Option.fromJson(e)).toList();
+          // log("items=>$optionsModel", name: 'checkkkkkkk option');
+          // otherOptionList.addAll(optionsModel);
         }
         List<String> parts = resMsg.split('#');
         // String part1 = parts[0];

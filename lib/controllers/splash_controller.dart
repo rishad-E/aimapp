@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
+import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
@@ -23,6 +24,7 @@ class SplashController extends GetxController {
   final bookingController = Get.put(BookCareerCounsellController());
   final mentorController = Get.put(MentorPersonalDetailController());
   final eduController = Get.put(EducatorPersonalDetailController());
+  final alldataController = Get.put(AllDataController());
   final Connectivity connectivity = Connectivity();
   bool isConnected = false;
 
@@ -90,6 +92,7 @@ class SplashController extends GetxController {
             });
             mentorController.checkMentorRegtakenFunction(uId: id.toString());
             eduController.checkEducatorRegTakenFunction(uId: id.toString());
+            alldataController.getUserallData(uId: id.toString());
             Get.off(() => const HomeScreen());
           }
         }
