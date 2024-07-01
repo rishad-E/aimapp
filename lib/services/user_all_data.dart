@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
 
 class UserAllDataService {
@@ -14,9 +15,17 @@ class UserAllDataService {
         queryParameters: {"user_id": uId},
         options: Options(validateStatus: (status) => status! < 599),
       );
-      Map<String,dynamic> resData = response.data;
-      // log(resData.toString(),name: 'user-all-data');
-      return resData;
+      log(response.statusCode.toString(), name: 'user-all-data');
+      if (response.statusCode == 200) {
+        if (response.data is Map) {
+          Map<String, dynamic> resData = response.data;
+          return resData;
+        }
+      } else if (response.statusCode == 500) {
+        log('Server error: ${response.statusCode}',
+            name: 'get all-data info error');
+        SnackbarPopUps.popUpB('Server erro occured..!');
+      }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         log('Server error: ${e.message}', name: 'get all-data info error');

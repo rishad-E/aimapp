@@ -74,7 +74,7 @@ class SplashController extends GetxController {
           Get.offAll(() => SignUpAmyScreen(
               name: name.toString(), email: email.toString(), uId: id));
         } else if (res.containsKey('token')) {
-          loginController.userData = UserDataModel.fromJson(res);
+          loginController.userData = UserModel.fromJson(res);
           if (loginController.userData != null) {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();

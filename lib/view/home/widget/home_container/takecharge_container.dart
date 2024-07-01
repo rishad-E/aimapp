@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
@@ -41,8 +40,8 @@ class TakeChargeC extends StatelessWidget {
                     Container(height: 2.h),
                     counselBooked(
                       context: context,
-                      time: data!.appointTime.toString(),
-                      date: data.appointDate.toString(),
+                      time: data!.formattedTime.toString(),
+                      date: data.formattedDate.toString(),
                       onPressed: () {},
                     )
                   ],
@@ -54,12 +53,12 @@ class TakeChargeC extends StatelessWidget {
                     Container(height: 3.5.h),
                     counselNotBooked(
                       onPressed: () {
-                        if (allDataC.userRole == null) {
+                        if (allDataC.userDetails?.userRole == null) {
                           Get.to(() => BookCareerHomePage());
                         } else {
-                          log("micro=>${allDataC.userDetails?.industry}");
-                          if (allDataC.userRole != null &&
-                              allDataC.userDetails?.industry == null) {
+                          // log("micro=>${allDataC.userDetails?.aim?.name}");
+                          if (allDataC.userDetails?.userRole != null &&
+                              allDataC.userDetails?.aim == null) {
                             Get.to(() => BookCareerAimPage(),
                                 transition: Transition.fade);
                           } else {

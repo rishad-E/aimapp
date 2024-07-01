@@ -126,8 +126,9 @@ class AimcetContainer extends StatelessWidget {
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
                       ),
-                      onPressed: () =>
-                          Get.to(() => AIMCETQualificationScreen(uId: id)),
+                      onPressed: () {
+                        Get.to(() => AIMCETQualificationScreen(uId: id));
+                      },
                       icon: Text(
                         "Take Psychometric Test",
                         style: TextStyle(

@@ -4,16 +4,16 @@
 // UserDataModel userDataModelFromJson(String str) => UserDataModel.fromJson(json.decode(str));
 // String userDataModelToJson(UserDataModel data) => json.encode(data.toJson());
 
-class UserDataModel {
+class UserModel {
     String? token;
     User? user;
 
-    UserDataModel({
+    UserModel({
         this.token,
         this.user,
     });
 
-    factory UserDataModel.fromJson(Map<String, dynamic> json) => UserDataModel(
+    factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         token: json["token"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
     );

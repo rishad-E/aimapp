@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String? name;
     String? id;
-    final UserDataModel? userData = Get.put(LoginController()).userData;
+    final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       name = userData.user?.name ?? '';
       id = userData.user?.id.toString();

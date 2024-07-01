@@ -21,7 +21,7 @@ class AIMCETTestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String? uId;
     String? uName;
-    final UserDataModel? userData = Get.put(LoginController()).userData;
+    final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       uId = userData.user?.id.toString() ?? '';
       uName = userData.user?.name ?? '';

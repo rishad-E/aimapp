@@ -150,7 +150,7 @@ class EducatorMediaAddController extends GetxController {
       List<String> refPhones = referenceController.referencePhone;
       List<String?> otherRelations = referenceController.otherRelation;
       String? id;
-      final UserDataModel? userData = Get.put(LoginController()).userData;
+      final UserModel? userData = Get.put(LoginController()).userData;
       if (userData != null) {
         id = userData.user?.id.toString() ?? '';
       }

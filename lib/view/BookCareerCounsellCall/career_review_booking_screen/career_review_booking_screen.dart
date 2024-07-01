@@ -1,16 +1,15 @@
 import 'dart:developer';
 
+import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
-import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/model/microaim_model.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_review_booking_screen/widgets/booking_dialoguebox.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_review_booking_screen/widgets/review_booking_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class CareerReviewBookingScreen extends StatelessWidget {
@@ -19,15 +18,9 @@ class CareerReviewBookingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(BookCareerCounsellController());
-    final UserDataModel? userData = Get.find<LoginController>().userData;
+    final alldataC = Get.find<AllDataController>();
     String? userId;
-    String? name;
-    if (userData != null) {
-      controller.emailController.text = userData.user?.email ?? '';
-      controller.mobNumberController.text = userData.user?.phone ?? '';
-      userId = userData.user?.id.toString();
-      name = userData.user?.name ?? '';
-    }
+    userId = initializeFields(alldataC, controller);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: careerAppBar(),
@@ -119,29 +112,32 @@ class CareerReviewBookingScreen extends StatelessWidget {
                             List<String> selectedIds = controller.check
                                 .map((item) => item.aimId)
                                 .toList();
-                            log(controller.roleController.text);
+                            log('id=>$userId name=>${controller.nameController.text} email=>${controller.emailController.text} phone=>${controller.mobNumberController.text} role=${controller.roleController.text} appointDate=>${controller.selectedDate} appointTime=>${controller.selectedTime} aimId=>${controller.aimId} microAim=>$selectedIds',
+                                name: 'reviewBooking screen');
                             controller
                                 .careerBokingSlotFucntion(
-                                  name: controller.nameController.text,
-                                  email: controller.emailController.text,
-                                  phoneNumber:
-                                      controller.mobNumberController.text,
+                                  uId: userId.toString(),
                                   appointDate:
                                       controller.selectedDate.toString(),
                                   appointTime:
                                       controller.selectedTime.toString(),
-                                  role: controller.roleController.text,
                                   aimId: controller.aimId.toString(),
                                   microAim: selectedIds,
+                                  // role: controller.roleController.text,
+                                  // name: controller.nameController.text,
+                                  // email: controller.emailController.text,
+                                  // phoneNumber:
+                                  //     controller.mobNumberController.text,
                                 )
                                 .then((value) => {
                                       if (value == 'True')
                                         {
                                           showDialogBoxFunction(
-                                              context,
-                                              userId.toString(),
-                                              controller,
-                                              name.toString()),
+                                            context,
+                                            userId.toString(),
+                                            controller,
+                                            controller.nameController.text,
+                                          ),
                                         }
                                       else
                                         {
@@ -181,33 +177,41 @@ class CareerReviewBookingScreen extends StatelessWidget {
     );
   }
 
-  String convertToAMPM(String timeString) {
-    DateTime dateTime = DateFormat('HH:mm').parse(timeString);
-    String formattedTime = DateFormat('h:mm a').format(dateTime);
-    if (dateTime.hour < 10) {
-      formattedTime = '0$formattedTime';
+  String? initializeFields(
+      AllDataController alldata, BookCareerCounsellController counsel) {
+    if (alldata.userData == null) return null;
+    counsel.emailController.text =
+        alldata.userData?.email ?? counsel.emailController.text;
+    counsel.mobNumberController.text =
+        alldata.userData?.phone ?? counsel.mobNumberController.text;
+    counsel.nameController.text =
+        alldata.userData?.name ?? counsel.nameController.text;
+    counsel.roleController.text =
+        alldata.userDetails?.userRole ?? counsel.roleController.text;
+
+    counsel.aimId = alldata.userDetails?.aim?.id.toString();
+    String? id = alldata.userData?.id.toString();
+    MicroModel model = MicroModel(
+      microAim: alldata.userDetails?.microAim?.name as String,
+      aimId: alldata.userDetails?.microAim?.id.toString() as String,
+    );
+    if (!counsel.check.any((item) => item.microAim == model.microAim)) {
+      counsel.check.add(model);
     }
-    return formattedTime;
+    // log('microAim=${counsel.check[0].microAim} id=>${counsel.check[0].microAim}');
+    // userId = alldata.userData?.id.toString();
+    return id;
   }
 
-  String formatDate(String inputDateString) {
-    DateTime dateTime = DateTime.parse(inputDateString);
-    String dayOfWeek = DateFormat.E('en_US').format(dateTime);
-    int dayOfMonth = dateTime.day;
-    String month = DateFormat.MMM().format(dateTime);
-    String formattedDate = '$dayOfWeek, $dayOfMonth $month';
-    return formattedDate;
+  void showDialogBoxFunction(BuildContext context, String userId,
+      BookCareerCounsellController c, String name) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        c.checkCounsellcallBookingFuntion(userId: userId);
+        return BookingDialogueBox(id: userId, userName: name);
+      },
+    );
   }
-}
-
-void showDialogBoxFunction(BuildContext context, String userId,
-    BookCareerCounsellController controller, String name) {
-  showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (context) {
-      controller.checkCounsellcallBookingFuntion(userId: userId);
-      return BookingDialogueBox(id: userId, userName: name);
-    },
-  );
 }

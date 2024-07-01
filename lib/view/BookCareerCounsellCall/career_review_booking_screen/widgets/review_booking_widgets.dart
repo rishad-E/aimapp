@@ -3,6 +3,7 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 Text careerBoldText(
@@ -114,3 +115,21 @@ Widget reviewDateContainer({required String time,required String date}) {
     ),
   );
 }
+
+  String convertToAMPM(String timeString) {
+    DateTime dateTime = DateFormat('HH:mm').parse(timeString);
+    String formattedTime = DateFormat('h:mm a').format(dateTime);
+    if (dateTime.hour < 10) {
+      formattedTime = '0$formattedTime';
+    }
+    return formattedTime;
+  }
+
+   String formatDate(String inputDateString) {
+    DateTime dateTime = DateTime.parse(inputDateString);
+    String dayOfWeek = DateFormat.E('en_US').format(dateTime);
+    int dayOfMonth = dateTime.day;
+    String month = DateFormat.MMM().format(dateTime);
+    String formattedDate = '$dayOfWeek, $dayOfMonth $month';
+    return formattedDate;
+  }

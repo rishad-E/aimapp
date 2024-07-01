@@ -7,38 +7,40 @@ class SlotBookingService {
   Dio dio = Dio();
 
   Future<String?> slotBooking({
-    required String name,
-    required String email,
-    required String phoneNumber,
+    required String uId,
     required String appointDate,
     required String appointTime,
-    required String role,
     required String aimId,
     required List<String> microAim,
+    // required String role,
+    // required String name,
+    // required String email,
+    // required String phoneNumber,
   }) async {
     String path = Apis().aimUrl + Apis().saveSlote;
-    log(name +email +phoneNumber +appointDate + appointTime + role +aimId +microAim.toString(),name: 'slote booking items');
+    log('id=>$uId appointDate=>$appointDate appointTime=>$appointTime aimId=>$aimId microAim=>$microAim',
+        name: 'reviewBooking servie');
     try {
       Response response = await dio.post(
         path,
         data: {
-          "name": name,
-          "email": email,
-          "phone": phoneNumber,
+          "user_id": uId,
           "appoint_date": appointDate,
           "appoint_time": appointTime,
-          "role": role,
           "aim_category": aimId,
           "micro_aim": microAim
         },
+        options: Options(validateStatus: (status) => status! < 599),
       );
+      log(response.statusCode.toString(), name: 'slot booking res');
+
       if (response.statusCode == 200) {
         String res = response.data["message"];
-        log(res, name: 'slot booking');
+        log(res, name: 'slot booking msg success');
         return res;
       }
     } catch (e) {
-      log(e.toString(), name: 'get aim error');
+      log(e.toString(), name: 'slot booking error');
     }
     return null;
   }

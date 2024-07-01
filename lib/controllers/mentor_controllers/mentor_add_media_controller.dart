@@ -148,7 +148,7 @@ class MentorAddMediaController extends GetxController {
       List<String?> refOtherRel = mRefController.otherRelation;
 
       String? id;
-      final UserDataModel? userData = Get.put(LoginController()).userData;
+      final UserModel? userData = Get.put(LoginController()).userData;
       if (userData != null) {
         id = userData.user?.id.toString() ?? '';
       }

@@ -109,10 +109,8 @@ class BookingDialogueBox extends StatelessWidget {
                         controller.fetchPersonalityReport(userId: id);
                         controller.fetchTraitReport(userId: id);
                       });
-                      Get.to(() => AIMCETResultScreen(
-                            userName: userName,
-                            uId: id,
-                          ));
+                      Get.to(() =>
+                          AIMCETResultScreen(userName: userName, uId: id));
                     },
                   );
                 } else if (controller.testDone.value == 'continue') {

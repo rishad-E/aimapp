@@ -8,7 +8,7 @@
 
 // String profileAlldataModelToJson(ProfileAlldataModel data) => json.encode(data.toJson());
 
-class ProfileAlldataModel {
+class ProfileSectiondataModel {
   List<Education>? educations;
   List<Experience>? experiences;
   List<Project>? projects;
@@ -20,7 +20,7 @@ class ProfileAlldataModel {
   List<License>? licenses;
   List<Skill>? skills;
 
-  ProfileAlldataModel({
+  ProfileSectiondataModel({
     this.educations,
     this.experiences,
     this.projects,
@@ -33,8 +33,8 @@ class ProfileAlldataModel {
     this.skills,
   });
 
-  factory ProfileAlldataModel.fromJson(Map<String, dynamic> json) =>
-      ProfileAlldataModel(
+  factory ProfileSectiondataModel.fromJson(Map<String, dynamic> json) =>
+      ProfileSectiondataModel(
         educations: json["educations"] == null
             ? []
             : List<Education>.from(

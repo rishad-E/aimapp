@@ -79,22 +79,16 @@ class BookCareerCounsellController extends GetxController {
 
   /*------------ save career counsill slot ---------*/
   Future<String?> careerBokingSlotFucntion({
-    required String name,
-    required String email,
-    required String phoneNumber,
+    required String uId,
     required String appointDate,
     required String appointTime,
-    required String role,
     required String aimId,
     required List<String> microAim,
   }) async {
     String? slote = await SlotBookingService().slotBooking(
-      name: name,
-      email: email,
-      phoneNumber: phoneNumber,
+      uId: uId,
       appointDate: appointDate,
       appointTime: appointTime,
-      role: role,
       aimId: aimId,
       microAim: microAim,
     );
@@ -106,12 +100,13 @@ class BookCareerCounsellController extends GetxController {
   }
 
   Future<void> checkCounsellcallBookingFuntion({required String userId}) async {
-    Map<String, dynamic>? data = await CheckCounsellBookingService().checkCounsellcallBooking(userId: userId);
-      log(data.toString(), name: 'check counsell booking taken');
+    Map<String, dynamic>? data = await CheckCounsellBookingService()
+        .checkCounsellcallBooking(userId: userId);
+    log(data.toString(), name: 'check counsell booking taken');
     if (data != null) {
       if (data['Booking Status'] == 'Not Booked') {
         isBooked.value = 'no';
-        log(isBooked.value, name: 'iscounsell booked');
+        // log(isBooked.value, name: 'iscounsell booked');
       } else if (data['Booking Status'] == 'Upcoming') {
         isBooked.value = 'yes';
         counselBookedModel = CounselCallBookedModel.fromJson(data);

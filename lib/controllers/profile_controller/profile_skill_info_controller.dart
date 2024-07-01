@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
-import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
+import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/utils/common/snackbar/snackbar.dart';
@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 class ProfileSkillController extends GetxController {
   TextEditingController skillController = TextEditingController();
   RxList<String> suggestedSkills = <String>[].obs;
-  ProfileAlldataModel? alldataModel;
+  ProfileSectiondataModel? alldataModel;
   RxBool loading = true.obs;
   RxBool profileDataLoading = true.obs;
   RxString? error;

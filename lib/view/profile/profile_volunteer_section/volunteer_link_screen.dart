@@ -1,5 +1,5 @@
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
-import 'package:aimshala/models/profile_model/profile_all_data_model.dart';
+import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';

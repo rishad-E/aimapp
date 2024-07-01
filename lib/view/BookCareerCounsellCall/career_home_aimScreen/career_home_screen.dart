@@ -18,7 +18,7 @@ class BookCareerHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final careerController = Get.put(BookCareerCounsellController());
-    final UserDataModel? userData = Get.put(LoginController()).userData;
+    final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null && careerController.nameController.text.isEmpty) {
       careerController.nameController.text = userData.user?.name ?? '';
     }

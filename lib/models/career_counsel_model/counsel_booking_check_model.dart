@@ -23,46 +23,51 @@ class CounselCallBookedModel {
     };
 }
 
+
 class Data {
-    String? appointTime;
-    String? appointDate;
-    String? linkActivate;
-    String? callTime;
+    String? formattedTime;
+    String? formattedDate;
     String? startTime;
     String? endTime;
+    String? status;
     String? channel;
+    dynamic slotId;
+    String? userId;
     int? slot;
 
     Data({
-        this.appointTime,
-        this.appointDate,
-        this.linkActivate,
-        this.callTime,
+        this.formattedTime,
+        this.formattedDate,
         this.startTime,
         this.endTime,
+        this.status,
         this.channel,
+        this.slotId,
+        this.userId,
         this.slot,
     });
 
     factory Data.fromJson(Map<String, dynamic> json) => Data(
-        appointTime: json["appointTime"],
-        appointDate: json["appointDate"],
-        linkActivate: json["link_activate"],
-        callTime: json["call_time"],
+        formattedTime: json["formattedTime"],
+        formattedDate: json["formattedDate"],
         startTime: json["startTime"],
         endTime: json["endTime"],
+        status: json["status"],
         channel: json["channel"],
+        slotId: json["slotId"],
+        userId: json["user_id"],
         slot: json["slot"],
     );
 
     Map<String, dynamic> toJson() => {
-        "appointTime": appointTime,
-        "appointDate": appointDate,
-        "link_activate": linkActivate,
-        "call_time": callTime,
+        "formattedTime": formattedTime,
+        "formattedDate": formattedDate,
         "startTime": startTime,
         "endTime": endTime,
+        "status": status,
         "channel": channel,
+        "slotId": slotId,
+        "user_id": userId,
         "slot": slot,
     };
 }

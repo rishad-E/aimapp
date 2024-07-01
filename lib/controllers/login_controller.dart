@@ -20,7 +20,7 @@ class LoginController extends GetxController {
   RxString validationMessage = ''.obs;
   RxBool isButtonEnabled = false.obs;
   RxBool otpVerified = false.obs;
-  UserDataModel? userData;
+  UserModel? userData;
   Rx<Color> buttonColor = Rx<Color>(const Color.fromARGB(255, 244, 244, 244));
   Rx<Color> buttonTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
 
@@ -80,7 +80,7 @@ class LoginController extends GetxController {
             Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
           }
         } else if (res.containsKey('token')) {
-          userData = UserDataModel.fromJson(res);
+          userData = UserModel.fromJson(res);
           if (userData != null) {
             storage.write(key: 'token', value: userData?.token.toString());
             storage.write(
