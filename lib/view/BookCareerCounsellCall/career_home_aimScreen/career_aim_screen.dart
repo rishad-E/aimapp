@@ -78,10 +78,9 @@ class BookCareerAimPage extends StatelessWidget {
                                           const Icon(Icons.keyboard_arrow_down),
                                     ),
                                     readOnly: true,
-                                    onTap: () {
-                                      showCareerMicroAimBottomSheet(
-                                          context, careerController);
-                                    })
+                                    onTap: () => showCareerMicroAimBottomSheet(
+                                        context, careerController),
+                                  )
                                 : Container(
                                     width: double.infinity,
                                     padding: const EdgeInsets.symmetric(
@@ -135,7 +134,7 @@ class BookCareerAimPage extends StatelessWidget {
                     Obx(
                       () => careerController.careerAimSelectedRole.value ==
                               'Your aim'
-                          ? const SizedBox.shrink()
+                          ? shrinked
                           : remindWidget(),
                     ),
                     hBox,
@@ -146,10 +145,11 @@ class BookCareerAimPage extends StatelessWidget {
                       decoration: boxdecoration(12),
                       child: GetBuilder<BookCareerCounsellController>(
                         id: 'button-careerAim',
-                        builder: (career) {
+                        builder: (c) {
                           return TextButton(
                             onPressed: () {
                               if (careeraimFormKey.currentState!.validate()) {
+                                log('aimId=>${c.aimId}  Microaim=>${c.check}');
                                 Get.to(
                                     () => const CareerDateTimeBookingScreen());
                               }
@@ -159,8 +159,8 @@ class BookCareerAimPage extends StatelessWidget {
                               backgroundColor:
                                   MaterialStateProperty.resolveWith<Color>(
                                 (states) {
-                                  return career.aimController.text.isNotEmpty &&
-                                          career.check.isNotEmpty
+                                  return c.aimController.text.isNotEmpty &&
+                                          c.check.isNotEmpty
                                       ? kpurple
                                       : buttonColor;
                                 },
@@ -169,8 +169,8 @@ class BookCareerAimPage extends StatelessWidget {
                             child: Text(
                               "Next",
                               style: TextStyle(
-                                  color: career.aimController.text.isNotEmpty &&
-                                          career.check.isNotEmpty
+                                  color: c.aimController.text.isNotEmpty &&
+                                          c.check.isNotEmpty
                                       ? Colors.white
                                       : disableText),
                             ),

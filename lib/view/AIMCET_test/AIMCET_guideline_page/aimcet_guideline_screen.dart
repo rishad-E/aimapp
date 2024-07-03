@@ -1,4 +1,5 @@
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
@@ -9,7 +10,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETGuideLinePage extends StatelessWidget {
-  const AIMCETGuideLinePage({super.key});
+  final String uId;
+  const AIMCETGuideLinePage({super.key, required this.uId});
 
   @override
   Widget build(BuildContext context) {
@@ -204,19 +206,22 @@ class AIMCETGuideLinePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Container(
-                        height: 4.h,
-                        // width: 24,
-                        decoration: BoxDecoration(
-                          color: kwhite,
-                          border: Border.all(width: 1, color: mainPurple),
-                          borderRadius: BorderRadius.circular(6),
+                      child: GestureDetector(
+                        onTap: () => Get.back(),
+                        child: Container(
+                          height: 4.h,
+                          // width: 24,
+                          decoration: BoxDecoration(
+                            color: kwhite,
+                            border: Border.all(width: 1, color: mainPurple),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Center(
+                              child: Text(
+                            "Cancel",
+                            style: TextStyle(color: mainPurple),
+                          )),
                         ),
-                        child: Center(
-                            child: Text(
-                          "Cancel",
-                          style: TextStyle(color: mainPurple),
-                        )),
                       ),
                     ),
                     wMBox,
@@ -225,9 +230,19 @@ class AIMCETGuideLinePage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             if (controller.guideSelect == true) {
-                              // log("message");
-                              Get.to(() => const AIMCETTestPage());
-                              // controller.attempt.value = 0;
+                              controller
+                                  .fetchAllTestQuestions(userId: uId)
+                                  .then((value) {
+                                if (controller.allQuestions != null &&
+                                    controller.allQuestions!.isNotEmpty) {
+                                  Get.to(() => const AIMCETTestPage());
+                                } else {
+                                  // Handle the case where questions are not fetched
+                                  // Get.snackbar('Error', 'No questions fetched.');
+                                  SnackbarPopUps.popUpB(
+                                      'Error,Failed to fetch questions');
+                                }
+                              });
                             }
                           },
                           child: Container(
@@ -239,13 +254,24 @@ class AIMCETGuideLinePage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Center(
-                              child: Text(
-                                "Proceed",
-                                style: TextStyle(
-                                    color: controller.guidebutton.value
-                                        ? kwhite
-                                        : textFieldColor),
-                              ),
+                              child: controller.isLoading.value
+                                  ? const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 4),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 1.5,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.white),
+                                      ),
+                                    )
+                                  : Text(
+                                      "Proceed",
+                                      style: TextStyle(
+                                          color: controller.guidebutton.value
+                                              ? kwhite
+                                              : textFieldColor),
+                                    ),
                             ),
                           ),
                         ),

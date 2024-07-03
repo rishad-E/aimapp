@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
+import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
@@ -141,15 +142,8 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                         }
                                       else
                                         {
-                                          Get.showSnackbar(
-                                            const GetSnackBar(
-                                              snackStyle: SnackStyle.FLOATING,
-                                              message: "Booking failed",
-                                              margin: EdgeInsets.all(10),
-                                              backgroundColor: Colors.red,
-                                              duration: Duration(seconds: 2),
-                                            ),
-                                          )
+                                          SnackbarPopUps.popUpB(
+                                              '"Booking failed"'),
                                         }
                                     });
                           },
@@ -178,26 +172,36 @@ class CareerReviewBookingScreen extends StatelessWidget {
   }
 
   String? initializeFields(
-      AllDataController alldata, BookCareerCounsellController counsel) {
-    if (alldata.userData == null) return null;
-    counsel.emailController.text =
-        alldata.userData?.email ?? counsel.emailController.text;
-    counsel.mobNumberController.text =
-        alldata.userData?.phone ?? counsel.mobNumberController.text;
-    counsel.nameController.text =
-        alldata.userData?.name ?? counsel.nameController.text;
-    counsel.roleController.text =
-        alldata.userDetails?.userRole ?? counsel.roleController.text;
-
-    counsel.aimId = alldata.userDetails?.aim?.id.toString();
-    String? id = alldata.userData?.id.toString();
-    MicroModel model = MicroModel(
-      microAim: alldata.userDetails?.microAim?.name as String,
-      aimId: alldata.userDetails?.microAim?.id.toString() as String,
-    );
-    if (!counsel.check.any((item) => item.microAim == model.microAim)) {
-      counsel.check.add(model);
+      AllDataController alldataC, BookCareerCounsellController controller) {
+    if (alldataC.userData == null) return null;
+    String? id = alldataC.userData?.id.toString();
+    controller.emailController.text =
+        alldataC.userData?.email ?? controller.emailController.text;
+    controller.mobNumberController.text =
+        alldataC.userData?.phone ?? controller.mobNumberController.text;
+    controller.nameController.text =
+        alldataC.userData?.name ?? controller.nameController.text;
+    controller.roleController.text =
+        alldataC.userDetails?.userRole ?? controller.roleController.text;
+    if (alldataC.userDetails?.aim?.name != "" ||
+        alldataC.userDetails?.aim?.name == null) {
+      controller.aimId = alldataC.userDetails?.aim?.id.toString();
+      MicroModel model = MicroModel(
+        microAim: alldataC.userDetails?.microAim?.name as String,
+        aimId: alldataC.userDetails?.microAim?.id.toString() as String,
+      );
+      if (!controller.check.any((item) => item.microAim == model.microAim)) {
+        controller.check.add(model);
+      }
     }
+    // controller.aimId = alldataC.userDetails?.aim?.id.toString();
+    // MicroModel model = MicroModel(
+    //   microAim: alldataC.userDetails?.microAim?.name as String,
+    //   aimId: alldataC.userDetails?.microAim?.id.toString() as String,
+    // );
+    // if (!controller.check.any((item) => item.microAim == model.microAim)) {
+    //   controller.check.add(model);
+    // }
     // log('microAim=${counsel.check[0].microAim} id=>${counsel.check[0].microAim}');
     // userId = alldata.userData?.id.toString();
     return id;

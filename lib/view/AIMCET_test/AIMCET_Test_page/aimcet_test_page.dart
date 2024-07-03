@@ -10,6 +10,7 @@ import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_bottom_list.dart
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_texts.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/completed_warning.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/error_warning.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,123 +43,122 @@ class AIMCETTestPage extends StatelessWidget {
           decoration: aimcetMainContainerdecoration(),
           child: Padding(
             padding: const EdgeInsets.only(left: 17, right: 17, top: 30),
-            child: controller.allQuestions?.isEmpty == true
-                ? Center(
-                    child: CompletedWarningBox(
-                        uId: uId.toString(), uName: uName.toString()),
-                  )
-                : PageView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.allQuestions?.length,
-                    controller: pageController,
-                    itemBuilder: (context, index) {
-                      String answer = controller.allQuestions![index].answers;
-                      List<String> pageItems =
-                          answer.split('|').map((data) => data.trim()).toList();
-                      // log(pageItems.toString(), name: 'answers');
-                      int? isSelected;
-                      return GetBuilder<AIMCETController>(
-                        id: 'aimcet-test',
-                        builder: (c) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              questionText(c.allQuestions![index].question),
-                              ...List.generate(
-                                pageItems.length,
-                                (pageIndex) {
-                                  String answerText = pageItems[pageIndex];
-                                  final data = c.allQuestions![index];
-                                  final length = c.allQuestions!.length;
-                                  return Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 5),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        isSelected = pageIndex;
-                                        c.totalQuestionNumber(data.sectionId);
-                                        if (index == length - 1) {
-                                          showAIMCETDialogFunction(
-                                              context: context,
-                                              userId: uId.toString(),
-                                              userName: uName.toString());
-                                        }
-                                        c.secID.value = data.sectionId;
-                                        c.update(['aimcet-test']);
-                                        // log('${pageIndex.toString()} ${data.id} ${data.sectionId} $answerText $uId',name: 'all-item');
-                                        log('${c.secID}', name: 'section');
-                                        log('${c.secQuestion}',
-                                            name: 'sectionquestion num');
-                                        log('${c.totalQ}',
-                                            name: 'total question num');
-                                        if (c.totalQ == 40) {
-                                          log('40th question');
-                                        } else if (c.totalQ == 55) {
-                                          log('55th question');
-                                        }
-                                        c.submitAimTest(
-                                            userId: uId.toString(),
-                                            cAnswer: answerText,
-                                            sectionId:
-                                                data.sectionId.toString(),
-                                            questionId: data.id.toString(),
-                                            secQues: c.secQuestion.toString(),
-                                            totalQues: c.totalQ.toString());
-                                        if (index < length - 1) {
-                                          pageController.animateToPage(
-                                            index + 1,
-                                            duration: const Duration(
-                                                milliseconds: 800),
-                                            curve: Curves.ease,
-                                          );
-                                        }
-                                        if (c.totalQ == 40) {
-                                          log(uId.toString(),
-                                              name: '40th index');
-                                          c.careerResultSubmittion(
-                                              userId: uId.toString(),
-                                              secId: '1');
-                                        }
-                                        if (c.totalQ == 55) {
-                                          log(uId.toString(),
-                                              name: '55th index');
-                                          c.careerResultSubmittion(
-                                              userId: uId.toString(),
-                                              secId: '3');
-                                        }
-                                        if (index == length - 1) {
-                                          log(index.toString(),name: 'number $index');
-                                          c.aimcetTestResultFunction(
-                                            userId: uId.toString(),
-                                            userName: uName.toString(),
-                                          );
-                                        }
-                                        if (length - 2 == index ||
-                                            length - 1 == index) {
-                                          log('${data.sectionId}   ind $index',
-                                              name: 'cheeeeeeeeek');
-                                          c.end.value = 'yes';
-                                        } else {
-                                          c.end.value = 'no';
-                                        }
-                                      },
-                                      child: answerContainer(
-                                        (pageIndex + 1).toString(),
-                                        // pageIndex.toString(),
-                                        answerText,
-                                        isSelected == pageIndex,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
+            child: controller.allQuestions == null
+                ? const ErrorWarning()
+                : controller.allQuestions?.isEmpty == true
+                    ? CompletedWarningBox(
+                        uId: uId.toString(), uName: uName.toString())
+                    : PageView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.allQuestions?.length,
+                        controller: pageController,
+                        itemBuilder: (context, index) {
+                          String answer =
+                              controller.allQuestions![index].answers;
+                          List<String> pageItems = answer
+                              .split('|')
+                              .map((data) => data.trim())
+                              .toList();
+                          // log(pageItems.toString(), name: 'answers');
+                          int? isSelected;
+                          return GetBuilder<AIMCETController>(
+                            id: 'aimcet-test',
+                            builder: (c) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  questionText(c.allQuestions![index].question),
+                                  ...List.generate(
+                                    pageItems.length,
+                                    (pageIndex) {
+                                      String answerText = pageItems[pageIndex];
+                                      final data = c.allQuestions![index];
+                                      final length = c.allQuestions!.length;
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5, bottom: 5),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            isSelected = pageIndex;
+                                            c.totalQuestionNumber(
+                                                data.sectionId);
+                                            if (index == length - 1) {
+                                              showAIMCETDialogFunction(
+                                                  context: context,
+                                                  userId: uId.toString(),
+                                                  userName: uName.toString());
+                                              c.aimcetTestResultFunction(
+                                                userId: uId.toString(),
+                                                userName: uName.toString(),
+                                              );
+                                            }
+                                            c.secID.value = data.sectionId;
+                                            c.update(['aimcet-test']);
+                                            log('sectionID==>${c.secID}  sectionQuesNum==>${c.secQuestion}  totalQusNum==>${c.totalQ}',
+                                                name: 'section');
+                                            if (c.totalQ == 40) {
+                                              log('40th question==>${c.totalQ}');
+                                            } else if (c.totalQ == 55) {
+                                              log('55th question==>${c.totalQ}');
+                                            }
+                                            c.submitAimTest(
+                                                userId: uId.toString(),
+                                                cAnswer: answerText,
+                                                sectionId:
+                                                    data.sectionId.toString(),
+                                                questionId: data.id.toString(),
+                                                secQues:
+                                                    c.secQuestion.toString(),
+                                                totalQues: c.totalQ.toString());
+                                            if (index < length - 1) {
+                                              pageController.animateToPage(
+                                                index + 1,
+                                                duration: const Duration(
+                                                    milliseconds: 800),
+                                                curve: Curves.ease,
+                                              );
+                                            }
+                                            if (c.totalQ == 40) {
+                                              log('userId=>$uId  secId=>1',
+                                                  name: '40th index');
+                                              c.careerResultSubmittion(
+                                                  userId: uId.toString(),
+                                                  secId: '1');
+                                            }
+                                            if (c.totalQ == 55) {
+                                              log('userId=>$uId  secId=>3',
+                                                  name: '55th index');
+                                              c.careerResultSubmittion(
+                                                  userId: uId.toString(),
+                                                  secId: '3');
+                                            }
+
+                                            if (length - 2 == index ||
+                                                length - 1 == index) {
+                                              log('sectionid=>${data.sectionId}   index=>$index',
+                                                  name: 'check END val');
+                                              c.end.value = 'yes';
+                                            } else {
+                                              c.end.value = 'no';
+                                            }
+                                          },
+                                          child: answerContainer(
+                                            (pageIndex + 1).toString(),
+                                            // pageIndex.toString(),
+                                            answerText,
+                                            isSelected == pageIndex,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                  ),
+                      ),
           ),
         ),
         bottomNavigationBar: GestureDetector(
@@ -261,9 +261,7 @@ class AIMCETTestPage extends StatelessWidget {
   void showsheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
-        return const AimcetTestBottomsheet();
-      },
+      builder: (context) => const AimcetTestBottomsheet(),
     );
   }
 
@@ -274,12 +272,8 @@ class AIMCETTestPage extends StatelessWidget {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        return AIMCETDialogueBox(
-          userId: userId,
-          userName: userName,
-        );
-      },
+      builder: (context) =>
+          AIMCETDialogueBox(userId: userId, userName: userName),
     );
   }
 }

@@ -9,44 +9,47 @@
 // String userDataModelToJson(UserDataModel data) => json.encode(data.toJson());
 
 class UserDataModel {
-    UserData? userData;
-    String? userRole;
-    String? gender;
-    String? dob;
-    Aim? aim;
-    Aim? microAim;
-    String? userDataModelClass;
-    String? program;
-    String? childProgram;
-    String? subChildProgram;
+  UserData? userData;
+  String? userRole;
+  String? gender;
+  String? dob;
+  Aim? aim;
+  Aim? microAim;
+  String? userDataModelClass;
+  String? program;
+  String? childProgram;
+  String? subChildProgram;
 
-    UserDataModel({
-        this.userData,
-        this.userRole,
-        this.gender,
-        this.dob,
-        this.aim,
-        this.microAim,
-        this.userDataModelClass,
-        this.program,
-        this.childProgram,
-        this.subChildProgram,
-    });
+  UserDataModel({
+    this.userData,
+    this.userRole,
+    this.gender,
+    this.dob,
+    this.aim,
+    this.microAim,
+    this.userDataModelClass,
+    this.program,
+    this.childProgram,
+    this.subChildProgram,
+  });
 
-    factory UserDataModel.fromJson(Map<String, dynamic> json) => UserDataModel(
-        userData: json["user_data"] == null ? null : UserData.fromJson(json["user_data"]),
+  factory UserDataModel.fromJson(Map<String, dynamic> json) => UserDataModel(
+        userData: json["user_data"] == null
+            ? null
+            : UserData.fromJson(json["user_data"]),
         userRole: json["user_role"],
         gender: json["gender"],
         dob: json["DOB"],
         aim: json["aim"] == null ? null : Aim.fromJson(json["aim"]),
-        microAim: json["micro_aim"] == null ? null : Aim.fromJson(json["micro_aim"]),
+        microAim:
+            json["micro_aim"] == null ? null : Aim.fromJson(json["micro_aim"]),
         userDataModelClass: json["class"],
         program: json["program"],
         childProgram: json["child_program"],
         subChildProgram: json["sub_child_program"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "user_data": userData?.toJson(),
         "user_role": userRole,
         "gender": gender,
@@ -57,203 +60,214 @@ class UserDataModel {
         "program": program,
         "child_program": childProgram,
         "sub_child_program": subChildProgram,
-    };
+      };
 }
 
 class Aim {
-    int? id;
-    String? name;
+  int? id;
+  String? name;
 
-    Aim({
-        this.id,
-        this.name,
-    });
+  Aim({
+    this.id,
+    this.name,
+  });
 
-    factory Aim.fromJson(Map<String, dynamic> json) => Aim(
-        id: json["id"],
-        name: json["name"],
+  factory Aim.fromJson(Map<String, dynamic> json) {
+    var idValue = json["id"];
+    int? parsedId;
+    if (idValue != null) {
+      if (idValue is int) {
+        parsedId = idValue;
+      } else if (idValue is String) {
+        parsedId = int.tryParse(idValue);
+      }
+    }
+    return Aim(
+      id: parsedId,
+      name: json["name"],
     );
+  }
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-    };
+      };
 }
 
 class UserData {
-    int? id;
-    int? roleId;
-    dynamic ip;
-    String? userActive;
-    dynamic referralCode;
-    String? name;
-    String? photo;
-    String? image;
-    String? avatar;
-    dynamic emailVerifiedAt;
-    String? notificationPreference;
-    int? isActive;
-    dynamic username;
-    String? email;
-    String? emailVerify;
-    dynamic headline;
-    String? phone;
-    dynamic address;
-    String? country;
-    dynamic zip;
-    dynamic dob;
-    dynamic about;
-    dynamic shortDetails;
-    dynamic facebook;
-    dynamic twitter;
-    dynamic linkedin;
-    dynamic instagram;
-    dynamic youtube;
-    int? subscribe;
-    dynamic provider;
-    dynamic providerId;
-    String? languageId;
-    String? languageCode;
-    String? languageName;
-    int? status;
-    int? balance;
-    int? currencyId;
-    String? specialCommission;
-    String? payout;
-    String? payoutIcon;
-    String? payoutEmail;
-    dynamic referralBy;
-    int? addedBy;
-    dynamic zoomApiKeyOfUser;
-    dynamic zoomApiSerectOfUser;
-    DateTime? createdAt;
-    DateTime? updatedAt;
-    dynamic bankName;
-    dynamic branchName;
-    dynamic bankAccountNumber;
-    dynamic accountHolderName;
-    dynamic bankType;
-    int? lmsId;
-    dynamic subscriptionMethod;
-    dynamic subscriptionApiKey;
-    int? subscriptionApiStatus;
-    int? languageRtl;
-    dynamic gender;
-    dynamic studentType;
-    dynamic identificationNumber;
-    dynamic jobTitle;
-    dynamic companyId;
-    dynamic studentGroupId;
-    DateTime? lastActivityAt;
-    int? teachVia;
-    dynamic accessToken;
-    dynamic deviceToken;
-    dynamic policyId;
-    dynamic state;
-    dynamic company;
-    dynamic otp;
-    dynamic city;
-    int? gamificationPoints;
-    int? gamificationTotalPoints;
-    int? gamificationTotalSpentPoints;
-    int? userLevel;
-    int? userLevelCourseComplete;
-    String? comeBy;
-    dynamic token;
-    dynamic userStatus;
-    dynamic connectionId;
-    String? firstName;
-    String? lastName;
-    dynamic blockedByMe;
+  int? id;
+  int? roleId;
+  dynamic ip;
+  String? userActive;
+  dynamic referralCode;
+  String? name;
+  String? photo;
+  String? image;
+  String? avatar;
+  dynamic emailVerifiedAt;
+  String? notificationPreference;
+  int? isActive;
+  dynamic username;
+  String? email;
+  String? emailVerify;
+  dynamic headline;
+  String? phone;
+  dynamic address;
+  String? country;
+  dynamic zip;
+  dynamic dob;
+  dynamic about;
+  dynamic shortDetails;
+  dynamic facebook;
+  dynamic twitter;
+  dynamic linkedin;
+  dynamic instagram;
+  dynamic youtube;
+  int? subscribe;
+  dynamic provider;
+  dynamic providerId;
+  String? languageId;
+  String? languageCode;
+  String? languageName;
+  int? status;
+  int? balance;
+  int? currencyId;
+  String? specialCommission;
+  String? payout;
+  String? payoutIcon;
+  String? payoutEmail;
+  dynamic referralBy;
+  int? addedBy;
+  dynamic zoomApiKeyOfUser;
+  dynamic zoomApiSerectOfUser;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  dynamic bankName;
+  dynamic branchName;
+  dynamic bankAccountNumber;
+  dynamic accountHolderName;
+  dynamic bankType;
+  int? lmsId;
+  dynamic subscriptionMethod;
+  dynamic subscriptionApiKey;
+  int? subscriptionApiStatus;
+  int? languageRtl;
+  dynamic gender;
+  dynamic studentType;
+  dynamic identificationNumber;
+  dynamic jobTitle;
+  dynamic companyId;
+  dynamic studentGroupId;
+  DateTime? lastActivityAt;
+  int? teachVia;
+  dynamic accessToken;
+  dynamic deviceToken;
+  dynamic policyId;
+  dynamic state;
+  dynamic company;
+  dynamic otp;
+  dynamic city;
+  int? gamificationPoints;
+  int? gamificationTotalPoints;
+  int? gamificationTotalSpentPoints;
+  int? userLevel;
+  int? userLevelCourseComplete;
+  String? comeBy;
+  dynamic token;
+  dynamic userStatus;
+  dynamic connectionId;
+  String? firstName;
+  String? lastName;
+  dynamic blockedByMe;
 
-    UserData({
-        this.id,
-        this.roleId,
-        this.ip,
-        this.userActive,
-        this.referralCode,
-        this.name,
-        this.photo,
-        this.image,
-        this.avatar,
-        this.emailVerifiedAt,
-        this.notificationPreference,
-        this.isActive,
-        this.username,
-        this.email,
-        this.emailVerify,
-        this.headline,
-        this.phone,
-        this.address,
-        this.country,
-        this.zip,
-        this.dob,
-        this.about,
-        this.shortDetails,
-        this.facebook,
-        this.twitter,
-        this.linkedin,
-        this.instagram,
-        this.youtube,
-        this.subscribe,
-        this.provider,
-        this.providerId,
-        this.languageId,
-        this.languageCode,
-        this.languageName,
-        this.status,
-        this.balance,
-        this.currencyId,
-        this.specialCommission,
-        this.payout,
-        this.payoutIcon,
-        this.payoutEmail,
-        this.referralBy,
-        this.addedBy,
-        this.zoomApiKeyOfUser,
-        this.zoomApiSerectOfUser,
-        this.createdAt,
-        this.updatedAt,
-        this.bankName,
-        this.branchName,
-        this.bankAccountNumber,
-        this.accountHolderName,
-        this.bankType,
-        this.lmsId,
-        this.subscriptionMethod,
-        this.subscriptionApiKey,
-        this.subscriptionApiStatus,
-        this.languageRtl,
-        this.gender,
-        this.studentType,
-        this.identificationNumber,
-        this.jobTitle,
-        this.companyId,
-        this.studentGroupId,
-        this.lastActivityAt,
-        this.teachVia,
-        this.accessToken,
-        this.deviceToken,
-        this.policyId,
-        this.state,
-        this.company,
-        this.otp,
-        this.city,
-        this.gamificationPoints,
-        this.gamificationTotalPoints,
-        this.gamificationTotalSpentPoints,
-        this.userLevel,
-        this.userLevelCourseComplete,
-        this.comeBy,
-        this.token,
-        this.userStatus,
-        this.connectionId,
-        this.firstName,
-        this.lastName,
-        this.blockedByMe,
-    });
+  UserData({
+    this.id,
+    this.roleId,
+    this.ip,
+    this.userActive,
+    this.referralCode,
+    this.name,
+    this.photo,
+    this.image,
+    this.avatar,
+    this.emailVerifiedAt,
+    this.notificationPreference,
+    this.isActive,
+    this.username,
+    this.email,
+    this.emailVerify,
+    this.headline,
+    this.phone,
+    this.address,
+    this.country,
+    this.zip,
+    this.dob,
+    this.about,
+    this.shortDetails,
+    this.facebook,
+    this.twitter,
+    this.linkedin,
+    this.instagram,
+    this.youtube,
+    this.subscribe,
+    this.provider,
+    this.providerId,
+    this.languageId,
+    this.languageCode,
+    this.languageName,
+    this.status,
+    this.balance,
+    this.currencyId,
+    this.specialCommission,
+    this.payout,
+    this.payoutIcon,
+    this.payoutEmail,
+    this.referralBy,
+    this.addedBy,
+    this.zoomApiKeyOfUser,
+    this.zoomApiSerectOfUser,
+    this.createdAt,
+    this.updatedAt,
+    this.bankName,
+    this.branchName,
+    this.bankAccountNumber,
+    this.accountHolderName,
+    this.bankType,
+    this.lmsId,
+    this.subscriptionMethod,
+    this.subscriptionApiKey,
+    this.subscriptionApiStatus,
+    this.languageRtl,
+    this.gender,
+    this.studentType,
+    this.identificationNumber,
+    this.jobTitle,
+    this.companyId,
+    this.studentGroupId,
+    this.lastActivityAt,
+    this.teachVia,
+    this.accessToken,
+    this.deviceToken,
+    this.policyId,
+    this.state,
+    this.company,
+    this.otp,
+    this.city,
+    this.gamificationPoints,
+    this.gamificationTotalPoints,
+    this.gamificationTotalSpentPoints,
+    this.userLevel,
+    this.userLevelCourseComplete,
+    this.comeBy,
+    this.token,
+    this.userStatus,
+    this.connectionId,
+    this.firstName,
+    this.lastName,
+    this.blockedByMe,
+  });
 
-    factory UserData.fromJson(Map<String, dynamic> json) => UserData(
+  factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         id: json["id"],
         roleId: json["role_id"],
         ip: json["ip"],
@@ -299,8 +313,12 @@ class UserData {
         addedBy: json["added_by"],
         zoomApiKeyOfUser: json["zoom_api_key_of_user"],
         zoomApiSerectOfUser: json["zoom_api_serect_of_user"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
         bankName: json["bank_name"],
         branchName: json["branch_name"],
         bankAccountNumber: json["bank_account_number"],
@@ -317,7 +335,9 @@ class UserData {
         jobTitle: json["job_title"],
         companyId: json["company_id"],
         studentGroupId: json["student_group_id"],
-        lastActivityAt: json["last_activity_at"] == null ? null : DateTime.parse(json["last_activity_at"]),
+        lastActivityAt: json["last_activity_at"] == null
+            ? null
+            : DateTime.parse(json["last_activity_at"]),
         teachVia: json["teach_via"],
         accessToken: json["access_token"],
         deviceToken: json["device_token"],
@@ -338,9 +358,9 @@ class UserData {
         firstName: json["first_name"],
         lastName: json["last_name"],
         blockedByMe: json["blocked_by_me"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "role_id": roleId,
         "ip": ip,
@@ -425,5 +445,5 @@ class UserData {
         "first_name": firstName,
         "last_name": lastName,
         "blocked_by_me": blockedByMe,
-    };
+      };
 }

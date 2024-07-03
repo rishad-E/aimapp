@@ -6,12 +6,11 @@ import 'package:dio/dio.dart';
 class AIMCETTestService {
   Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> getTestResult(
-      {required String userId, required String qualifyId}) async {
+  Future<Map<String, dynamic>?> getTestResult({required String userId}) async {
     String path = Apis().aimUrl + Apis().aimcetTest;
     try {
       Response response = await dio.post(path,
-          data: {"user_id": userId, "qualification": qualifyId},
+          data: {"user_id": userId},
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
@@ -81,6 +80,7 @@ class AIMCETTestService {
       Response response = await dio.post(
         path,
         data: {"user_id": userId, "secid": secId},
+        options: Options(validateStatus: (status) => status! < 599),
       );
       log(response.data.toString(), name: 'career result submit');
     } catch (e) {

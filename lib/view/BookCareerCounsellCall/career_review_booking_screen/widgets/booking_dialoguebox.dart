@@ -3,7 +3,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/chatbot/widgets/amy_radial_gradient.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +25,7 @@ class BookingDialogueBox extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // CircleAvatar(
-          //   radius: 55.sp,
-          //   backgroundColor: kwhite,
-          //   backgroundImage: const AssetImage('assets/images/person.png'),
-          // ),
+         
           const Padding(
             padding: EdgeInsets.only(right: 50),
             child: AmyBotRadialColor(),
@@ -99,7 +95,6 @@ class BookingDialogueBox extends StatelessWidget {
                       color: const Color.fromARGB(255, 147, 38, 143),
                     ),
                     onPressed: () {
-                      // Get.to(() => AIMCETQualificationScreen());
                       controller
                           .gpReportSubmitFunction(
                               uId: id,
@@ -119,8 +114,7 @@ class BookingDialogueBox extends StatelessWidget {
                         shape: buttonShape(round: 8),
                         side: MaterialStatePropertyAll(
                             BorderSide(color: mainPurple))),
-                    onPressed: () =>
-                        Get.to(() => AIMCETQualificationScreen(uId: id)),
+                    onPressed: () => Get.to(() => AIMCETGuideLinePage(uId: id)),
                     icon: Text(
                       "Continue Psychometric Test",
                       style: TextStyle(
@@ -136,8 +130,7 @@ class BookingDialogueBox extends StatelessWidget {
                     style: ButtonStyle(
                         shape: buttonShape(round: 8),
                         backgroundColor: MaterialStatePropertyAll(mainPurple)),
-                    onPressed: () =>
-                        Get.to(() => AIMCETQualificationScreen(uId: id)),
+                    onPressed: () => Get.to(() => AIMCETGuideLinePage(uId: id)),
                     icon: Text(
                       "Take Psychometric Test",
                       style: TextStyle(
@@ -151,19 +144,6 @@ class BookingDialogueBox extends StatelessWidget {
                 }
               },
             ),
-            //  ElevatedButton(
-            //   style: ButtonStyle(
-            //       backgroundColor: MaterialStateProperty.all(kpurple),
-            //       shape: buttonShape(round: 10)),
-            //   onPressed: () {
-
-            //     Get.offAll(() => const HomeScreen());
-            //   },
-            //   child: Text(
-            //     'Take Aim CET',
-            //     style: TextStyle(color: kwhite),
-            //   ),
-            // ),
           ),
           hMBox,
           GestureDetector(

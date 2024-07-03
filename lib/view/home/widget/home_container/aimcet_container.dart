@@ -3,7 +3,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_qualification_page/aimcet_qualification_screen.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,8 +95,7 @@ class AimcetContainer extends StatelessWidget {
                       },
                     );
                   } else if (controller.testDone.value == 'continue') {
-                    controller.fetchAllTestQuestions(
-                        userId: id, qualifyId: controller.qualifyId.toString());
+                    controller.fetchAllTestQuestions(userId: id);
                     return ElevatedButton.icon(
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),
@@ -127,7 +126,8 @@ class AimcetContainer extends StatelessWidget {
                         shape: buttonShape(round: 8),
                       ),
                       onPressed: () {
-                        Get.to(() => AIMCETQualificationScreen(uId: id));
+                        // Get.to(() => AIMCETQualificationScreen(uId: id));
+                        Get.to(() => AIMCETGuideLinePage(uId: id));
                       },
                       icon: Text(
                         "Take Psychometric Test",
@@ -152,6 +152,14 @@ class AimcetContainer extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
 
 
  // return controller.testDone.value == 'done'

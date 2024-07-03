@@ -47,6 +47,16 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
             SizedBox(
               height: 29.h,
               child: Obx(() {
+                // if (controller.isLoading.value) {
+                //   return CircularProgressIndicator();
+                // } else if (controller.searchMicorAimRes.isEmpty) {
+                //   return Text(
+                //     "No Micro aims found to your query",
+                //     style: TextStyle(color: textFieldColor),
+                //   );
+                // } else {
+                //   return shrinked;
+                // }
                 if (controller.searchMicorAimRes.isEmpty) {
                   return Text(
                     "No Micro aims found to your query",

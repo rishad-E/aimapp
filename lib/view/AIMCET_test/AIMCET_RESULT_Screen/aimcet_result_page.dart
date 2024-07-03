@@ -1,20 +1,26 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/aimcet_res_download_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/discovery_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/mentorship_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/personality_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topcareer_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topdegree_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/trait_container.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/widgets.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_images.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_texts.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
+import 'package:aimshala/view/AIMCET_test/Personality-Report/personality_report_screen.dart';
+import 'package:aimshala/view/AIMCET_test/Personality-Report/widgets/personality_widgets.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/home/widget/const.dart';
 import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 class AIMCETResultScreen extends StatelessWidget {
   final String userName;
@@ -24,6 +30,7 @@ class AIMCETResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int initialVal = 0;
     final controller = Get.put(AIMCETController());
     return PopScope(
       onPopInvoked: (didPop) {
@@ -34,22 +41,7 @@ class AIMCETResultScreen extends StatelessWidget {
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: mainPurple),
-          surfaceTintColor: Colors.white,
-          elevation: 7,
-          shadowColor: Colors.black.withOpacity(0.5),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
-          ),
-          title: const Text(
-            "Aim CET Results",
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
-          ),
-          centerTitle: true,
-        ),
+        appBar: aimcetResultAppBar(),
         body: Container(
           padding: const EdgeInsets.only(top: 10),
           child: SingleChildScrollView(
@@ -109,13 +101,8 @@ class AIMCETResultScreen extends StatelessWidget {
                       ),
                       hMBox,
                       controller.careers.isEmpty
-                          ? Center(
-                              child: Text(
-                                'Your career result is not processed',
-                                style: TextStyle(
-                                    color: textFieldColor, fontSize: 12),
-                              ),
-                            )
+                          ? notReadyContainer(
+                              text: 'Your career result is not processed')
                           : Container(
                               height: 160,
                               padding: const EdgeInsets.only(left: 15),
@@ -124,14 +111,12 @@ class AIMCETResultScreen extends StatelessWidget {
                                 gridDelegate:
                                     const SliverGridDelegateWithMaxCrossAxisExtent(
                                   maxCrossAxisExtent: 110,
-                                  childAspectRatio: 2 / 4.5,
+                                  childAspectRatio: 2 / 6,
                                   crossAxisSpacing: 10,
-                                  mainAxisSpacing: 3,
+                                  mainAxisSpacing: 5,
                                 ),
                                 itemCount: controller.careers.length,
                                 itemBuilder: (BuildContext ctx, index) {
-                                  int careerImageIndex =
-                                      index % topCareer.length;
                                   List<String> careersType = [];
                                   List<String> salaryRanges = [];
                                   for (var item in controller.careers) {
@@ -143,9 +128,8 @@ class AIMCETResultScreen extends StatelessWidget {
                                     }
                                   }
                                   return TopCareerContainer(
-                                    bgImage: topCareer[careerImageIndex],
-                                    // bgImage: 'assets/images/topcareer9.png',
-                                    careersType: careersType[index],
+                                    index: (index + 1).toString(),
+                                    careers: careersType[index],
                                     salary: salaryRanges[index],
                                   );
                                 },
@@ -155,18 +139,8 @@ class AIMCETResultScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  height: 35.h,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
-                  decoration: const BoxDecoration(
-                    // color: Colors.yellow,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/assetFrameShare.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
+                const DiscoveryShareContainer(),
+                const TestResDownloadPage(),
                 Container(
                   decoration: colorGradient3(),
                   child: Column(
@@ -180,12 +154,8 @@ class AIMCETResultScreen extends StatelessWidget {
                       ),
                       hMBox,
                       controller.degrees.isEmpty
-                          ? Center(
-                              child: Text(
-                                'Your career result is not processed',
-                                style: TextStyle(
-                                    color: textFieldColor, fontSize: 12),
-                              ),
+                          ? notReadyContainer(
+                              text: 'Your career result is not processed',
                             )
                           : Container(
                               height: 150,
@@ -201,13 +171,9 @@ class AIMCETResultScreen extends StatelessWidget {
                                 ),
                                 itemCount: controller.degrees.length,
                                 itemBuilder: (BuildContext ctx, index) {
-                                  int degreeImageIndex =
-                                      index % topDegree.length;
                                   return TopDegreeContainer(
-                                    degreeImage: topDegree[degreeImageIndex],
+                                    index: (index + 1).toString(),
                                     degree: controller.degrees[index],
-                                    // degreeCap: 'assets/images/cap icon.svg',
-                                    degreeCap: 'assets/images/degree-cap 1.png',
                                   );
                                 },
                               ),
@@ -242,18 +208,52 @@ class AIMCETResultScreen extends StatelessWidget {
                   ),
                 ),
                 hLBox,
-                Container(
-                  decoration: personalityTrairContainerGradient(),
-                  child: Column(
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  final data = controller.personalityReport;
+                  log('value===>$initialVal');
+                  return Column(
                     children: [
-                      hLBox,
-                      PersonalityContainer(userName: userName),
-                      hMBox,
-                      TraitContainer(userName: userName),
-                      hMBox,
+                      reportButtonContainer(
+                        child: Row(
+                          children: [
+                            personalityReportButton(
+                              onTap: () {
+                                setState(() {
+                                  initialVal = 0;
+                                });
+                              },
+                              boxColor: initialVal == 0 ? mainPurple : kwhite,
+                              textColor: initialVal == 0 ? kwhite : mainPurple,
+                            ),
+                            traitReportButton(
+                              onTap: () {
+                                setState(() {
+                                  initialVal = 1;
+                                });
+                              },
+                              boxColor: initialVal == 0 ? kwhite : mainPurple,
+                              textColor: initialVal == 0 ? mainPurple : kwhite,
+                            ),
+                          ],
+                        ),
+                      ),
+                      // hLBox,
+                      initialVal == 0
+                          ? data == null
+                              ? shrinked
+                              : Column(
+                                  children: [
+                                    buildHorizontalScrollSection(
+                                        controller, data),
+                                    buildDetailedReportSection(data),
+                                  ],
+                                )
+                          : const Center(child: CircularProgressIndicator()),
                     ],
-                  ),
-                ),
+                  );
+                }),
+                hLBox,
               ],
             ),
           ),
@@ -262,3 +262,227 @@ class AIMCETResultScreen extends StatelessWidget {
     );
   }
 }
+
+Widget buildHorizontalScrollSection(AIMCETController controller, dynamic data) {
+  List<String> personalityexplanation = [
+    data.learnExplanation.toString(),
+    data.showSkills.toString(),
+    data.showStrengths.toString(),
+  ];
+  return Container(
+    decoration: report3Container(),
+    padding: const EdgeInsets.symmetric(vertical: 24),
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: IntrinsicHeight(
+        child: Row(
+          children: List.generate(
+            reportImages.length,
+            (index) {
+              if (index == 0) {
+                return Row(
+                  children: [
+                    homeCWB,
+                    personSkillContainer(
+                      image: reportImages[index],
+                      title: 'Learn About ${controller.personality[0]}',
+                      description: personalityexplanation[index],
+                    ),
+                  ],
+                );
+              } else {
+                return personSkillContainer(
+                  image: reportImages[index],
+                  title: personalityHTexts[index],
+                  description: personalityexplanation[index],
+                );
+              }
+            },
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget buildDetailedReportSection(dynamic data) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 16),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+    decoration: personConDecoration(),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        personalityTwoText(
+          text1: "You are a",
+          text2: data.personalityType.toString(),
+        ),
+        hBox,
+        personPlainText(
+          text: data.personalityDescription.toString(),
+          size: 12,
+        ),
+        hBox,
+        buildSection('Skills you can focus on', data.topSkills),
+        hBox,
+        buildSection('Tendencies to be careful of', data.careerTendencies),
+        hBox,
+        buildSection('You working style', data.workingStyle),
+        hMBox,
+        buildContainerSection(
+          'assets/images/strength.png',
+          'Strengths',
+          data.strengths,
+        ),
+        hMBox,
+        buildContainerSection(
+          'assets/images/watchout.png',
+          'Watch out for',
+          data.cautiousAreas,
+        ),
+        hMBox,
+        buildContainerSection(
+          'assets/images/teaminteraction.png',
+          'Team interaction',
+          data.teamInteraction,
+        ),
+        hMBox,
+        buildContainerSection(
+          'assets/images/personalstyle.png',
+          'Personal style',
+          data.personalStyle,
+        ),
+        hMBox,
+        buildContainerSection(
+          'assets/images/workenvironment.png',
+          'Ideal work environment',
+          data.idealWorkEnvironment,
+        ),
+        hMBox,
+        buildContainerSection(
+          'assets/images/values.png',
+          'Values',
+          data.valueOfPersonalityReport,
+        ),
+      ],
+    ),
+  );
+}
+
+Widget buildSection(String title, dynamic data) {
+  if (data is List) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        personHeadingText(text: title, size: 14),
+        hBox,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(
+            data.length,
+            (index) {
+              return Row(
+                children: [
+                  personPlainText(text: "•", size: 12),
+                  wBox,
+                  personPlainText(text: data[index], size: 12),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  } else if (data is String) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        personHeadingText(text: title, size: 14),
+        hBox,
+        personPlainText(text: data, size: 12),
+      ],
+    );
+  }
+  return shrinked;
+}
+
+Widget buildContainerSection(String image, String text, List<String>? data) {
+  if (data == null) return shrinked;
+  return personalityContainer(
+    image: image,
+    text: text,
+    listGenerate: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(
+        data.length,
+        (index) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              personPlainText(text: "•", size: 12),
+              wBox,
+              Expanded(
+                child: personPlainText(text: data[index], size: 12),
+              ),
+            ],
+          );
+        },
+      ),
+    ),
+  );
+}
+
+ // Container(
+ //   decoration: personalityTrairContainerGradient(),
+ //   child: Column(
+ //     children: [
+ //       hLBox,
+ //       PersonalityContainer(userName: userName),
+ //       hMBox,
+ //       TraitContainer(userName: userName),
+ //       hMBox,
+ //     ],
+ //   ),
+ // ),
+
+
+
+ // PersonalityReportPage(userName: userName),
+ // initialVal == 0
+ //     ? Obx(
+ //         () {
+ //           if (controller.gp.value == 'wait') {
+ //             return fetchErrorText(
+ //                 text: "REPORT is processing");
+ //           } else if (controller.gp.value == "sucess") {
+ //             return PersonalityContainer(
+ //                 userName: userName);
+ //           } else if (controller.gp.value ==
+ //               "personality-e") {
+ //             return fetchErrorText(
+ //                 text: "REPORT Fetch failed...");
+ //           } else {
+ //             return fetchErrorText(
+ //                 text: "REPORT Fetch failed...");
+ //           }
+ //         },
+ //       )
+ //     : Obx(
+ //         () {
+ //           if (controller.gp.value == 'wait') {
+ //             return fetchErrorText(
+ //                 text: "REPORT is processing");
+ //           } else if (controller.gp.value == "sucess") {
+ //             return TraitContainer(userName: userName);
+ //           } else if (controller.gp.value ==
+ //               "personality-e") {
+ //             return fetchErrorText(
+ //                 text: "REPORT Fetch failed...");
+ //           } else {
+ //             return fetchErrorText(
+ //                 text: "REPORT Fetch failed...");
+ //           }
+ //         },
+ //       )
+ // hMBox,

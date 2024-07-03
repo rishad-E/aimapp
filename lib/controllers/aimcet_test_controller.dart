@@ -18,6 +18,7 @@ class AIMCETController extends GetxController {
   String? qualifyId;
   bool guideSelect = false;
   RxBool guidebutton = false.obs;
+  RxBool isLoading = false.obs;
   Map<String, List<Question>>? testRes;
   List<Question>? allQuestions;
   String? submitRes;
@@ -41,10 +42,10 @@ class AIMCETController extends GetxController {
         await AIMCETQualificationService().fetchQualification();
   }
 
-  Future<void> fetchAllTestQuestions(
-      {required String userId, required String qualifyId}) async {
-    Map<String, dynamic>? data = await AIMCETTestService()
-        .getTestResult(userId: userId, qualifyId: qualifyId);
+  Future<void> fetchAllTestQuestions({required String userId}) async {
+    isLoading.value = true;
+    Map<String, dynamic>? data =
+        await AIMCETTestService().getTestResult(userId: userId);
 
     if (data != null) {
       Map<String, dynamic>? questionData = data['data'];
@@ -72,7 +73,7 @@ class AIMCETController extends GetxController {
         }
       }
     }
-
+    isLoading.value = false;
     log(allQuestions.toString(), name: 'fetch allqus func');
   }
 
@@ -96,7 +97,7 @@ class AIMCETController extends GetxController {
 
   Future<void> careerResultSubmittion(
       {required String userId, required String secId}) async {
-    log('career result at 40th and 55th', name: '40th and 55th');
+    log('career result at 40th and 55th qustion====secid=>$secId', name: '40th and 55th');
     await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
   }
 
@@ -158,7 +159,7 @@ class AIMCETController extends GetxController {
       }
     } else if (result is String) {
       log('result is string');
-    }else{
+    } else {
       throw 'Result is null =>$result';
     }
   }

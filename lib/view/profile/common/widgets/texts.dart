@@ -8,7 +8,7 @@ Widget semiBoldText({required String text}) {
 }
 
 Widget semiBoldChoiceText(
-    {required String text, double? size, TextAlign? textAlign,Color? color}) {
+    {required String text, double? size, TextAlign? textAlign,Color? color,TextOverflow? overflow}) {
   return Text(
     text,
     style: TextStyle(
@@ -17,5 +17,6 @@ Widget semiBoldChoiceText(
       color: color
     ),
     textAlign: textAlign,
+    overflow: overflow,
   );
 }

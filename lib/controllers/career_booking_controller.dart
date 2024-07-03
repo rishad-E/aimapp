@@ -42,6 +42,7 @@ class BookCareerCounsellController extends GetxController {
   RxString isBooked = ''.obs;
   CounselCallBookedModel? counselBookedModel;
 
+  RxBool isLoading = false.obs;
   /*------------ Get Aim option search result ---------*/
   Future<List<Aim>?> searchAimOptions({required String query}) async {
     searchAimRes.value =
@@ -53,9 +54,11 @@ class BookCareerCounsellController extends GetxController {
 /*------------ Get Aim option search result ---------*/
   Future<RxList<MicroAim>> searchMicroAimOptions(
       {required String query, required String parentId}) async {
+    isLoading.value = true;
     searchMicorAimRes.value = await CareerAimService()
         .getMicroAimSearchResult(query: query, parentId: parentId);
     // log(searchMicorAimRes.toString(), name: 'micro aim search');
+    isLoading.value = false;
     return searchMicorAimRes;
   }
 

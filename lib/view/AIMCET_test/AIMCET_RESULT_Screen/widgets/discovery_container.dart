@@ -30,3 +30,22 @@ class DiscoveryContainer extends StatelessWidget {
     );
   }
 }
+
+class DiscoveryShareContainer extends StatelessWidget {
+  const DiscoveryShareContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 37.h,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
+      decoration: const BoxDecoration(
+        // color: Colors.yellow,
+        image: DecorationImage(
+          image: AssetImage('assets/images/assetFrameShare.png'),
+          fit: BoxFit.fill,
+        ),
+      ),
+    );
+  }
+}

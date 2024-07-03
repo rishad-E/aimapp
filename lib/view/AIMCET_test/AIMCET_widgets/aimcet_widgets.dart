@@ -124,16 +124,17 @@ Widget personalityTwoText({required String text1, required String text2}) {
 }
 
 BoxDecoration report3Container() {
-  return const BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Color.fromRGBO(255, 245, 255, 1.0),
-        Color.fromRGBO(241, 248, 248, 1.0),
-      ],
-      stops: [0.0, 1.0],
-    ),
+  return  BoxDecoration(
+    color: kwhite
+    // gradient: LinearGradient(
+    //   begin: Alignment.topCenter,
+    //   end: Alignment.bottomCenter,
+    //   colors: [
+    //     Color.fromRGBO(255, 245, 255, 1.0),
+    //     Color.fromRGBO(241, 248, 248, 1.0),
+    //   ],
+    //   stops: [0.0, 1.0],
+    // ),
   );
 }
 

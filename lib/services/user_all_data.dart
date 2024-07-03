@@ -15,7 +15,7 @@ class UserAllDataService {
         queryParameters: {"user_id": uId},
         options: Options(validateStatus: (status) => status! < 599),
       );
-      log(response.statusCode.toString(), name: 'user-all-data');
+      log("statuscode=====>${response.statusCode}", name: 'user-all-data');
       if (response.statusCode == 200) {
         if (response.data is Map) {
           Map<String, dynamic> resData = response.data;

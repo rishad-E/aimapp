@@ -1,37 +1,62 @@
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
+import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
 
 class TopCareerContainer extends StatelessWidget {
-  final String bgImage;
-  final String careersType;
+  final String index;
+  final String careers;
   final String salary;
   const TopCareerContainer(
       {super.key,
-      required this.bgImage,
-      required this.careersType,
+      required this.index,
+      required this.careers,
       required this.salary});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(bgImage), fit: BoxFit.fill),
-        // borderRadius: BorderRadius.circular(12),
+        color: kwhite,
+        borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            careersType,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
+          Container(
+            // padding: EdgeInsets.all(5),
+            decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 15, 187, 195),
+                shape: BoxShape.circle),
+            height: 20,
+            width: 20,
+            child: Center(
+                child: Text(
+              index,
+              style: TextStyle(color: kwhite),
+            )),
           ),
-          Text(
-            '(Avg Salary $salary)',
-            style: const TextStyle(fontSize: 8),
-            textAlign: TextAlign.center,
-          ),
+          wBox,
+          wBox,
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: semiBoldChoiceText(
+                    text: careers,
+                    size: 11,
+                    // overflow: TextOverflow.visible,
+                  ),
+                ),
+                regularText(salary, 10)
+              ],
+            ),
+          )
         ],
       ),
     );

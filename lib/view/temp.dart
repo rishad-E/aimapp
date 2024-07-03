@@ -1,6 +1,7 @@
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/temp/temp_result_screen.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
 import 'package:flutter/material.dart';
@@ -25,23 +26,11 @@ class TempScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // elevatedButtonItems(
-            //   onPressed: () =>
-            //       Get.to(() => ProfileAddLanguageScreen(uId: id.toString())),
-            //   item: "Languages",
-            // ),
-            // hMBox,
-            // elevatedButtonItems(
-            //   onPressed: () => Get.to(() =>
-            //       ProfileAddVolunteerExperienceScreen(uId: id.toString())),
-            //   item: "volunteer experience",
-            // ),
-            // hMBox,
-            // elevatedButtonItems(
-            //   onPressed: () =>
-            //       Get.to(() => ProfileAddCourseScreen(uId: id.toString())),
-            //   item: "Course",
-            // ),
+            elevatedButtonItems(
+              onPressed: () => Get.to(() => TempResultScreen()),
+              item: "aimcet result screen temp",
+            ),
+            hMBox,
             elevatedButtonItems(
               onPressed: () {
                 Get.put(EducatorPersonalDetailController()).clearAllfields();
@@ -52,7 +41,6 @@ class TempScreen extends StatelessWidget {
             hMBox,
             elevatedButtonItems(
               onPressed: () {
-                // Get.put(EducatorPersonalDetailController()).clearAllfields();
                 Get.to(() => MentorPersonalDetailPage());
               },
               item: 'Mentor',

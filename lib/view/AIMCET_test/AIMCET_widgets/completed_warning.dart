@@ -17,86 +17,88 @@ class CompletedWarningBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AIMCETController());
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 55.sp,
-          backgroundColor: kwhite,
-          backgroundImage: const AssetImage('assets/images/person.png'),
-        ),
-        hBox,
-        Text(
-          'Thank You!',
-          style: TextStyle(
-              fontSize: 15.sp, fontWeight: FontWeight.bold, color: kpurple),
-        ),
-        primarytxt2(
-          "You have already Completed this Section.",
-          11.sp,
-        ),
-        hMBox,
-        Container(
-          // width: double.infinity,
-          height: 4.5.h,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 55.sp,
+            backgroundColor: kwhite,
+            backgroundImage: const AssetImage('assets/images/person.png'),
           ),
-          child: ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kpurple),
-                shape: buttonShape(round: 10)),
-            onPressed: () {
-              // controller.aimcetTestResultFunction(
-              //     userId: uId, userName: uName);
-              //     Future.delayed(Duration(seconds: 3))
-              // Get.off(() =>  AIMCETResultScreen(userName: uName,));
-              controller.aimcetTestResultFunction(
-                    userId: uId, userName: uName);
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: kwhite,
-                      surfaceTintColor: kwhite,
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(
-                            color: mainPurple,
-                          ),
-                          hLBox,
-                          primarytxt2(
-                            "Your result is being processed...",
-                            11.sp,
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-                
-                Future.delayed(const Duration(seconds: 4), () {
-                  log(controller.personality[0]+controller.traitType.toString()+controller.gp.value,name: 'traaaaaaaaaaaai');
-                  controller.gpReportSubmitFunction(uId: uId, personality: controller.personality[0], trait: controller.traitType.toString()).then((_) {
-                    controller.fetchPersonalityReport(userId: uId);
-                    controller.fetchTraitReport(userId:uId);
+          hBox,
+          Text(
+            'Thank You!',
+            style: TextStyle(
+                fontSize: 15.sp, fontWeight: FontWeight.bold, color: kpurple),
+          ),
+          primarytxt2(
+            "You have already Completed this Section.",
+            11.sp,
+          ),
+          hMBox,
+          Container(
+            // width: double.infinity,
+            height: 4.5.h,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(kpurple),
+                  shape: buttonShape(round: 10)),
+              onPressed: () {
+                // controller.aimcetTestResultFunction(
+                //     userId: uId, userName: uName);
+                //     Future.delayed(Duration(seconds: 3))
+                // Get.off(() =>  AIMCETResultScreen(userName: uName,));
+                controller.aimcetTestResultFunction(
+                      userId: uId, userName: uName);
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: kwhite,
+                        surfaceTintColor: kwhite,
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(
+                              color: mainPurple,
+                            ),
+                            hLBox,
+                            primarytxt2(
+                              "Your result is being processed...",
+                              11.sp,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                  
+                  Future.delayed(const Duration(seconds: 4), () {
+                    log(controller.personality[0]+controller.traitType.toString()+controller.gp.value,name: 'traaaaaaaaaaaai');
+                    controller.gpReportSubmitFunction(uId: uId, personality: controller.personality[0], trait: controller.traitType.toString()).then((_) {
+                      controller.fetchPersonalityReport(userId: uId);
+                      controller.fetchTraitReport(userId:uId);
+                    });
+                    Get.off(() =>  AIMCETResultScreen(userName: uName,uId: uId));
                   });
-                  Get.off(() =>  AIMCETResultScreen(userName: uName,uId: uId));
-                });
-            },
-            child: Text(
-              'Click Here To Check Result',
-              style: TextStyle(
-                  color: kwhite, fontWeight: FontWeight.w600, fontSize: 14),
+              },
+              child: Text(
+                'Click Here To Check Result',
+                style: TextStyle(
+                    color: kwhite, fontWeight: FontWeight.w600, fontSize: 14),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
