@@ -10,7 +10,10 @@ import 'package:image_picker/image_picker.dart';
 class ProfileHomeController extends GetxController {
   RxString selectedImage = ''.obs;
   RxString userRole = ''.obs;
+  RxString userDOB = ''.obs;
+  RxString userGender = ''.obs;
   Rx<User?> userData = Rx<User?>(null);
+  // Rx<UserDataModel?> userDetails =Rx<UserDataModel?>(null);
 
   Future<void> fetchAlluserData({required String uId}) async {
     try {
@@ -20,6 +23,8 @@ class ProfileHomeController extends GetxController {
         Map<String, dynamic> userDeatails = alldata["user"];
         userData.value = User.fromJson(userDeatails);
         userRole.value = alldata["user_role"];
+        userDOB.value = alldata["DOB"];
+        userGender.value = alldata["gender"];
         String img = alldata["user"]["image"];
         selectedImage.value = "http://154.26.130.161/elearning/$img";
         log(userRole.toString(), name: 'homecontroller name');

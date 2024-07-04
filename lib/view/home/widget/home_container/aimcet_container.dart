@@ -80,8 +80,27 @@ class AimcetContainer extends StatelessWidget {
                         size: 11.sp,
                         color: const Color.fromARGB(255, 147, 38, 143),
                       ),
-                      onPressed: () {
-                        controller
+                      onPressed: () async {
+                        // showDialog(
+                        //   context: context,
+                        //   barrierDismissible: false,
+                        //   builder: (BuildContext context) {
+                        //     return const Center(
+                        //       child: CircularProgressIndicator(),
+                        //     );
+                        //   },
+                        // );
+                        Get.snackbar(
+                          "Hi $userName",
+                          "Fetching your AIMCET result...",
+                          snackPosition: SnackPosition.TOP,
+                          duration: const Duration(seconds: 2),
+                          backgroundColor:
+                              const Color.fromARGB(255, 86, 21, 171)
+                                  .withOpacity(0.7),
+                          colorText: Colors.white,
+                        );
+                        await controller
                             .gpReportSubmitFunction(
                                 uId: id,
                                 personality: controller.personality[0],
@@ -90,6 +109,9 @@ class AimcetContainer extends StatelessWidget {
                           controller.fetchPersonalityReport(userId: id);
                           controller.fetchTraitReport(userId: id);
                         });
+                        await Future.delayed(const Duration(seconds: 1));
+                        // Navigator.of(context).pop();
+                        Get.back();
                         Get.to(() =>
                             AIMCETResultScreen(userName: userName, uId: id));
                       },

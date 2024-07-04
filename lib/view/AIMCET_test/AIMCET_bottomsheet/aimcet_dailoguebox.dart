@@ -54,50 +54,7 @@ class AIMCETDialogueBox extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
               onPressed: () async {
-                // controller.aimcetTestResultFunction(
-                //     userId: userId, userName: userName);
-                // showDialog(
-                //   context: context,
-                //   barrierDismissible: false,
-                //   builder: (BuildContext context) {
-                //     return AlertDialog(
-                //       backgroundColor: kwhite,
-                //       surfaceTintColor: kwhite,
-                //       content: Column(
-                //         mainAxisSize: MainAxisSize.min,
-                //         children: [
-                //           CircularProgressIndicator(
-                //             color: mainPurple,
-                //           ),
-                //           hLBox,
-                //           primarytxt2(
-                //             "Your result is being processed...",
-                //             11.sp,
-                //           ),
-                //         ],
-                //       ),
-                //     );
-                //   },
-                // );
-
-                // Future.delayed(const Duration(seconds: 5), () {
-                //   log(
-                //       controller.personality[0] +
-                //           controller.traitType.toString() +
-                //           controller.gp.value,
-                //       name: 'traaaaaaaaaaaai');
-                //   controller
-                //       .gpReportSubmitFunction(
-                //           uId: userId,
-                //           personality: controller.personality[0],
-                //           trait: controller.traitType.toString())
-                //       .then((_) {
-                //     controller.fetchPersonalityReport(userId: userId);
-                //     controller.fetchTraitReport(userId: userId);
-                //   });
-                //   Get.off(() =>
-                //       AIMCETResultScreen(userName: userName, uId: userId));
-                // });
+               
                 await controller.aimcetTestResultFunction(
                     userId: userId, userName: userName);
                 // Show the dialog with CircularProgressIndicator for 5 seconds
@@ -152,3 +109,47 @@ class AIMCETDialogueBox extends StatelessWidget {
     );
   }
 }
+ // controller.aimcetTestResultFunction(
+                //     userId: userId, userName: userName);
+                // showDialog(
+                //   context: context,
+                //   barrierDismissible: false,
+                //   builder: (BuildContext context) {
+                //     return AlertDialog(
+                //       backgroundColor: kwhite,
+                //       surfaceTintColor: kwhite,
+                //       content: Column(
+                //         mainAxisSize: MainAxisSize.min,
+                //         children: [
+                //           CircularProgressIndicator(
+                //             color: mainPurple,
+                //           ),
+                //           hLBox,
+                //           primarytxt2(
+                //             "Your result is being processed...",
+                //             11.sp,
+                //           ),
+                //         ],
+                //       ),
+                //     );
+                //   },
+                // );
+
+                // Future.delayed(const Duration(seconds: 5), () {
+                //   log(
+                //       controller.personality[0] +
+                //           controller.traitType.toString() +
+                //           controller.gp.value,
+                //       name: 'traaaaaaaaaaaai');
+                //   controller
+                //       .gpReportSubmitFunction(
+                //           uId: userId,
+                //           personality: controller.personality[0],
+                //           trait: controller.traitType.toString())
+                //       .then((_) {
+                //     controller.fetchPersonalityReport(userId: userId);
+                //     controller.fetchTraitReport(userId: userId);
+                //   });
+                //   Get.off(() =>
+                //       AIMCETResultScreen(userName: userName, uId: userId));
+                // });

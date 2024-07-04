@@ -184,7 +184,8 @@ class AIMCETController extends GetxController {
           await PersonalityReportService().getPersonalityReport(userId: userId);
       if (report != null) {
         personalityReport = report;
-        update();
+        gp.value = 'sucess';
+        // update();
       }
     } catch (e) {
       gp.value = 'personality-e';
@@ -199,7 +200,8 @@ class AIMCETController extends GetxController {
       if (report != null) {
         traitReport = report;
         log(traitType.toString(), name: 'report trait controller');
-        update();
+        gp.value = 'sucess';
+        // update();
       }
     } catch (e) {
       gp.value = 'trait-e';

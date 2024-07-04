@@ -21,6 +21,7 @@ class TopDegreeContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: kwhite,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color.fromARGB(255, 238, 236, 236)),
       ),
       child: Row(
         children: [

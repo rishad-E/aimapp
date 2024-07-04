@@ -120,9 +120,13 @@ class ProfileHomeScreen extends StatelessWidget {
                               children: [
                                 infoHeading("Personal Info"),
                                 GestureDetector(
-                                  onTap: () => Get.to(() =>
-                                      ProfilePersonalInfoScreen(
-                                          user: data, id: id)),
+                                  onTap: () =>
+                                      Get.to(() => ProfilePersonalInfoScreen(
+                                            user: data,
+                                            id: id,
+                                            dob: profileC.userDOB.value,
+                                            gender: profileC.userGender.value,
+                                          )),
                                   child: Icon(Icons.edit, color: kpurple),
                                 )
                               ],
@@ -138,11 +142,11 @@ class ProfileHomeScreen extends StatelessWidget {
                             ),
                             infoText(
                               text1: 'Date of Birth:',
-                              text2: data?.dob ?? '_',
+                              text2: profileC.userDOB.value,
                             ),
                             infoText(
                               text1: 'Gender:',
-                              text2: data?.gender ?? '_',
+                              text2: profileC.userGender.value,
                             ),
                             hBox,
                             hBox,

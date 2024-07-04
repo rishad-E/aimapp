@@ -21,6 +21,7 @@ class TopCareerContainer extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: kwhite,
+        border: Border.all( color: const Color.fromARGB(255, 238, 236, 236),),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(

@@ -1,7 +1,6 @@
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/AIMCET_test/temp/temp_result_screen.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,7 @@ class TempScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String? id;
-    // final UserDataModel? userData = Get.put(LoginController()).userData;
-    // if (userData != null) {
-    //   id = userData.user?.id.toString() ?? '';
-    // }
+   
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -27,7 +22,9 @@ class TempScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             elevatedButtonItems(
-              onPressed: () => Get.to(() => TempResultScreen()),
+              onPressed: () {
+                // Get.to(() => TempResultScreen());
+              },
               item: "aimcet result screen temp",
             ),
             hMBox,
@@ -71,64 +68,3 @@ Widget elevatedButtonItems(
     ),
   );
 }
-
- // Future firstFunction() async {
-    //   List<int> k = [];
-    //   for (var i = 0; i < 10; i++) {
-    //     k.add(i);
-    //   }
-    //   log(k.toString(), name: 'list k sample first');
-    // }
-
-    // Future secondFunction() async {
-    //   // List<int> k = [];
-
-    //   for (var i = 0; i < 5; i++) {
-    //     // k.add(i);
-    //     log(i.toString(), name: 'list k sample second');
-    //   }
-    //   // log(k.toString(), name: 'list k sample second');
-    // }
-
-    // Future thirdFunction() async {
-    //   // List<int> k = [];
-
-    //   for (var i = 0; i < 5; i++) {
-    //     log(i.toString(), name: 'list k sample third');
-    //   }
-    //   // log(k.toString(), name: 'list k sample third');
-    // }
-
-    // Future fourthFunction() async {
-    //   // List<int> k = [];
-
-    //   for (var i = 0; i < 5; i++) {
-    //     log(i.toString(), name: 'list k sample fourth');
-    //   }
-    //   // log(k.toString(), name: 'list k sample fourth');
-    // }
-
-  // await firstFunction();
-                // showDialog(
-                //   context: context,
-                //   barrierDismissible: false,
-                //   builder: (_) {
-                //     return AlertDialog(
-                //       backgroundColor: kwhite,
-                //       surfaceTintColor: kwhite,
-                //       content: Column(
-                //         mainAxisSize: MainAxisSize.min,
-                //         children: [
-                //           CircularProgressIndicator(color: mainPurple),
-                //           hLBox,
-                //           primarytxt2(
-                //               "Your result is being processed...", 11.sp),
-                //         ],
-                //       ),
-                //     );
-                //   },
-                // );
-                // await Future.delayed(const Duration(seconds: 5));
-                // await secondFunction();
-                // await Future.wait([thirdFunction(), fourthFunction()]);
-                // Get.to(() => const HomeScreen());

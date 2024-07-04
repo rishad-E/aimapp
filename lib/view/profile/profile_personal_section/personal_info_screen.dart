@@ -15,14 +15,21 @@ import 'package:sizer/sizer.dart';
 
 class ProfilePersonalInfoScreen extends StatelessWidget {
   final String id;
+  final String dob;
+  final String gender;
   final User? user;
-  ProfilePersonalInfoScreen({super.key, required this.id, this.user});
+  ProfilePersonalInfoScreen(
+      {super.key,
+      required this.id,
+      this.user,
+      required this.dob,
+      required this.gender});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(PerosnalInfoController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      initializeFormFields(controller, user);
+      initializeFormFields(controller, user, dob, gender);
     });
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -163,7 +170,8 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                                   : buttonColor,
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  log('name: ${c.nameController.text} username:${c.userNameController.text}date: ${c.dateController.text} UID: $id gender=>${c.genderController.text} about=>${c.aboutController.text}');
+                                  log('name=>${c.nameController.text} username=>${c.userNameController.text} date=> ${c.dateController.text} UID=>$id gender=>${c.genderController.text} about=>${c.aboutController.text}',
+                                      name: 'personal-info screen');
                                   c.savepersonalInfoFunction(
                                     uId: id,
                                     fullName: c.nameController.text,
@@ -189,12 +197,18 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
     );
   }
 
-  void initializeFormFields(PerosnalInfoController c, User? user) {
+  void initializeFormFields(
+      PerosnalInfoController c, User? user, String dob, String gender) {
     if (user == null) return;
     c.nameController.text = user.name ?? c.nameController.text;
     c.userNameController.text = user.username ?? c.userNameController.text;
-    c.dateController.text = user.dob ?? c.dateController.text;
-    c.genderController.text = user.gender ?? c.genderController.text;
+    c.dateController.text = c.dateController.text.isEmpty && dob.isNotEmpty
+        ? dob
+        : c.dateController.text;
+    c.genderController.text =
+        c.genderController.text.isEmpty && gender.isNotEmpty
+            ? gender
+            : c.genderController.text;
     c.aboutController.text = user.about ?? c.aboutController.text;
     c.update(['update-personalinfo']);
   }
