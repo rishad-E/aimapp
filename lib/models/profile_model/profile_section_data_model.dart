@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final profileAlldataModel = profileAlldataModelFromJson(jsonString);
 
-// import 'dart:convert';
-
-// ProfileAlldataModel profileAlldataModelFromJson(String str) => ProfileAlldataModel.fromJson(json.decode(str));
-
-// String profileAlldataModelToJson(ProfileAlldataModel data) => json.encode(data.toJson());
 
 class ProfileSectiondataModel {
   List<Education>? educations;
@@ -75,38 +67,6 @@ class ProfileSectiondataModel {
             : List<Skill>.from(json["skills"]!.map((x) => Skill.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "educations": educations == null
-            ? []
-            : List<dynamic>.from(educations!.map((x) => x.toJson())),
-        "experiences": experiences == null
-            ? []
-            : List<dynamic>.from(experiences!.map((x) => x.toJson())),
-        "projects": projects == null
-            ? []
-            : List<dynamic>.from(projects!.map((x) => x.toJson())),
-        "awards": awards == null
-            ? []
-            : List<dynamic>.from(awards!.map((x) => x.toJson())),
-        "publications": publications == null
-            ? []
-            : List<dynamic>.from(publications!.map((x) => x.toJson())),
-        "volunteer_experiences": volunteerExperiences == null
-            ? []
-            : List<dynamic>.from(volunteerExperiences!.map((x) => x.toJson())),
-        "languages": languages == null
-            ? []
-            : List<dynamic>.from(languages!.map((x) => x.toJson())),
-        "courses": courses == null
-            ? []
-            : List<dynamic>.from(courses!.map((x) => x.toJson())),
-        "licenses": licenses == null
-            ? []
-            : List<dynamic>.from(licenses!.map((x) => x.toJson())),
-        "skills": skills == null
-            ? []
-            : List<dynamic>.from(skills!.map((x) => x.toJson())),
-      };
 }
 
 class Project {
@@ -175,26 +135,7 @@ class Project {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "type": type,
-        "title": title,
-        "description": description,
-        "skills": skills,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media_link": mediaLink,
-        "media": media,
-        "start_date": startDate,
-        "end_date": endDate,
-        "associated": associated,
-        "issuer": issuer,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
+ 
 }
 
 class Award {
@@ -263,26 +204,7 @@ class Award {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "type": type,
-        "title": title,
-        "description": description,
-        "skills": skills,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media_link": mediaLink,
-        "media": media,
-        "start_date": startDate,
-        "end_date": endDate,
-        "associated": associated,
-        "issuer": issuer,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
+ 
 }
 
 class Course {
@@ -321,16 +243,7 @@ class Course {
             : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "course_name": courseName,
-        "course_number": courseNumber,
-        "working_currently": workingCurrently,
-        "associated_with": associatedWith,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
+
 }
 
 class Education {
@@ -402,27 +315,6 @@ class Education {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "school": school,
-        "degree": degree,
-        "study_field": studyField,
-        "start_date": startDate,
-        "end_date": endDate,
-        "grade": grade,
-        "activities": activities,
-        "description": description,
-        "skills": skills,
-        "media_link": mediaLink,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media": media,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
 }
 
 class Experience {
@@ -497,28 +389,6 @@ class Experience {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "title": title,
-        "employment_type": employmentType,
-        "company_name": companyName,
-        "location": location,
-        "location_type": locationType,
-        "start_date": startDate,
-        "end_date": endDate,
-        "description": description,
-        "profile": profile,
-        "skills": skills,
-        "media_link": mediaLink,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media": media,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
 }
 
 class Language {
@@ -554,15 +424,6 @@ class Language {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "language": language,
-        "proficiency": proficiency,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-      };
 }
 
 class License {
@@ -631,26 +492,6 @@ class License {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "name": name,
-        "organization": organization,
-        "issuer": issuer,
-        "issue_date": issueDate,
-        "expire_date": expireDate,
-        "credential_id": credentialId,
-        "credential_url": credentialUrl,
-        "skills": skills,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media_link": mediaLink,
-        "media": media,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
 }
 
 class Publication {
@@ -695,18 +536,6 @@ class Publication {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "title": title,
-        "publication": publication,
-        "publication_date": publicationDate,
-        "publication_url": publicationUrl,
-        "description": description,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-      };
 }
 
 class VolunteerExperience {
@@ -773,25 +602,6 @@ class VolunteerExperience {
         imagePath: json["image_path"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "organization": organization,
-        "role": role,
-        "cause": cause,
-        "start_date": startDate,
-        "end_date": endDate,
-        "description": description,
-        "media_title": mediaTitle,
-        "media_description": mediaDescription,
-        "media_link": mediaLink,
-        "media": media,
-        "profile_headline": profileHeadline,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-        "image_path": imagePath,
-      };
 }
 
 class Skill {
@@ -854,29 +664,4 @@ class Skill {
             : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "skill_name": skillName,
-        "experiences_id": experiencesId == null
-            ? []
-            : List<dynamic>.from(experiencesId!.map((x) => x)),
-        "educations_id": educationsId == null
-            ? []
-            : List<dynamic>.from(educationsId!.map((x) => x)),
-        "licenses_id": licensesId == null
-            ? []
-            : List<dynamic>.from(licensesId!.map((x) => x)),
-        "projects_id": projectsId == null
-            ? []
-            : List<dynamic>.from(projectsId!.map((x) => x)),
-        "courses_id": coursesId == null
-            ? []
-            : List<dynamic>.from(coursesId!.map((x) => x)),
-        "awards_id":
-            awardsId == null ? [] : List<dynamic>.from(awardsId!.map((x) => x)),
-        "followup_permission": followupPermission,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }

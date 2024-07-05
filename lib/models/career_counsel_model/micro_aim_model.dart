@@ -10,9 +10,6 @@ class GetMicroAimResponseModel {
         subCategories: json["subCategories"] == null ? [] : List<SubCategory>.from(json["subCategories"]!.map((x) => SubCategory.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "subCategories": subCategories == null ? [] : List<dynamic>.from(subCategories!.map((x) => x.toJson())),
-    };
 }
 
 class SubCategory {
@@ -38,11 +35,11 @@ class SubCategory {
         lmsId: json["lms_id"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "parent_id": parentId,
-        "created_at": createdAt?.toIso8601String(),
-        "lms_id": lmsId,
-    };
+    // Map<String, dynamic> toJson() => {
+    //     "id": id,
+    //     "category_name": categoryName,
+    //     "parent_id": parentId,
+    //     "created_at": createdAt?.toIso8601String(),
+    //     "lms_id": lmsId,
+    // };
 }

@@ -14,11 +14,7 @@ class GetAimResponseModel {
                 json["Categories"]!.map((x) => Category.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "Categories": categories == null
-            ? []
-            : List<dynamic>.from(categories!.map((x) => x.toJson())),
-      };
+ 
 }
 
 class Category {
@@ -46,11 +42,5 @@ class Category {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "parent_id": parentId,
-        "created_at": createdAt?.toIso8601String(),
-        "lms_id": lmsId,
-      };
+  
 }

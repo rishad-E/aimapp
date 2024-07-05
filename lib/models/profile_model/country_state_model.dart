@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final getStatesCountryModel = getStatesCountryModelFromJson(jsonString);
 
-import 'dart:convert';
-
-GetStatesCountryModel getStatesCountryModelFromJson(String str) => GetStatesCountryModel.fromJson(json.decode(str));
-
-String getStatesCountryModelToJson(GetStatesCountryModel data) => json.encode(data.toJson());
 
 class GetStatesCountryModel {
     Country? country;
@@ -22,10 +14,7 @@ class GetStatesCountryModel {
         stateDatas: json["stateDatas"] == null ? [] : List<StateData>.from(json["stateDatas"]!.map((x) => StateData.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "country": country?.toJson(),
-        "stateDatas": stateDatas == null ? [] : List<dynamic>.from(stateDatas!.map((x) => x.toJson())),
-    };
+
 }
 
 class Country {
@@ -69,19 +58,7 @@ class Country {
         lmsId: json["lms_id"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "iso3": iso3,
-        "iso2": iso2,
-        "phonecode": phonecode,
-        "currency": currency,
-        "capital": capital,
-        "active_status": activeStatus,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "lms_id": lmsId,
-    };
+ 
 }
 
 class StateData {
@@ -104,10 +81,5 @@ class StateData {
         lmsId: json["lms_id"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "country_id": countryId,
-        "lms_id": lmsId,
-    };
+ 
 }

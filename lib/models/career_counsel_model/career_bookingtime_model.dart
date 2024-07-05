@@ -16,11 +16,6 @@ class BookingTimeResponseModel {
         currentTime: json["current_time"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "slots": slots == null ? [] : List<dynamic>.from(slots!.map((x) => x.toJson())),
-        "requested_date": "${requestedDate!.year.toString().padLeft(4, '0')}-${requestedDate!.month.toString().padLeft(2, '0')}-${requestedDate!.day.toString().padLeft(2, '0')}",
-        "current_time": currentTime,
-    };
 }
 
 class Slot {
@@ -37,8 +32,4 @@ class Slot {
         slotEndTime: json["slot_end_time"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "slot_start_time": slotStartTime,
-        "slot_end_time": slotEndTime,
-    };
 }

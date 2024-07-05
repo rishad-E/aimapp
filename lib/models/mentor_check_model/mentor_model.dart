@@ -37,18 +37,7 @@ class MentorRegModel {
         existMentor: json["existMentor"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "qualifications": qualifications == null
-            ? []
-            : List<dynamic>.from(qualifications!.map((x) => x.toJson())),
-        "degreeData": degreeData == null
-            ? []
-            : List<dynamic>.from(degreeData!.map((x) => x.toJson())),
-        "relationData": relationData == null
-            ? []
-            : List<dynamic>.from(relationData!.map((x) => x.toJson())),
-        "existMentor": existMentor,
-      };
+
 }
 
 class QualificationData {
@@ -85,16 +74,7 @@ class QualificationData {
             : DateTime.parse(json["created_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "description": description,
-        "image": image,
-        "status": status,
-        "lms_id": lmsId,
-        "updated_at": updatedAt,
-        "created_at": createdAt?.toIso8601String(),
-      };
+
 }
 
 class Datum {
@@ -120,13 +100,6 @@ class Datum {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "lms_id": lmsId,
-      };
 }
 
 class DegreeData {
@@ -152,13 +125,6 @@ class DegreeData {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "lms_id": lmsId,
-      };
 }
 
 class RelationData {
@@ -184,11 +150,5 @@ class RelationData {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
-        "lms_id": lmsId,
-      };
+  
 }

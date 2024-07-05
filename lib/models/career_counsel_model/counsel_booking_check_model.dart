@@ -16,11 +16,6 @@ class CounselCallBookedModel {
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
     );
 
-    Map<String, dynamic> toJson() => {
-        "status": status,
-        "Booking Status": bookingStatus,
-        "data": data?.toJson(),
-    };
 }
 
 
@@ -59,15 +54,5 @@ class Data {
         slot: json["slot"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "formattedTime": formattedTime,
-        "formattedDate": formattedDate,
-        "startTime": startTime,
-        "endTime": endTime,
-        "status": status,
-        "channel": channel,
-        "slotId": slotId,
-        "user_id": userId,
-        "slot": slot,
-    };
+    
 }

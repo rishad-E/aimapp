@@ -10,9 +10,6 @@ class SearchMicroaimResponseModel {
         microAims: json["Micro Aims"] == null ? [] : List<MicroAim>.from(json["Micro Aims"]!.map((x) => MicroAim.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "Micro Aims": microAims == null ? [] : List<dynamic>.from(microAims!.map((x) => x.toJson())),
-    };
 }
 
 class MicroAim {
@@ -38,11 +35,5 @@ class MicroAim {
         lmsId: json["lms_id"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "parent_id": parentId,
-        "created_at": createdAt?.toIso8601String(),
-        "lms_id": lmsId,
-    };
+
 }

@@ -91,13 +91,14 @@ class AIMCETTestService {
   Future<dynamic> aimcetTestResult(
       {required String userId, required String userName}) async {
     String path = Apis().aimUrl + Apis().aimcetResult;
-    log(userId + userName, name: 'aimcettest res serv func params');
+    log('userId=>$userId  userName=>$userName',
+        name: 'aimcettest res serv func params');
     try {
-      Response response = await dio.post(path,
-          data: {"user_id": userId, "username": userName},
-          options: Options(
-            validateStatus: (status) => status! < 500,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {"user_id": userId, "username": userName},
+        options: Options(validateStatus: (status) => status! < 500),
+      );
       if (response.statusCode == 200) {
         // log(response.data.toString(), name: 'aimcet result submit');
         return response.data;

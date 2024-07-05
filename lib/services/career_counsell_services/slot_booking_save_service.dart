@@ -12,10 +12,6 @@ class SlotBookingService {
     required String appointTime,
     required String aimId,
     required List<String> microAim,
-    // required String role,
-    // required String name,
-    // required String email,
-    // required String phoneNumber,
   }) async {
     String path = Apis().aimUrl + Apis().saveSlote;
     log('id=>$uId appointDate=>$appointDate appointTime=>$appointTime aimId=>$aimId microAim=>$microAim',

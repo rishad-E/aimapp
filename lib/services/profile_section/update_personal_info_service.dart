@@ -19,18 +19,18 @@ class UpdatePersonalInfoService {
         name: 'update personal info');
 
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": uId,
-            "full_name": fullName,
-            "username": userName,
-            "dob": dOB,
-            "gender":gender,
-            "statement":statement,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "user_id": uId,
+          "full_name": fullName,
+          "username": userName,
+          "dob": dOB,
+          "gender": gender,
+          "statement": statement,
+        },
+        options: Options(validateStatus: (status) => status! < 599),
+      );
       if (response.statusCode == 200) {
         log(response.data.toString(), name: 'save personal info');
         return true;

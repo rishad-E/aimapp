@@ -83,21 +83,6 @@ Widget writeReview() {
         regularText('Write a review for this ACE Test', 11),
         hBox,
         reviewWriteViewButton(matter: 'Write a Course Review')
-        // Container(
-        //   padding: const EdgeInsets.symmetric(vertical: 7),
-        //   margin: const EdgeInsets.symmetric(horizontal: 12),
-        //   decoration: BoxDecoration(
-        //     color: kwhite,
-        //     border: Border.all(color: mainPurple),
-        //     borderRadius: const BorderRadius.all(Radius.circular(6)),
-        //   ),
-        //   child: Center(
-        //       child: semiBoldChoiceText(
-        //     text: 'Write a Course Review',
-        //     size: 14,
-        //     color: mainPurple,
-        //   )),
-        // )
       ],
     ),
   );

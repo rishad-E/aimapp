@@ -12,11 +12,6 @@ class SearchAimResponseModel {
             : List<Aim>.from(json["Aims"]!.map((x) => Aim.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "Aims": aims == null
-            ? []
-            : List<dynamic>.from(aims!.map((x) => x.toJson())),
-      };
 }
 
 class Aim {
@@ -44,11 +39,4 @@ class Aim {
         lmsId: json["lms_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "parent_id": parentId,
-        "created_at": createdAt?.toIso8601String(),
-        "lms_id": lmsId,
-      };
 }

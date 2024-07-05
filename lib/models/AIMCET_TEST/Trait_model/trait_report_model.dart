@@ -90,35 +90,7 @@ class TraitReportModel {
         classNameArray: json["classNameArray"] == null ? [] : List<String>.from(json["classNameArray"]!.map((x) => x)),
     );
 
-    Map<String, dynamic> toJson() => {
-        "user": user?.toJson(),
-        "learnExplanation": learnExplanation,
-        "Dinterests": dinterests,
-        "yourMHaves": yourMHaves,
-        "traitType": traitType,
-        "traitExplanation": traitExplanation,
-        "topTwoValues": topTwoValues?.toJson(),
-        "RIASEC": riasec?.toJson(),
-        "topTwoNames": topTwoNames == null ? [] : List<dynamic>.from(topTwoNames!.map((x) => x)),
-        "classArray": classArray == null ? [] : List<dynamic>.from(classArray!.map((x) => classArrayValues.reverse[x])),
-        "classind": classind,
-        "veryInterested": veryInterested == null ? [] : List<dynamic>.from(veryInterested!.map((x) => x)),
-        "interested": interested == null ? [] : List<dynamic>.from(interested!.map((x) => x)),
-        "neutral": neutral == null ? [] : List<dynamic>.from(neutral!.map((x) => x)),
-        "uninterested": uninterested == null ? [] : List<dynamic>.from(uninterested!.map((x) => x)),
-        "veryInterestedHaves": veryInterestedHaves == null ? [] : List<dynamic>.from(veryInterestedHaves!.map((x) => x)),
-        "importantHaves": importantHaves == null ? [] : List<dynamic>.from(importantHaves!.map((x) => x)),
-        "neutralHaves": neutralHaves == null ? [] : List<dynamic>.from(neutralHaves!.map((x) => x)),
-        "takeIt": takeIt == null ? [] : List<dynamic>.from(takeIt!.map((x) => x)),
-        "dontIt": dontIt == null ? [] : List<dynamic>.from(dontIt!.map((x) => x)),
-        "highlyPreferred": highlyPreferred == null ? [] : List<dynamic>.from(highlyPreferred!.map((x) => x)),
-        "preferred": preferred == null ? [] : List<dynamic>.from(preferred!.map((x) => x)),
-        "broadPersonality": broadPersonality?.toJson(),
-        "detailedPersonality": detailedPersonality?.toJson(),
-        "attempt_question": attemptQuestion,
-        "attempt_section": attemptSection,
-        "classNameArray": classNameArray == null ? [] : List<dynamic>.from(classNameArray!.map((x) => x)),
-    };
+  
 }
 
 class BroadPersonality {
@@ -144,13 +116,7 @@ class BroadPersonality {
         agreeableness: json["Agreeableness"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "Conscientiousness": conscientiousness,
-        "Openness": openness,
-        "Social Responsibility": socialResponsibility,
-        "Extraversion": extraversion,
-        "Agreeableness": agreeableness,
-    };
+  
 }
 
 enum ClassArray {
@@ -187,12 +153,7 @@ class DetailedPersonality {
         toleranceOfStressAndCriticism: json["Tolerance of stress and criticism"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "Leadership": leadership,
-        "Concern for others": concernForOthers,
-        "Dependability": dependability,
-        "Tolerance of stress and criticism": toleranceOfStressAndCriticism,
-    };
+    
 }
 
 class Riasec {
@@ -221,14 +182,7 @@ class Riasec {
         conventional: json["Conventional"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "Realistic": realistic,
-        "Investigative": investigative,
-        "Artistic": artistic,
-        "Social": social,
-        "Enterprising": enterprising,
-        "Conventional": conventional,
-    };
+   
 }
 
 class TopTwoValues {
@@ -245,10 +199,6 @@ class TopTwoValues {
         realistic: json["Realistic"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "Social": social,
-        "Realistic": realistic,
-    };
 }
 
 class User {
@@ -511,92 +461,6 @@ class User {
         blockedByMe: json["blocked_by_me"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "role_id": roleId,
-        "ip": ip,
-        "user_active": userActive,
-        "referral_code": referralCode,
-        "name": name,
-        "photo": photo,
-        "image": image,
-        "avatar": avatar,
-        "email_verified_at": emailVerifiedAt,
-        "notification_preference": notificationPreference,
-        "is_active": isActive,
-        "username": username,
-        "email": email,
-        "email_verify": emailVerify,
-        "headline": headline,
-        "phone": phone,
-        "address": address,
-        "country": country,
-        "zip": zip,
-        "dob": dob,
-        "about": about,
-        "short_details": shortDetails,
-        "facebook": facebook,
-        "twitter": twitter,
-        "linkedin": linkedin,
-        "instagram": instagram,
-        "youtube": youtube,
-        "subscribe": subscribe,
-        "provider": provider,
-        "provider_id": providerId,
-        "language_id": languageId,
-        "language_code": languageCode,
-        "language_name": languageName,
-        "status": status,
-        "balance": balance,
-        "currency_id": currencyId,
-        "special_commission": specialCommission,
-        "payout": payout,
-        "payout_icon": payoutIcon,
-        "payout_email": payoutEmail,
-        "referral_by": referralBy,
-        "added_by": addedBy,
-        "zoom_api_key_of_user": zoomApiKeyOfUser,
-        "zoom_api_serect_of_user": zoomApiSerectOfUser,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "bank_name": bankName,
-        "branch_name": branchName,
-        "bank_account_number": bankAccountNumber,
-        "account_holder_name": accountHolderName,
-        "bank_type": bankType,
-        "lms_id": lmsId,
-        "subscription_method": subscriptionMethod,
-        "subscription_api_key": subscriptionApiKey,
-        "subscription_api_status": subscriptionApiStatus,
-        "language_rtl": languageRtl,
-        "gender": gender,
-        "student_type": studentType,
-        "identification_number": identificationNumber,
-        "job_title": jobTitle,
-        "company_id": companyId,
-        "student_group_id": studentGroupId,
-        "last_activity_at": lastActivityAt?.toIso8601String(),
-        "teach_via": teachVia,
-        "access_token": accessToken,
-        "device_token": deviceToken,
-        "policy_id": policyId,
-        "state": state,
-        "company": company,
-        "otp": otp,
-        "city": city,
-        "gamification_points": gamificationPoints,
-        "gamification_total_points": gamificationTotalPoints,
-        "gamification_total_spent_points": gamificationTotalSpentPoints,
-        "user_level": userLevel,
-        "user_level_course_complete": userLevelCourseComplete,
-        "come_by": comeBy,
-        "token": token,
-        "user_status": userStatus,
-        "connection_id": connectionId,
-        "first_name": firstName,
-        "last_name": lastName,
-        "blocked_by_me": blockedByMe,
-    };
 }
 
 class EnumValues<T> {

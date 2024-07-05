@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_Test_model/test_model.dart';
-import 'package:aimshala/models/AIMCET_TEST/AIMCET_qualification/qualification_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Personality_model/personality_report_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_gp_report_service.dart';
-import 'package:aimshala/services/AIMCET_TEST/aimcet_qualification_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/personality_career_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/trait_career_result.dart';
@@ -13,7 +11,6 @@ import 'package:get/get.dart';
 
 class AIMCETController extends GetxController {
   TextEditingController qualificationController = TextEditingController();
-  RxList<Qualification> qualificationList = <Qualification>[].obs;
   RxString qualify = 'Your qualification'.obs;
   String? qualifyId;
   bool guideSelect = false;
@@ -36,11 +33,12 @@ class AIMCETController extends GetxController {
   PersonalityReportModel? personalityReport;
   TraitReportModel? traitReport;
 
+  // RxList<Qualification> qualificationList = <Qualification>[].obs;
   /* --------- get all qualifications-------*/
-  Future<void> getQualifications() async {
-    qualificationList.value =
-        await AIMCETQualificationService().fetchQualification();
-  }
+  // Future<void> getQualifications() async {
+  //   qualificationList.value =
+  //       await AIMCETQualificationService().fetchQualification();
+  // }
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
     isLoading.value = true;
@@ -106,11 +104,12 @@ class AIMCETController extends GetxController {
     dynamic result = await AIMCETTestService()
         .aimcetTestResult(userId: userId, userName: userName);
 
-    if (result is Map<String, dynamic>) {
+    if (result is Map) {
+
       //extracting personality types
       if (result.isNotEmpty) {
         List<dynamic> resultData = result['result'];
-
+        
         for (String item in resultData) {
           if (item.startsWith('Personality Type')) {
             if (!personality.contains(item.split(': ')[1])) {
@@ -121,6 +120,7 @@ class AIMCETController extends GetxController {
             traitType = item.split(': ')[1];
           }
         }
+
         // Extracting degrees
         if (result['degree'] != null) {
           List<dynamic> degreeData = result['degree'];

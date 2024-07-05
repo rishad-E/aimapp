@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final getCityModel = getCityModelFromJson(jsonString);
 
-// import 'dart:convert';
-
-// GetCityModel getCityModelFromJson(String str) => GetCityModel.fromJson(json.decode(str));
-
-// String getCityModelToJson(GetCityModel data) => json.encode(data.toJson());
 
 class GetCityModel {
     List<City>? cities;
@@ -19,9 +11,6 @@ class GetCityModel {
         cities: json["cities"] == null ? [] : List<City>.from(json["cities"]!.map((x) => City.fromJson(x))),
     );
 
-    Map<String, dynamic> toJson() => {
-        "cities": cities == null ? [] : List<dynamic>.from(cities!.map((x) => x.toJson())),
-    };
 }
 
 class City {

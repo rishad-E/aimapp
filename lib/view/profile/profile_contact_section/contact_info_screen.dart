@@ -114,6 +114,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Pincode', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.pincodeController,
+                      keyboardType: TextInputType.number,
                       validator: (value) => controller.fieldValidator(value),
                       onChanged: (value) {
                         controller.allFieldSelect();

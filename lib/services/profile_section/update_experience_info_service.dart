@@ -74,9 +74,19 @@ class UpdateExperienceInfoService {
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
-        log(response.data.toString(), name: 'save experience info MB error');
-
-        return 'Each image must not exceed 2MB in size.';
+        log(response.data.toString(), name: 'save experience info error');
+        if (responseData['error'] is Map) {
+          Map<String, dynamic> errors = responseData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'delete experience section error');
+            return errorMessage;
+          }
+        } else if (responseData['error'] is String) {
+          String errorMessage = responseData['error'];
+          return errorMessage;
+        }
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
@@ -170,7 +180,7 @@ class UpdateExperienceInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
+            log(errorMessage, name: 'delete experience section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {

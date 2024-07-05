@@ -2,11 +2,11 @@
 //
 //     final amyRegisterModel = amyRegisterModelFromJson(jsonString);
 
-import 'dart:convert';
+// import 'dart:convert';
 
-AmyRegisterModel amyRegisterModelFromJson(String str) => AmyRegisterModel.fromJson(json.decode(str));
+// AmyRegisterModel amyRegisterModelFromJson(String str) => AmyRegisterModel.fromJson(json.decode(str));
 
-String amyRegisterModelToJson(AmyRegisterModel data) => json.encode(data.toJson());
+// String amyRegisterModelToJson(AmyRegisterModel data) => json.encode(data.toJson());
 
 class AmyRegisterModel {
     String? status;
@@ -28,12 +28,6 @@ class AmyRegisterModel {
         updQuesIndex: json["upd_ques_index"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "status": status,
-        "options": options == null ? [] : List<dynamic>.from(options!.map((x) => x.toJson())),
-        "bot_reply": botReply,
-        "upd_ques_index": updQuesIndex,
-    };
 }
 
 class Option {
@@ -50,8 +44,4 @@ class Option {
         item: json["item"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "item": item,
-    };
 }

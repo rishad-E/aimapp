@@ -207,10 +207,8 @@ class AIMCETResultScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                // hLBox,
                 StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
-                  // log('value===>$initialVal');
                   return Column(
                     children: [
                       reportButtonContainer(

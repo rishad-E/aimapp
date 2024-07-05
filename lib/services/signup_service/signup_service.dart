@@ -27,7 +27,7 @@ class SignUpService {
         },
       );
       log(response.data.toString(), name: 'signup');
-      if (response.data < 499) {
+      if (response.data is Map) {
         Map<String, dynamic> res = response.data;
         return res;
       } else if (response.statusCode == 500) {
