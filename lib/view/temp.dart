@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
+import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
@@ -12,7 +15,8 @@ class TempScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
+    final mentor = Get.put(MentorPersonalDetailController());
+    final educaotr = Get.put(EducatorPersonalDetailController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -30,15 +34,41 @@ class TempScreen extends StatelessWidget {
             hMBox,
             elevatedButtonItems(
               onPressed: () {
-                Get.put(EducatorPersonalDetailController()).clearAllfields();
-                Get.to(() => EducatorPersonalDetailPage());
+                log(educaotr.isEducator, name: 'isEducator');
+                if (educaotr.isEducator == 'no') {
+                  educaotr.clearAllfields();
+                  Get.to(() => EducatorPersonalDetailPage());
+                } else {
+                  Get.snackbar(
+                    "Hi ",
+                    "You are already an Educator...",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
+                  );
+                }
               },
               item: 'Educator',
             ),
             hMBox,
             elevatedButtonItems(
               onPressed: () {
-                Get.to(() => MentorPersonalDetailPage());
+                log(mentor.isMentor, name: 'isMentor');
+                if (mentor.isMentor == 'no') {
+                  Get.to(() => MentorPersonalDetailPage());
+                } else {
+                  Get.snackbar(
+                    "Hi ",
+                    "You are already a Mentor...",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
+                  );
+                }
               },
               item: 'Mentor',
             ),

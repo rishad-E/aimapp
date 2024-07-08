@@ -8,6 +8,7 @@ import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/exceptions/dio_exceptions.dart';
 import 'package:aimshala/view/home/home.dart';
 import 'package:aimshala/view/login/login_screen.dart';
@@ -36,14 +37,13 @@ class SplashController extends GetxController {
     String connectionStatus = exceptions.errorMessage;
 
     if (connectionStatus == 'not internet') {
-      Get.showSnackbar(
-        const GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: 'No Internet...Please turn on your data',
-          margin: EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
+      Get.snackbar(
+        "No Internet",
+        "Please turn on your Network...",
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 2),
+        backgroundColor: kred,
+        colorText: Colors.white,
       );
     } else {
       // storage.write(key: 'name', value: 'Rishad E');

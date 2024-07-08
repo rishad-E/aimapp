@@ -140,7 +140,7 @@ class AIMCETResultScreen extends StatelessWidget {
                   ),
                 ),
                 const DiscoveryShareContainer(),
-                const TestResDownloadPage(),
+                TestResDownloadPage(uId: uId),
                 Container(
                   decoration: colorGradient3(),
                   child: Column(

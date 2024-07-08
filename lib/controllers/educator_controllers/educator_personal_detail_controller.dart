@@ -26,11 +26,14 @@ class EducatorPersonalDetailController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
+  String isEducator = 'no';
+
   Future<void> checkEducatorRegTakenFunction({required String uId}) async {
     Map<String, dynamic>? res =
         await CheckEducatorRegTakenService().checkEducatorRegTaken(uId: uId);
     if (res != null) {
       if (res.containsKey('error')) {
+        isEducator = 'error';
         String errorMessage = res['error'];
         Get.showSnackbar(
           GetSnackBar(
@@ -42,6 +45,13 @@ class EducatorPersonalDetailController extends GetxController {
           ),
         );
       } else {
+        if (res.containsKey('existEducator')) {
+          if (res['existEducator'] == null) {
+            isEducator = 'no';
+          } else {
+            isEducator = 'yes';
+          }
+        }
         if (res.containsKey('qualifications')) {
           List<dynamic> data = res['qualifications'];
           List<QualificationData> list =

@@ -54,7 +54,7 @@ class ProfileHomeScreen extends StatelessWidget {
     final controller = Get.put(ProfileSkillController());
     final profileC = Get.put(ProfileHomeController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      log(id, name: 'callback uid');
+      log(id, name: 'callback uid profile Home');
       controller.getProfileAlldataFunction(uId: id);
       profileC.fetchAlluserData(uId: id);
     });

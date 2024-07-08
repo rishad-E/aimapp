@@ -22,6 +22,7 @@ class MentorPersonalDetailController extends GetxController {
   String? selectedGender;
   final List<String> genderOptions = ['Male', 'Female', 'Other'];
   List<QualificationData> statusList = [];
+  String isMentor = 'no';
   // List<DegreeData> degreeList = [];
   // List<RelationData> relationList = [];
 
@@ -33,6 +34,7 @@ class MentorPersonalDetailController extends GetxController {
         await CheckMentorRegTakenService().checkMentorRegtaken(uId: uId);
     if (resData != null) {
       if (resData.containsKey('error')) {
+        isMentor = 'error';
         String errorMessage = resData['error'];
         Get.showSnackbar(
           GetSnackBar(
@@ -44,6 +46,14 @@ class MentorPersonalDetailController extends GetxController {
           ),
         );
       } else {
+        // isMentor = 'yes';
+        if (resData.containsKey('existMentor')) {
+          if (resData['existMentor'] == null) {
+            isMentor = 'no';
+          } else {
+            isMentor = 'yes';
+          }
+        }
         if (resData.containsKey('qualifications')) {
           List<dynamic> data = resData['qualifications'];
           List<QualificationData> list =

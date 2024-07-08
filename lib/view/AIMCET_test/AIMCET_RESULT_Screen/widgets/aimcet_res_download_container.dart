@@ -1,14 +1,21 @@
+import 'dart:developer';
+import 'dart:io';
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
 class TestResDownloadPage extends StatelessWidget {
-  const TestResDownloadPage({super.key});
+  final String uId;
+  const TestResDownloadPage({super.key, required this.uId});
 
   @override
   Widget build(BuildContext context) {
+    final c = Get.find<AIMCETController>();
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -40,34 +47,83 @@ class TestResDownloadPage extends StatelessWidget {
               child: Image.asset('assets/images/acecet-home.png'),
             ),
           ),
-          boldText(text: 'Download', size: 20, color: kwhite),
+          boldText(text: 'Download$uId', size: 20, color: kwhite),
           regularText('Your Test Report', 20, color: kwhite),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 8),
             child: SizedBox(
-              height: 4.2.h,
-              child: ElevatedButton.icon(
-                style: ButtonStyle(
-                  shape: buttonShape(round: 8),
-                ),
-                icon: Text(
-                  "Download Now!",
-                  style: TextStyle(
-                      fontSize: 11.sp,
-                      color: const Color.fromARGB(255, 147, 38, 143),
-                      fontWeight: FontWeight.w600),
-                ),
-                label: Icon(
-                  Icons.arrow_forward_ios_sharp,
-                  size: 11.sp,
-                  color: const Color.fromARGB(255, 147, 38, 143),
-                ),
-                onPressed: () {},
-              ),
-            ),
+                height: 4.2.h,
+                child: Obx(
+                  () => c.isDownloading.value == true
+                      ? CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(kwhite),
+                          strokeWidth: 1,
+                        )
+                      : ElevatedButton.icon(
+                          style: ButtonStyle(
+                            shape: buttonShape(round: 8),
+                          ),
+                          icon: Text(
+                            "Download Now!",
+                            style: TextStyle(
+                                fontSize: 11.sp,
+                                color: const Color.fromARGB(255, 147, 38, 143),
+                                fontWeight: FontWeight.w600),
+                          ),
+                          label: Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            size: 11.sp,
+                            color: const Color.fromARGB(255, 147, 38, 143),
+                          ),
+                          onPressed: () async {
+                            final String pdfUrl =
+                                'http://154.26.130.161/elearning/api/result-pdf/$uId';
+                            const fileName = 'ACE Test result.pdf';
+
+                            //request permission if not granded
+                            await permissionRequest();
+                            await c.downloadPDF(pdfUrl, fileName);
+                          },
+                        ),
+                )),
           )
         ],
       ),
     );
+  }
+
+  Future<void> permissionRequest() async {
+    
+    if (await Permission.storage.isGranted) return;
+
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+      return;
+    } else if (status.isDenied) {
+      //retry request permission access
+      status = await Permission.storage.request();
+      if (status.isGranted) {
+        return;
+      } else if (status.isPermanentlyDenied) {
+        await openAppSettings();
+        if (await Permission.storage.isGranted) {
+          return;
+        } else {
+          throw const FileSystemException(
+              'Storage permission permanently denied');
+        }
+      }
+    }
+    if (Platform.isAndroid) {
+      if (await Permission.manageExternalStorage.isGranted) {
+        return;
+      }
+      var manageStorageStatus =
+          await Permission.manageExternalStorage.request();
+      if (!manageStorageStatus.isGranted) {
+        throw const FileSystemException(
+            'Manage external storage permission denied');
+      }
+    }
   }
 }
