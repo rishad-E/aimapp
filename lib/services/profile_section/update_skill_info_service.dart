@@ -19,14 +19,14 @@ class UpdateSkillInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'suggested skills error');
+        // log('Server error: ${e.message}', name: 'suggested skills error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'suggested skills error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'suggested skills error');
+      // log('error :${e.toString()}', name: 'suggested skills error');
       throw Exception('error occurred ${e.toString()}');
     }
     return [];
@@ -63,31 +63,30 @@ class UpdateSkillInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'response data-save skill');
+      // log(responseData.toString(), name: 'response data-save skill');
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save skill success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save skill error data');
         return errorMessage;
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save skill error');
+        // log('Server error: ${e.message}', name: 'save skill error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'save skill error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save skill error');
+      // log('error :${e.toString()}', name: 'save skill error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -126,30 +125,28 @@ class UpdateSkillInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'response data-update skill');
+      // log(responseData.toString(), name: 'response data-update skill');
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update skill success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update skill error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update skill error');
+        // log('Server error: ${e.message}', name: 'update skill error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'update skill error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update skill error');
+      // log('error :${e.toString()}', name: 'update skill error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -164,7 +161,7 @@ class UpdateSkillInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'response data-delete skill');
+     
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
@@ -175,7 +172,6 @@ class UpdateSkillInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete skill section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -185,14 +181,12 @@ class UpdateSkillInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete skill error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'delete skill error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete skill error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

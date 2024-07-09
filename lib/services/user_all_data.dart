@@ -28,7 +28,7 @@ class UserAllDataService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'get all-data info error');
+        // log('Server error: ${e.message}', name: 'get all-data info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -36,7 +36,7 @@ class UserAllDataService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'get all-data info error');
+      // log('error :${e.toString()}', name: 'get all-data info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

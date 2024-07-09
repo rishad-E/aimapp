@@ -34,9 +34,11 @@ class AIMCETController extends GetxController {
   String? traitType;
   List<String> degrees = [];
   List<String> careers = [];
-  PersonalityReportModel? personalityReport;
-  TraitReportModel? traitReport;
+  // PersonalityReportModel? personalityReport;
+  // TraitReportModel? traitReport;
 
+  var personalityReort = Rxn<PersonalityReportModel>();
+  var traitReport = Rxn<TraitReportModel>();
   RxBool isDownloading = false.obs;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
@@ -182,7 +184,8 @@ class AIMCETController extends GetxController {
       PersonalityReportModel? report =
           await PersonalityReportService().getPersonalityReport(userId: userId);
       if (report != null) {
-        personalityReport = report;
+        // personalityReport = report;
+        personalityReort.value = report;
         gp.value = 'sucess';
         // update();
       }
@@ -197,7 +200,7 @@ class AIMCETController extends GetxController {
       TraitReportModel? report =
           await TraitReportService().getTraitReport(userId: userId);
       if (report != null) {
-        traitReport = report;
+        traitReport.value = report;
         log(traitType.toString(), name: 'report trait controller');
         gp.value = 'sucess';
         // update();
@@ -224,20 +227,19 @@ class AIMCETController extends GetxController {
   }
 
   Future<void> downloadPDF(String pdfUrl, String fileName) async {
-  
     try {
       isDownloading.value = true;
       Directory? directory;
       if (Platform.isIOS) {
         directory = await getApplicationDocumentsDirectory();
       } else {
-        if (await Permission.manageExternalStorage.isGranted) {
+        if (await Permission.storage.isGranted) {
           directory = Directory('/storage/emulated/0/Download');
           if (!await directory.exists()) {
             directory = Directory('/storage/emulated/0/Downloads');
           }
         } else {
-          var status = await Permission.manageExternalStorage.request();
+          var status = await Permission.storage.request();
           if (status.isGranted) {
             directory = Directory('/storage/emulated/0/Download');
             if (!await directory.exists()) {
@@ -258,7 +260,9 @@ class AIMCETController extends GetxController {
       await dio.download(
         pdfUrl,
         savePath,
-        options: Options(responseType: ResponseType.bytes,),
+        options: Options(
+          responseType: ResponseType.bytes,
+        ),
         onReceiveProgress: (received, total) {
           if (total != -1) {
             // downloadProgress.value = received / total * 100;

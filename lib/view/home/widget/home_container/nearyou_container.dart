@@ -13,7 +13,6 @@ class NearYouContainer extends StatelessWidget {
     return Container(
       width: 47.w,
       margin: const EdgeInsets.only(right: 8),
-      // height: 165,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: kwhite,
@@ -23,7 +22,6 @@ class NearYouContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            // color: Colors.amber,
             height: 10.5.h,
             width: 46.5.w,
             child: ClipRRect(
@@ -86,7 +84,9 @@ class NearYouContainer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 11),
             child: Text(
               "Aakash Institute, Pusa Road",
-              style: TextStyle(fontSize: 8.5.sp, color: const Color.fromARGB(255, 133, 131, 131)),
+              style: TextStyle(
+                  fontSize: 8.5.sp,
+                  color: const Color.fromARGB(255, 133, 131, 131)),
             ),
           ),
           Padding(
@@ -94,7 +94,6 @@ class NearYouContainer extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  // color: Colors.yellow,
                   height: 13,
                   width: 13,
                   child: SvgPicture.asset('assets/images/location.svg'),

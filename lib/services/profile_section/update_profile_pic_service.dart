@@ -27,8 +27,6 @@ class UpdateProfilePhotoService {
       );
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey("message")) {
-        // String success = responseData['message'];
-        // log(success, name: 'update profilepic res');
         return responseData;
       } else if (responseData.containsKey("error")) {
         return responseData;
@@ -37,7 +35,7 @@ class UpdateProfilePhotoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update profilepic error');
+        // log('Server error: ${e.message}', name: 'update profilepic error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.data}',
@@ -45,7 +43,6 @@ class UpdateProfilePhotoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update profilepic error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -62,7 +59,7 @@ class UpdateProfilePhotoService {
           validateStatus: (status) => status! < 599,
         ),
       );
-      log(response.data.toString(), name: 'remove profilepic res');
+      // log(response.data.toString(), name: 'remove profilepic res');
       if (response.statusCode == 200) {
         return response.data;
       } else {
@@ -70,7 +67,6 @@ class UpdateProfilePhotoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update profilepic error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.data}',
@@ -78,7 +74,6 @@ class UpdateProfilePhotoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update profilepic error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

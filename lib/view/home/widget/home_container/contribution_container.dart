@@ -16,7 +16,7 @@ class ContributionContainer extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.only(top: 13),
       decoration: BoxDecoration(
-        // color: Colors.yellow,
+       
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
           image: AssetImage(

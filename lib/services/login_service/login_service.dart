@@ -34,7 +34,3 @@ class LoginService {
     return null;
   }
 }
-   // on SocketException catch (e) {
-    //   // Handle SocketException
-    //   log('SocketException: ${e.message}', name: 'socket');
-    // } 

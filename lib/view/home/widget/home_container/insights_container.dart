@@ -12,7 +12,7 @@ class InsightsContainer extends StatelessWidget {
     return Container(
       width: 46.5.w,
       margin: const EdgeInsets.only(right: 8),
-      // height: 165,
+     
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: kwhite,
@@ -22,7 +22,7 @@ class InsightsContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            // color: Colors.amber,
+        
             height: 10.5.h,
             width: double.infinity,
             child: ClipRRect(
@@ -56,7 +56,7 @@ class InsightsContainer extends StatelessWidget {
                 ),
                 wBox,
                 Container(
-                  // padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                 
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(

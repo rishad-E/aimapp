@@ -58,18 +58,16 @@ class UpdateProjectInfoService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save project info success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save publication error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save project info error 500');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -77,7 +75,6 @@ class UpdateProjectInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save project info error catch');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -141,19 +138,16 @@ class UpdateProjectInfoService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update project info success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update publication error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}',
-            name: 'update project info error 500');
+       
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -161,7 +155,7 @@ class UpdateProjectInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update project info error catch');
+      // log('error :${e.toString()}', name: 'update project info error catch');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -179,7 +173,6 @@ class UpdateProjectInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'delete project success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -187,7 +180,6 @@ class UpdateProjectInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete project section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -197,14 +189,14 @@ class UpdateProjectInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete project error');
+        // log('Server error: ${e.message}', name: 'delete project error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'delete project error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete project error');
+      // log('error :${e.toString()}', name: 'delete project error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

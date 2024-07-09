@@ -67,7 +67,7 @@ class UpdateEducationInfoService {
         Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save education info success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
@@ -77,7 +77,7 @@ class UpdateEducationInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
+            
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -92,7 +92,7 @@ class UpdateEducationInfoService {
      }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save education info error');
+        // log('Server error: ${e.message}', name: 'save education info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -100,7 +100,7 @@ class UpdateEducationInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save education info error');
+      // log('error :${e.toString()}', name: 'save education info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -166,10 +166,10 @@ class UpdateEducationInfoService {
         ),
       );
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'ressssssssssssssssssss');
+      // log(responseData.toString(), name: 'ressssssssssssssssssss');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save education info success');
+       
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // log(errorMessage.toString(), name: 'save education info MB error');
@@ -177,14 +177,14 @@ class UpdateEducationInfoService {
         String first = errors.keys.first;
         if (errors[first] is List && (errors[first] as List).isNotEmpty) {
           String errorMessage = errors[first][0].toString();
-          log(errorMessage, name: 'save education info MB error');
+          
           return errorMessage;
         }
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save education info error');
+        // log('Server error: ${e.message}', name: 'save education info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -192,7 +192,7 @@ class UpdateEducationInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save education info error');
+      // log('error :${e.toString()}', name: 'save education info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -212,7 +212,6 @@ class UpdateEducationInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'delete education section success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -220,7 +219,6 @@ class UpdateEducationInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -230,8 +228,8 @@ class UpdateEducationInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}',
-            name: 'delete education section error');
+        // log('Server error: ${e.message}',
+        //     name: 'delete education section error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -239,7 +237,7 @@ class UpdateEducationInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save education info error');
+      // log('error :${e.toString()}', name: 'save education info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

@@ -1,12 +1,4 @@
-// To parse this JSON data, do
-//
-//     final mentorRegModel = mentorRegModelFromJson(jsonString);
 
-// import 'dart:convert';
-
-// MentorRegModel mentorRegModelFromJson(String str) => MentorRegModel.fromJson(json.decode(str));
-
-// String mentorRegModelToJson(MentorRegModel data) => json.encode(data.toJson());
 
 class MentorRegModel {
   List<QualificationData>? qualifications;

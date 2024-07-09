@@ -31,7 +31,7 @@ class SignUpService {
         Map<String, dynamic> res = response.data;
         return res;
       } else if (response.statusCode == 500) {
-        log('Server error:${response.data}', name: 'sign up error');
+        // log('Server error:${response.data}', name: 'sign up error');
         SnackbarPopUps.popUpB('Server error occured');
       }
     } on DioException catch (e) {
@@ -39,11 +39,11 @@ class SignUpService {
         log('Server error: ${e.message}', name: 'sign up error');
         throw Exception('Server error occurred');
       } else {
-        log('error:${e.response?.data}', name: 'sign up error');
+        // log('error:${e.response?.data}', name: 'sign up error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'sign up error');
+      // log('error :${e.toString()}', name: 'sign up error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

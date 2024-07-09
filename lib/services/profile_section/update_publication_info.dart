@@ -33,27 +33,27 @@ class UpdatePublicationService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save publication success');
+       
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save publication error data');
+        
         return errorMessage;
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save publication error');
+        // log('Server error: ${e.message}', name: 'save publication error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'save publication error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save publication error');
+      // log('error :${e.toString()}', name: 'save publication error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -89,27 +89,26 @@ class UpdatePublicationService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update publication success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update publication error data');
         return errorMessage;
         // return 'Each image must not exceed 2MB in size.';
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update publication error');
+        // log('Server error: ${e.message}', name: 'update publication error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'update publication error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update publication error');
+      // log('error :${e.toString()}', name: 'update publication error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -127,7 +126,6 @@ class UpdatePublicationService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'delete publication success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -135,7 +133,6 @@ class UpdatePublicationService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete publication section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -145,14 +142,14 @@ class UpdatePublicationService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete publication error');
+        // log('Server error: ${e.message}', name: 'delete publication error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'delete publication error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete publication error');
+      // log('error :${e.toString()}', name: 'delete publication error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

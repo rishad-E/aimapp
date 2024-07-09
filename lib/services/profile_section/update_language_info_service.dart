@@ -27,25 +27,21 @@ class UpdateLanguageInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save language success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save language error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save language error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'save language error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save language error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -75,25 +71,21 @@ class UpdateLanguageInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update language success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update language error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update language error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'update language error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update language error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -112,7 +104,6 @@ class UpdateLanguageInfoService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(response.data.toString(), name: 'delete language info');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -120,7 +111,6 @@ class UpdateLanguageInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete language section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -130,7 +120,6 @@ class UpdateLanguageInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete language info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -138,7 +127,6 @@ class UpdateLanguageInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete language info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -80,9 +79,21 @@ class TestResDownloadPage extends StatelessWidget {
                                 'http://154.26.130.161/elearning/api/result-pdf/$uId';
                             const fileName = 'ACE Test result.pdf';
 
-                            //request permission if not granded
-                            await permissionRequest();
-                            await c.downloadPDF(pdfUrl, fileName);
+                            try {
+                              //android:requestLegacyExternalStorage="true" is currently not added but added permission for manage storage in manifest
+                              //request permission if not granded
+                              await permissionRequest();
+                              await c.downloadPDF(pdfUrl, fileName);
+                            } catch (e) {
+                              Get.snackbar(
+                                "Error",
+                                "Failed to download PDF: $e",
+                                snackPosition: SnackPosition.TOP,
+                                duration: const Duration(seconds: 2),
+                                backgroundColor: Colors.red.withOpacity(0.7),
+                                colorText: Colors.white,
+                              );
+                            }
                           },
                         ),
                 )),
@@ -93,7 +104,6 @@ class TestResDownloadPage extends StatelessWidget {
   }
 
   Future<void> permissionRequest() async {
-    
     if (await Permission.storage.isGranted) return;
 
     var status = await Permission.storage.request();
@@ -118,8 +128,7 @@ class TestResDownloadPage extends StatelessWidget {
       if (await Permission.manageExternalStorage.isGranted) {
         return;
       }
-      var manageStorageStatus =
-          await Permission.manageExternalStorage.request();
+      var manageStorageStatus = await Permission.storage.request();
       if (!manageStorageStatus.isGranted) {
         throw const FileSystemException(
             'Manage external storage permission denied');

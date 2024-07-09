@@ -18,7 +18,7 @@ class UpcomingSessionContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       width: 50.2.w,
-      // height: 195,
+     
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: kwhite,
@@ -29,7 +29,7 @@ class UpcomingSessionContainer extends StatelessWidget {
         children: [
           SizedBox(
             height: imageH,
-            // width: 48.w,
+            
             width: double.infinity,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -48,7 +48,7 @@ class UpcomingSessionContainer extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              //  mainAxisSize: MainAxisSize.min,
+              
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -58,7 +58,7 @@ class UpcomingSessionContainer extends StatelessWidget {
                       backgroundColor: Colors.white,
                       backgroundImage: AssetImage(circleImage),
                     ),
-                    // wBox,
+                   
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),

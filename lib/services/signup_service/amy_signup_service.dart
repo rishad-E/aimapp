@@ -22,7 +22,7 @@ class AmySignUpService {
      }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'signup amy info error');
+        // log('Server error: ${e.message}', name: 'signup amy info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -30,7 +30,7 @@ class AmySignUpService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'signup amy info error');
+      // log('error :${e.toString()}', name: 'signup amy info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

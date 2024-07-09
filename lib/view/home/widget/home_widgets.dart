@@ -19,13 +19,11 @@ ShapeBorder appBarBorder() {
 
 PreferredSizeWidget appbarHome({String? name}) {
   return AppBar(
-    // toolbarHeight: 70,
-    // backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
     leading: Builder(
         builder: (context) => IconButton(
-              onPressed: () =>Scaffold.of(context).openDrawer(),
+              onPressed: () => Scaffold.of(context).openDrawer(),
               icon: const Icon(Icons.menu),
             )),
     title: primarytxt3(name == null ? 'Hi, ' : 'Hi, $name', 14.sp),
@@ -72,47 +70,13 @@ PreferredSizeWidget appbarHome({String? name}) {
           child: Image.asset('assets/images/appbarWomen2.png'),
         ),
       ),
-      // Stack(
-      //   alignment: AlignmentDirectional.topEnd,
-      //   children: [
-      //     Container(
-      //       decoration: BoxDecoration(
-      //         shape: BoxShape.circle,
-      //         border: Border.all(
-      //           color: const Color.fromARGB(255, 215, 211, 211),
-      //           width: 1,
-      //         ),
-      //       ),
-      //       child: CircleAvatar(
-      //         radius: 14,
-      //         backgroundColor: kwhite,
-      //         backgroundImage: const AssetImage(
-      //           'assets/images/appbarWomen.png',
-      //         ),
-      //       ),
-      //     ),
-      //     Container(
-      //       decoration: BoxDecoration(
-      //           borderRadius: BorderRadius.circular(4),
-      //           border: Border.all(
-      //             color: mainPurple,
-      //             width: 1,
-      //           ),
-      //           color: kwhite),
-      //       child: const Icon(
-      //         Icons.question_mark_sharp,
-      //         size: 12,
-      //       ),
-      //     ),
-      //   ],
-      // ),
       wMBox,
       Padding(
         padding: const EdgeInsets.only(top: 5),
         child: GestureDetector(
           onTap: () {
-             log('temp screen', name: 'temp screen');
-             Get.to(() => const TempScreen());
+            log('temp screen', name: 'temp screen');
+            Get.to(() => const TempScreen());
           },
           child: Container(
             // width: 30,
@@ -123,7 +87,6 @@ PreferredSizeWidget appbarHome({String? name}) {
                 width: 1,
               ),
             ),
-            // child: Image.asset('assets/images/appbarMen.png',fit: BoxFit.cover,),
             child: CircleAvatar(
               radius: 13,
               backgroundColor: kwhite,

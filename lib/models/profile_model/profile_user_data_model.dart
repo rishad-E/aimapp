@@ -309,14 +309,4 @@ class Role {
         updatedAt: json["updated_at"],
         lmsId: json["lms_id"],
     );
-
-    // Map<String, dynamic> toJson() => {
-    //     "id": id,
-    //     "name": name,
-    //     "type": type,
-    //     "details": details,
-    //     "created_at": createdAt?.toIso8601String(),
-    //     "updated_at": updatedAt,
-    //     "lms_id": lmsId,
-    // };
 }

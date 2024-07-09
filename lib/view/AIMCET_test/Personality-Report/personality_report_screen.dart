@@ -10,12 +10,14 @@ import 'package:flutter/material.dart';
 
 class PersonalityReportPage extends StatelessWidget {
   final AIMCETController controller;
-  final dynamic data;
-  const PersonalityReportPage({super.key, required this.controller, this.data});
+  final String uId;
+  const PersonalityReportPage({super.key, required this.controller, required this.uId});
 
   @override
   Widget build(BuildContext context) {
+    final data = controller.personalityReort.value;
     if (data == null) {
+      controller.fetchPersonalityReport(userId: uId);
       return const Center(
         child: CircularProgressIndicator(),
       );

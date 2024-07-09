@@ -4,6 +4,7 @@ import 'package:aimshala/controllers/educator_controllers/educator_personal_deta
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/counselor_registration/c_personal_detail_section/c_personal_detail_page.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,11 @@ class TempScreen extends StatelessWidget {
                 }
               },
               item: 'Mentor',
+            ),
+            hMBox,
+              elevatedButtonItems(
+              onPressed: () => Get.to(() => const CounselorPersonalSection()),
+              item: "Counselor",
             ),
           ],
         ),

@@ -56,26 +56,22 @@ class UpdateVolunteerInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save volunteer success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save volunteer error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save volunteer error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'save volunteer error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save volunteer error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -135,26 +131,24 @@ class UpdateVolunteerInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update volunteer success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update volunteer error data');
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update volunteer error');
+        // log('Server error: ${e.message}', name: 'update volunteer error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'update volunteer error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update volunteer error');
+      // log('error :${e.toString()}', name: 'update volunteer error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -168,8 +162,7 @@ class UpdateVolunteerInfoService {
           data: {"volunteer_experience_id": volunteerID},
           options: Options(validateStatus: (status) => status! < 599));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'response data-delete volunteerEX');
-
+      
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         return successMessage;
@@ -179,7 +172,6 @@ class UpdateVolunteerInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete volunteerEX section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -189,14 +181,12 @@ class UpdateVolunteerInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete volunteerEX error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'delete volunteerEX error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete volunteerEX error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

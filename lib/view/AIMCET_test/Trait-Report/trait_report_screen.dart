@@ -1,5 +1,4 @@
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_images.dart';
@@ -14,12 +13,14 @@ import 'package:flutter/material.dart';
 
 class TraitReportPage extends StatelessWidget {
   final AIMCETController controller;
-  final TraitReportModel? data;
-  const TraitReportPage({super.key, required this.controller, this.data});
+  final String uId;
+  const TraitReportPage({super.key, required this.controller, required this.uId});
 
   @override
   Widget build(BuildContext context) {
+    final data = controller.traitReport.value;
     if (data == null) {
+      controller.fetchTraitReport(userId: uId);
       return const Center(child: CircularProgressIndicator());
     }
     return Container(
@@ -40,9 +41,9 @@ class TraitReportPage extends StatelessWidget {
                       reportImages.length,
                       (index) {
                         List<String> traitContainer = [
-                          "You are a ${data?.traitType}.Your strongest trait is ${data?.topTwoNames![0]}, and second strongest trait is ${data?.topTwoNames![1]}.",
-                          data!.dinterests.toString(),
-                          data!.yourMHaves.toString(),
+                          "You are a ${data.traitType}.Your strongest trait is ${data.topTwoNames![0]}, and second strongest trait is ${data.topTwoNames![1]}.",
+                          data.dinterests.toString(),
+                          data.yourMHaves.toString(),
                         ];
                         return personSkillContainer(
                           image: reportImages[index],
@@ -69,7 +70,7 @@ class TraitReportPage extends StatelessWidget {
                 hBox,
                 SizedBox(
                   height: 200,
-                  child: TraitPieChart(riasec: data?.riasec),
+                  child: TraitPieChart(riasec: data.riasec),
                 ),
                 hBox,
                 piechartTexts(
@@ -110,9 +111,9 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Very Interested",
                           list: List.generate(
-                            data?.veryInterested?.length ?? 0,
+                            data.veryInterested?.length ?? 0,
                             (index) {
-                              final item = data?.veryInterested?[index];
+                              final item = data.veryInterested?[index];
                               return item == null
                                   ? shrinked
                                   : traitListContainer(
@@ -120,8 +121,8 @@ class TraitReportPage extends StatelessWidget {
                                       bgColor:
                                           const Color.fromARGB(255, 0, 180, 216)
                                               .withOpacity(0.1),
-                                      textColor:
-                                          const Color.fromARGB(255, 0, 180, 216),
+                                      textColor: const Color.fromARGB(
+                                          255, 0, 180, 216),
                                     );
                             },
                           ),
@@ -133,13 +134,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Interested",
                           list: List.generate(
-                            data!.interested!.length,
+                            data.interested!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.interested![index],
+                                data: data.interested![index],
                                 bgColor: const Color.fromARGB(255, 59, 0, 154)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 59, 0, 154),
+                                textColor:
+                                    const Color.fromARGB(255, 59, 0, 154),
                               );
                             },
                           ),
@@ -151,10 +153,10 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Neutral",
                           list: List.generate(
-                            data!.neutral!.length,
+                            data.neutral!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.neutral![index],
+                                data: data.neutral![index],
                                 bgColor: const Color.fromARGB(255, 247, 37, 133)
                                     .withOpacity(0.1),
                                 textColor:
@@ -170,10 +172,10 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Uninterested",
                           list: List.generate(
-                            data!.uninterested!.length,
+                            data.uninterested!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.uninterested![index],
+                                data: data.uninterested![index],
                                 bgColor: const Color.fromARGB(255, 181, 23, 158)
                                     .withOpacity(0.1),
                                 textColor:
@@ -202,13 +204,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Very Interested",
                           list: List.generate(
-                            data!.veryInterestedHaves!.length,
+                            data.veryInterestedHaves!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.veryInterestedHaves![index],
+                                data: data.veryInterestedHaves![index],
                                 bgColor: const Color.fromARGB(255, 0, 180, 216)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 0, 180, 216),
+                                textColor:
+                                    const Color.fromARGB(255, 0, 180, 216),
                               );
                             },
                           ),
@@ -220,13 +223,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Important",
                           list: List.generate(
-                            data!.importantHaves!.length,
+                            data.importantHaves!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.importantHaves![index],
+                                data: data.importantHaves![index],
                                 bgColor: const Color.fromARGB(255, 59, 0, 154)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 59, 0, 154),
+                                textColor:
+                                    const Color.fromARGB(255, 59, 0, 154),
                               );
                             },
                           ),
@@ -238,10 +242,10 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Neutral",
                           list: List.generate(
-                            data!.neutralHaves!.length,
+                            data.neutralHaves!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.neutralHaves![index],
+                                data: data.neutralHaves![index],
                                 bgColor: const Color.fromARGB(255, 247, 37, 133)
                                     .withOpacity(0.1),
                                 textColor:
@@ -270,13 +274,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Take It Or Leave It",
                           list: List.generate(
-                            data!.takeIt!.length,
+                            data.takeIt!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.takeIt![index],
+                                data: data.takeIt![index],
                                 bgColor: const Color.fromARGB(255, 0, 180, 216)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 0, 180, 216),
+                                textColor:
+                                    const Color.fromARGB(255, 0, 180, 216),
                               );
                             },
                           ),
@@ -288,13 +293,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Don't Mind It",
                           list: List.generate(
-                            data!.dontIt!.length,
+                            data.dontIt!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.dontIt![index],
+                                data: data.dontIt![index],
                                 bgColor: const Color.fromARGB(255, 59, 0, 154)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 59, 0, 154),
+                                textColor:
+                                    const Color.fromARGB(255, 59, 0, 154),
                               );
                             },
                           ),
@@ -319,13 +325,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Highly Preferred",
                           list: List.generate(
-                            data!.highlyPreferred!.length,
+                            data.highlyPreferred!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.highlyPreferred![index],
+                                data: data.highlyPreferred![index],
                                 bgColor: const Color.fromARGB(255, 0, 180, 216)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 0, 180, 216),
+                                textColor:
+                                    const Color.fromARGB(255, 0, 180, 216),
                               );
                             },
                           ),
@@ -337,13 +344,14 @@ class TraitReportPage extends StatelessWidget {
                         child: traitListMainContainer(
                           title: "Preferred",
                           list: List.generate(
-                            data!.preferred!.length,
+                            data.preferred!.length,
                             (index) {
                               return traitListContainer(
-                                data: data!.preferred![index],
+                                data: data.preferred![index],
                                 bgColor: const Color.fromARGB(255, 59, 0, 154)
                                     .withOpacity(0.1),
-                                textColor: const Color.fromARGB(255, 59, 0, 154),
+                                textColor:
+                                    const Color.fromARGB(255, 59, 0, 154),
                               );
                             },
                           ),
@@ -358,14 +366,14 @@ class TraitReportPage extends StatelessWidget {
                 traitPlainText(text: broadPersonalityText, size: 12),
                 hMBox,
                 TraitPercentageIndicatorBroad(
-                  broadPersonality: data?.broadPersonality,
+                  broadPersonality: data.broadPersonality,
                 ),
                 hMBox,
                 traitHeadingText(text: "Your Detailed Personality", size: 14),
                 traitPlainText(text: detailedPersonalityText, size: 12),
                 hMBox,
                 TraitPercentageIndicatorDetailed(
-                  detailedPersonality: data!.detailedPersonality,
+                  detailedPersonality: data.detailedPersonality,
                 ),
                 hLBox,
               ],

@@ -61,8 +61,7 @@ class UpdateLicenseCertificationService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(responseData.toString(), name: 'save License info');
-        log(successMessage, name: 'save License info success');
+       
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
@@ -71,7 +70,7 @@ class UpdateLicenseCertificationService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
+            
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -81,7 +80,6 @@ class UpdateLicenseCertificationService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save License info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -89,7 +87,6 @@ class UpdateLicenseCertificationService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save License info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -154,8 +151,6 @@ class UpdateLicenseCertificationService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(responseData.toString(), name: 'update License info');
-        log(successMessage, name: 'update License info success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -163,7 +158,6 @@ class UpdateLicenseCertificationService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete education section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -173,7 +167,6 @@ class UpdateLicenseCertificationService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update License info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -181,7 +174,6 @@ class UpdateLicenseCertificationService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update License info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -200,7 +192,6 @@ class UpdateLicenseCertificationService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(response.data.toString(), name: 'save license info');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -208,7 +199,6 @@ class UpdateLicenseCertificationService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete licen section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -218,7 +208,6 @@ class UpdateLicenseCertificationService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'delete licen info error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -226,7 +215,6 @@ class UpdateLicenseCertificationService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete licen info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

@@ -28,8 +28,8 @@ class AIMCETResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int initialVal = 0;
     final controller = Get.put(AIMCETController());
-    final data = controller.personalityReport;
-    final trait = controller.traitReport;
+    // final data = controller.personalityReport;
+    // final trait = controller.traitReport;
     return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
@@ -243,7 +243,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                       text: "REPORT is processing");
                                 } else if (controller.gp.value == "sucess") {
                                   return PersonalityReportPage(
-                                      controller: controller, data: data);
+                                      controller: controller, uId: uId);
                                 } else if (controller.gp.value ==
                                     "personality-e") {
                                   return fetchErrorText(
@@ -261,7 +261,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                       text: "REPORT is processing");
                                 } else if (controller.gp.value == "sucess") {
                                   return TraitReportPage(
-                                      controller: controller, data: trait);
+                                      controller: controller, uId: uId);
                                 } else if (controller.gp.value == "trait-e") {
                                   return fetchErrorText(
                                       text: "REPORT Fetch failed...");

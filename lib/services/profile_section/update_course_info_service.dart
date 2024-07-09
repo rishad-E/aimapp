@@ -28,28 +28,28 @@ class UpdateCourseInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'save course success');
+      
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'save course success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'save course error data');
+        
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'save course error');
+        // log('Server error: ${e.message}', name: 'save course error');
         throw Exception('Server error occurred');
       } else {
         log('error:${e.response?.data}', name: 'save course error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'save course error');
+      // log('error :${e.toString()}', name: 'save course error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -80,28 +80,28 @@ class UpdateCourseInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(), name: 'save course success');
+      // log(responseData.toString(), name: 'save course success');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'update course success');
+        
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        log(errorMessage.toString(), name: 'update course error data');
+        
         return errorMessage;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}', name: 'update course error');
+        // log('Server error: ${e.message}', name: 'update course error');
         throw Exception('Server error occurred');
       } else {
-        log('error:${e.response?.data}', name: 'update course error');
+        // log('error:${e.response?.data}', name: 'update course error');
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'update course error');
+      // log('error :${e.toString()}', name: 'update course error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;
@@ -122,7 +122,6 @@ class UpdateCourseInfoService {
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        log(successMessage, name: 'delete Course section success');
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -130,7 +129,6 @@ class UpdateCourseInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'delete Course section error');
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -140,8 +138,8 @@ class UpdateCourseInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-        log('Server error: ${e.message}',
-            name: 'delete Course section error');
+        // log('Server error: ${e.message}',
+        //     name: 'delete Course section error');
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
@@ -149,7 +147,7 @@ class UpdateCourseInfoService {
       }
     } catch (e) {
       // Handle other exceptions
-      log('error :${e.toString()}', name: 'delete Course info error');
+      // log('error :${e.toString()}', name: 'delete Course info error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

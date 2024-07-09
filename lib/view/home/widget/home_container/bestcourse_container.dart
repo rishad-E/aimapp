@@ -16,12 +16,12 @@ class BestCourseContainer extends StatelessWidget {
         color: kwhite,
         border: Border.all(color: const Color.fromARGB(255, 221, 220, 220)),
       ),
-      // child: Text("afdafdddddddddddddddddddddd"),
+     
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            // width: 63.w,
+         
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
@@ -65,8 +65,7 @@ class BestCourseContainer extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.only(left: 10, right: 5, bottom: 8),
-            // color: Colors.amber,
-            // height: 10.h,
+          
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
