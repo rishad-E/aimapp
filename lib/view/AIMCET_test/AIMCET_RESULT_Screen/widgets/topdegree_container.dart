@@ -26,17 +26,19 @@ class TopDegreeContainer extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            // padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 15, 187, 195),
                 shape: BoxShape.circle),
-            height: 20,
-            width: 20,
+            height: 28,
+            // width: 20,
             child: Center(
-                child: Text(
-              index,
-              style: TextStyle(color: kwhite),
-            )),
+              child: semiBoldChoiceText(
+                text: index,
+                size: 16,
+                color: kwhite,
+              ),
+            ),
           ),
           wBox,
           Expanded(

@@ -13,6 +13,8 @@ class LanguageAndCourseController extends GetxController {
 
   bool currentlyWorking = false;
 
+  RxList<String> associatedListdata = <String>[].obs;
+
 /*-----------save and update course---------- */
   Future<void> saveLanguageFunction({
     required String uId,
@@ -244,11 +246,13 @@ class LanguageAndCourseController extends GetxController {
     }
     return null;
   }
-  void clearLanguageControllers(){
+
+  void clearLanguageControllers() {
     languageController.clear();
     proficiencyController.clear();
   }
-  void clearCourseController(){
+
+  void clearCourseController() {
     courseController.clear();
     courseNoController.clear();
     courseAssosiatedController.clear();

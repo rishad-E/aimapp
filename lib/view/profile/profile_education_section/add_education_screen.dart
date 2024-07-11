@@ -202,19 +202,21 @@ class AddEducationScreen extends StatelessWidget {
                       ),
                     ),
                     educationAdditional(
-                      onTap: () => Get.to(
+                      onTap: () {
+                        controller.getSuggestedSkills();
+                        Get.to(
                         () => AddProfileSkillsScreen(uId: uId, edu: edu),
-                      ),
+                      );
+                      },
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
                       selected: Obx(() {
-                        return controller.addedSkill.isEmpty
-                            ? const SizedBox.shrink()
+                        final data = controller.addedSkill;
+                        return data.isEmpty
+                            ? shrinked
                             : Column(
-                                children: List.generate(
-                                    controller.addedSkill.length, (index) {
-                                  final data = controller.addedSkill;
+                                children: List.generate(data.length, (index) {
                                   return addedskillHome(
                                     data[index],
                                     onTap: () => data.removeAt(index),

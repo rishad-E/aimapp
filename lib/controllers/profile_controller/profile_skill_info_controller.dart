@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
@@ -49,6 +51,8 @@ class ProfileSkillController extends GetxController {
   /*------- final selected lists to pass ------*/
   bool permission = false;
   final awardController = Get.put(ProfileHonorsAwardsController());
+  final projectController = Get.put(ProfileProjectController());
+  final courseController = Get.put(LanguageAndCourseController());
 
   /*------- funtion to save and update skill info ------*/
   Future<void> saveSkillInfoFunction({
@@ -190,6 +194,7 @@ class ProfileSkillController extends GetxController {
       if (alldata != null) {
         /* -------extracting experience---------- */
         List<dynamic> experiencedata = alldata["experiences"];
+
         if (experiencedata.isNotEmpty) {
           experience.value =
               experiencedata.map((json) => Experience.fromJson(json)).toList();
@@ -198,15 +203,19 @@ class ProfileSkillController extends GetxController {
             for (var i = 0; i < experience.length; i++) {
               String company = experience[i].companyName.toString();
               String id = experience[i].id.toString();
+              String associatedItemEx =
+                  '${experience[i].title ?? ''} at $company';
               ExperienceModel model =
                   ExperienceModel(companyName: company, experienceID: id);
               if (!exSkillsList
                   .any((item) => item.companyName == model.companyName)) {
                 exSkillsList.add(model);
               }
-              if (!awardController.assosiatedListdata.contains(company)) {
-                awardController.assosiatedListdata.add(company);
+              if (!awardController.assosiatedListdata
+                  .contains(associatedItemEx)) {
+                awardController.assosiatedListdata.add(associatedItemEx);
               }
+              // projectController.associatedListdata.addAll(awardController.assosiatedListdata);
               log(exSkillsList.toString(), name: 'newskills c');
             }
           }
@@ -223,13 +232,16 @@ class ProfileSkillController extends GetxController {
             for (var i = 0; i < education.length; i++) {
               String school = education[i].school.toString();
               String id = education[i].id.toString();
+              String associatedItem =
+                  'Student at $school , ${education[i].degree ?? ''} , ${education[i].studyField ?? ''}';
               EducationModel model =
                   EducationModel(school: school, educationID: id);
               if (!edSchoolList.any((item) => item.school == model.school)) {
                 edSchoolList.add(model);
               }
-              if (!awardController.assosiatedListdata.contains(school)) {
-                awardController.assosiatedListdata.add(school);
+              if (!awardController.assosiatedListdata
+                  .contains(associatedItem)) {
+                awardController.assosiatedListdata.add(associatedItem);
               }
             }
           }
@@ -352,6 +364,14 @@ class ProfileSkillController extends GetxController {
         }
         if (alldata["educations"] == null && alldata["experiences"] == null) {
           awardController.assosiatedListdata.value = [];
+        }
+        for (var item in awardController.assosiatedListdata) {
+          if (!projectController.associatedListdata.contains(item)) {
+            projectController.associatedListdata.add(item);
+          }
+          if (!courseController.associatedListdata.contains(item)) {
+            courseController.associatedListdata.add(item);
+          }
         }
       }
       profileDataLoading.value = false;

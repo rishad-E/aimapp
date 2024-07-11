@@ -1,15 +1,15 @@
-import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class AssociatedBottomSheetProject extends StatelessWidget {
-  const AssociatedBottomSheetProject({super.key});
+class CourseBottomsheet extends StatelessWidget {
+  const CourseBottomsheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<ProfileProjectController>();
+    final c = Get.find<LanguageAndCourseController>();
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
       decoration: BoxDecoration(
@@ -53,12 +53,13 @@ class AssociatedBottomSheetProject extends StatelessWidget {
                 children: List.generate(
                   c.associatedListdata.length,
                   (index) {
+                    final data = c.associatedListdata[index];
                     return Column(
                       children: [
                         ListTile(
                           contentPadding: EdgeInsets.zero,
                           title: Text(
-                            c.associatedListdata[index],
+                            data,
                             style: TextStyle(
                               color: kblack,
                               fontSize: 14,
@@ -70,23 +71,18 @@ class AssociatedBottomSheetProject extends StatelessWidget {
                             activeColor: mainPurple,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5)),
-                            value: c.projectAssosiatedController.text ==
-                                c.associatedListdata[index],
+                            value: c.courseAssosiatedController.text == data,
                             onChanged: (value) {
                               if (value != null && value) {
-                                c.projectAssosiatedController.text =
-                                    c.associatedListdata[index];
-                                c.allFiledSelected();
-                                c.update(['update-projectInfo']);
+                                c.courseAssosiatedController.text = data;
+                                c.update(['update-courseInfo']);
                                 Get.back();
                               }
                             },
                           ),
                           onTap: () {
-                            c.projectAssosiatedController.text =
-                                c.associatedListdata[index];
-                            c.allFiledSelected();
-                            c.update(['update-projectInfo']);
+                            c.courseAssosiatedController.text = data;
+                            c.update(['update-courseInfo']);
                             Get.back();
                           },
                         ),

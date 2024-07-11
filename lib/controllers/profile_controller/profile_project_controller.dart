@@ -31,6 +31,9 @@ class ProfileProjectController extends GetxController {
   String? startdateBackend;
   String? enddateBackend;
 
+  RxList<String> associatedListdata = <String>[].obs;
+
+
   Future<void> saveProjectFunction({
     required String uId,
     required String proName,

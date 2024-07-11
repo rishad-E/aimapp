@@ -1,8 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_education_info_service.dart';
+import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,8 @@ class ProfileEducationController extends GetxController {
 
   String? startdateBackend;
   String? enddateBackend;
+
+  List<String> suggestedSkill = [];
 
   Future<void> saveEducationInfo({
     required String uId,
@@ -159,6 +164,9 @@ class ProfileEducationController extends GetxController {
     String? res =
         await UpdateEducationInfoService().deleteEducationInfo(eduID: eduID);
     final awardC = Get.put(ProfileHonorsAwardsController());
+    final projectC = Get.put(ProfileProjectController());
+    final courseC = Get.put(LanguageAndCourseController());
+
     if (res == "Education deleted successfully") {
       Get.showSnackbar(
         GetSnackBar(
@@ -171,7 +179,9 @@ class ProfileEducationController extends GetxController {
         ),
       );
       Get.off(() => ProfileHomeScreen(id: uId));
-      awardC.assosiatedListdata.remove(school);
+      awardC.assosiatedListdata.removeWhere((i) => i.contains(school));
+      projectC.associatedListdata.removeWhere((i) => i.contains(school));
+      courseC.associatedListdata.removeWhere((i) => i.contains(school));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -239,6 +249,21 @@ class ProfileEducationController extends GetxController {
     if (pickedFile == null) return null;
     selectedCamera = File(pickedFile.path);
     return selectedCamera;
+  }
+
+  Future<void> getSuggestedSkills() async {
+    try {
+      // loading.value = true;
+      List<String> skills = await UpdateSkillInfoService().getSuggestedSkills();
+      suggestedSkill.assignAll(skills);
+      update(['add-skill']);
+      // loading.value = false;
+    } catch (e) {
+      // Handle error
+      // loading.value = false;
+      // error?.value = e.toString();
+      log('Error fetching suggested skills: $e');
+    }
   }
 
   void addMediaFields({

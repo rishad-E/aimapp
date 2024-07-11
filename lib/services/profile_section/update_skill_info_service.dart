@@ -15,6 +15,7 @@ class UpdateSkillInfoService {
       if (response.statusCode == 200) {
         List<dynamic> data = response.data["suggestions"];
         List<String> res = List<String>.from(data);
+        // log(res.toString());
         return res;
       }
     } on DioException catch (e) {

@@ -1,7 +1,6 @@
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
-import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_education_section/add_education_screen.dart';
@@ -9,6 +8,7 @@ import 'package:aimshala/view/profile/profile_education_section/widgets/skill_wi
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 class AddProfileSkillsScreen extends StatelessWidget {
   final String uId;
@@ -17,16 +17,10 @@ class AddProfileSkillsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileEducationController());
-    List<String> skills = [
-      'Health Education',
-      'Health Promotion',
-      'Health Policy Development',
-      'Health Research',
-      'Health Advocacy',
-      'Health Informatics',
-      'Health Economics'
-    ];
+    // final controller = Get.put(ProfileEducationController());
+    final skillController = TextEditingController();
+    final controller = Get.find<ProfileEducationController>();
+
     return Scaffold(
       appBar: profileAppBar(
         title: 'Skills',
@@ -59,7 +53,16 @@ class AddProfileSkillsScreen extends StatelessWidget {
                     () {
                       final data = controller.addedSkill;
                       return data.isEmpty
-                          ? primarytxt("Add Skills", 14)
+                          ? skillTextField(
+                              controller: skillController,
+                              onFieldSubmitted: (value) {
+                                if (value.isNotEmpty) {
+                                  skillsAdding(
+                                      skillController.text, controller);
+                                  skillController.clear();
+                                }
+                              },
+                            )
                           : Wrap(
                               spacing: 5,
                               runSpacing: 4,
@@ -80,50 +83,25 @@ class AddProfileSkillsScreen extends StatelessWidget {
                                     );
                                   },
                                 ),
-                                Text(
-                                  "Add more...",
-                                  style: TextStyle(
-                                      fontSize: 16, color: textFieldColor),
-                                )
+                                IntrinsicWidth(
+                                    child: SizedBox(
+                                  // color: Colors.yellow,
+                                  height: 3.5.h,
+                                  child: skillTextField(
+                                    controller: skillController,
+                                    onFieldSubmitted: (value) {
+                                      if (value.isNotEmpty) {
+                                        skillsAdding(
+                                            skillController.text, controller);
+                                        skillController.clear();
+                                      }
+                                    },
+                                  ),
+                                ))
                               ],
                             );
                     },
                   )),
-              hMBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Currently in your skill section',
-                      style: TextStyle(fontSize: 11, color: textFieldColor),
-                    ),
-                    ListTile(
-                      shape: const Border(
-                          bottom: BorderSide(
-                              color: Color.fromARGB(255, 202, 201, 201))),
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(
-                        "Health Assessment",
-                        style: TextStyle(
-                          color: kblack,
-                          fontSize: 14,
-                        ),
-                      ),
-                      trailing: Checkbox(
-                        side: const BorderSide(color: Colors.grey),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        value: false,
-                        onChanged: (value) {},
-                      ),
-                      onTap: () {},
-                    )
-                  ],
-                ),
-              ),
               hMBox,
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -135,12 +113,12 @@ class AddProfileSkillsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Additional Skill',
+                            'Suggested Skills',
                             style:
                                 TextStyle(fontSize: 11, color: textFieldColor),
                           ),
                           ...List.generate(
-                            skills.length,
+                            c.suggestedSkill.length,
                             (index) => ListTile(
                               shape: const Border(
                                   bottom: BorderSide(
@@ -148,7 +126,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
                                           Color.fromARGB(255, 202, 201, 201))),
                               contentPadding: EdgeInsets.zero,
                               title: Text(
-                                skills[index],
+                                c.suggestedSkill[index],
                                 style: TextStyle(
                                   color: kblack,
                                   fontSize: 14,
@@ -159,21 +137,18 @@ class AddProfileSkillsScreen extends StatelessWidget {
                                 side: const BorderSide(color: Colors.grey),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(6)),
-                                value: controller.addedSkill
-                                    .any((element) => element == skills[index]),
+                                value: controller.addedSkill.any((element) =>
+                                    element == c.suggestedSkill[index]),
                                 onChanged: (value) {
                                   if (value != null) {
-                                    skillsAdding(skills[index], controller);
-                                    c.update(['add-skill']);
-                                    controller.update(['update-educationInfo']);
+                                    skillsAdding(
+                                        c.suggestedSkill[index], controller);
                                   }
                                 },
                               ),
                               onTap: () {
-                                skillsAdding(skills[index], controller);
-                                log('added skill to list');
-                                c.update(['add-skill']);
-                                controller.update(['update-educationInfo']);
+                                skillsAdding(
+                                    c.suggestedSkill[index], controller);
                               },
                             ),
                           )
@@ -185,6 +160,26 @@ class AddProfileSkillsScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget skillTextField(
+      {void Function(String)? onFieldSubmitted,
+      TextEditingController? controller}) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(fontSize: 13),
+      cursorColor: mainPurple,
+      cursorWidth: 1.5,
+      onFieldSubmitted: onFieldSubmitted,
+      decoration: const InputDecoration(
+          isDense: true,
+          border: InputBorder.none,
+          hintText: 'Add more...',
+          hintStyle: TextStyle(
+            color: Color.fromARGB(255, 116, 118, 119),
+            fontSize: 12,
+          )),
     );
   }
 }
@@ -199,4 +194,5 @@ void skillsAdding(String skill, ProfileEducationController controller) {
     log("skill already exists in the list");
   }
   controller.update(['add-skill']);
+  controller.update(['update-educationInfo']);
 }

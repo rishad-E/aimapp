@@ -1,7 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_language_course_controller.dart';
+import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_experience_info_service.dart';
+import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +40,14 @@ class ProfileExperienceController extends GetxController {
 
   String? startdateBackend;
   String? enddateBackend;
+
+  List<String> suggestedSkill = [];
+
+  @override
+  void onInit() {
+    super.onInit();
+    currentlyWorking.value = false;
+  }
 
   Future<void> saveExperienceInfoFunction({
     required String uId,
@@ -170,7 +182,12 @@ class ProfileExperienceController extends GetxController {
     String? res =
         await UpdateExperienceInfoService().deleteExperienceInfo(exID: exID);
     final awardC = Get.put(ProfileHonorsAwardsController());
+    final projectC = Get.put(ProfileProjectController());
+    final courseC = Get.put(LanguageAndCourseController());
     if (res == 'Experience deleted successfully') {
+      awardC.assosiatedListdata.removeWhere((i) => i.contains(company));
+      projectC.associatedListdata.removeWhere((i) => i.contains(company));
+      courseC.associatedListdata.removeWhere((i) => i.contains(company));
       Get.showSnackbar(
         GetSnackBar(
           snackStyle: SnackStyle.FLOATING,
@@ -182,7 +199,6 @@ class ProfileExperienceController extends GetxController {
         ),
       );
       Get.off(() => ProfileHomeScreen(id: uId));
-      awardC.assosiatedListdata.remove(company);
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -253,6 +269,16 @@ class ProfileExperienceController extends GetxController {
     // allMediasEX.add(selectedCameraEX);
     // updateSaveButtonEX();
     return selectedCameraEX;
+  }
+
+  Future<void> getSuggestedSkills() async {
+    try {
+      List<String> skills = await UpdateSkillInfoService().getSuggestedSkills();
+      suggestedSkill.assignAll(skills);
+      update(['skill-experience']);
+    } catch (e) {
+      log('Error fetching suggested skills: $e');
+    }
   }
 
   String? filedValidation(String? value) {

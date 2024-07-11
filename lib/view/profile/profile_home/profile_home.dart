@@ -178,52 +178,52 @@ class ProfileHomeScreen extends StatelessWidget {
                                   ],
                                 ),
                                 hBox,
-                                contactInfos(
-                                  text: data?.phone == null
-                                      ? "-"
-                                      : '+91 ${data?.phone}',
-                                  svg: 'assets/images/call.svg',
-                                  height: 22,
-                                  fit: BoxFit.fitHeight,
-                                ),
-                                contactInfos(
-                                  text: data?.email ?? '_',
-                                  svg: 'assets/images/email.svg',
-                                  fit: BoxFit.contain,
-                                ),
-                                contactInfos(
-                                  text: data?.address == null
-                                      ? "-"
-                                      : "${data?.address}, ${data?.city}, ${data?.state}",
-                                  svg: 'assets/images/location.svg',
-                                  height: 27,
-                                  fit: BoxFit.fitHeight,
-                                ),
-                                contactInfos(
-                                  text: data?.instagram == "" ||
-                                          data?.instagram == null
-                                      ? "_"
-                                      : "${data?.instagram}",
-                                  svg: 'assets/images/Instagram.svg',
-                                  fit: BoxFit.contain,
-                                ),
-                                contactInfos(
-                                  text: data?.facebook == "" ||
-                                          data?.facebook == null
-                                      ? "_"
-                                      : "${data?.facebook}",
-                                  svg: 'assets/images/facebook.svg',
-                                  height: 23,
-                                  fit: BoxFit.contain,
-                                ),
-                                contactInfos(
-                                  text: data?.twitter == "" ||
-                                          data?.twitter == null
-                                      ? "_"
-                                      : "${data?.twitter}",
-                                  svg: 'assets/images/twitter.svg',
-                                  fit: BoxFit.contain,
-                                ),
+                                data?.phone == null
+                                    ? shrinked
+                                    : contactInfos(
+                                        text: '+91 ${data?.phone}',
+                                        svg: 'assets/images/call.svg',
+                                        height: 22,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                data?.email == null
+                                    ? shrinked
+                                    : contactInfos(
+                                        text: "${data?.email}",
+                                        svg: 'assets/images/email.svg',
+                                        fit: BoxFit.contain,
+                                      ),
+                                data?.address == null
+                                    ? shrinked
+                                    : contactInfos(
+                                        text:
+                                            "${data?.address}, ${data?.city}, ${data?.state}",
+                                        svg: 'assets/images/location.svg',
+                                        height: 27,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                data?.instagram == "" || data?.instagram == null
+                                    ? shrinked
+                                    : contactInfos(
+                                        text: data?.instagram,
+                                        svg: 'assets/images/Instagram.svg',
+                                        fit: BoxFit.contain,
+                                      ),
+                                data?.facebook == "" || data?.facebook == null
+                                    ? shrinked
+                                    : contactInfos(
+                                        text: data?.facebook,
+                                        svg: 'assets/images/facebook.svg',
+                                        height: 23,
+                                        fit: BoxFit.contain,
+                                      ),
+                                data?.twitter == null || data?.twitter == ''
+                                    ? shrinked
+                                    : contactInfos(
+                                        text: data?.twitter,
+                                        svg: 'assets/images/twitter.svg',
+                                        fit: BoxFit.contain,
+                                      ),
                               ],
                             ),
                           );
@@ -278,7 +278,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                             secSubTitle:
                                                 data[index].degree.toString(),
                                             secSubTitle2:
-                                                "${yearFormatter(data[index].startDate.toString())}-${yearFormatter(data[index].endDate.toString())}",
+                                                "${parseDateMonthYear(data[index].startDate.toString())} - ${parseDateMonthYear(data[index].endDate.toString())}",
                                             secSubTitle3:
                                                 "Grade: ${data[index].grade.toString()}",
                                             secSubTitle4: data[index].skills ==
@@ -341,22 +341,18 @@ class ProfileHomeScreen extends StatelessWidget {
                                       data.length < 2 ? data.length : 2,
                                       (index) => sectionDataWidget(
                                           image: "assets/images/upEvent1.png",
-                                          secTitle: data[index]
-                                              .title
-                                              .toString(),
+                                          secTitle:
+                                              data[index].title.toString(),
                                           secSubTitle: data[index]
                                               .companyName
                                               .toString(),
-                                          secSubTitle2: data[index]
-                                                      .endDate
-                                                      .toString() ==
+                                          secSubTitle2: data[index].endDate ==
                                                   'currently_working'
                                               ? "${parseDateMonthYear(data[index].startDate.toString())} - On-going"
                                               : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           secSubTitle3:
                                               "${data[index].locationType.toString()},${data[index].location.toString()}",
-                                          secSubTitle4: data[index]
-                                                      .skills ==
+                                          secSubTitle4: data[index].skills ==
                                                   null
                                               ? "Skills:_"
                                               : "Skills:${data[index].skills.toString()}",

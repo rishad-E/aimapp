@@ -84,6 +84,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                         child: AbsorbPointer(
                           child: TextFormField(
                             readOnly: true,
+                            minLines: 1,
+                            maxLines: null,
                             controller: controller.assosiatedController,
                             validator: (value) =>
                                 controller.filedValidation(value),

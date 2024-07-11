@@ -43,7 +43,7 @@ class UpdateContactInfo extends GetxController {
     required String instagram,
     required String twitter,
   }) async {
-    bool? res = await UpdateContactInfoService().updateContactInfo(
+    String? res = await UpdateContactInfoService().updateContactInfo(
       uId: uId,
       userName: userName,
       mobNumber: mobNumber,
@@ -57,18 +57,36 @@ class UpdateContactInfo extends GetxController {
       instagram: instagram,
       twitter: twitter,
     );
-    if (res == true) {
-     Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        const GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: 'Contact info update failed',
-          margin: EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
+    if (res == 'Contact information updated successfully.') {
+      Get.snackbar(
+        "Udated successfully",
+        '$res',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(5)
       );
+      Get.off(() => ProfileHomeScreen(id: uId));
+    } else {
+      Get.snackbar(
+        "Error",
+        '$res',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 2),
+        backgroundColor: kred,
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(5)
+      );
+      // Get.showSnackbar(
+      //    GetSnackBar(
+      //     snackStyle: SnackStyle.FLOATING,
+      //     message: res,
+      //     margin: const EdgeInsets.all(10),
+      //     backgroundColor: Colors.red,
+      //     duration: const Duration(seconds: 2),
+      //   ),
+      // );
     }
   }
 
@@ -126,10 +144,7 @@ class UpdateContactInfo extends GetxController {
         emailController.text.isNotEmpty &&
         addressController.text.isNotEmpty &&
         cityController.text.isNotEmpty &&
-        stateController.text.isNotEmpty &&
-        facebookController.text.isNotEmpty &&
-        instagramController.text.isNotEmpty &&
-        twitterController.text.isNotEmpty;
+        stateController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['update-contactInfo']);

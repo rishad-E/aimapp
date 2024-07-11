@@ -6,6 +6,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
+import 'package:aimshala/view/profile/profile_add_course_section/widgets/course_bottom_sheet.dart';
 import 'package:aimshala/view/profile/profile_add_course_section/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -100,18 +101,26 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       hBox,
                       courseInfoFiled(
                         text: primarytxt3('Associated with', 9.5.sp),
-                        textField: TextFormField(
-                          controller: controller.courseAssosiatedController,
-                          validator: (value) =>
-                              controller.fieldValidation(value),
-                          onChanged: (value) =>
-                              controller.update(['update-courseInfo']),
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: infoFieldDecoration(
-                              hintText: 'Please Select',
-                              suffixWidget:
-                                  const Icon(Icons.keyboard_arrow_down)),
-                          style: const TextStyle(fontSize: 13),
+                        textField: GestureDetector(
+                          onTap: () => showAssosiatedBottomsheet(context),
+                          child: AbsorbPointer(
+                            child: TextFormField(
+                              readOnly: true,
+                              minLines: 1,
+                              maxLines: null,
+                              controller: controller.courseAssosiatedController,
+                              validator: (value) =>
+                                  controller.fieldValidation(value),
+                              onChanged: (value) =>
+                                  controller.update(['update-courseInfo']),
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              decoration: infoFieldDecoration(
+                                  hintText: 'Please Select',
+                                  suffixWidget:
+                                      const Icon(Icons.keyboard_arrow_down)),
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ),
                         ),
                       ),
                       hMBox,
@@ -187,7 +196,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
                       course == null
                           ? shrinked
                           : deleteSectionWidget(
-                              onPressed: ()=>controller.deleteCourseInfo(uId: uId, courseID: courseID.toString()),
+                              onPressed: () => controller.deleteCourseInfo(
+                                  uId: uId, courseID: courseID.toString()),
                               section: 'Courses',
                             )
                     ],
@@ -198,6 +208,13 @@ class ProfileAddCourseScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showAssosiatedBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const CourseBottomsheet(),
     );
   }
 }

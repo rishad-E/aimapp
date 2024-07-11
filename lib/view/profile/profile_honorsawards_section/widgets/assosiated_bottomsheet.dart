@@ -8,7 +8,7 @@ class AwardAssosiatedBottomsheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<ProfileHonorsAwardsController>();
+    final c = Get.find<ProfileHonorsAwardsController>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -40,9 +40,9 @@ class AwardAssosiatedBottomsheet extends StatelessWidget {
             ),
             Column(
               children: List.generate(
-                controller.assosiatedListdata.length,
+                c.assosiatedListdata.length,
                 (index) {
-                  final data = controller.assosiatedListdata;
+                  final data = c.assosiatedListdata;
                   return ListTile(
                     shape: const Border(
                         bottom: BorderSide(
@@ -61,22 +61,15 @@ class AwardAssosiatedBottomsheet extends StatelessWidget {
                       activeColor: mainPurple,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
-                      value:
-                          controller.assosiatedController.text == data[index],
+                      value: c.assosiatedController.text == data[index],
                       onChanged: (value) {
                         if (value != null && value) {
-                          controller.assosiatedController.text = data[index];
-                          controller.update(['update-HonorAwardsbutton']);
-                          controller.allFieldSelect();
-                          Get.back();
+                          checkListDataUpdate(c, data[index]);
                         }
                       },
                     ),
                     onTap: () {
-                      controller.assosiatedController.text = data[index];
-                      controller.update(['update-HonorAwardsbutton']);
-                      controller.allFieldSelect();
-                      Get.back();
+                      checkListDataUpdate(c, data[index]);
                     },
                   );
                 },
@@ -86,5 +79,12 @@ class AwardAssosiatedBottomsheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void checkListDataUpdate(ProfileHonorsAwardsController c, String item) {
+    c.assosiatedController.text = item;
+    c.update(['update-HonorAwardsbutton']);
+    c.allFieldSelect();
+    Get.back();
   }
 }

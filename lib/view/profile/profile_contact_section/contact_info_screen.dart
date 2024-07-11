@@ -215,11 +215,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Facebook', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.facebookController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
-                      },
+                      // validator: (value) => controller.fieldValidator(value),
+                      // onChanged: (value) {
+                      //   controller.allFieldSelect();
+                      //   controller.update(['update-contactInfo']);
+                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(hintText: 'Facebook URL'),
@@ -229,11 +229,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Instagram', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.instagramController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
-                      },
+                      // validator: (value) => controller.fieldValidator(value),
+                      // onChanged: (value) {
+                      //   controller.allFieldSelect();
+                      //   controller.update(['update-contactInfo']);
+                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration:
@@ -244,11 +244,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Twitter', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.twitterController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
-                      },
+                      // validator: (value) => controller.fieldValidator(value),
+                      // onChanged: (value) {
+                      //   controller.allFieldSelect();
+                      //   controller.update(['update-contactInfo']);
+                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(hintText: 'Twitter URL'),

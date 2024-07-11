@@ -18,6 +18,12 @@ class TempScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mentor = Get.put(MentorPersonalDetailController());
     final educaotr = Get.put(EducatorPersonalDetailController());
+
+    List<String> data = [
+      'Student at School A= Degree A= Field A',
+      'Student at School B= Degree B= Field B',
+      'Student at School A= Degree C= Field C'
+    ];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -29,6 +35,8 @@ class TempScreen extends StatelessWidget {
             elevatedButtonItems(
               onPressed: () {
                 // Get.to(() => TempResultScreen());
+                data.removeWhere((element) => element.contains('Field A'));
+                log(data.toString());
               },
               item: "aimcet result screen temp",
             ),
@@ -74,7 +82,7 @@ class TempScreen extends StatelessWidget {
               item: 'Mentor',
             ),
             hMBox,
-              elevatedButtonItems(
+            elevatedButtonItems(
               onPressed: () => Get.to(() => const CounselorPersonalSection()),
               item: "Counselor",
             ),

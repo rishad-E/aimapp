@@ -252,8 +252,11 @@ class AddExperienceScreen extends StatelessWidget {
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
-                      onTap: () => Get.to(() =>
-                          AddExperienceSkillScreen(uId: uId, ex: experience)),
+                      onTap: () {
+                        controller.getSuggestedSkills();
+                        Get.to(() =>
+                          AddExperienceSkillScreen(uId: uId, ex: experience));
+                      },
                       selected: Obx(
                         () => controller.addedSkillEX.isEmpty
                             ? shrinked
@@ -456,7 +459,6 @@ class AddExperienceScreen extends StatelessWidget {
     if (experience.endDate == "currently_working") {
       c.currentlyWorking.value = true;
       c.endDateController.clear();
-      c.update(['EX-currentlyworkingButton']);
     } else {
       c.endDateController.text =
           c.endDateController.text.isEmpty && experience.endDate != null
@@ -481,6 +483,7 @@ class AddExperienceScreen extends StatelessWidget {
     }
     c.updateSaveButtonEX();
     c.update(['update-experienceInfo']);
+    c.update(['EX-currentlyworkingButton']);
   }
 
   String convertDateFormat(String date) {

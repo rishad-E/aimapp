@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class UpdateContactInfoService {
   Dio dio = Dio();
 
-  Future<bool?> updateContactInfo(
+  Future<String?> updateContactInfo(
       {required String uId,
       required String userName,
       required String mobNumber,
@@ -32,10 +32,10 @@ class UpdateContactInfoService {
             "username": userName,
             "email": email,
             "address": address,
-            "pin_code":pincode,
+            "pin_code": pincode,
             "state": state,
             "city": city,
-            "country":country,
+            "country": country,
             "facebook": facebook,
             "twitter": twitter,
             "instagram": instagram,
@@ -43,10 +43,29 @@ class UpdateContactInfoService {
           options: Options(
             validateStatus: (status) => status! < 599,
           ));
-      log(response.data.toString(),name:'save contact info res' );
-      if (response.statusCode == 200) {
-        // log(response.data.toString(), name: 'save contact info');
-        return true;
+      log(response.data.toString(), name: 'save contact info res');
+      
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('success')) {
+          String successMessage = resData['success'];
+          return successMessage;
+        } else if (resData.containsKey('error')) {
+          if (resData['error'] is Map) {
+            Map<String, dynamic> errors = resData['error'];
+            String first = errors.keys.first;
+            if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+              String errorMessage = errors[first][0].toString();
+              return errorMessage;
+            }
+          } else if (resData['error'] is String) {
+            String errorMessage = resData['error'];
+            return errorMessage;
+          }
+        }
+      } else if (response.data is String) {
+        String message = response.data.toString();
+        return message;
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
