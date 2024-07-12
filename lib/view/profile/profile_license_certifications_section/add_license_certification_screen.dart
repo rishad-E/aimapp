@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
@@ -168,8 +167,11 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                       ),
                     ),
                     licenseAdditional(
-                      onTap: () => Get.to(() =>
-                          AddLicenseSkillScreen(uId: uId, license: license)),
+                      onTap: () {
+                        controller.getSuggestedSkills();
+                        Get.to(() =>
+                          AddLicenseSkillScreen(uId: uId, license: license));
+                      },
                       heading: 'Skills',
                       subText:
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
@@ -405,6 +407,8 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
         c.credentialurlController.text.isEmpty && license.credentialUrl != null
             ? license.credentialUrl as String
             : c.credentialurlController.text;
+    c.startdateBackend = license.issueDate!;
+    c.enddateBackend = license.expireDate!;
     if (c.addedLicenseSkill.isEmpty &&
         license.skills != null &&
         license.skills != "") {

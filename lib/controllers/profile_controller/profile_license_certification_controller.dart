@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_license_certification_service.dart';
+import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,7 @@ class ProfileLicenseCertificationController extends GetxController {
 
   String? startdateBackend;
   String? enddateBackend;
+  List<String> suggestedSkill = [];
 
   Future<void> saveLicenseCertificationFunction({
     required String uId,
@@ -169,6 +172,16 @@ class ProfileLicenseCertificationController extends GetxController {
         ),
       );
       Get.off(() => ProfileHomeScreen(id: uId));
+    }
+  }
+
+  Future<void> getSuggestedSkills() async {
+    try {
+      List<String> skills = await UpdateSkillInfoService().getSuggestedSkills();
+      suggestedSkill.assignAll(skills);
+      update(['add-licenseSkill']);
+    } catch (e) {
+      log('Error fetching suggested skills: $e');
     }
   }
 

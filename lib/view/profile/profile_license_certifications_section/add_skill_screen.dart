@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
-import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/add_license_certification_screen.dart';
 import 'package:aimshala/view/profile/profile_license_certifications_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 class AddLicenseSkillScreen extends StatelessWidget {
   final String uId;
@@ -19,15 +19,7 @@ class AddLicenseSkillScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileLicenseCertificationController());
-    List<String> skills = [
-      'Health Education',
-      'Health Promotion',
-      'Health Policy Development',
-      'Health Research',
-      'Health Advocacy',
-      'Health Informatics',
-      'Health Economics'
-    ];
+    final skillController = TextEditingController();
     return Scaffold(
       appBar: profileAppBar(
         title: 'Skills',
@@ -59,7 +51,16 @@ class AddLicenseSkillScreen extends StatelessWidget {
                   child: Obx(() {
                     final data = controller.addedLicenseSkill;
                     return data.isEmpty
-                        ? primarytxt("Add Skills", 14)
+                        ? skillTextField(
+                            controller: skillController,
+                            onFieldSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                addLicenseSkill(
+                                    skillController.text, controller);
+                                skillController.clear();
+                              }
+                            },
+                          )
                         : Wrap(
                             spacing: 5,
                             runSpacing: 4,
@@ -77,49 +78,23 @@ class AddLicenseSkillScreen extends StatelessWidget {
                                   );
                                 },
                               ),
-                              Text(
-                                "Add more...",
-                                style: TextStyle(
-                                    fontSize: 16, color: textFieldColor),
+                              IntrinsicWidth(
+                                child: SizedBox(
+                                    height: 3.5.h,
+                                    child: skillTextField(
+                                      controller: skillController,
+                                      onFieldSubmitted: (value) {
+                                        if (value.isNotEmpty) {
+                                          addLicenseSkill(
+                                              skillController.text, controller);
+                                          skillController.clear();
+                                        }
+                                      },
+                                    )),
                               )
                             ],
                           );
                   })),
-              hMBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Currently in your skill section',
-                      style: TextStyle(fontSize: 11, color: textFieldColor),
-                    ),
-                    ListTile(
-                      shape: const Border(
-                          bottom: BorderSide(
-                              color: Color.fromARGB(255, 202, 201, 201))),
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(
-                        "Health Assessment",
-                        style: TextStyle(
-                          color: kblack,
-                          fontSize: 14,
-                        ),
-                      ),
-                      trailing: Checkbox(
-                        side: const BorderSide(color: Colors.grey),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        value: false,
-                        onChanged: (value) {},
-                      ),
-                      onTap: () {},
-                    )
-                  ],
-                ),
-              ),
               hMBox,
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -131,46 +106,45 @@ class AddLicenseSkillScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Additional Skill',
+                            'Suggested Skills',
                             style:
                                 TextStyle(fontSize: 11, color: textFieldColor),
                           ),
                           ...List.generate(
-                            skills.length,
-                            (index) => ListTile(
-                              shape: const Border(
-                                  bottom: BorderSide(
-                                      color:
-                                          Color.fromARGB(255, 202, 201, 201))),
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                skills[index],
-                                style: TextStyle(
-                                  color: kblack,
-                                  fontSize: 14,
+                            c.suggestedSkill.length,
+                            (index) {
+                              final data = c.suggestedSkill[index];
+                              return ListTile(
+                                shape: const Border(
+                                    bottom: BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 202, 201, 201))),
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(
+                                  data,
+                                  style: TextStyle(
+                                    color: kblack,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                              trailing: Checkbox(
-                                activeColor: mainPurple,
-                                side: const BorderSide(color: Colors.grey),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
-                                value: controller.addedLicenseSkill
-                                    .any((element) => element == skills[index]),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    addLicenseSkill(skills[index], c);
-                                    c.updateLicenseButton();
-                                    c.update(['add-licenseSkill']);
-                                  }
+                                trailing: Checkbox(
+                                  activeColor: mainPurple,
+                                  side: const BorderSide(color: Colors.grey),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  value:
+                                      c.addedLicenseSkill.any((i) => i == data),
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      addLicenseSkill(data, c);
+                                    }
+                                  },
+                                ),
+                                onTap: () {
+                                  addLicenseSkill(data, c);
                                 },
-                              ),
-                              onTap: () {
-                                addLicenseSkill(skills[index], c);
-                                c.updateLicenseButton();
-                                c.update(['add-licenseSkill']);
-                              },
-                            ),
+                              );
+                            },
                           )
                         ],
                       );
@@ -180,6 +154,26 @@ class AddLicenseSkillScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget skillTextField(
+      {void Function(String)? onFieldSubmitted,
+      TextEditingController? controller}) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(fontSize: 13),
+      cursorColor: mainPurple,
+      cursorWidth: 1.5,
+      onFieldSubmitted: onFieldSubmitted,
+      decoration: const InputDecoration(
+          isDense: true,
+          border: InputBorder.none,
+          hintText: 'Add more...',
+          hintStyle: TextStyle(
+            color: Color.fromARGB(255, 116, 118, 119),
+            fontSize: 12,
+          )),
     );
   }
 }
@@ -192,5 +186,6 @@ void addLicenseSkill(String skill, ProfileLicenseCertificationController c) {
     c.addedLicenseSkill.remove(skill);
     // log("skill already exists in the list");
   }
+  c.updateLicenseButton();
   c.update(['add-licenseSkill']);
 }

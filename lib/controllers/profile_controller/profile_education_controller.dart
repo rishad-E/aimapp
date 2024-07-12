@@ -113,6 +113,7 @@ class ProfileEducationController extends GetxController {
     required List<String> mediaLinks,
     required List<File> images,
     required List<String> skills,
+    required List<String> mediaUrl
   }) async {
     String? res = await UpdateEducationInfoService().updateEducationInfo(
       edID: edID,
@@ -130,6 +131,7 @@ class ProfileEducationController extends GetxController {
       mediaLinks: mediaLinks,
       images: images,
       skills: skills,
+      mediaUrl: mediaUrl
     );
     if (res == "Education details updated successfully.") {
       Get.showSnackbar(

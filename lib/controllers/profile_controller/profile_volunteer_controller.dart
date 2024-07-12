@@ -194,12 +194,12 @@ class ProfileVolunteerController extends GetxController {
       final formatedDate = DateFormat('dd-MM-yyyy').format(picker);
       if (start == true) {
         startdateController.text = formatedDate;
-        startdateBackend =  DateFormat('yyyy-MM-dd').format(picker);
+        startdateBackend = DateFormat('yyyy-MM-dd').format(picker);
         allFieldSelected();
         update(['update-volunteerInfo']);
       } else {
         endDateController.text = formatedDate;
-        enddateBackend =  DateFormat('yyyy-MM-dd').format(picker);
+        enddateBackend = DateFormat('yyyy-MM-dd').format(picker);
         allFieldSelected();
         update(['update-volunteerInfo']);
       }
@@ -235,6 +235,7 @@ class ProfileVolunteerController extends GetxController {
     currentlyWorking.value = !currentlyWorking.value;
     if (currentlyWorking.value == true) {
       endDateController.clear();
+      enddateBackend = endDateController.text;
     }
     update(['currentlyWorking-volunteer']);
   }

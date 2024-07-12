@@ -233,7 +233,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           assosiated:
                                               c.assosiatedController.text,
                                           issuer: c.issuerController.text,
-                                          startdate: c.startdateBackend.toString(),
+                                          startdate:
+                                              c.startdateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           media: imagesList,
@@ -247,7 +248,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           assosiated:
                                               c.assosiatedController.text,
                                           issuer: c.issuerController.text,
-                                          startdate: c.startdateBackend.toString(),
+                                          startdate:
+                                              c.startdateBackend.toString(),
                                           description:
                                               c.descriptionController.text,
                                           media: imagesList,
@@ -301,6 +303,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
         c.descriptionController.text.isEmpty && award.description != null
             ? award.description as String
             : c.descriptionController.text;
+    c.startdateBackend = award.startDate!;
     if (c.allAwardMedias.isEmpty && award.media != null) {
       List<AddMediaModel> mediaList = parseMediaItems(award);
       c.allAwardMedias.addAll(mediaList);

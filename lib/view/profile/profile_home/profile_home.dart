@@ -10,6 +10,7 @@ import 'package:aimshala/controllers/profile_controller/profile_project_controll
 import 'package:aimshala/controllers/profile_controller/profile_publications_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_skill_info_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_volunteer_controller.dart';
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -18,6 +19,7 @@ import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_add_course_section/add_course_info_screen.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/add_skill_screen.dart';
 import 'package:aimshala/view/profile/profile_home/update_profile_photo.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/profile_media_functions.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/course_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/education_section.dart';
 import 'package:aimshala/view/profile/profile_view_all_section/experience_section.dart';
@@ -280,14 +282,15 @@ class ProfileHomeScreen extends StatelessWidget {
                                             secSubTitle2:
                                                 "${parseDateMonthYear(data[index].startDate.toString())} - ${parseDateMonthYear(data[index].endDate.toString())}",
                                             secSubTitle3:
-                                                "Grade: ${data[index].grade.toString()}",
+                                                "Grade: ${data[index].grade}",
                                             secSubTitle4: data[index].skills ==
                                                     null
                                                 ? 'Skill: _'
-                                                : "Skills: ${data[index].skills.toString()}",
+                                                : "Skills: ${data[index].skills}",
                                             secSubTitle5: data[index]
                                                 .description
                                                 .toString(),
+                                            data: data[index],
                                             end: data.length < 2
                                                 ? data.length - 1 == index
                                                 : index == 1);
@@ -359,6 +362,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                           secSubTitle5: data[index]
                                               .description
                                               .toString(),
+                                          data: data[index],
                                           end: data.length < 2
                                               ? data.length - 1 == index
                                               : index == 1),
@@ -668,10 +672,9 @@ class ProfileHomeScreen extends StatelessWidget {
                                       data.length < 2 ? data.length : 2,
                                       (index) => honorWidget(
                                           title: data[index].title.toString(),
-                                          date: data[index]
-                                                      .endDate
-                                                      .toString() ==
-                                                  'currently_working'
+                                          date: data[index].endDate ==
+                                                      'currently_working' ||
+                                                  data[index].endDate == null
                                               ? "${parseDateMonthYear(data[index].startDate.toString())} - On-going"
                                               : "${parseDateMonthYear(data[index].startDate.toString())}-${parseDateMonthYear(data[index].endDate.toString())}",
                                           image: "assets/images/upEvent1.png",

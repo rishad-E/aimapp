@@ -35,7 +35,6 @@ class AddExperienceScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       exID = experience?.id.toString();
       initializeFormFields(controller, experience);
-      // controller.toggleCurrentlyWorking();
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -255,7 +254,7 @@ class AddExperienceScreen extends StatelessWidget {
                       onTap: () {
                         controller.getSuggestedSkills();
                         Get.to(() =>
-                          AddExperienceSkillScreen(uId: uId, ex: experience));
+                            AddExperienceSkillScreen(uId: uId, ex: experience));
                       },
                       selected: Obx(
                         () => controller.addedSkillEX.isEmpty
@@ -455,15 +454,21 @@ class AddExperienceScreen extends StatelessWidget {
         c.profileController.text.isEmpty && experience.profile != null
             ? experience.profile as String
             : c.profileController.text;
+    c.startdateBackend = experience.startDate!;
+    c.enddateBackend =
+        experience.endDate == 'currently_working' ? '' : experience.endDate;
     c.update(['update-experienceInfo']);
     if (experience.endDate == "currently_working") {
       c.currentlyWorking.value = true;
       c.endDateController.clear();
+      c.update(['EX-currentlyworkingButton']);
     } else {
+      c.currentlyWorking.value = false;
       c.endDateController.text =
           c.endDateController.text.isEmpty && experience.endDate != null
               ? convertDateFormat(experience.endDate!)
               : c.endDateController.text;
+      c.update(['EX-currentlyworkingButton']);
     }
     if (c.addedSkillEX.isEmpty &&
         experience.skills != null &&
@@ -483,7 +488,6 @@ class AddExperienceScreen extends StatelessWidget {
     }
     c.updateSaveButtonEX();
     c.update(['update-experienceInfo']);
-    c.update(['EX-currentlyworkingButton']);
   }
 
   String convertDateFormat(String date) {

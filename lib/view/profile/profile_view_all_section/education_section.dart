@@ -42,7 +42,7 @@ class EducationSectionScreen extends StatelessWidget {
                         year:
                             "${yearFormatter(data.startDate.toString())}-${yearFormatter(data.endDate.toString())}",
                         grade: data.grade.toString(),
-                        skill: "Skills: ${data.skills.toString()}",
+                        skill: "Skills: ${data.skills}",
                         description: data.description.toString(),
                         end: education.length - 1 == index,
                         onTap: () {

@@ -1,13 +1,13 @@
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
-import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:aimshala/view/profile/profile_project_section/add_project_screen.dart';
 import 'package:aimshala/view/profile/profile_project_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 
 class AddProjectSkillScreen extends StatelessWidget {
   final String uId;
@@ -16,16 +16,8 @@ class AddProjectSkillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(ProfileProjectController());
-    List<String> skills = [
-      'Health Education',
-      'Health Promotion',
-      'Health Policy Development',
-      'Health Research',
-      'Health Advocacy',
-      'Health Informatics',
-      'Health Economics'
-    ];
+    final controller = Get.find<ProfileProjectController>();
+    final skillController = TextEditingController();
     return Scaffold(
       appBar: profileAppBar(
         title: 'Skills',
@@ -59,7 +51,16 @@ class AddProjectSkillScreen extends StatelessWidget {
                   child: Obx(() {
                     final data = controller.addedProjectSkill;
                     return data.isEmpty
-                        ? primarytxt('Add Skills', 14)
+                        ? skillTextField(
+                            controller: skillController,
+                            onFieldSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                projectSkillsAdding(
+                                    skillController.text, controller);
+                                skillController.clear();
+                              }
+                            },
+                          )
                         : Wrap(
                             spacing: 5,
                             runSpacing: 4,
@@ -77,49 +78,24 @@ class AddProjectSkillScreen extends StatelessWidget {
                                   );
                                 },
                               ),
-                              Text(
-                                "Add more...",
-                                style: TextStyle(
-                                    fontSize: 16, color: textFieldColor),
+                              IntrinsicWidth(
+                                child: SizedBox(
+                                  height: 3.5.h,
+                                  child: skillTextField(
+                                    controller: skillController,
+                                    onFieldSubmitted: (value) {
+                                      if (value.isNotEmpty) {
+                                        projectSkillsAdding(
+                                            skillController.text, controller);
+                                        skillController.clear();
+                                      }
+                                    },
+                                  ),
+                                ),
                               )
                             ],
                           );
                   })),
-              hMBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Currently in your skill section',
-                      style: TextStyle(fontSize: 11, color: textFieldColor),
-                    ),
-                    ListTile(
-                      shape: const Border(
-                          bottom: BorderSide(
-                              color: Color.fromARGB(255, 202, 201, 201))),
-                      contentPadding: EdgeInsets.zero,
-                      title: Text(
-                        "Health Assessment",
-                        style: TextStyle(
-                          color: kblack,
-                          fontSize: 14,
-                        ),
-                      ),
-                      trailing: Checkbox(
-                        side: const BorderSide(color: Colors.grey),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6)),
-                        value: false,
-                        onChanged: (value) {},
-                      ),
-                      onTap: () {},
-                    )
-                  ],
-                ),
-              ),
               hMBox,
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -131,46 +107,45 @@ class AddProjectSkillScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Additional Skill',
+                            'Suggested Skills',
                             style:
                                 TextStyle(fontSize: 11, color: textFieldColor),
                           ),
                           ...List.generate(
-                            skills.length,
-                            (index) => ListTile(
-                              shape: const Border(
-                                  bottom: BorderSide(
-                                      color:
-                                          Color.fromARGB(255, 202, 201, 201))),
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                skills[index],
-                                style: TextStyle(
-                                  color: kblack,
-                                  fontSize: 14,
+                            c.suggestedSkill.length,
+                            (index) {
+                              final data = c.suggestedSkill[index];
+                              return ListTile(
+                                shape: const Border(
+                                    bottom: BorderSide(
+                                        color: Color.fromARGB(
+                                            255, 202, 201, 201))),
+                                contentPadding: EdgeInsets.zero,
+                                title: Text(
+                                  data,
+                                  style: TextStyle(
+                                    color: kblack,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                              trailing: Checkbox(
-                                activeColor: mainPurple,
-                                side: const BorderSide(color: Colors.grey),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6)),
-                                value: c.addedProjectSkill
-                                    .any((i) => i == skills[index]),
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    projectSkillsAdding(skills[index], c);
-                                    c.update(['add-projectSkill']);
-                                    c.update(['update-projectInfo']);
-                                  }
+                                trailing: Checkbox(
+                                  activeColor: mainPurple,
+                                  side: const BorderSide(color: Colors.grey),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6)),
+                                  value:
+                                      c.addedProjectSkill.any((i) => i == data),
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      projectSkillsAdding(data, c);
+                                    }
+                                  },
+                                ),
+                                onTap: () {
+                                  projectSkillsAdding(data, c);
                                 },
-                              ),
-                              onTap: () {
-                                projectSkillsAdding(skills[index], c);
-                                c.update(['add-projectSkill']);
-                                c.update(['update-projectInfo']);
-                              },
-                            ),
+                              );
+                            },
                           )
                         ],
                       );
@@ -180,6 +155,26 @@ class AddProjectSkillScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget skillTextField(
+      {void Function(String)? onFieldSubmitted,
+      TextEditingController? controller}) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(fontSize: 13),
+      cursorColor: mainPurple,
+      cursorWidth: 1.5,
+      onFieldSubmitted: onFieldSubmitted,
+      decoration: const InputDecoration(
+          isDense: true,
+          border: InputBorder.none,
+          hintText: 'Add more...',
+          hintStyle: TextStyle(
+            color: Color.fromARGB(255, 116, 118, 119),
+            fontSize: 12,
+          )),
     );
   }
 }

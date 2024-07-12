@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:aimshala/controllers/profile_controller/profile_project_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
@@ -97,8 +96,11 @@ class ProfileAddProjectScreen extends StatelessWidget {
                       ),
                     ),
                     projectAdditional(
-                        onTap: () => Get.to(() =>
-                            AddProjectSkillScreen(uId: uId, project: project)),
+                        onTap: () {
+                          controller.getSuggestedSkills();
+                          Get.to(() => AddProjectSkillScreen(
+                              uId: uId, project: project));
+                        },
                         heading: 'Skills',
                         subText:
                             'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
@@ -174,10 +176,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
                         decoration: infoFieldDecoration(
                             hintText: 'Date',
                             suffixWidget: GestureDetector(
-                              onTap: () =>
-                                  controller.datePicker(context, start: true),
-                              child: calendarIcon()
-                            )),
+                                onTap: () =>
+                                    controller.datePicker(context, start: true),
+                                child: calendarIcon())),
                         style: const TextStyle(fontSize: 13),
                         readOnly: true,
                       ),
@@ -428,6 +429,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
         c.projectAssosiatedController.text.isEmpty && project.associated != null
             ? project.associated as String
             : c.projectAssosiatedController.text;
+    c.startdateBackend = project.startDate!;
+    c.enddateBackend =
+        project.endDate == 'currently_working' ? '' : project.endDate;
 
     if (project.media != null && c.allProjectMedias.isEmpty) {
       List<AddMediaModel> mediaItems = parseMediaItems(project);
@@ -449,10 +453,12 @@ class ProfileAddProjectScreen extends StatelessWidget {
       c.currentlyWorking.value = true;
       c.update(['currentlyWorking-project']);
     } else {
+      c.currentlyWorking.value = false;
       c.endDateController.text =
           c.endDateController.text.isEmpty && project.endDate != null
               ? convertDateFormat(project.endDate!)
               : c.endDateController.text;
+      c.update(['currentlyWorking-project']);
     }
     c.allFiledSelected();
     c.update(['update-projectInfo']);

@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_project_info_service.dart';
+import 'package:aimshala/services/profile_section/update_skill_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,7 @@ class ProfileProjectController extends GetxController {
   String? enddateBackend;
 
   RxList<String> associatedListdata = <String>[].obs;
-
+  List<String> suggestedSkill = [];
 
   Future<void> saveProjectFunction({
     required String uId,
@@ -174,6 +176,17 @@ class ProfileProjectController extends GetxController {
     }
   }
 
+  Future<void> getSuggestedSkills() async {
+    try {
+      // loading.value = true;
+      List<String> skills = await UpdateSkillInfoService().getSuggestedSkills();
+      suggestedSkill.assignAll(skills);
+      update(['add-projectSkill']);
+    } catch (e) {
+      log('Error fetching suggested skills: $e');
+    }
+  }
+
   Future<void> datePicker(BuildContext context, {bool? start}) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -241,6 +254,7 @@ class ProfileProjectController extends GetxController {
     currentlyWorking.value = !currentlyWorking.value;
     if (currentlyWorking.value == true) {
       endDateController.clear();
+      enddateBackend = endDateController.text;
     }
     update(['currentlyWorking-project']);
   }

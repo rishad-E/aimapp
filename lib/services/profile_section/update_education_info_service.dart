@@ -62,34 +62,34 @@ class UpdateEducationInfoService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
-      
-     if (response.data is Map) {
+
+      if (response.data is Map) {
         Map<String, dynamic> responseData = response.data;
-      if (responseData.containsKey('success')) {
-        String successMessage = responseData['success'];
-        
-        return successMessage;
-      } else if (responseData.containsKey('error')) {
-        // String errorMessage = responseData['error'];
-        log(response.data.toString(), name: 'save education info MB error');
-        if (responseData['error'] is Map) {
-          Map<String, dynamic> errors = responseData['error'];
-          String first = errors.keys.first;
-          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
-            String errorMessage = errors[first][0].toString();
-            
+        if (responseData.containsKey('success')) {
+          String successMessage = responseData['success'];
+
+          return successMessage;
+        } else if (responseData.containsKey('error')) {
+          // String errorMessage = responseData['error'];
+          log(response.data.toString(), name: 'save education info MB error');
+          if (responseData['error'] is Map) {
+            Map<String, dynamic> errors = responseData['error'];
+            String first = errors.keys.first;
+            if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+              String errorMessage = errors[first][0].toString();
+
+              return errorMessage;
+            }
+          } else if (responseData['error'] is String) {
+            String errorMessage = responseData['error'];
             return errorMessage;
           }
-        } else if (responseData['error'] is String) {
-          String errorMessage = responseData['error'];
-          return errorMessage;
-        }
 
-        // return 'Each image must not exceed 2MB in size.';
+          // return 'Each image must not exceed 2MB in size.';
+        }
+      } else {
+        log(response.data.toString());
       }
-     }else{
-      log(response.data.toString());
-     }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         // log('Server error: ${e.message}', name: 'save education info error');
@@ -106,23 +106,23 @@ class UpdateEducationInfoService {
     return null;
   }
 
-  Future<String?> updateEducationInfo({
-    required String edID,
-    required String uId,
-    required String school,
-    required String degree,
-    required String studyfield,
-    required String startDate,
-    required String endDate,
-    required String grade,
-    required String activities,
-    required String description,
-    required List<String> mediaTitle,
-    required List<String> mediaDescription,
-    required List<String> mediaLinks,
-    required List<File> images,
-    required List<String> skills,
-  }) async {
+  Future<String?> updateEducationInfo(
+      {required String edID,
+      required String uId,
+      required String school,
+      required String degree,
+      required String studyfield,
+      required String startDate,
+      required String endDate,
+      required String grade,
+      required String activities,
+      required String description,
+      required List<String> mediaTitle,
+      required List<String> mediaDescription,
+      required List<String> mediaLinks,
+      required List<File> images,
+      required List<String> skills,
+      required List<String> mediaUrl}) async {
     log('edID=>$edID uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription mediaLink=>$mediaLinks',
         name: 'add-education update');
 
@@ -144,18 +144,27 @@ class UpdateEducationInfoService {
       "media_links[]": mediaLinks.isEmpty ? null : mediaLinks,
       "skills[]": skills.isEmpty ? null : skills,
     });
+    // Add URLs
+
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
+      }
+    }
+    // Add Images
     if (images.isNotEmpty) {
-      for (int i = 0; i < images.length; i++) {
-        File image = images[i];
+      for (File image in images) {
         formData.files.add(MapEntry(
-          'images[$i]',
+          'images[$index]',
           await MultipartFile.fromFile(image.path,
               filename: image.path.split('/').last),
         ));
+        index++;
       }
-    } else {
-      formData.fields.add(const MapEntry('images[]', ''));
     }
+
     try {
       Response response = await dio.post(
         path,
@@ -169,7 +178,7 @@ class UpdateEducationInfoService {
       // log(responseData.toString(), name: 'ressssssssssssssssssss');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-       
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // log(errorMessage.toString(), name: 'save education info MB error');
@@ -177,7 +186,7 @@ class UpdateEducationInfoService {
         String first = errors.keys.first;
         if (errors[first] is List && (errors[first] as List).isNotEmpty) {
           String errorMessage = errors[first][0].toString();
-          
+
           return errorMessage;
         }
         // return 'Each image must not exceed 2MB in size.';

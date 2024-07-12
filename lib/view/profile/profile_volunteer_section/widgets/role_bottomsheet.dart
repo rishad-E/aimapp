@@ -11,17 +11,21 @@ class RoleBottomSheetVolunteer extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<ProfileVolunteerController>();
     List<String> roleList = [
-      "Manipur",
-      "Meghalaya",
-      "Mizoram",
-      "Nagaland",
-      "Odisha",
-      "Punjab",
-      "Rajasthan",
-      "Sikkim",
-      "Tamil Nadu",
-      "Telangana",
-      "Tripura"
+      'Animal Welfare',
+      'Arts and Culture',
+      'Children',
+      'Civil Rights and Social Action',
+      'Economic Empowerment',
+      'Education',
+      'Environment',
+      'Health',
+      'Human Rights',
+      'Disaster and Humanitarian Relief',
+      'Politics',
+      'Poverty Alleviation',
+      'Science and Technology',
+      'Social Services',
+      'Veteran Support',
     ];
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
@@ -87,20 +91,12 @@ class RoleBottomSheetVolunteer extends StatelessWidget {
                                 roleList[index],
                             onChanged: (value) {
                               if (value != null && value) {
-                                controller.volunteerRoleController.text =
-                                    roleList[index];
-                                controller.allFieldSelected();
-                                controller.update(['update-volunteerInfo']);
-                                Get.back();
+                                listValueChange(roleList[index], controller);
                               }
                             },
                           ),
                           onTap: () {
-                            controller.volunteerRoleController.text =
-                                roleList[index];
-                            controller.allFieldSelected();
-                            controller.update(['update-volunteerInfo']);
-                            Get.back();
+                            listValueChange(roleList[index], controller);
                           },
                         ),
                         const Divider(height: 1),
@@ -114,5 +110,12 @@ class RoleBottomSheetVolunteer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void listValueChange(String item, ProfileVolunteerController c) {
+    c.causeController.text = item;
+    c.allFieldSelected();
+    c.update(['update-volunteerInfo']);
+    Get.back();
   }
 }

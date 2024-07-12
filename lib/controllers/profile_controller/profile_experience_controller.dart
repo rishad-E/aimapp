@@ -328,6 +328,7 @@ class ProfileExperienceController extends GetxController {
     currentlyWorking.value = !currentlyWorking.value;
     if (currentlyWorking.value == true) {
       endDateController.clear();
+      enddateBackend = endDateController.text;
     }
     update(['EX-currentlyworkingButton']);
   }

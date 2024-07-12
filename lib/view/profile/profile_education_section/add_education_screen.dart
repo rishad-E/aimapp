@@ -205,8 +205,8 @@ class AddEducationScreen extends StatelessWidget {
                       onTap: () {
                         controller.getSuggestedSkills();
                         Get.to(
-                        () => AddProfileSkillsScreen(uId: uId, edu: edu),
-                      );
+                          () => AddProfileSkillsScreen(uId: uId, edu: edu),
+                        );
                       },
                       heading: 'Skills',
                       subText:
@@ -279,11 +279,16 @@ class AddEducationScreen extends StatelessWidget {
                                 boxColor: c.saveBG.value,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    log('stardate for backend=>${c.startdateBackend}  enddate for backend=>${c.enddateBackend}');
+                                    // log('stardate for backend=>${c.startdateBackend}  enddate for backend=>${c.enddateBackend}');
                                     List<File> imagesList = c.allMediasModel
                                         .map((media) => media.file)
                                         .where((image) => image != null)
                                         .cast<File>()
+                                        .toList();
+                                    List<String> mediaUrl = c.allMediasModel
+                                        .map((i) => i.url)
+                                        .where((image) => image != null)
+                                        .cast<String>()
                                         .toList();
                                     List<String> mediaTitles = c.allMediasModel
                                         .map((i) => i.title)
@@ -296,6 +301,9 @@ class AddEducationScreen extends StatelessWidget {
                                         .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
+                                    // imagesList.addAll(mediaUrl);
+                                    log('ImageList=>$imagesList  mediatitle=>$mediaTitles  mediaDesc=>$mediaDesc  url=>$mediaUrl');
+
                                     edu == null
                                         ? c.saveEducationInfo(
                                             uId: uId,
@@ -339,6 +347,7 @@ class AddEducationScreen extends StatelessWidget {
                                             mediaLinks: mediaLinks,
                                             images: imagesList,
                                             skills: c.addedSkill,
+                                             mediaUrl: mediaUrl
                                           );
                                   }
                                 },
@@ -400,6 +409,8 @@ class AddEducationScreen extends StatelessWidget {
         c.descriptionController.text.isEmpty && edu.description != null
             ? edu.description as String
             : c.descriptionController.text;
+    c.startdateBackend = edu.startDate!;
+    c.enddateBackend = edu.endDate!;
     if (c.addedSkill.isEmpty && edu.skills != null && edu.skills != "") {
       List<String>? resList = edu.skills?.split(',');
       if (resList != null) {
@@ -445,6 +456,7 @@ class AddEducationScreen extends StatelessWidget {
 
     for (int i = 0; i < mediaList.length; i++) {
       String filename = mediaList[i];
+      log(filename);
       String title =
           i < mediaTitles.length ? mediaTitles[i] : "Title for $filename";
       String description = i < mediaDescriptions.length

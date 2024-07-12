@@ -44,16 +44,17 @@ Widget sectionMainContainer({
   );
 }
 
-Widget edexlipbSectionWidget(
-    {required String image,
-    required String school,
-    required String degree,
-    required String year,
-    required String grade,
-    required String skill,
-    required String description,
-    required bool end,
-    void Function()? onTap}) {
+Widget edexlipbSectionWidget({
+  required String image,
+  required String school,
+  required String degree,
+  required String year,
+  required String grade,
+  required String skill,
+  required String description,
+  required bool end,
+  void Function()? onTap,
+}) {
   return Column(
     children: [
       Row(

@@ -72,12 +72,27 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                       ),
                       volunteerInfoFiled(
                         text: primarytxt3('Role', 9.5.sp),
+                        textField: TextFormField(
+                          controller: controller.volunteerRoleController,
+                          validator: (value) =>
+                              controller.fieldValidation(value),
+                          onChanged: (value) {
+                            controller.allFieldSelected();
+                            controller.update(['update-volunteerInfo']);
+                          },
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration:
+                              infoFieldDecoration(hintText: 'Ex: Microsoft'),
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      ),
+                      volunteerInfoFiled(
+                        text: primarytxt3('Cause', 9.5.sp),
                         textField: GestureDetector(
                           onTap: () => showRoleOptions(context),
                           child: AbsorbPointer(
                             child: TextFormField(
-                              readOnly: true,
-                              controller: controller.volunteerRoleController,
+                              controller: controller.causeController,
                               validator: (value) =>
                                   controller.fieldValidation(value),
                               onChanged: (value) {
@@ -87,31 +102,12 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               decoration: infoFieldDecoration(
-                                  hintText: 'Ex: Fundraising Volunteer',
+                                  hintText: 'Please select',
                                   suffixWidget:
                                       const Icon(Icons.keyboard_arrow_down)),
                               style: const TextStyle(fontSize: 13),
                             ),
                           ),
-                        ),
-                      ),
-                      volunteerInfoFiled(
-                        text: primarytxt3('Cause', 9.5.sp),
-                        textField: TextFormField(
-                          controller: controller.causeController,
-                          validator: (value) =>
-                              controller.fieldValidation(value),
-                          onChanged: (value) {
-                            controller.allFieldSelected();
-                            controller.update(['update-volunteerInfo']);
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: infoFieldDecoration(
-                            hintText: 'Ex: Microsoft',
-                            // suffixWidget:
-                            //     const Icon(Icons.keyboard_arrow_down)
-                          ),
-                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
                       hBox,
@@ -168,7 +164,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                   hintText: 'Date',
                                   suffixWidget: GestureDetector(
                                     onTap: () => controller.datePicker(context),
-                                    child:calendarIcon(),
+                                    child: calendarIcon(),
                                   )),
                               style: const TextStyle(fontSize: 13),
                             ),
@@ -276,7 +272,8 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                             volCause: c.causeController.text,
                                             startDate:
                                                 c.startdateBackend.toString(),
-                                            endDate: c.enddateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             currentlyWorking: currenly,
                                             description:
                                                 c.descriptionController.text,
@@ -295,7 +292,8 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                             volCause: c.causeController.text,
                                             startDate:
                                                 c.startdateBackend.toString(),
-                                            endDate: c.enddateBackend.toString(),
+                                            endDate:
+                                                c.enddateBackend.toString(),
                                             currentlyWorking: currenly,
                                             description:
                                                 c.descriptionController.text,
@@ -435,7 +433,9 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                 volunteer.description != null
             ? volunteer.description as String
             : controller.descriptionController.text;
-
+    controller.startdateBackend = volunteer.startDate;
+    controller.enddateBackend =
+        volunteer.endDate == 'currently_working' ? '' : volunteer.endDate;
     if (volunteer.media != null && controller.volunteerMedia.isEmpty) {
       List<AddMediaModel> mediaItems = _parseMediaItems(volunteer);
       controller.volunteerMedia.addAll(mediaItems);

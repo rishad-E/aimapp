@@ -1,7 +1,10 @@
+import 'package:aimshala/models/profile_model/add_media_model.dart';
+import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/profile_media_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -226,16 +229,20 @@ Widget profileDataContainer(
   );
 }
 
-Widget sectionDataWidget(
-    {required String image,
-    required String secTitle,
-    required String secSubTitle,
-    required String secSubTitle2,
-    required String secSubTitle3,
-    required String secSubTitle4,
-    required String secSubTitle5,
-    required bool end,
-    Color? color}) {
+Widget sectionDataWidget({
+  required String image,
+  required String secTitle,
+  required String secSubTitle,
+  required String secSubTitle2,
+  required String secSubTitle3,
+  required String secSubTitle4,
+  required String secSubTitle5,
+  required bool end,
+  Color? color,
+  dynamic data,
+}) {
+  String? mediaUrl;
+  List<AddMediaModel> mediaItems = profileEducationMediaFunctions(data);
   return Column(
     children: [
       Row(
@@ -277,6 +284,73 @@ Widget sectionDataWidget(
                   8,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
+                ),
+                // Text("data")
+                Column(
+                  children: List.generate(mediaItems.length, (index) {
+                    if (data?.media != null && data?.imagePath != null) {
+                      mediaUrl =
+                          "http://154.26.130.161/elearning/${data?.imagePath}/${mediaItems[index].url}";
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 6.h,
+                            width: 20.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: mediaItems[index].url != null
+                                ? Image.network(
+                                    mediaUrl!,
+                                    fit: BoxFit.fill,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            valueColor:AlwaysStoppedAnimation(mainPurple),
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    loadingProgress
+                                                        .expectedTotalBytes!
+                                                : null,
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : Image.asset(
+                                    image,
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
+                          wBox,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                regularText(mediaItems[index].title, 8.sp),
+                                regularText(
+                                  mediaItems[index].description,
+                                  8,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),

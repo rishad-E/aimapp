@@ -240,6 +240,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
         pub.publicationUrl ?? c.publicationURLController.text;
     c.publicationDescriptionController.text =
         pub.description ?? c.publicationDescriptionController.text;
+    c.publishDate = pub.publicationDate;
     c.update(['update-publication']);
   }
 
