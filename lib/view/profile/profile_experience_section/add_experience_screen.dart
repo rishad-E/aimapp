@@ -281,7 +281,7 @@ class AddExperienceScreen extends StatelessWidget {
                       selected: Obx(() {
                         final data = controller.allMediasEX;
                         return data.isEmpty
-                            ? const SizedBox.shrink()
+                            ? shrinked
                             : Column(
                                 children: List.generate(data.length, (index) {
                                   String? mediaUrl;
@@ -312,18 +312,28 @@ class AddExperienceScreen extends StatelessWidget {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            actionContainer(
-                              text: 'Cancel',
-                              textColor: mainPurple,
+                            saveContainer(
                               boxColor: kwhite,
                               borderColor: mainPurple,
+                              child: saveContainerText(
+                                  text: 'Cancel', textColor: mainPurple),
                               onTap: () => Get.back(),
                             ),
                             wMBox,
-                            actionContainer(
-                              text: 'Save',
-                              textColor: c.saveText.value,
+                            saveContainer(
                               boxColor: c.saveBG.value,
+                              child: Obx(
+                                () => c.isSaving.value
+                                    ? CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation(kwhite),
+                                        strokeWidth: 1,
+                                      )
+                                    : saveContainerText(
+                                        text: 'Save',
+                                        textColor: c.saveText.value,
+                                      ),
+                              ),
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   log('stardate for backend=>${c.startdateBackend} end for backend=>${c.enddateBackend}');
@@ -331,6 +341,11 @@ class AddExperienceScreen extends StatelessWidget {
                                       .map((item) => item.file)
                                       .where((file) => file != null)
                                       .cast<File>()
+                                      .toList();
+                                  List<String> mediaUrl = c.allMediasEX
+                                      .map((i) => i.url)
+                                      .where((image) => image != null)
+                                      .cast<String>()
                                       .toList();
                                   List<String> mediaTitles = c.allMediasEX
                                       .map((i) => i.title)
@@ -390,7 +405,7 @@ class AddExperienceScreen extends StatelessWidget {
                                           mediaLink: mediaLinks,
                                           imagesEX: imagesList,
                                           skillsEX: c.addedSkillEX,
-                                        );
+                                          mediaUrl: mediaUrl);
                                 }
                               },
                             ),
@@ -420,7 +435,13 @@ class AddExperienceScreen extends StatelessWidget {
 
   void initializeFormFields(
       ProfileExperienceController c, Experience? experience) {
-    if (experience == null) return;
+    if (experience == null) {
+      if (c.titleController.text.isEmpty) {
+        c.currentlyWorking.value = false;
+        c.update(['EX-currentlyworkingButton']);
+      }
+      return;
+    }
     c.titleController.text =
         c.titleController.text.isEmpty && experience.title != null
             ? experience.title as String

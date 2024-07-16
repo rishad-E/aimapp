@@ -43,7 +43,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
           decoration: profileMainContainer(),
           child: Container(
             width: double.infinity,
-            // height: 50,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             decoration: profileSecondaryContainer(),
@@ -218,8 +217,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                             minLines: 1,
                             maxLines: null,
                             controller: controller.projectAssosiatedController,
-                            validator: (value) =>
-                                controller.filedValidation(value),
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             decoration: infoFieldDecoration(
@@ -238,24 +235,40 @@ class ProfileAddProjectScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              actionContainer(
-                                text: 'Cancel',
-                                textColor: mainPurple,
+                              saveContainer(
                                 boxColor: kwhite,
                                 borderColor: mainPurple,
+                                child: saveContainerText(
+                                  text: 'Cancel',
+                                  textColor: mainPurple,
+                                ),
                                 onTap: () => Get.back(),
                               ),
                               wMBox,
-                              actionContainer(
-                                text: 'Save',
-                                textColor: c.saveText.value,
+                              saveContainer(
                                 boxColor: c.saveBG.value,
+                                child: Obx(
+                                  () => c.isSaving.value
+                                      ? CircularProgressIndicator(
+                                          strokeWidth: 1,
+                                          color: kwhite,
+                                        )
+                                      : saveContainerText(
+                                          text: 'Save',
+                                          textColor: c.saveText.value,
+                                        ),
+                                ),
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     List<File> imagesList = c.allProjectMedias
                                         .map((i) => i.file)
                                         .where((file) => file != null)
                                         .cast<File>()
+                                        .toList();
+                                    List<String> mediaUrl = c.allProjectMedias
+                                        .map((i) => i.url)
+                                        .where((image) => image != null)
+                                        .cast<String>()
                                         .toList();
                                     List<String> mediaTitles = c
                                         .allProjectMedias
@@ -314,7 +327,9 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             medias: imagesList,
                                             mediaTitle: mediaTitles,
                                             mediaDescription: mediaDescs,
-                                            mediaLink: mediaLink);
+                                            mediaLink: mediaLink,
+                                            mediaUrl: mediaUrl,
+                                          );
                                   }
                                 },
                               ),

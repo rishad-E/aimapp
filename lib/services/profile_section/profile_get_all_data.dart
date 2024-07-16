@@ -14,7 +14,7 @@ class GetProfileAllData {
         queryParameters: {"user_id": uId},
         options: Options(validateStatus: (status) => status! < 599),
       );
-      log(response.data.toString(),name: 'profile data res');
+      // log(response.data.toString(),name: 'profile data res');
       if (response.statusCode == 200) {
         return response.data;
       } else {

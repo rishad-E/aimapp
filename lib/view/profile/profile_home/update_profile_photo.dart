@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:aimshala/controllers/profile_controller/profile_home_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
@@ -25,21 +26,36 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
         children: [
           Expanded(
             child: Center(
-                child: Obx(
-              () => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                decoration: BoxDecoration(
-                    // color: Colors.red,
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: profileC.selectedImage.value.isNotEmpty
-                          ? NetworkImage(profileC.selectedImage.value)
-                              as ImageProvider
-                          : const AssetImage('assets/images/person.png'),
-                    )),
+              child: Obx(
+                () => profileC.isLoading.value
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(mainPurple),
+                            strokeWidth: 1.5,
+                          ),
+                          hMBox,
+                          regularText('Profile photo is uploading....', 12)
+                        ],
+                      )
+                    : Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                            // color: Colors.red,
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: profileC.selectedImage.value.isNotEmpty
+                                  ? NetworkImage(profileC.selectedImage.value)
+                                      as ImageProvider
+                                  : const AssetImage(
+                                      'assets/images/person.png'),
+                            )),
+                      ),
               ),
-            )),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,7 +100,7 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: ()async {
+                onTap: () async {
                   await profileC.deleteProfilePic(uId: uId);
                   log('delete');
                 },

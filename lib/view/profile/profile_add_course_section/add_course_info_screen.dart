@@ -25,19 +25,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
     log(course.toString(), name: 'course data');
     final controller = Get.put(LanguageAndCourseController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      controller.courseController.text =
-          course?.courseName.toString() ?? controller.courseController.text;
-      controller.courseNoController.text =
-          course?.courseNumber.toString() ?? controller.courseNoController.text;
-      controller.courseAssosiatedController.text =
-          course?.associatedWith.toString() ??
-              controller.courseAssosiatedController.text;
+      initializeFormfield(course, controller);
       courseID = course?.id.toString();
-      if (course?.workingCurrently == "Yes") {
-        controller.currentlyWorking = true;
-        controller.update(['update-workingButton']);
-      }
-      controller.update(['update-courseInfo']);
     });
     return PopScope(
       onPopInvoked: (didPop) =>
@@ -89,16 +78,6 @@ class ProfileAddCourseScreen extends StatelessWidget {
                         ),
                       ),
                       hBox,
-                      GetBuilder<LanguageAndCourseController>(
-                          id: 'update-workingButton',
-                          builder: (c) {
-                            return GestureDetector(
-                              onTap: () => c.toggleCurrentlyWorking(),
-                              child: currentlyWorkingCourse(
-                                  working: c.currentlyWorking),
-                            );
-                          }),
-                      hBox,
                       courseInfoFiled(
                         text: primarytxt3('Associated with', 9.5.sp),
                         textField: GestureDetector(
@@ -109,11 +88,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
                               minLines: 1,
                               maxLines: null,
                               controller: controller.courseAssosiatedController,
-                              validator: (value) =>
-                                  controller.fieldValidation(value),
-                              onChanged: (value) =>
-                                  controller.update(['update-courseInfo']),
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               decoration: infoFieldDecoration(
                                   hintText: 'Please Select',
                                   suffixWidget:
@@ -130,39 +106,41 @@ class ProfileAddCourseScreen extends StatelessWidget {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                actionContainer(
-                                  text: 'Cancel',
-                                  textColor: mainPurple,
+                                saveContainer(
                                   boxColor: kwhite,
                                   borderColor: mainPurple,
+                                  child: saveContainerText(
+                                    text: 'Cancel',
+                                    textColor: mainPurple,
+                                  ),
                                   onTap: () => Get.back(),
                                 ),
                                 wMBox,
-                                actionContainer(
-                                  text: 'Save',
-                                  textColor:
-                                      c.courseController.text.isNotEmpty &&
-                                              c.courseNoController.text
-                                                  .isNotEmpty &&
-                                              c.courseAssosiatedController.text
-                                                  .isNotEmpty
-                                          ? kwhite
-                                          : textFieldColor,
-                                  boxColor:
-                                      c.courseController.text.isNotEmpty &&
-                                              c.courseNoController.text
-                                                  .isNotEmpty &&
-                                              c.courseAssosiatedController.text
-                                                  .isNotEmpty
-                                          ? mainPurple
-                                          : buttonColor,
+                                saveContainer(
+                                  boxColor: c.courseController.text
+                                              .isNotEmpty &&
+                                          c.courseNoController.text.isNotEmpty
+                                      ? mainPurple
+                                      : buttonColor,
+                                  child: Obx(
+                                    () => c.isSavingCourse.value
+                                        ? CircularProgressIndicator(
+                                            color: kwhite,
+                                            strokeWidth: 1,
+                                          )
+                                        : saveContainerText(
+                                            text: 'Save',
+                                            textColor: c.courseController.text
+                                                        .isNotEmpty &&
+                                                    c.courseNoController.text
+                                                        .isNotEmpty
+                                                ? kwhite
+                                                : textFieldColor,
+                                          ),
+                                  ),
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      String working =
-                                          c.currentlyWorking == true
-                                              ? 'Yes'
-                                              : 'No';
-                                      log('courseID=>${course?.id}  ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} currently=>$working',
+                                      log('courseID=>${course?.id}  ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} ',
                                           name: 'course-screen');
                                       course == null
                                           ? c.saveCourseFunction(
@@ -173,7 +151,6 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                               courseAssosiated: c
                                                   .courseAssosiatedController
                                                   .text,
-                                              working: working,
                                             )
                                           : c.updateCourseInfo(
                                               uId: uId,
@@ -184,7 +161,6 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                               courseAssosiated: c
                                                   .courseAssosiatedController
                                                   .text,
-                                              working: working,
                                             );
                                     }
                                   },
@@ -209,6 +185,24 @@ class ProfileAddCourseScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFormfield(Course? course, LanguageAndCourseController c) {
+    if (course == null) return;
+    c.courseController.text =
+        c.courseController.text.isEmpty && course.courseName != null
+            ? course.courseName as String
+            : c.courseController.text;
+    c.courseNoController.text =
+        c.courseNoController.text.isEmpty && course.courseNumber != null
+            ? course.courseNumber.toString()
+            : c.courseNoController.text;
+    c.courseAssosiatedController.text =
+        c.courseAssosiatedController.text.isEmpty &&
+                course.associatedWith != null
+            ? course.associatedWith
+            : c.courseAssosiatedController.text;
+    c.update(['update-courseInfo']);
   }
 
   void showAssosiatedBottomsheet(BuildContext context) {

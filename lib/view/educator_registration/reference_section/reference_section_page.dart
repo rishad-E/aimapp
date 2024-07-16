@@ -20,8 +20,7 @@ class EducatorReferencePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorReferenceController());
     return Scaffold(
-       appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
-
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -43,8 +42,6 @@ class EducatorReferencePage extends StatelessWidget {
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.nameController1,
-                          validator: (value) =>
-                              controller.filedValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);
@@ -64,8 +61,6 @@ class EducatorReferencePage extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: controller.relationController1,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
                               onChanged: (value) {
                                 controller.checkAlFields();
                                 controller.update(['edu-referenceInfo']);
@@ -86,8 +81,6 @@ class EducatorReferencePage extends StatelessWidget {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 controller: controller.otherRelationController1,
-                                validator: (value) =>
-                                    controller.filedValidation(value),
                                 onChanged: (value) {
                                   controller.checkAlFields();
                                   controller.update(['edu-referenceInfo']);
@@ -103,8 +96,6 @@ class EducatorReferencePage extends StatelessWidget {
                         item: primarytxt3('Mobile Number', 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController1,
-                          validator: (value) =>
-                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);
@@ -124,8 +115,6 @@ class EducatorReferencePage extends StatelessWidget {
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.nameController2,
-                          validator: (value) =>
-                              controller.filedValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);
@@ -146,8 +135,6 @@ class EducatorReferencePage extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: controller.relationController2,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
                               onChanged: (value) {
                                 controller.checkAlFields();
                                 controller.update(['edu-referenceInfo']);
@@ -167,8 +154,6 @@ class EducatorReferencePage extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: controller.otherRelationController2,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
                               onChanged: (value) {
                                 controller.checkAlFields();
                                 controller.update(['edu-referenceInfo']);
@@ -183,8 +168,6 @@ class EducatorReferencePage extends StatelessWidget {
                         item: primarytxt3('Mobile Number', 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController2,
-                          validator: (value) =>
-                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['edu-referenceInfo']);

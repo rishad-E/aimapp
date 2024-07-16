@@ -11,10 +11,10 @@ class ProfilePublicationController extends GetxController {
   TextEditingController publicationURLController = TextEditingController();
   TextEditingController publicationDescriptionController =
       TextEditingController();
-      
+
   DateTime dateTime = DateTime.now();
   String? publishDate;
-
+  RxBool isSaving = false.obs;
   Future<void> savePublicationFuntion({
     required String uId,
     required String title,
@@ -23,37 +23,42 @@ class ProfilePublicationController extends GetxController {
     required String pubURL,
     required String pubDescription,
   }) async {
-    String? res = await UpdatePublicationService().savePublicationService(
-      uId: uId,
-      title: title,
-      publication: publication,
-      pubDate: pubDate,
-      pubURL: pubURL,
-      pubDescription: pubDescription,
-    );
-    if (res == 'Publication added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdatePublicationService().savePublicationService(
+        uId: uId,
+        title: title,
+        publication: publication,
+        pubDate: pubDate,
+        pubURL: pubURL,
+        pubDescription: pubDescription,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Publication added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -66,38 +71,43 @@ class ProfilePublicationController extends GetxController {
     required String pubURL,
     required String pubDescription,
   }) async {
-    String? res = await UpdatePublicationService().updatePublicationInfo(
-      pbID: pbID,
-      uId: uId,
-      title: title,
-      publication: publication,
-      pubDate: pubDate,
-      pubURL: pubURL,
-      pubDescription: pubDescription,
-    );
-    if (res == 'Publication updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdatePublicationService().updatePublicationInfo(
+        pbID: pbID,
+        uId: uId,
+        title: title,
+        publication: publication,
+        pubDate: pubDate,
+        pubURL: pubURL,
+        pubDescription: pubDescription,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Publication updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -170,7 +180,8 @@ class ProfilePublicationController extends GetxController {
     }
     return null;
   }
-  void clearControllers(){
+
+  void clearControllers() {
     titleController.clear();
     publicationController.clear();
     publicationDateController.clear();

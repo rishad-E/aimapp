@@ -153,7 +153,7 @@ class MentorAddMediaController extends GetxController {
         id = userData.user?.id.toString() ?? '';
       }
 
-      log('''name=>$name email=>$email phone=>$phone address=$address dob=>$dob gender=>$gender status=>$status
+      log('''id=>$id  name=>$name email=>$email phone=>$phone address=$address dob=>$dob gender=>$gender status=>$status
 highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
 earn=>$earnReward  rewardDes=>$rewardDescription
 mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
@@ -166,8 +166,8 @@ cvFileFile=>$cvNew
 videoX=>$videofilePath
 videoFile=>$video
 id=>$id''', name: 'mentor all data');
+
       String? res = await MentorRegistrationService().saveMentorRegistraion(
-        uId: id.toString(),
         name: name,
         email: email,
         address: address,

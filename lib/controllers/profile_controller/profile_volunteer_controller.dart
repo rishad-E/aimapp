@@ -30,6 +30,7 @@ class ProfileVolunteerController extends GetxController {
 
   String? startdateBackend;
   String? enddateBackend;
+  RxBool isSaving = false.obs;
 
   Future<void> saveVolunteerInfoFuntion({
     required String uId,
@@ -45,43 +46,48 @@ class ProfileVolunteerController extends GetxController {
     required List<String> mediaTitle,
     required List<String> mediaLink,
   }) async {
-    String? res = await UpdateVolunteerInfoService().saveVolunteerInfo(
-      uId: uId,
-      organization: organization,
-      volRole: volRole,
-      volCause: volCause,
-      startDate: startDate,
-      endDate: endDate,
-      currentlyWorking: currentlyWorking,
-      description: description,
-      media: media,
-      mediaTitle: mediaTitle,
-      mediaLink: mediaLink,
-      mediaDesc: mediaDesc,
-    );
-    if (res == 'Volunteer experience added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateVolunteerInfoService().saveVolunteerInfo(
+        uId: uId,
+        organization: organization,
+        volRole: volRole,
+        volCause: volCause,
+        startDate: startDate,
+        endDate: endDate,
+        currentlyWorking: currentlyWorking,
+        description: description,
+        media: media,
+        mediaTitle: mediaTitle,
+        mediaLink: mediaLink,
+        mediaDesc: mediaDesc,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Volunteer experience added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -99,8 +105,11 @@ class ProfileVolunteerController extends GetxController {
     required List<String> mediaDesc,
     required List<String> mediaTitle,
     required List<String> mediaLink,
+    required List<String> mediaUrl,
   }) async {
-    String? res = await UpdateVolunteerInfoService().updateVolunteerInfo(
+    try {
+      isSaving.value = true;
+      String? res = await UpdateVolunteerInfoService().updateVolunteerInfo(
         vtID: vtID,
         uId: uId,
         organization: organization,
@@ -113,30 +122,35 @@ class ProfileVolunteerController extends GetxController {
         media: media,
         mediaDesc: mediaDesc,
         mediaTitle: mediaTitle,
-        mediaLink: mediaLink);
-    if (res == 'Volunteer experience updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+        mediaLink: mediaLink,
+        mediaUrl: mediaUrl,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Volunteer experience updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 

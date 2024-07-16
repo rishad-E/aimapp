@@ -1,7 +1,9 @@
+import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/profile_media_functions.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +77,7 @@ Widget courseWidget({
       regularText(courseNo, 8.sp),
       hBox,
       Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height: 3.7.h,
@@ -99,14 +101,11 @@ Widget courseWidget({
 }
 
 Widget skillWidget(
-    {required bool end,
-    required String company,
-    required String image,
-    required String position}) {
+    {required bool end, required String image, required String position}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      semiBoldChoiceText(text: company, size: 14),
+      semiBoldChoiceText(text: position, size: 14),
       Row(
         children: [
           Container(
@@ -118,7 +117,6 @@ Widget skillWidget(
                     image: AssetImage(image), fit: BoxFit.cover)),
           ),
           wBox,
-          regularText(position, 12, color: kblack)
         ],
       ),
       end ? shrinked : const Divider(thickness: 0.2)
@@ -126,14 +124,18 @@ Widget skillWidget(
   );
 }
 
-Widget honorWidget(
-    {required String title,
-    required String date,
-    required String image,
-    required String assosiated,
-    required String skills,
-    required String description,
-    required bool end}) {
+Widget honorWidget({
+  required String title,
+  required String date,
+  required String image,
+  required String assosiated,
+  required String skills,
+  required String description,
+  required bool end,
+  dynamic data,
+}) {
+  String? mediaUrl;
+  List<AddMediaModel> mediaItems = profileEducationMediaFunctions(data);
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -170,6 +172,77 @@ Widget honorWidget(
         8,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
+      ),
+      Column(
+        children: List.generate(
+          mediaItems.length,
+          (index) {
+            if (data?.media != null && data?.imagePath != null) {
+              mediaUrl =
+                  "http://154.26.130.161/elearning/${data?.imagePath}/${mediaItems[index].url}";
+            }
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: SizedBox(
+                      height: 6.h,
+                      width: 20.w,
+                      child: mediaItems[index].url != null
+                          ? Image.network(
+                              mediaUrl!,
+                              fit: BoxFit.fill,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor:
+                                          AlwaysStoppedAnimation(mainPurple),
+                                      strokeWidth: 1.5,
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  loadingProgress
+                                                      .expectedTotalBytes!
+                                              : null,
+                                    ),
+                                  );
+                                }
+                              },
+                            )
+                          : Image.asset(
+                              image,
+                              fit: BoxFit.fill,
+                            ),
+                    ),
+                  ),
+                  wBox,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        regularText(mediaItems[index].title, 8.sp),
+                        regularText(
+                          mediaItems[index].description,
+                          8,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
       end ? shrinked : const Divider(thickness: 0.2)
     ],

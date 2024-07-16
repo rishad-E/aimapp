@@ -3,7 +3,7 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 
-Widget relocateTrueContainer({required bool relocate}) {
+Widget relocateTrueContainer({required bool? relocate}) {
   return Row(
     children: [
       Container(
@@ -28,7 +28,7 @@ Widget relocateTrueContainer({required bool relocate}) {
   );
 }
 
-Widget relocateFalseContainer({required bool relocate}) {
+Widget relocateFalseContainer({required bool? relocate}) {
   return Row(
     children: [
       Container(

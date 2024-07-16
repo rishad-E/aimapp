@@ -150,6 +150,7 @@ Widget addedMediaHomeVolunteer({
                               } else {
                                 return Center(
                                   child: CircularProgressIndicator(
+                                    
                                     value: loadingProgress.expectedTotalBytes !=
                                             null
                                         ? loadingProgress
@@ -157,7 +158,8 @@ Widget addedMediaHomeVolunteer({
                                             loadingProgress.expectedTotalBytes!
                                         : null,
                                         color: Colors.grey,
-                                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.grey),
+                                        strokeWidth: 1.5,
+                                        valueColor:AlwaysStoppedAnimation(mainPurple),
                                   ),
                                 );
                               }

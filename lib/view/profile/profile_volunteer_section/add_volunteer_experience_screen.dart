@@ -228,18 +228,29 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              actionContainer(
-                                text: 'Cancel',
-                                textColor: mainPurple,
+                              saveContainer(
                                 boxColor: kwhite,
                                 borderColor: mainPurple,
+                                child: saveContainerText(
+                                  text: 'Cancel',
+                                  textColor: mainPurple,
+                                ),
                                 onTap: () => Get.back(),
                               ),
                               wMBox,
-                              actionContainer(
-                                text: 'Save',
-                                textColor: c.saveText.value,
+                              saveContainer(
                                 boxColor: c.saveBG.value,
+                                child: Obx(
+                                  () => c.isSaving.value
+                                      ? CircularProgressIndicator(
+                                          color: kwhite,
+                                          strokeWidth: 1,
+                                        )
+                                      : saveContainerText(
+                                          text: 'Save',
+                                          textColor: c.saveText.value,
+                                        ),
+                                ),
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     String currenly =
@@ -250,6 +261,11 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                         .map((i) => i.file)
                                         .where((file) => file != null)
                                         .cast<File>()
+                                        .toList();
+                                    List<String> mediaUrl = c.volunteerMedia
+                                        .map((i) => i.url)
+                                        .where((image) => image != null)
+                                        .cast<String>()
                                         .toList();
                                     List<String> mediaTitles = c.volunteerMedia
                                         .map((i) => i.title)
@@ -301,7 +317,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                             mediaTitle: mediaTitles,
                                             mediaDesc: mediaDesc,
                                             mediaLink: mediaLinks,
-                                          );
+                                            mediaUrl: mediaUrl);
                                   }
                                 },
                               ),
@@ -443,6 +459,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
 
     if (volunteer.endDate == 'currently_working') {
       controller.currentlyWorking.value = true;
+      controller.update(['currentlyWorking-volunteer']);
     } else {
       controller.endDateController.text =
           controller.endDateController.text.isEmpty && volunteer.endDate != null

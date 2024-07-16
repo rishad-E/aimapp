@@ -97,9 +97,10 @@ class UpdateHonorAwardService {
     required List<String> mediaDescription,
     required List<String> mediaLink,
     required List<File> media,
+    required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveHonorAwards;
-    log('uid=>$uId awardID=>$awardID title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
+    log('uid=>$uId awardID=>$awardID title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription  mediaUrl=>$mediaUrl',
         name: 'add honor-service update');
     FormData formData = FormData.fromMap({
       "award_id": awardID,
@@ -114,19 +115,25 @@ class UpdateHonorAwardService {
           mediaDescription.isEmpty ? null : mediaDescription,
       "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
-    if (media.isNotEmpty) {
-      for (int i = 0; i < media.length; i++) {
-        File image = media[i];
-        formData.files.add(
-          MapEntry(
-              'images[$i]',
-              await MultipartFile.fromFile(image.path,
-                  filename: image.path.split('/').last)),
-        );
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
       }
-    }else{
-      formData.fields.add(const MapEntry('images[]', ''));
     }
+    // Add Images
+    if (media.isNotEmpty) {
+      for (File image in media) {
+        formData.files.add(MapEntry(
+          'images[$index]',
+          await MultipartFile.fromFile(image.path,
+              filename: image.path.split('/').last),
+        ));
+        index++;
+      }
+    }
+
     try {
       Response response = await dio.post(
         path,
@@ -136,10 +143,11 @@ class UpdateHonorAwardService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
+      log(response.data.toString());
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-       return successMessage;
+        return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
         if (responseData['error'] is Map) {
@@ -147,7 +155,7 @@ class UpdateHonorAwardService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-           return errorMessage;
+            return errorMessage;
           }
         } else if (responseData['error'] is String) {
           String errorMessage = responseData['error'];
@@ -156,7 +164,7 @@ class UpdateHonorAwardService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-       throw Exception('Server error occurred');
+        throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
             name: 'update HonorAward info error');

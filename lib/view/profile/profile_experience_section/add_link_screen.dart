@@ -62,7 +62,7 @@ class AddExperienceLinkScreen extends StatelessWidget {
                           }
                         },
                         child: const Text(
-                          'Apply',
+                          'Add',
                           style: TextStyle(
                               fontSize: 12, fontWeight: FontWeight.w600),
                         ),

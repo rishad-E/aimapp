@@ -53,7 +53,7 @@ class ProfileSkillController extends GetxController {
   final awardController = Get.put(ProfileHonorsAwardsController());
   final projectController = Get.put(ProfileProjectController());
   final courseController = Get.put(LanguageAndCourseController());
-
+  RxBool isSaving = false.obs;
   /*------- funtion to save and update skill info ------*/
   Future<void> saveSkillInfoFunction({
     required String uId,
@@ -66,40 +66,45 @@ class ProfileSkillController extends GetxController {
     required List<String> awIDs,
     required String permission,
   }) async {
-    String? res = await UpdateSkillInfoService().saveAddSkillService(
-      uId: uId,
-      skill: skill,
-      exIDs: exIDs,
-      edIDs: edIDs,
-      liIDs: liIDs,
-      prIDs: prIDs,
-      crsIds: crsIds,
-      awIDs: awIDs,
-      permission: permission,
-    );
-    if (res == 'Skill added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateSkillInfoService().saveAddSkillService(
+        uId: uId,
+        skill: skill,
+        exIDs: exIDs,
+        edIDs: edIDs,
+        liIDs: liIDs,
+        prIDs: prIDs,
+        crsIds: crsIds,
+        awIDs: awIDs,
+        permission: permission,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Skill added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -115,41 +120,46 @@ class ProfileSkillController extends GetxController {
     required List<String> awIDs,
     required String permission,
   }) async {
-    String? res = await UpdateSkillInfoService().updateAddedSkillService(
-      skID: skID,
-      uId: uId,
-      skill: skill,
-      exIDs: exIDs,
-      edIDs: edIDs,
-      liIDs: liIDs,
-      prIDs: prIDs,
-      crsIds: crsIds,
-      awIDs: awIDs,
-      permission: permission,
-    );
-    if (res == 'Skill updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateSkillInfoService().updateAddedSkillService(
+        skID: skID,
+        uId: uId,
+        skill: skill,
+        exIDs: exIDs,
+        edIDs: edIDs,
+        liIDs: liIDs,
+        prIDs: prIDs,
+        crsIds: crsIds,
+        awIDs: awIDs,
+        permission: permission,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Skill updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -221,6 +231,7 @@ class ProfileSkillController extends GetxController {
           }
         } else {
           experience.value = [];
+          exSkillsList = [];
         }
 
         /* -------extracting education---------- */
@@ -248,6 +259,7 @@ class ProfileSkillController extends GetxController {
           log(edSchoolList.toString(), name: 'newEducationList data');
         } else {
           education.value = [];
+          edSchoolList = [];
         }
 
         /* -------extracting license---------- */
@@ -268,6 +280,7 @@ class ProfileSkillController extends GetxController {
           log(licenseNameList.toString(), name: 'New licenseNameList c');
         } else {
           license.value = [];
+          licenseNameList = [];
         }
 
         /* -------extracting projects---------- */
@@ -288,6 +301,7 @@ class ProfileSkillController extends GetxController {
           log(projectTitleList.toString(), name: 'New projectTitleList c');
         } else {
           project.value = [];
+          projectTitleList = [];
         }
         /* -------extracting courses---------- */
         List<dynamic> coursedata = alldata["courses"];
@@ -306,6 +320,7 @@ class ProfileSkillController extends GetxController {
           log(courseNameList.toString(), name: 'New courseNameList c');
         } else {
           course.value = [];
+          courseNameList = [];
         }
 
         /* -------extracting award---------- */
@@ -325,6 +340,7 @@ class ProfileSkillController extends GetxController {
           log(awardNameList.toString(), name: 'New awardNameList c');
         } else {
           award.value = [];
+          awardNameList = [];
         }
 
         /* -------extracting publication ---------- */

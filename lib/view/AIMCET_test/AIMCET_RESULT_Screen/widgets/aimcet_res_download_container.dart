@@ -46,7 +46,7 @@ class TestResDownloadPage extends StatelessWidget {
               child: Image.asset('assets/images/acecet-home.png'),
             ),
           ),
-          boldText(text: 'Download$uId', size: 20, color: kwhite),
+          boldText(text: 'Download', size: 20, color: kwhite),
           regularText('Your Test Report', 20, color: kwhite),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 8),

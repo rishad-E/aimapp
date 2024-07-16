@@ -6,38 +6,37 @@ import 'package:dio/dio.dart';
 class UpdateCourseInfoService {
   Dio dio = Dio();
 
-  Future<String?> saveCourseInfo(
-      {required String uId,
-      required String course,
-      required String courseNo,
-      required String courseAssosiated,
-      required String working}) async {
-    log('ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated currently=>$working',
+  Future<String?> saveCourseInfo({
+    required String uId,
+    required String course,
+    required String courseNo,
+    required String courseAssosiated,
+  }) async {
+    log('ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
         name: 'course-service save');
     String path = Apis().aimUrl + Apis().saveCourse;
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": uId,
-            "course_name": course,
-            "course_number": courseNo,
-            "associated": courseAssosiated,
-            "working_currently": working,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "user_id": uId,
+          "course_name": course,
+          "course_number": courseNo,
+          "associated": courseAssosiated,
+        },
+        options: Options(validateStatus: (status) => status! < 599),
+      );
       Map<String, dynamic> responseData = response.data;
-      
+
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        
+
         return errorMessage;
       }
     } on DioException catch (e) {
@@ -61,35 +60,34 @@ class UpdateCourseInfoService {
     required String course,
     required String courseNo,
     required String courseAssosiated,
-    required String working,
+    // required String working,
   }) async {
-    log('courseID=>$courseID ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated currently=>$working',
+    log('courseID=>$courseID ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
         name: 'course-service update');
     String path = Apis().aimUrl + Apis().saveCourse;
     try {
-      Response response = await dio.post(path,
-          data: {
-            "course_id": courseID,
-            "user_id": uId,
-            "course_name": course,
-            "course_number": courseNo,
-            "associated": courseAssosiated,
-            "working_currently": working,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "course_id": courseID,
+          "user_id": uId,
+          "course_name": course,
+          "course_number": courseNo,
+          "associated": courseAssosiated,
+        },
+        options: Options(validateStatus: (status) => status! < 599),
+      );
       Map<String, dynamic> responseData = response.data;
       // log(responseData.toString(), name: 'save course success');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
         final List<dynamic> errorMessages = errorData.values.first;
         final errorMessage = errorMessages.join('\n');
-        
+
         return errorMessage;
       }
     } on DioException catch (e) {

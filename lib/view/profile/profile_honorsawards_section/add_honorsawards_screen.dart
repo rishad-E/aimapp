@@ -87,8 +87,8 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                             minLines: 1,
                             maxLines: null,
                             controller: controller.assosiatedController,
-                            validator: (value) =>
-                                controller.filedValidation(value),
+                            // validator: (value) =>
+                            //     controller.filedValidation(value),
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             onChanged: (value) {
@@ -196,24 +196,37 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            actionContainer(
-                              text: 'Cancel',
-                              textColor: mainPurple,
+                            saveContainer(
                               boxColor: kwhite,
                               borderColor: mainPurple,
                               onTap: () => Get.back(),
+                              child: saveContainerText(
+                                  text: 'Cancel', textColor: mainPurple),
                             ),
                             wMBox,
-                            actionContainer(
-                              text: 'Save',
-                              textColor: c.saveText.value,
+                            saveContainer(
                               boxColor: c.saveBG.value,
+                              child: Obx(
+                                () => c.isSaving.value
+                                    ? CircularProgressIndicator(
+                                        color: kwhite,
+                                        strokeWidth: 1,
+                                      )
+                                    : saveContainerText(
+                                        text: 'Save',
+                                        textColor: c.saveText.value),
+                              ),
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   List<File> imagesList = c.allAwardMedias
                                       .map((i) => i.file)
                                       .where((file) => file != null)
                                       .cast<File>()
+                                      .toList();
+                                  List<String> mediaUrl = c.allAwardMedias
+                                      .map((i) => i.url)
+                                      .where((image) => image != null)
+                                      .cast<String>()
                                       .toList();
                                   List<String> mediaLinks = c.allAwardMedias
                                       .map((i) => i.mediaLink)
@@ -255,7 +268,9 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           media: imagesList,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDescs,
-                                          mediaLink: mediaLinks);
+                                          mediaLink: mediaLinks,
+                                          mediaUrl: mediaUrl,
+                                        );
                                 }
                               },
                             ),

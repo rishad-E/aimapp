@@ -13,7 +13,7 @@ class ProfileHomeController extends GetxController {
   RxString userDOB = ''.obs;
   RxString userGender = ''.obs;
   Rx<User?> userData = Rx<User?>(null);
-  // Rx<UserDataModel?> userDetails =Rx<UserDataModel?>(null);
+  RxBool isLoading = false.obs;
 
   Future<void> fetchAlluserData({required String uId}) async {
     try {
@@ -39,40 +39,53 @@ class ProfileHomeController extends GetxController {
       {required ImageSource source, required String uId}) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: source);
-      if (pickedImage == null) return;
-      File? image = File(pickedImage.path);
+      if (pickedImage == null) {
+        isLoading.value = false;
+        return;
+      }
+      isLoading.value = true;
+      File image = File(pickedImage.path);
       Map<String, dynamic>? data = await UpdateProfilePhotoService()
           .updateProfile(uId: uId, file: image);
-      if (data != null) {
-        if (data.containsKey("message")) {
-          String resImage = data["user"]["image"];
-          final profilePic = "http://154.26.130.161/elearning/$resImage";
-          log(profilePic, name: 'update profilepic co');
-          selectedImage.value = profilePic;
-        } else if (data.containsKey("error")) {
-          Map<String, dynamic> errors = data['error'];
-          String first = errors.keys.first;
-          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
-            String errorMessage = errors[first][0].toString();
-            log(errorMessage, name: 'update pro pic error co');
-            if (errorMessage == "The user_profile may not be greater than 2048 kilobytes.") {
-              errorMessage = "Image should not be greater than 2MB";
-            }
-            Get.showSnackbar(
-              GetSnackBar(
-                snackStyle: SnackStyle.FLOATING,
-                message: errorMessage,
-                borderRadius: 4,
-                margin: const EdgeInsets.all(10),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 2),
-              ),
-            );
+      if (data == null) {
+        isLoading.value = false;
+        return;
+      }
+
+      if (data.containsKey("message")) {
+        String resImage = data["user"]["image"];
+        final profilePic = "http://154.26.130.161/elearning/$resImage";
+        log(profilePic, name: 'update profilepic co');
+        selectedImage.value = profilePic;
+      } else if (data.containsKey("error")) {
+        Map<String, dynamic> errors = data['error'];
+        String first = errors.keys.first;
+        if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+          String errorMessage = errors[first][0].toString();
+          log(errorMessage, name: 'update pro pic error co');
+
+          if (errorMessage ==
+              "The user_profile may not be greater than 2048 kilobytes.") {
+            errorMessage = "Image should not be greater than 2MB";
           }
+
+          Get.showSnackbar(
+            GetSnackBar(
+              snackStyle: SnackStyle.FLOATING,
+              message: errorMessage,
+              borderRadius: 4,
+              margin: const EdgeInsets.all(10),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 2),
+            ),
+          );
         }
       }
+
+      isLoading.value = false;
     } catch (e) {
-      // log(data.toString(), name: 'update profilepic co');
+      isLoading.value = false;
+      log('Error updating profile picture: $e', name: 'update profilepic co');
     }
   }
 

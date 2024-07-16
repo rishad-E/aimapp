@@ -45,7 +45,7 @@ class EducatorWorkPreferencePage extends StatelessWidget {
                                     c.toggleRelocate(val: true);
                                   },
                                   child: relocateTrueContainer(
-                                      relocate: c.relocate));
+                                      relocate: c.relocate.value));
                             },
                           ),
                           wMBox,
@@ -56,7 +56,7 @@ class EducatorWorkPreferencePage extends StatelessWidget {
                               return GestureDetector(
                                   onTap: () => c.toggleRelocate(val: false),
                                   child: relocateFalseContainer(
-                                      relocate: c.relocate));
+                                      relocate: c.relocate.value));
                             },
                           ),
                         ],
@@ -129,11 +129,13 @@ class EducatorWorkPreferencePage extends StatelessWidget {
                               actionContainer(
                                 text: 'Next',
                                 textColor: c.workMode.isNotEmpty &&
-                                        c.teachingMode.isNotEmpty
+                                        c.teachingMode.isNotEmpty &&
+                                        c.relocate.value != null
                                     ? kwhite
                                     : textFieldColor,
                                 boxColor: c.workMode.isNotEmpty &&
-                                        c.teachingMode.isNotEmpty
+                                        c.teachingMode.isNotEmpty &&
+                                        c.relocate.value != null
                                     ? mainPurple
                                     : buttonColor,
                                 onTap: () {

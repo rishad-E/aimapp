@@ -142,28 +142,17 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                actionContainer(
-                                  text: 'Cancel',
-                                  textColor: mainPurple,
+                                saveContainer(
                                   boxColor: kwhite,
                                   borderColor: mainPurple,
+                                  child: saveContainerText(
+                                    text: 'Cancel',
+                                    textColor: mainPurple,
+                                  ),
                                   onTap: () => Get.back(),
                                 ),
                                 wMBox,
-                                actionContainer(
-                                  text: 'Save',
-                                  textColor:
-                                      c.titleController.text.isNotEmpty &&
-                                              c.publicationController.text
-                                                  .isNotEmpty &&
-                                              c.publicationDateController.text
-                                                  .isNotEmpty &&
-                                              c.publicationURLController.text
-                                                  .isNotEmpty &&
-                                              c.publicationDescriptionController
-                                                  .text.isNotEmpty
-                                          ? kwhite
-                                          : textFieldColor,
+                                saveContainer(
                                   boxColor: c.titleController.text.isNotEmpty &&
                                           c.publicationController.text
                                               .isNotEmpty &&
@@ -175,6 +164,28 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                               .text.isNotEmpty
                                       ? mainPurple
                                       : buttonColor,
+                                  child: Obx(
+                                    () => c.isSaving.value
+                                        ? CircularProgressIndicator(
+                                            color: kwhite,
+                                            strokeWidth: 1,
+                                          )
+                                        : saveContainerText(
+                                            text: 'Save',
+                                            textColor: c.titleController.text
+                                                        .isNotEmpty &&
+                                                    c.publicationController.text
+                                                        .isNotEmpty &&
+                                                    c.publicationDateController
+                                                        .text.isNotEmpty &&
+                                                    c.publicationURLController
+                                                        .text.isNotEmpty &&
+                                                    c.publicationDescriptionController
+                                                        .text.isNotEmpty
+                                                ? kwhite
+                                                : textFieldColor,
+                                          ),
+                                  ),
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
                                       publication == null

@@ -36,8 +36,8 @@ class ProfileEducationController extends GetxController {
 
   String? startdateBackend;
   String? enddateBackend;
-
   List<String> suggestedSkill = [];
+  RxBool isSaving = false.obs;
 
   Future<void> saveEducationInfo({
     required String uId,
@@ -55,107 +55,116 @@ class ProfileEducationController extends GetxController {
     required List<File> images,
     required List<String> skills,
   }) async {
-    String? res = await UpdateEducationInfoService().saveEducationInfo(
-      uId: uId,
-      school: school,
-      degree: degree,
-      studyfield: studyfield,
-      startDate: startDate,
-      endDate: endDate,
-      grade: grade,
-      activities: activities,
-      description: description,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLinks: mediaLinks,
-      images: images,
-      skills: skills,
-    );
-    if (res == 'Education details added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateEducationInfoService().saveEducationInfo(
+        uId: uId,
+        school: school,
+        degree: degree,
+        studyfield: studyfield,
+        startDate: startDate,
+        endDate: endDate,
+        grade: grade,
+        activities: activities,
+        description: description,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription,
+        mediaLinks: mediaLinks,
+        images: images,
+        skills: skills,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Education details added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
+    update(['update-educationInfo']);
   }
 
-  Future<void> updateEducationInfo({
-    required String edID,
-    required String uId,
-    required String school,
-    required String degree,
-    required String studyfield,
-    required String startDate,
-    required String endDate,
-    required String grade,
-    required String activities,
-    required String description,
-    required List<String> mediaTitle,
-    required List<String> mediaDescription,
-    required List<String> mediaLinks,
-    required List<File> images,
-    required List<String> skills,
-    required List<String> mediaUrl
-  }) async {
-    String? res = await UpdateEducationInfoService().updateEducationInfo(
-      edID: edID,
-      uId: uId,
-      school: school,
-      degree: degree,
-      studyfield: studyfield,
-      startDate: startDate,
-      endDate: endDate,
-      grade: grade,
-      activities: activities,
-      description: description,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLinks: mediaLinks,
-      images: images,
-      skills: skills,
-      mediaUrl: mediaUrl
-    );
-    if (res == "Education details updated successfully.") {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+  Future<void> updateEducationInfo(
+      {required String edID,
+      required String uId,
+      required String school,
+      required String degree,
+      required String studyfield,
+      required String startDate,
+      required String endDate,
+      required String grade,
+      required String activities,
+      required String description,
+      required List<String> mediaTitle,
+      required List<String> mediaDescription,
+      required List<String> mediaLinks,
+      required List<File> images,
+      required List<String> skills,
+      required List<String> mediaUrl}) async {
+    try {
+      isSaving.value = true;
+      String? res = await UpdateEducationInfoService().updateEducationInfo(
+          edID: edID,
+          uId: uId,
+          school: school,
+          degree: degree,
+          studyfield: studyfield,
+          startDate: startDate,
+          endDate: endDate,
+          grade: grade,
+          activities: activities,
+          description: description,
+          mediaTitle: mediaTitle,
+          mediaDescription: mediaDescription,
+          mediaLinks: mediaLinks,
+          images: images,
+          skills: skills,
+          mediaUrl: mediaUrl);
+      if (res == "Education details updated successfully.") {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 

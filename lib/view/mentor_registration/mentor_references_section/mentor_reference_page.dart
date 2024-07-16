@@ -20,7 +20,7 @@ class MentorReferencesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MentorReferencesController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -42,8 +42,6 @@ class MentorReferencesPage extends StatelessWidget {
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.nameController1,
-                          validator: (value) =>
-                              controller.filedValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['mentor-reference']);
@@ -64,8 +62,6 @@ class MentorReferencesPage extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: controller.relationController1,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
                               onChanged: (value) {
                                 controller.checkAlFields();
                                 controller.update(['mentor-reference']);
@@ -87,8 +83,6 @@ class MentorReferencesPage extends StatelessWidget {
                                 autovalidateMode:
                                     AutovalidateMode.onUserInteraction,
                                 controller: controller.otherRelationController1,
-                                validator: (value) =>
-                                    controller.filedValidation(value),
                                 onChanged: (value) {
                                   controller.checkAlFields();
                                   controller.update(['mentor-reference']);
@@ -104,8 +98,6 @@ class MentorReferencesPage extends StatelessWidget {
                         item: primarytxt3('Mobile Number', 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController1,
-                          validator: (value) =>
-                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['mentor-reference']);
@@ -125,8 +117,6 @@ class MentorReferencesPage extends StatelessWidget {
                         textfiled: TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           controller: controller.nameController2,
-                          validator: (value) =>
-                              controller.filedValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['mentor-reference']);
@@ -148,8 +138,6 @@ class MentorReferencesPage extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: controller.relationController2,
-                              validator: (value) =>
-                                  controller.filedValidation(value),
                               onChanged: (value) {
                                 controller.checkAlFields();
                                 controller.update(['mentor-reference']);
@@ -166,27 +154,23 @@ class MentorReferencesPage extends StatelessWidget {
                       Obx(() => controller.otherRelation2.value ==
                               "Other (Please Specify)"
                           ? TextFormField(
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                controller: controller.otherRelationController2,
-                                validator: (value) =>
-                                    controller.filedValidation(value),
-                                onChanged: (value) {
-                                  controller.checkAlFields();
-                                  controller.update(['mentor-reference']);
-                                },
-                                decoration: infoFieldDecoration(
-                                    hintText: 'Enter Relationship'),
-                                style: const TextStyle(fontSize: 13),
-                              )
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: controller.otherRelationController2,
+                              onChanged: (value) {
+                                controller.checkAlFields();
+                                controller.update(['mentor-reference']);
+                              },
+                              decoration: infoFieldDecoration(
+                                  hintText: 'Enter Relationship'),
+                              style: const TextStyle(fontSize: 13),
+                            )
                           : shrinked),
                       hBox,
                       mentorFields(
                         item: primarytxt3('Mobile Number', 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController2,
-                          validator: (value) =>
-                              controller.mobileValidation(value),
                           onChanged: (value) {
                             controller.checkAlFields();
                             controller.update(['mentor-reference']);

@@ -8,7 +8,6 @@ class EducatorRegistrationService {
   Dio dio = Dio();
 
   Future<String?> saveEducatorRegistration({
-    required String uId,
     required String name,
     required String email,
     required String phone,
@@ -42,7 +41,6 @@ class EducatorRegistrationService {
     String path = Apis().aimUrl + Apis().educator;
     log(name);
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "name": name,
       "email": email,
       "phone": phone,
@@ -121,6 +119,7 @@ class EducatorRegistrationService {
         } else {
           String errorMessage = response.data["error"];
           log(errorMessage, name: 'error res string');
+          return errorMessage;
         }
       }
     } on DioException catch (e) {

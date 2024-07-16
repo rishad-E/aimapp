@@ -28,6 +28,7 @@ class ProfileHonorsAwardsController extends GetxController {
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
+  RxBool isSaving = false.obs;
 
   Future<void> saveHonorAwardFunction({
     required String uId,
@@ -41,41 +42,46 @@ class ProfileHonorsAwardsController extends GetxController {
     required List<String> mediaLink,
     required List<File> media,
   }) async {
-    String? res = await UpdateHonorAwardService().saveHonorAwardInfo(
-      uId: uId,
-      title: title,
-      assosiated: assosiated,
-      issuer: issuer,
-      startdate: startdate,
-      description: description,
-      media: media,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink,
-    );
-    if (res == 'Award details added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateHonorAwardService().saveHonorAwardInfo(
+        uId: uId,
+        title: title,
+        assosiated: assosiated,
+        issuer: issuer,
+        startdate: startdate,
+        description: description,
+        media: media,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription,
+        mediaLink: mediaLink,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Award details added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -91,43 +97,49 @@ class ProfileHonorsAwardsController extends GetxController {
     required List<String> mediaDescription,
     required List<String> mediaLink,
     required List<File> media,
+    required List<String> mediaUrl,
   }) async {
-    String? res = await UpdateHonorAwardService().updateHonorAwardInfo(
-      awardID: awardID,
-      uId: uId,
-      title: title,
-      assosiated: assosiated,
-      issuer: issuer,
-      startdate: startdate,
-      description: description,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink,
-      media: media,
-    );
-    if (res == 'Award details updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+    try {
+      isSaving.value = true;
+      String? res = await UpdateHonorAwardService().updateHonorAwardInfo(
+          awardID: awardID,
+          uId: uId,
+          title: title,
+          assosiated: assosiated,
+          issuer: issuer,
+          startdate: startdate,
+          description: description,
+          mediaTitle: mediaTitle,
+          mediaDescription: mediaDescription,
+          mediaLink: mediaLink,
+          media: media,
+          mediaUrl: mediaUrl);
+      if (res == 'Award details updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -237,7 +249,7 @@ class ProfileHonorsAwardsController extends GetxController {
 
   void allFieldSelect() {
     bool isAllFiledSelected = titileController.text.isNotEmpty &&
-        assosiatedController.text.isNotEmpty &&
+        // assosiatedController.text.isNotEmpty &&
         issuerController.text.isNotEmpty &&
         startdateController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty;

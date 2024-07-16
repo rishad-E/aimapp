@@ -58,7 +58,7 @@ class UpdateProjectInfoService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         final errorData = responseData['error'] as Map<String, dynamic>;
@@ -94,6 +94,7 @@ class UpdateProjectInfoService {
     required List<String> mediaTitle,
     required List<String> mediaDescription,
     required List<String> mediaLink,
+    required List<String> mediaUrl
   }) async {
     String path = Apis().aimUrl + Apis().saveProject;
     log('prID=>$prID uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription currenty=>$currentlyWorking mediaLinks=>$mediaLink',
@@ -114,18 +115,37 @@ class UpdateProjectInfoService {
           mediaDescription.isEmpty ? null : mediaDescription,
       "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
-    if (medias.isNotEmpty) {
-      for (int i = 0; i < medias.length; i++) {
-        File media = medias[i];
-        formData.files.add(MapEntry(
-          'images[$i]',
-          await MultipartFile.fromFile(media.path,
-              filename: media.path.split('/').last),
-        ));
+
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
       }
-    } else {
-      formData.fields.add(const MapEntry('images[]', ''));
     }
+    // Add Images
+    if (medias.isNotEmpty) {
+      for (File image in medias) {
+        formData.files.add(MapEntry(
+          'images[$index]',
+          await MultipartFile.fromFile(image.path,
+              filename: image.path.split('/').last),
+        ));
+        index++;
+      }
+    }
+    // if (medias.isNotEmpty) {
+    //   for (int i = 0; i < medias.length; i++) {
+    //     File media = medias[i];
+    //     formData.files.add(MapEntry(
+    //       'images[$i]',
+    //       await MultipartFile.fromFile(media.path,
+    //           filename: media.path.split('/').last),
+    //     ));
+    //   }
+    // } else {
+    //   formData.fields.add(const MapEntry('images[]', ''));
+    // }
     try {
       Response response = await dio.post(
         path,
@@ -147,7 +167,6 @@ class UpdateProjectInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-       
         throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',

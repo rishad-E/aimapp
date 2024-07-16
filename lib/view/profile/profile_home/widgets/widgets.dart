@@ -1,5 +1,4 @@
 import 'package:aimshala/models/profile_model/add_media_model.dart';
-import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -7,7 +6,6 @@ import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:aimshala/view/profile/profile_home/widgets/profile_media_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 Widget buildTopContent(
@@ -275,17 +273,20 @@ Widget sectionDataWidget({
                 ),
                 regularText(secSubTitle, 9.sp, color: color),
                 regularText(secSubTitle2, 8.sp),
-                regularText(secSubTitle3, 8.sp),
+                secSubTitle3 == 'no'
+                    ? shrinked
+                    : regularText(secSubTitle3, 8.sp),
                 secSubTitle4 == 'no'
                     ? shrinked
                     : regularText(secSubTitle4, 8.sp),
-                regularText(
-                  secSubTitle5,
-                  8,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-                // Text("data")
+                secSubTitle5 == 'no'
+                    ? shrinked
+                    : regularText(
+                        secSubTitle5,
+                        8.sp,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
                 Column(
                   children: List.generate(mediaItems.length, (index) {
                     if (data?.media != null && data?.imagePath != null) {
@@ -296,41 +297,45 @@ Widget sectionDataWidget({
                       padding: const EdgeInsets.symmetric(vertical: 2),
                       child: Row(
                         children: [
-                          Container(
-                            height: 6.h,
-                            width: 20.w,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: Container(
+                              height: 6.h,
+                              width: 20.w,
+                              color: Colors.grey.shade200,
+                              child: mediaItems[index].url != null
+                                  ? Image.network(
+                                      mediaUrl!,
+                                      fit: BoxFit.fill,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation(
+                                                      mainPurple),
+                                              strokeWidth: 1.5,
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    )
+                                  : Image.asset(
+                                      image,
+                                      fit: BoxFit.fill,
+                                    ),
                             ),
-                            child: mediaItems[index].url != null
-                                ? Image.network(
-                                    mediaUrl!,
-                                    fit: BoxFit.fill,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            valueColor:AlwaysStoppedAnimation(mainPurple),
-                                            value: loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    loadingProgress
-                                                        .expectedTotalBytes!
-                                                : null,
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  )
-                                : Image.asset(
-                                    image,
-                                    fit: BoxFit.fill,
-                                  ),
                           ),
                           wBox,
                           Expanded(
@@ -368,10 +373,6 @@ Widget loadingWidget() {
         child:
             CircularProgressIndicator(strokeWidth: 1, color: textFieldColor)),
   );
-}
-
-String getMonthName(DateTime? date) {
-  return DateFormat.MMMM().format(date!);
 }
 
 Widget viewAllButton({required void Function()? onPressedViewAll}) {

@@ -42,6 +42,7 @@ class ProfileExperienceController extends GetxController {
   String? enddateBackend;
 
   List<String> suggestedSkill = [];
+  RxBool isSaving = false.obs;
 
   @override
   void onInit() {
@@ -67,47 +68,52 @@ class ProfileExperienceController extends GetxController {
     required List<File> imagesEX,
     required List<String> skillsEX,
   }) async {
-    String? res = await UpdateExperienceInfoService().saveExperienceInfo(
-      uId: uId,
-      title: title,
-      employee: employee,
-      company: company,
-      location: location,
-      locationtype: locationtype,
-      currentlyWorking: currentlyWorking,
-      startDate: startDate,
-      endDate: endDate,
-      description: description,
-      profile: profile,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink,
-      imagesEX: imagesEX,
-      skillsEX: skillsEX,
-    );
-    if (res == 'Experience details added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateExperienceInfoService().saveExperienceInfo(
+        uId: uId,
+        title: title,
+        employee: employee,
+        company: company,
+        location: location,
+        locationtype: locationtype,
+        currentlyWorking: currentlyWorking,
+        startDate: startDate,
+        endDate: endDate,
+        description: description,
+        profile: profile,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription,
+        mediaLink: mediaLink,
+        imagesEX: imagesEX,
+        skillsEX: skillsEX,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Experience details added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -129,49 +135,55 @@ class ProfileExperienceController extends GetxController {
     required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
+    required List<String> mediaUrl,
   }) async {
-    String? res = await UpdateExperienceInfoService().updateExperienceInfo(
-      exID: exID,
-      uId: uId,
-      title: title,
-      employee: employee,
-      company: company,
-      location: location,
-      locationtype: locationtype,
-      currentlyWorking: currentlyWorking,
-      startDate: startDate,
-      endDate: endDate,
-      description: description,
-      profile: profile,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink,
-      imagesEX: imagesEX,
-      skillsEX: skillsEX,
-    );
-    if (res == 'Experience details updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+    try {
+      isSaving.value = true;
+      String? res = await UpdateExperienceInfoService().updateExperienceInfo(
+          exID: exID,
+          uId: uId,
+          title: title,
+          employee: employee,
+          company: company,
+          location: location,
+          locationtype: locationtype,
+          currentlyWorking: currentlyWorking,
+          startDate: startDate,
+          endDate: endDate,
+          description: description,
+          profile: profile,
+          mediaTitle: mediaTitle,
+          mediaDescription: mediaDescription,
+          mediaLink: mediaLink,
+          imagesEX: imagesEX,
+          skillsEX: skillsEX,
+          mediaUrl: mediaUrl);
+      if (res == 'Experience details updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 

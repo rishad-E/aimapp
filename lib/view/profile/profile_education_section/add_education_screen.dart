@@ -265,21 +265,37 @@ class AddEducationScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              actionContainer(
-                                text: 'Cancel',
-                                textColor: mainPurple,
+                              // actionContainer(
+                              //   text: 'Cancel',
+                              //   textColor: mainPurple,
+                              //   boxColor: kwhite,
+                              //   borderColor: mainPurple,
+                              //   onTap: () => Get.back(),
+                              // ),
+                              saveContainer(
                                 boxColor: kwhite,
                                 borderColor: mainPurple,
+                                child: saveContainerText(
+                                    text: 'Cancel', textColor: mainPurple),
                                 onTap: () => Get.back(),
                               ),
                               wMBox,
-                              actionContainer(
-                                text: 'Save',
-                                textColor: c.saveText.value,
+                              saveContainer(
                                 boxColor: c.saveBG.value,
+                                child: Obx(
+                                  () => c.isSaving.value
+                                      ? CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation(kwhite),
+                                          strokeWidth: 1,
+                                        )
+                                      : saveContainerText(
+                                          text: 'Save',
+                                          textColor: c.saveText.value,
+                                        ),
+                                ),
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
-                                    // log('stardate for backend=>${c.startdateBackend}  enddate for backend=>${c.enddateBackend}');
                                     List<File> imagesList = c.allMediasModel
                                         .map((media) => media.file)
                                         .where((image) => image != null)
@@ -301,9 +317,7 @@ class AddEducationScreen extends StatelessWidget {
                                         .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
-                                    // imagesList.addAll(mediaUrl);
-                                    log('ImageList=>$imagesList  mediatitle=>$mediaTitles  mediaDesc=>$mediaDesc  url=>$mediaUrl');
-
+                                    // log('ImageList=>$imagesList  mediatitle=>$mediaTitles  mediaDesc=>$mediaDesc  url=>$mediaUrl');
                                     edu == null
                                         ? c.saveEducationInfo(
                                             uId: uId,
@@ -347,11 +361,10 @@ class AddEducationScreen extends StatelessWidget {
                                             mediaLinks: mediaLinks,
                                             images: imagesList,
                                             skills: c.addedSkill,
-                                             mediaUrl: mediaUrl
-                                          );
+                                            mediaUrl: mediaUrl);
                                   }
                                 },
-                              ),
+                              )
                             ],
                           );
                         }),

@@ -9,7 +9,7 @@ class MentorRegistrationService {
   Dio dio = Dio();
 
   Future<String?> saveMentorRegistraion({
-    required String uId,
+   
     required String name,
     required String email,
     required String dob,
@@ -42,12 +42,11 @@ class MentorRegistrationService {
   }) async {
     String path = Apis().aimUrl + Apis().mentor;
     FormData formData = FormData.fromMap({
-      "user_id":uId,
       "name": name,
       "email": email,
-      "dob":dob,
-      "gender":gender,
-      "current_status":status,
+      "dob": dob,
+      "gender": gender,
+      "current_status": status,
       "phone": phone,
       "address": address,
       "high_degree": highDegree,
@@ -85,7 +84,7 @@ class MentorRegistrationService {
     }
     if (video != null) {
       log(video.path.toString());
-      
+
       formData.files.add(
         MapEntry(
           'video_file',
@@ -123,6 +122,7 @@ class MentorRegistrationService {
         } else {
           String errorMessage = response.data["error"];
           log(errorMessage);
+          return errorMessage;
         }
       }
     } on DioException catch (e) {
@@ -141,5 +141,3 @@ class MentorRegistrationService {
     return null;
   }
 }
-
-

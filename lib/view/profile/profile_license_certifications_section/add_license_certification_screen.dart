@@ -170,7 +170,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                       onTap: () {
                         controller.getSuggestedSkills();
                         Get.to(() =>
-                          AddLicenseSkillScreen(uId: uId, license: license));
+                            AddLicenseSkillScreen(uId: uId, license: license));
                       },
                       heading: 'Skills',
                       subText:
@@ -225,24 +225,37 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            actionContainer(
-                              text: 'Cancel',
-                              textColor: mainPurple,
+                            saveContainer(
                               boxColor: kwhite,
                               borderColor: mainPurple,
                               onTap: () => Get.back(),
+                              child: saveContainerText(
+                                  text: 'Cancel', textColor: mainPurple),
                             ),
                             wMBox,
-                            actionContainer(
-                              text: 'Save',
-                              textColor: c.saveText.value,
+                            saveContainer(
                               boxColor: c.saveBG.value,
+                              child: Obx(
+                                () => c.isSaving.value
+                                    ? CircularProgressIndicator(
+                                        color: kwhite,
+                                        strokeWidth: 1,
+                                      )
+                                    : saveContainerText(
+                                        text: 'Save',
+                                        textColor: c.saveText.value),
+                              ),
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   List<File> imagesList = c.allLicenseMedias
                                       .map((i) => i.file)
                                       .where((file) => file != null)
                                       .cast<File>()
+                                      .toList();
+                                  List<String> mediaUrl = c.allLicenseMedias
+                                      .map((i) => i.url)
+                                      .where((image) => image != null)
+                                      .cast<String>()
                                       .toList();
                                   List<String> mediaLinks = c.allLicenseMedias
                                       .map((i) => i.mediaLink)
@@ -290,7 +303,9 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                           skills: c.addedLicenseSkill,
                                           mediaTitle: mediaTitles,
                                           mediaDescription: mediaDescs,
-                                          mediaLink: mediaLinks);
+                                          mediaLink: mediaLinks,
+                                          mediaUrl: mediaUrl,
+                                        );
                                 }
                               },
                             ),

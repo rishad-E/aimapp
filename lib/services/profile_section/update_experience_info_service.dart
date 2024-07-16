@@ -69,7 +69,7 @@ class UpdateExperienceInfoService {
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         // log(successMessage, name: 'save education info success');
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
@@ -87,7 +87,7 @@ class UpdateExperienceInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-       throw Exception('Server error occurred');
+        throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
             name: 'save experience info error');
@@ -117,6 +117,7 @@ class UpdateExperienceInfoService {
     required List<String> mediaLink,
     required List<File> imagesEX,
     required List<String> skillsEX,
+    required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveExperience;
     log('exID=>$exID title:$title=> employee:$employee=> company:$company=> location:$location=> locationtype:$locationtype=> startDate:$startDate=> endDate:$endDate => description:$description=> profile:$profile=> skill:$skillsEX=> media:$imagesEX mediaTitle:$mediaTitle  mediaDesc:$mediaDescription currenly=>$currentlyWorking mediaLnk=>$mediaLink',
@@ -141,17 +142,24 @@ class UpdateExperienceInfoService {
       "media_links[]": mediaLink.isEmpty ? null : mediaLink,
       "skills[]": skillsEX.isEmpty ? null : skillsEX,
     });
+
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
+      }
+    }
+    // Add Images
     if (imagesEX.isNotEmpty) {
-      for (int i = 0; i < imagesEX.length; i++) {
-        File image = imagesEX[i];
+      for (File image in imagesEX) {
         formData.files.add(MapEntry(
-          'images[$i]',
+          'images[$index]',
           await MultipartFile.fromFile(image.path,
               filename: image.path.split('/').last),
         ));
+        index++;
       }
-    } else {
-      formData.fields.add(const MapEntry('images[]', ''));
     }
     try {
       Response response = await dio.post(
@@ -166,7 +174,7 @@ class UpdateExperienceInfoService {
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         // log(successMessage, name: 'save education info success');
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         if (responseData['error'] is Map) {
@@ -174,7 +182,7 @@ class UpdateExperienceInfoService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-           return errorMessage;
+            return errorMessage;
           }
         } else if (responseData['error'] is String) {
           String errorMessage = responseData['error'];
@@ -183,7 +191,7 @@ class UpdateExperienceInfoService {
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
-       throw Exception('Server error occurred');
+        throw Exception('Server error occurred');
       } else {
         log('error: statuscode:${e.response?.statusCode}',
             name: 'save experience info error');
@@ -209,7 +217,6 @@ class UpdateExperienceInfoService {
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         // log(successMessage, name: 'save education info success');
-      
 
         return successMessage;
       } else if (responseData.containsKey('error')) {

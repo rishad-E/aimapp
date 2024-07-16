@@ -91,6 +91,7 @@ class UpdateVolunteerInfoService {
     required List<String> mediaDesc,
     required List<String> mediaTitle,
     required List<String> mediaLink,
+    required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveVolunteer;
     log('volunteerID=>$vtID ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
@@ -105,22 +106,30 @@ class UpdateVolunteerInfoService {
       "end_date": endDate,
       "currently_working": currentlyWorking,
       "description": description,
-      "media_titles[]": mediaTitle.isEmpty?null:mediaTitle,
-      "media_descriptions[]": mediaDesc.isEmpty?null:mediaDesc,
-      "media_links[]": mediaLink.isEmpty?null:mediaLink,
+      "media_titles[]": mediaTitle.isEmpty ? null : mediaTitle,
+      "media_descriptions[]": mediaDesc.isEmpty ? null : mediaDesc,
+      "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
-    if (media.isNotEmpty) {
-      for (var i = 0; i < media.length; i++) {
-        File image = media[i];
-        formData.files.add(MapEntry(
-          'images[$i]',
-          await MultipartFile.fromFile(image.path,
-              filename: image.path.split('/').join()),
-        ));
+
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
       }
-    }else{
-      formData.fields.add(const MapEntry('images[]', ''));
     }
+    // Add Images
+    if (media.isNotEmpty) {
+      for (File image in media) {
+        formData.files.add(MapEntry(
+          'images[$index]',
+          await MultipartFile.fromFile(image.path,
+              filename: image.path.split('/').last),
+        ));
+        index++;
+      }
+    }
+
     try {
       Response response = await dio.post(path,
           data: formData,
@@ -162,7 +171,7 @@ class UpdateVolunteerInfoService {
           data: {"volunteer_experience_id": volunteerID},
           options: Options(validateStatus: (status) => status! < 599));
       Map<String, dynamic> responseData = response.data;
-      
+
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         return successMessage;

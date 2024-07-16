@@ -11,9 +11,9 @@ class LanguageAndCourseController extends GetxController {
   TextEditingController courseNoController = TextEditingController();
   TextEditingController courseAssosiatedController = TextEditingController();
 
-  bool currentlyWorking = false;
-
   RxList<String> associatedListdata = <String>[].obs;
+  RxBool isSavingLanguage = false.obs;
+  RxBool isSavingCourse = false.obs;
 
 /*-----------save and update course---------- */
   Future<void> saveLanguageFunction({
@@ -21,34 +21,39 @@ class LanguageAndCourseController extends GetxController {
     required String language,
     required String proficiency,
   }) async {
-    String? res = await UpdateLanguageInfoService().saveLanguageInfo(
-      uId: uId,
-      language: language,
-      proficiency: proficiency,
-    );
-    if (res == 'Language added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSavingLanguage.value = true;
+      String? res = await UpdateLanguageInfoService().saveLanguageInfo(
+        uId: uId,
+        language: language,
+        proficiency: proficiency,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Language added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSavingLanguage.value = false;
     }
   }
 
@@ -58,34 +63,39 @@ class LanguageAndCourseController extends GetxController {
     required String language,
     required String proficiency,
   }) async {
-    String? res = await UpdateLanguageInfoService().updateLanguageInfo(
-        languageID: languageID,
-        uId: uId,
-        language: language,
-        proficiency: proficiency);
-    if (res == 'Language updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+    try {
+      isSavingLanguage.value = true;
+      String? res = await UpdateLanguageInfoService().updateLanguageInfo(
+          languageID: languageID,
+          uId: uId,
+          language: language,
+          proficiency: proficiency);
+      if (res == 'Language updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSavingLanguage.value = false;
     }
   }
 
@@ -126,38 +136,41 @@ class LanguageAndCourseController extends GetxController {
     required String course,
     required String courseNo,
     required String courseAssosiated,
-    required String working,
   }) async {
-    String? res = await UpdateCourseInfoService().saveCourseInfo(
-      uId: uId,
-      course: course,
-      courseNo: courseNo,
-      courseAssosiated: courseAssosiated,
-      working: working,
-    );
-    if (res == 'Course added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSavingCourse.value = true;
+      String? res = await UpdateCourseInfoService().saveCourseInfo(
+        uId: uId,
+        course: course,
+        courseNo: courseNo,
+        courseAssosiated: courseAssosiated,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Course added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSavingCourse.value = false;
     }
   }
 
@@ -167,39 +180,42 @@ class LanguageAndCourseController extends GetxController {
     required String course,
     required String courseNo,
     required String courseAssosiated,
-    required String working,
   }) async {
-    String? res = await UpdateCourseInfoService().updateCourseInfo(
-      uId: uId,
-      courseID: courseID,
-      course: course,
-      courseNo: courseNo,
-      courseAssosiated: courseAssosiated,
-      working: working,
-    );
-    if (res == 'Course updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSavingCourse.value = true;
+      String? res = await UpdateCourseInfoService().updateCourseInfo(
+        uId: uId,
+        courseID: courseID,
+        course: course,
+        courseNo: courseNo,
+        courseAssosiated: courseAssosiated,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Course updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSavingCourse.value = false;
     }
   }
 
@@ -234,11 +250,6 @@ class LanguageAndCourseController extends GetxController {
     }
   }
 /*-----------save and update course---------- */
-
-  void toggleCurrentlyWorking() {
-    currentlyWorking = !currentlyWorking;
-    update(['update-workingButton']);
-  }
 
   String? fieldValidation(String? value) {
     if (value == null || value.isEmpty) {

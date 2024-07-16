@@ -116,13 +116,45 @@ Widget actionContainer(
           borderRadius: BorderRadius.circular(6),
         ),
         child: Center(
-            child: Text(
-          text,
-          style: TextStyle(
-              color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
-        )),
+          child: Text(
+            text,
+            style: TextStyle(
+                color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
+          ),
+        ),
       ),
     ),
+  );
+}
+
+Widget saveContainer(
+    {Color? borderColor,
+    required Color boxColor,
+    void Function()? onTap,
+    Widget? child}) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 4.h,
+        decoration: BoxDecoration(
+          color: boxColor,
+          border: borderColor != null
+              ? Border.all(width: 1, color: borderColor)
+              : null,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(child: child),
+      ),
+    ),
+  );
+}
+
+Widget saveContainerText({required String text,Color? textColor}) {
+  return Text(
+    text,
+    style:
+        TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
   );
 }
 

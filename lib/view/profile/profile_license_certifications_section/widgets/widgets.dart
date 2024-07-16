@@ -211,6 +211,8 @@ Widget addedLicenseMediaHome(
                               } else {
                                 return Center(
                                   child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(mainPurple),
+                                    strokeWidth: 1.5,
                                     value: loadingProgress.expectedTotalBytes !=
                                             null
                                         ? loadingProgress

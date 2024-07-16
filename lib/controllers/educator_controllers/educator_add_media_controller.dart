@@ -138,7 +138,10 @@ class EducatorMediaAddController extends GetxController {
       String institute = bgController.affiliatedController.text;
       List<String> subjects = subjController.seletedSubject;
       List<String> topics = subjController.seletedTopic;
-      String relocate = workController.relocate ? 'Yes' : 'No';
+      String relocate = workController.relocate.value != null &&
+              workController.relocate.value == true
+          ? 'Yes'
+          : 'No';
       String workMode = workController.workMode;
       String teachPrefers = workController.teachingMode;
       List<String> prefereDays = availableController.selectedDays;
@@ -166,7 +169,6 @@ class EducatorMediaAddController extends GetxController {
          ''', name: 'all-fields');
       String? res =
           await EducatorRegistrationService().saveEducatorRegistration(
-        uId: id.toString(),
         name: name,
         email: email,
         phone: phone,

@@ -59,7 +59,7 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                               controller.update(['update-LanguageInfo']),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
-                            hintText: 'Ex: Retail Sales Manager',
+                            hintText: 'Ex: English',
                           ),
                           style: const TextStyle(fontSize: 13),
                         ),
@@ -95,28 +95,39 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                actionContainer(
-                                  text: 'Cancel',
-                                  textColor: mainPurple,
+                                saveContainer(
                                   boxColor: kwhite,
                                   borderColor: mainPurple,
+                                  child: saveContainerText(
+                                    text: 'Cancel',
+                                    textColor: mainPurple,
+                                  ),
                                   onTap: () => Get.back(),
                                 ),
                                 wMBox,
-                                actionContainer(
-                                  text: 'Save',
-                                  textColor:
-                                      c.languageController.text.isNotEmpty &&
-                                              c.proficiencyController.text
-                                                  .isNotEmpty
-                                          ? kwhite
-                                          : textFieldColor,
+                                saveContainer(
                                   boxColor:
                                       c.languageController.text.isNotEmpty &&
                                               c.proficiencyController.text
                                                   .isNotEmpty
                                           ? mainPurple
                                           : buttonColor,
+                                  child: Obx(
+                                    () => c.isSavingLanguage.value
+                                        ? CircularProgressIndicator(
+                                            color: kwhite,
+                                            strokeWidth: 1,
+                                          )
+                                        : saveContainerText(
+                                            text: 'Save',
+                                            textColor: c.languageController.text
+                                                        .isNotEmpty &&
+                                                    c.proficiencyController.text
+                                                        .isNotEmpty
+                                                ? kwhite
+                                                : textFieldColor,
+                                          ),
+                                  ),
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
                                       log('ID=>$uId language=>${c.languageController.text} proficiency=>${c.proficiencyController.text}',

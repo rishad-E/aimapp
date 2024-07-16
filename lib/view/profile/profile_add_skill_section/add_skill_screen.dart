@@ -130,163 +130,179 @@ class ProfileAddSkillScreen extends StatelessWidget {
                     GetBuilder<ProfileSkillController>(
                         id: 'update-ExID',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Experience',
-                            list: List.generate(
-                              c.exSkillsList.length,
-                              (index) {
-                                final data = c.exSkillsList[index];
-                                return skillSelectBox(
-                                  skill: data.companyName,
-                                  cbValue: c.exSkillIdList
-                                      .any((item) => item == data.experienceID),
-                                  cbOnChanged: (value) {
-                                    c.selectExperienceIDs(data.experienceID);
-                                    c.update(['update-ExID']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectExperienceIDs(data.experienceID);
-                                    c.update(['update-ExID']);
-                                  },
+                          return c.exSkillIdList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Experience',
+                                  list: List.generate(
+                                    c.exSkillsList.length,
+                                    (index) {
+                                      final data = c.exSkillsList[index];
+                                      return skillSelectBox(
+                                        skill: data.companyName,
+                                        cbValue: c.exSkillIdList.any((item) =>
+                                            item == data.experienceID),
+                                        cbOnChanged: (value) {
+                                          c.selectExperienceIDs(
+                                              data.experienceID);
+                                          c.update(['update-ExID']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectExperienceIDs(
+                                              data.experienceID);
+                                          c.update(['update-ExID']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hBox,
                     GetBuilder<ProfileSkillController>(
                         id: 'update-EdID',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Education',
-                            list: List.generate(
-                              controller.edSchoolList.length,
-                              (index) {
-                                final data = c.edSchoolList[index];
-                                return skillSelectBox(
-                                  skill: data.school,
-                                  cbValue: c.edSchoolIdList
-                                      .any((item) => item == data.educationID),
-                                  cbOnChanged: (value) {
-                                    c.selectEducationIDs(data.educationID);
-                                    c.update(['update-EdID']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectEducationIDs(data.educationID);
-                                    c.update(['update-EdID']);
-                                  },
+                          return c.edSchoolList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Education',
+                                  list: List.generate(
+                                    c.edSchoolList.length,
+                                    (index) {
+                                      final data = c.edSchoolList[index];
+                                      return skillSelectBox(
+                                        skill: data.school,
+                                        cbValue: c.edSchoolIdList.any(
+                                            (item) => item == data.educationID),
+                                        cbOnChanged: (value) {
+                                          c.selectEducationIDs(
+                                              data.educationID);
+                                          c.update(['update-EdID']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectEducationIDs(
+                                              data.educationID);
+                                          c.update(['update-EdID']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hBox,
                     GetBuilder<ProfileSkillController>(
                         id: 'update-LiID',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Licenses & certifications',
-                            list: List.generate(
-                              controller.licenseNameList.length,
-                              (index) {
-                                final data = c.licenseNameList[index];
-                                return skillSelectBox(
-                                  skill: data.name,
-                                  cbValue: c.liscenseidList
-                                      .any((item) => item == data.licenseID),
-                                  cbOnChanged: (value) {
-                                    c.selectLicenseIDs(data.licenseID);
-                                    c.update(['update-LiID']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectLicenseIDs(data.licenseID);
-                                    c.update(['update-LiID']);
-                                  },
+                          return c.licenseNameList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Licenses & certifications',
+                                  list: List.generate(
+                                    c.licenseNameList.length,
+                                    (index) {
+                                      final data = c.licenseNameList[index];
+                                      return skillSelectBox(
+                                        skill: data.name,
+                                        cbValue: c.liscenseidList.any(
+                                            (item) => item == data.licenseID),
+                                        cbOnChanged: (value) {
+                                          c.selectLicenseIDs(data.licenseID);
+                                          c.update(['update-LiID']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectLicenseIDs(data.licenseID);
+                                          c.update(['update-LiID']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hBox,
                     GetBuilder<ProfileSkillController>(
                         id: 'update-PrID',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Projects',
-                            list: List.generate(
-                              controller.projectTitleList.length,
-                              (index) {
-                                final data = c.projectTitleList[index];
-                                return skillSelectBox(
-                                  skill: data.title,
-                                  cbValue: c.projectIdList
-                                      .any((item) => item == data.projectID),
-                                  cbOnChanged: (value) {
-                                    c.selectProjectIDs(data.projectID);
-                                    c.update(['update-PrID']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectProjectIDs(data.projectID);
-                                    c.update(['update-PrID']);
-                                  },
+                          return c.projectTitleList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Projects',
+                                  list: List.generate(
+                                    c.projectTitleList.length,
+                                    (index) {
+                                      final data = c.projectTitleList[index];
+                                      return skillSelectBox(
+                                        skill: data.title,
+                                        cbValue: c.projectIdList.any(
+                                            (item) => item == data.projectID),
+                                        cbOnChanged: (value) {
+                                          c.selectProjectIDs(data.projectID);
+                                          c.update(['update-PrID']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectProjectIDs(data.projectID);
+                                          c.update(['update-PrID']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hBox,
                     GetBuilder<ProfileSkillController>(
                         id: 'update-courseID',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Courses',
-                            list: List.generate(
-                              controller.courseNameList.length,
-                              (index) {
-                                final data = c.courseNameList[index];
-                                return skillSelectBox(
-                                  skill: data.name,
-                                  cbValue: c.courseIdList
-                                      .any((i) => i == data.courseID),
-                                  cbOnChanged: (value) {
-                                    c.selectCourseIDs(data.courseID);
-                                    c.update(['update-courseID']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectCourseIDs(data.courseID);
-                                    c.update(['update-courseID']);
-                                  },
+                          return c.courseNameList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Courses',
+                                  list: List.generate(
+                                    c.courseNameList.length,
+                                    (index) {
+                                      final data = c.courseNameList[index];
+                                      return skillSelectBox(
+                                        skill: data.name,
+                                        cbValue: c.courseIdList
+                                            .any((i) => i == data.courseID),
+                                        cbOnChanged: (value) {
+                                          c.selectCourseIDs(data.courseID);
+                                          c.update(['update-courseID']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectCourseIDs(data.courseID);
+                                          c.update(['update-courseID']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hBox,
                     GetBuilder<ProfileSkillController>(
                         id: 'update-awardIDs',
                         builder: (c) {
-                          return selectExtraSkill(
-                            text: 'Honors & awards',
-                            list: List.generate(
-                              controller.awardNameList.length,
-                              (index) {
-                                final data = c.awardNameList[index];
-                                return skillSelectBox(
-                                  skill: data.title,
-                                  cbValue: c.awardIdList
-                                      .any((item) => item == data.awardID),
-                                  cbOnChanged: (value) {
-                                    c.selectAwardIDs(data.awardID);
-                                    c.update(['update-awardIDs']);
-                                  },
-                                  onTapBox: () {
-                                    c.selectAwardIDs(data.awardID);
-                                    c.update(['update-awardIDs']);
-                                  },
+                          return c.awardNameList.isEmpty
+                              ? shrinked
+                              : selectExtraSkill(
+                                  text: 'Honors & awards',
+                                  list: List.generate(
+                                    c.awardNameList.length,
+                                    (index) {
+                                      final data = c.awardNameList[index];
+                                      return skillSelectBox(
+                                        skill: data.title,
+                                        cbValue: c.awardIdList.any(
+                                            (item) => item == data.awardID),
+                                        cbOnChanged: (value) {
+                                          c.selectAwardIDs(data.awardID);
+                                          c.update(['update-awardIDs']);
+                                        },
+                                        onTapBox: () {
+                                          c.selectAwardIDs(data.awardID);
+                                          c.update(['update-awardIDs']);
+                                        },
+                                      );
+                                    },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         }),
                     hMBox,
                     GetBuilder<ProfileSkillController>(
@@ -313,22 +329,31 @@ class ProfileAddSkillScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              actionContainer(
-                                text: 'Cancel',
-                                textColor: mainPurple,
+                              saveContainer(
                                 boxColor: kwhite,
                                 borderColor: mainPurple,
                                 onTap: () => Get.back(),
+                                child: saveContainerText(
+                                    text: 'Cancel', textColor: mainPurple),
                               ),
                               wMBox,
-                              actionContainer(
-                                text: 'Save',
-                                textColor: c.skillController.text.isNotEmpty
-                                    ? kwhite
-                                    : textFieldColor,
+                              saveContainer(
                                 boxColor: c.skillController.text.isNotEmpty
                                     ? mainPurple
                                     : buttonColor,
+                                child: Obx(
+                                  () => c.isSaving.value
+                                      ? CircularProgressIndicator(
+                                          color: kwhite,
+                                          strokeWidth: 1,
+                                        )
+                                      : saveContainerText(
+                                          text: 'Save',
+                                          textColor:
+                                              c.skillController.text.isNotEmpty
+                                                  ? kwhite
+                                                  : textFieldColor),
+                                ),
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     String newPermission;

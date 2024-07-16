@@ -35,6 +35,7 @@ class ProfileProjectController extends GetxController {
 
   RxList<String> associatedListdata = <String>[].obs;
   List<String> suggestedSkill = [];
+  RxBool isSaving = false.obs;
 
   Future<void> saveProjectFunction({
     required String uId,
@@ -50,43 +51,48 @@ class ProfileProjectController extends GetxController {
     required List<String> mediaDescription,
     required List<String> mediaLink,
   }) async {
-    String? res = await UpdateProjectInfoService().saveProjectInfo(
-      uId: uId,
-      proName: proName,
-      startDate: startDate,
-      endDate: endDate,
-      description: description,
-      assosiated: assosiated,
-      currentlyWorking: currentlyWorking,
-      skills: skills,
-      medias: medias,
-      mediaTitle: mediaTitle,
-      mediaDescription: mediaDescription,
-      mediaLink: mediaLink,
-    );
-    if (res == 'Project details added successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+    try {
+      isSaving.value = true;
+      String? res = await UpdateProjectInfoService().saveProjectInfo(
+        uId: uId,
+        proName: proName,
+        startDate: startDate,
+        endDate: endDate,
+        description: description,
+        assosiated: assosiated,
+        currentlyWorking: currentlyWorking,
+        skills: skills,
+        medias: medias,
+        mediaTitle: mediaTitle,
+        mediaDescription: mediaDescription,
+        mediaLink: mediaLink,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Project details added successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -104,8 +110,11 @@ class ProfileProjectController extends GetxController {
     required List<String> mediaTitle,
     required List<String> mediaDescription,
     required List<String> mediaLink,
+    required List<String> mediaUrl,
   }) async {
-    String? res = await UpdateProjectInfoService().updateProjectInfo(
+    try {
+      isSaving.value = true;
+      String? res = await UpdateProjectInfoService().updateProjectInfo(
         prID: prID,
         uId: uId,
         proName: proName,
@@ -118,30 +127,35 @@ class ProfileProjectController extends GetxController {
         medias: medias,
         mediaTitle: mediaTitle,
         mediaDescription: mediaDescription,
-        mediaLink: mediaLink);
-    if (res == 'Project details updated successfully.') {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.green,
-          duration: const Duration(seconds: 2),
-        ),
+        mediaLink: mediaLink,
+        mediaUrl: mediaUrl,
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: res,
-          borderRadius: 4,
-          margin: const EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      if (res == 'Project details updated successfully.') {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: res,
+            borderRadius: 4,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -279,8 +293,7 @@ class ProfileProjectController extends GetxController {
   void allFiledSelected() {
     bool isAllFiledSelected = projectnameController.text.isNotEmpty &&
         projectDescriptionController.text.isNotEmpty &&
-        startdateController.text.isNotEmpty &&
-        projectAssosiatedController.text.isNotEmpty;
+        startdateController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
   }

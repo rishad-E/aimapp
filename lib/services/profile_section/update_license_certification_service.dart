@@ -61,7 +61,7 @@ class UpdateLicenseCertificationService {
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-       
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
@@ -70,7 +70,7 @@ class UpdateLicenseCertificationService {
           String first = errors.keys.first;
           if (errors[first] is List && (errors[first] as List).isNotEmpty) {
             String errorMessage = errors[first][0].toString();
-            
+
             return errorMessage;
           }
         } else if (responseData['error'] is String) {
@@ -106,6 +106,7 @@ class UpdateLicenseCertificationService {
     required List<String> mediaTitle,
     required List<String> mediaDescription,
     required List<String> mediaLink,
+    required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveLicense;
     log('lcID=>$lcID uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
@@ -126,17 +127,23 @@ class UpdateLicenseCertificationService {
           mediaDescription.isEmpty ? null : mediaDescription,
       "media_links[]": mediaLink.isEmpty ? null : mediaLink,
     });
+    int index = 0;
+    if (mediaUrl.isNotEmpty) {
+      for (String url in mediaUrl) {
+        formData.fields.add(MapEntry('images[$index]', url));
+        index++;
+      }
+    }
+    // Add Images
     if (media.isNotEmpty) {
-      for (int i = 0; i < media.length; i++) {
-        File image = media[i];
+      for (File image in media) {
         formData.files.add(MapEntry(
-          'images[$i]',
+          'images[$index]',
           await MultipartFile.fromFile(image.path,
               filename: image.path.split('/').last),
         ));
+        index++;
       }
-    } else {
-      formData.fields.add(const MapEntry('images[]', ''));
     }
 
     try {
@@ -149,6 +156,7 @@ class UpdateLicenseCertificationService {
         ),
       );
       Map<String, dynamic> responseData = response.data;
+      // log(responseData.toString());
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         return successMessage;

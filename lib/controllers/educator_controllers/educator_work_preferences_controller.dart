@@ -1,17 +1,12 @@
 import 'package:get/get.dart';
 
 class EducatorWorkPreferenceController extends GetxController {
-  bool relocate = false;
+  Rxn<bool> relocate = Rxn<bool>();
   String workMode = '';
   String teachingMode = '';
 
   void toggleRelocate({required bool val}) {
-    if (val == true && relocate == false) {
-      relocate = true;
-    }
-    if (val == false && relocate == true) {
-      relocate = false;
-    }
+    relocate.value = val;
     update(['update-relocate']);
     update(['edu-WorkPreference']);
   }
