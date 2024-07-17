@@ -38,14 +38,25 @@ class AmySignUpController extends GetxController {
     if (res != null) {
       qusId = int.tryParse(res["upd_ques_index"])!;
       String resMsg = res["bot_reply"];
-      msgs.add(ChatMessageSignup(false, resMsg, currentTime, true));
+      List<String> msgParts = resMsg.split('#');
+      // Add each part of the message to msgs
+      // Add each part of the message to msgs in reverse order
+      for (int i = msgParts.length - 1; i >= 0; i--) {
+        String part = msgParts[i];
+        if (part.trim().isNotEmpty) {
+          if (i == msgParts.length - 1) {
+            msgs.add(ChatMessageSignup(false, part, currentTime, false));
+          } else if (i == 0) {
+            msgs.add(ChatMessageSignup(false, part, 'no', true));
+          } else {
+            msgs.add(ChatMessageSignup(false, part, 'no', false));
+          }
+        }
+      }
+
       isAskingDOB = true;
       update(['send-to-amy']);
     }
-    // update();
-    // String defaultMsg =
-    //     "Hi $name, I'm Amy, your virtual career assistant.Thanks for verifying your mobile number. Let's get to know each other better! Now, could you tell me your date of birth? (Please enter in DD/MM/YYYY format)";
-    // msgs.add(ChatMessageSignup(false, defaultMsg, currentTime, true));
   }
 
   void sendMessage(BuildContext context) async {
@@ -77,13 +88,6 @@ class AmySignUpController extends GetxController {
         qusId = res["upd_ques_index"];
         String resMsg = res["bot_reply"];
         log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
-
-        // if (res["options"] is Map) {
-        //   log('res[option] is map');
-        // } else {
-        //   log('res[option] is list');
-        // }
-
         if (qusId == 1) {
           genderOptionList.clear();
           List<dynamic> resOption = res["options"];
@@ -97,7 +101,7 @@ class AmySignUpController extends GetxController {
             data.forEach((key, value) {
               list.add(Option(id: int.tryParse(key), item: value));
             });
-          } else if(res["options"] is List) {
+          } else if (res["options"] is List) {
             List<dynamic> data = res["options"];
             for (int i = 0; i < data.length; i++) {
               list.add(Option(id: i, item: data[i]));
@@ -105,24 +109,23 @@ class AmySignUpController extends GetxController {
           }
           otherOptionList.addAll(list);
           log("items=>$otherOptionList", name: 'checkkkkkkk option');
-
-          // data.forEach((key, value) {
-          //   list.add(Option(id: int.tryParse(key), item: value));
-          // });
-          // otherOptionList.addAll(list);
-          // log("items=>$otherOptionList", name: 'checkkkkkkk option');
-
-          // List<dynamic> data = res["options"];
-          // List<Option> optionsModel =
-          //     data.map((e) => Option.fromJson(e)).toList();
-          // log("items=>$optionsModel", name: 'checkkkkkkk option');
-          // otherOptionList.addAll(optionsModel);
         }
         List<String> parts = resMsg.split('#');
-        // String part1 = parts[0];
-        // String part2 = parts[1];
-        msgs.insert(0, ChatMessageSignup(false, parts[0], 'no', true));
-        msgs.insert(0, ChatMessageSignup(false, parts[1], currentTime, false));
+
+        for (int i = 0; i < parts.length; i++) {
+          String part = parts[i].trim();
+          if (part.isNotEmpty) {
+            if (i == part.length - 1) {
+              msgs.insert(
+                  0, ChatMessageSignup(false, part, currentTime, false));
+            } else if (i == 0) {
+              msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
+            } else {
+              msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+            }
+          }
+        }
+       
         scrollController.animateTo(0.0,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
         isTyping = false;
@@ -147,28 +150,3 @@ class AmySignUpController extends GetxController {
     return RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(dob);
   }
 }
-
-// Future<String> replyMessageGender() async {
-//   await Future.delayed(const Duration(seconds: 2));
-//   return "Great! Now, could you please tell me your gender?";
-// }
-
-// if (res.isNotEmpty) {
-//   if (res == "Great! Now, could you please tell me your gender?" &&
-//       !isAskingGender) {
-//     isAskingGender = true;
-//   }
-//   msgs.insert(0, ChatMessageSignup(false, res, currentTime));
-//   scrollController.animateTo(0.0,duration: const Duration(seconds: 1), curve: Curves.easeOut);
-//   isTyping = false;update(['send-to-amy']);
-// } else {
-//   Get.showSnackbar(
-//     const GetSnackBar(
-//       snackStyle: SnackStyle.FLOATING,
-//       message: 'Some error occurred, please try again!',
-//       margin: EdgeInsets.all(10),
-//       backgroundColor: Colors.red,
-//       duration: Duration(seconds: 2),
-//     ),
-//   );
-// }

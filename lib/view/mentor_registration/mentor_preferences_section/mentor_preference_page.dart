@@ -16,186 +16,196 @@ class MentorPreferencePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorPreferenceController());
+    final c1 = Get.put(MentorPreferenceController());
     List<String> mentorModeList = ["Online", "Face-to-Face", "Both"];
     return Scaffold(
-     appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
-        child: SingleChildScrollView(
-          child: Form(
-            child: Column(
-              children: [
-                mentorSectionContainer(
-                  child: Column(
-                    children: [
-                      boldText(text: 'Mentoring Preferences', size: 15.sp),
-                      hLBox,
-                      mentorFields(
-                        item: semiBoldChoiceText(
-                          text: 'Preferred Mentoring Mode',
-                          size: 8.sp,
-                        ),
-                        textfiled: GetBuilder<MentorPreferenceController>(
-                            id: 'update-mentorMode',
-                            builder: (c) {
-                              return Column(
-                                children: List.generate(
-                                  mentorModeList.length,
-                                  (index) => Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 2),
-                                    child: GestureDetector(
-                                        onTap: () => c.selectMentorMode(
-                                            mentorModeList[index]),
-                                        child: mentoringPreference(
-                                          mentorMode: mentorModeList[index],
-                                          mode: mentorModeList[index] ==
-                                              c.mentorMode,
-                                        )),
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                      mentorFields(
-                        item: semiBoldChoiceText(
-                            text: 'Subjects/Fields You Can Mentor In',
-                            size: 9.5.sp),
-                        textfiled: Obx(
-                          () => subjectContainerMentor(
-                            child: Wrap(
-                              spacing: 5,
-                              runSpacing: 4,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                ...List.generate(
-                                  controller.seletedSubject.length,
-                                  (index) {
-                                    return selectedContainerMentor(
-                                      sub: controller.seletedSubject[index],
-                                      onTap: () {
-                                        controller.seletedSubject
-                                            .removeAt(index);
-                                        controller
-                                            .update(['mentor-preferences']);
-                                      },
-                                    );
-                                  },
-                                ),
-                                IntrinsicWidth(
-                                    child: SizedBox(
-                                  // color: Colors.yellow,
-                                  height: 3.5.h,
-                                  child: TextFormField(
-                                    controller: controller.subjectController,
-                                    cursorColor: mainPurple,
-                                    onFieldSubmitted: (value) {
-                                      if (value.isNotEmpty) {
-                                        controller.addSubject(
-                                            sub: controller
-                                                .subjectController.text);
-                                        controller.subjectController.clear();
-                                      }
-                                    },
-                                    style: const TextStyle(fontSize: 13),
-                                    decoration: mentorPreferenceTextfield(),
-                                  ),
-                                ))
-                              ],
-                            ),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            if (c1.subjectController.text.isNotEmpty) {
+              c1.addSubject(sub: c1.subjectController.text);
+              c1.subjectController.clear();
+            }
+            if (c1.topicController.text.isNotEmpty) {
+              c1.addTopic(topic: c1.topicController.text);
+              c1.topicController.clear();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                children: [
+                  mentorSectionContainer(
+                    child: Column(
+                      children: [
+                        boldText(text: 'Mentoring Preferences', size: 15.sp),
+                        hLBox,
+                        mentorFields(
+                          item: semiBoldChoiceText(
+                            text: 'Preferred Mentoring Mode',
+                            size: 8.sp,
                           ),
+                          textfiled: GetBuilder<MentorPreferenceController>(
+                              id: 'update-mentorMode',
+                              builder: (c) {
+                                return Column(
+                                  children: List.generate(
+                                    mentorModeList.length,
+                                    (index) => Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2),
+                                      child: GestureDetector(
+                                          onTap: () => c.selectMentorMode(
+                                              mentorModeList[index]),
+                                          child: mentoringPreference(
+                                            mentorMode: mentorModeList[index],
+                                            mode: mentorModeList[index] ==
+                                                c.mentorMode,
+                                          )),
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
-                      ),
-                      hBox,
-                      mentorFields(
-                        item: semiBoldChoiceText(
-                            text: 'Specific Topics Within Those Fields',
-                            size: 9.5.sp),
-                        textfiled: Obx(
-                          () => subjectContainerMentor(
-                            child: Wrap(
-                              spacing: 5,
-                              runSpacing: 4,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                ...List.generate(
-                                  controller.seletedTopic.length,
-                                  (index) {
-                                    return selectedContainerMentor(
-                                      sub: controller.seletedTopic[index],
-                                      onTap: () {
-                                        controller.seletedTopic.removeAt(index);
-                                        controller
-                                            .update(['mentor-preferences']);
-                                      },
-                                    );
-                                  },
-                                ),
-                                IntrinsicWidth(
-                                    child: SizedBox(
-                                  // color: Colors.yellow,
-                                  height: 3.5.h,
-                                  child: TextFormField(
-                                      controller: controller.topicController,
-                                    cursorColor: mainPurple,
+                        mentorFields(
+                          item: semiBoldChoiceText(
+                              text: 'Subjects/Fields You Can Mentor In',
+                              size: 9.5.sp),
+                          textfiled: Obx(
+                            () => subjectContainerMentor(
+                              child: Wrap(
+                                spacing: 5,
+                                runSpacing: 4,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  ...List.generate(
+                                    c1.seletedSubject.length,
+                                    (index) {
+                                      return selectedContainerMentor(
+                                        sub: c1.seletedSubject[index],
+                                        onTap: () {
+                                          c1.seletedSubject.removeAt(index);
+                                          c1.update(['mentor-preferences']);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IntrinsicWidth(
+                                      child: SizedBox(
+                                    // color: Colors.yellow,
+                                    height: 3.5.h,
+                                    child: TextFormField(
+                                      controller: c1.subjectController,
+                                      cursorColor: mainPurple,
                                       onFieldSubmitted: (value) {
                                         if (value.isNotEmpty) {
-                                          controller.addTopic(
-                                              topic: controller
-                                                  .topicController.text);
-                                          controller.topicController.clear();
+                                          c1.addSubject(
+                                              sub: c1.subjectController.text);
+                                          c1.subjectController.clear();
                                         }
                                       },
                                       style: const TextStyle(fontSize: 13),
-                                      decoration: mentorPreferenceTextfield()),
-                                ))
-                              ],
+                                      decoration: mentorPreferenceTextfield(),
+                                    ),
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      hLBox,
-                      GetBuilder<MentorPreferenceController>(
-                          id: 'mentor-preferences',
-                          builder: (c) {
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                actionContainer(
-                                  text: 'Cancel',
-                                  textColor: mainPurple,
-                                  boxColor: kwhite,
-                                  borderColor: mainPurple,
-                                  onTap: () => Get.back(),
-                                ),
-                                wMBox,
-                                actionContainer(
-                                  text: 'Next',
-                                  textColor: c.mentorMode.isNotEmpty &&
+                        hBox,
+                        mentorFields(
+                          item: semiBoldChoiceText(
+                              text: 'Specific Topics Within Those Fields',
+                              size: 9.5.sp),
+                          textfiled: Obx(
+                            () => subjectContainerMentor(
+                              child: Wrap(
+                                spacing: 5,
+                                runSpacing: 4,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  ...List.generate(
+                                    c1.seletedTopic.length,
+                                    (index) {
+                                      return selectedContainerMentor(
+                                        sub: c1.seletedTopic[index],
+                                        onTap: () {
+                                          c1.seletedTopic.removeAt(index);
+                                          c1.update(['mentor-preferences']);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IntrinsicWidth(
+                                      child: SizedBox(
+                                    // color: Colors.yellow,
+                                    height: 3.5.h,
+                                    child: TextFormField(
+                                        controller: c1.topicController,
+                                        cursorColor: mainPurple,
+                                        onFieldSubmitted: (value) {
+                                          if (value.isNotEmpty) {
+                                            c1.addTopic(
+                                                topic: c1.topicController.text);
+                                            c1.topicController.clear();
+                                          }
+                                        },
+                                        style: const TextStyle(fontSize: 13),
+                                        decoration:
+                                            mentorPreferenceTextfield()),
+                                  ))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        hLBox,
+                        GetBuilder<MentorPreferenceController>(
+                            id: 'mentor-preferences',
+                            builder: (c) {
+                              return Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  actionContainer(
+                                    text: 'Cancel',
+                                    textColor: mainPurple,
+                                    boxColor: kwhite,
+                                    borderColor: mainPurple,
+                                    onTap: () => Get.back(),
+                                  ),
+                                  wMBox,
+                                  actionContainer(
+                                    text: 'Next',
+                                    textColor: c.mentorMode.isNotEmpty &&
+                                            c.seletedSubject.isNotEmpty &&
+                                            c.seletedTopic.isNotEmpty
+                                        ? kwhite
+                                        : textFieldColor,
+                                    boxColor: c.mentorMode.isNotEmpty &&
+                                            c.seletedSubject.isNotEmpty &&
+                                            c.seletedTopic.isNotEmpty
+                                        ? mainPurple
+                                        : buttonColor,
+                                    onTap: () {
+                                      if (c.mentorMode.isNotEmpty &&
                                           c.seletedSubject.isNotEmpty &&
-                                          c.seletedTopic.isNotEmpty
-                                      ? kwhite
-                                      : textFieldColor,
-                                  boxColor: c.mentorMode.isNotEmpty &&
-                                          c.seletedSubject.isNotEmpty &&
-                                          c.seletedTopic.isNotEmpty
-                                      ? mainPurple
-                                      : buttonColor,
-                                  onTap: () {
-                                    if (c.mentorMode.isNotEmpty &&
-                                        c.seletedSubject.isNotEmpty &&
-                                        c.seletedTopic.isNotEmpty) {
-                                          Get.to(()=>const MentorAvailabilityPreferencePage());
-                                        }
-                                  },
-                                ),
-                              ],
-                            );
-                          })
-                    ],
+                                          c.seletedTopic.isNotEmpty) {
+                                        Get.to(() =>
+                                            const MentorAvailabilityPreferencePage());
+                                      }
+                                    },
+                                  ),
+                                ],
+                              );
+                            })
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

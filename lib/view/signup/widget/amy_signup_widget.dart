@@ -81,7 +81,7 @@ Widget replaycardSignup(context, String mssg, String time, bool isFirst,
           children: [
             Container(
               width: type != null ? null : double.infinity,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 // color: Color.fromARGB(255, 241, 242, 246),
                 color: mainPurple,
                 borderRadius: const BorderRadius.only(
@@ -107,7 +107,6 @@ Widget replaycardSignup(context, String mssg, String time, bool isFirst,
                       color: textFieldColor,
                     ),
                   ),
-            // hBox,
           ],
         ),
       ),

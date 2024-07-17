@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
+import 'package:aimshala/models/UserModel/user_details_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/mentor_registration/common/widgets/text_widgets.dart';
@@ -14,11 +15,16 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class MentorPersonalDetailPage extends StatelessWidget {
-  MentorPersonalDetailPage({super.key});
+  final UserData? user;
+  final UserDataModel? userDetails;
+  MentorPersonalDetailPage({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(MentorPersonalDetailController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initializeFields(userDetails, user, controller);
+    });
     return Scaffold(
       appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
@@ -36,8 +42,9 @@ class MentorPersonalDetailPage extends StatelessWidget {
                         item: semiBoldChoiceText(text: 'Full Name', size: 9.sp),
                         textfiled: TextFormField(
                           controller: controller.nameController,
+                          readOnly: user?.name != null ? true : false,
                           validator: (value) =>
-                              controller.fieldValidation(value),
+                              controller.nameValidation(value),
                           onChanged: (value) => controller.checkAllFileds(),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
@@ -50,6 +57,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                         item: semiBoldChoiceText(text: 'Email', size: 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.emailController,
+                          readOnly: user?.email != null ? true : false,
                           validator: (value) =>
                               controller.fieldValidation(value, email: true),
                           onChanged: (value) => controller.checkAllFileds(),
@@ -87,7 +95,9 @@ class MentorPersonalDetailPage extends StatelessWidget {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
                               suffixWidget: GestureDetector(
-                                onTap: () => controller.datePicker(context),
+                                onTap: userDetails?.dob == null
+                                    ? () => controller.datePicker(context)
+                                    : null,
                                 child: calendarIcon(),
                               ),
                               hintText: 'dd-MM-yyyy'),
@@ -100,11 +110,12 @@ class MentorPersonalDetailPage extends StatelessWidget {
                           value: controller.selectedGender,
                           icon: Icon(Icons.keyboard_arrow_down,
                               size: 26, color: kblack),
-                          // alignment: AlignmentDirectional.bottomCenter,
-                          onChanged: (newValue) {
-                            controller.selectedGender = newValue;
-                            controller.checkAllFileds();
-                          },
+                          onChanged: userDetails?.gender == null
+                              ? (newValue) {
+                                  controller.selectedGender = newValue;
+                                  controller.checkAllFileds();
+                                }
+                              : null,
                           validator: (value) =>
                               controller.genderValidation(value),
                           items: controller.genderOptions.map((String value) {
@@ -125,7 +136,9 @@ class MentorPersonalDetailPage extends StatelessWidget {
                         item: semiBoldChoiceText(
                             text: 'Your Current Status', size: 9.5.sp),
                         textfiled: GestureDetector(
-                          onTap: () => showStatusSheet(context),
+                          onTap: userDetails?.userRole == null
+                              ? () => showStatusSheet(context)
+                              : null,
                           child: AbsorbPointer(
                             child: TextFormField(
                               controller: controller.statusController,
@@ -149,6 +162,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                             text: 'Mobile Number', size: 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController,
+                          readOnly: user?.phone != null ? true : false,
                           validator: (value) =>
                               controller.mobileValidation(value),
                           onChanged: (value) => controller.checkAllFileds(),
@@ -179,7 +193,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                                 wMBox,
                                 actionContainer(
                                   text: 'Next',
-                                  textColor:c.saveText.value,
+                                  textColor: c.saveText.value,
                                   boxColor: c.saveBG.value,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
@@ -202,6 +216,21 @@ class MentorPersonalDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFields(UserDataModel? details, UserData? user,
+      MentorPersonalDetailController c) {
+    if (user == null) return;
+    if (details == null) return;
+
+    c.nameController.text = user.name ?? c.nameController.text;
+    c.emailController.text = user.email ?? c.emailController.text;
+    c.mobileController.text = user.phone ?? c.mobileController.text;
+    c.dobController.text = details.dob ?? c.dobController.text;
+    c.selectedGender = details.gender;
+    c.statusController.text = details.userRole ?? c.statusController.text;
+    c.checkAllFileds();
+    c.update(['mentor-personalinfo']);
   }
 
   void showStatusSheet(BuildContext context) {

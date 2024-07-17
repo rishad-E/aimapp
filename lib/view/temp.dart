@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -18,12 +19,14 @@ class TempScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mentor = Get.put(MentorPersonalDetailController());
     final educaotr = Get.put(EducatorPersonalDetailController());
+    final alldataC = Get.put(AllDataController());
 
     List<String> data = [
       'Student at School A= Degree A= Field A',
       'Student at School B= Degree B= Field B',
       'Student at School A= Degree C= Field C'
     ];
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -46,7 +49,13 @@ class TempScreen extends StatelessWidget {
                 log(educaotr.isEducator, name: 'isEducator');
                 if (educaotr.isEducator == 'no') {
                   educaotr.clearAllfields();
-                  Get.to(() => EducatorPersonalDetailPage());
+                  Get.to(
+                    () => EducatorPersonalDetailPage(
+                      user: alldataC.userData,
+                      userDetails: alldataC.userDetails,
+                    ),
+                    transition: Transition.fadeIn,
+                  );
                 } else {
                   Get.snackbar(
                     "Hi ",
@@ -66,7 +75,13 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(mentor.isMentor, name: 'isMentor');
                 if (mentor.isMentor == 'no') {
-                  Get.to(() => MentorPersonalDetailPage());
+                  Get.to(
+                    () => MentorPersonalDetailPage(
+                      user: alldataC.userData,
+                      userDetails: alldataC.userDetails,
+                    ),
+                    transition: Transition.fadeIn,
+                  );
                 } else {
                   Get.snackbar(
                     "Hi ",

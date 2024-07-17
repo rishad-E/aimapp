@@ -104,6 +104,16 @@ class EducatorPersonalDetailController extends GetxController {
     }
   }
 
+  String? nameValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter this field';
+    }
+    if (value.length < 3) {
+      return 'Name should contain atleast 3 characters';
+    }
+    return null;
+  }
+
   String? fieldValidation(String? value, {bool? email}) {
     if (value == null || value.isEmpty) {
       return 'Please Enter This Field';

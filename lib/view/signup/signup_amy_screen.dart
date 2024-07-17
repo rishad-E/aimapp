@@ -73,139 +73,132 @@ class SignUpAmyScreen extends StatelessWidget {
             GetBuilder<AmySignUpController>(
               id: 'send-to-amy',
               builder: (c) {
-                return c.skipQuestion
-                    ? GestureDetector(
-                        onTap: () => Get.to(() => const SplashScreen()),
-                        child: goHomeContainer(),
-                      )
-                    : Row(
-                        children: [
-                          Expanded(
-                            child: amySignupTextfield(
-                              child: c.qusId == 0
-                                  ? TextFormField(
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      controller: c.chatController,
-                                      keyboardType: c.isAskingDOB
-                                          ? TextInputType.number
-                                          : TextInputType.text,
-                                      inputFormatters: c.isAskingDOB
-                                          ? [DateInputFormatter()]
-                                          : [],
-                                      textInputAction: TextInputAction.send,
-                                      style: const TextStyle(fontSize: 13),
-                                      decoration: amyTextfieldDecor(
-                                          isAskingDOB: c.isAskingDOB),
-                                      onFieldSubmitted: (value) {
-                                        log(c.chatController.text);
-                                        c.sendMessage(context);
-                                      },
-                                    )
-                                  : c.qusId == 1
-                                      ? Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: Wrap(
-                                            spacing: 5,
-                                            runSpacing: 5,
-                                            children: List.generate(
-                                              c.genderOptionList.length,
-                                              (index) {
-                                                final data =
-                                                    c.genderOptionList[index];
-                                                return InkWell(
-                                                  onTap: () {
-                                                    log(data);
-                                                    c.chatController.text =
-                                                        data;
-                                                    c.sendMessage(context);
-                                                  },
-                                                  child: amyOptionContainer(
-                                                      option: data),
-                                                );
+                if (c.skipQuestion || c.qusId == 15) {
+                  return GestureDetector(
+                    onTap: () => Get.to(() => const SplashScreen()),
+                    child: goHomeContainer(),
+                  );
+                } else {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: amySignupTextfield(
+                          child: c.qusId == 0
+                              ? TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  controller: c.chatController,
+                                  keyboardType: c.isAskingDOB
+                                      ? TextInputType.number
+                                      : TextInputType.text,
+                                  inputFormatters: c.isAskingDOB
+                                      ? [DateInputFormatter()]
+                                      : [],
+                                  textInputAction: TextInputAction.send,
+                                  style: const TextStyle(fontSize: 13),
+                                  decoration: amyTextfieldDecor(
+                                      isAskingDOB: c.isAskingDOB),
+                                  onFieldSubmitted: (value) {
+                                    log(c.chatController.text);
+                                    c.sendMessage(context);
+                                  },
+                                )
+                              : c.qusId == 1
+                                  ? Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Wrap(
+                                        spacing: 5,
+                                        runSpacing: 5,
+                                        children: List.generate(
+                                          c.genderOptionList.length,
+                                          (index) {
+                                            final data =
+                                                c.genderOptionList[index];
+                                            return InkWell(
+                                              onTap: () {
+                                                log(data);
+                                                c.chatController.text = data;
+                                                c.sendMessage(context);
                                               },
-                                            ),
-                                          ),
-                                        )
-                                      : Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10),
-                                          child: ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                              maxHeight: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.3,
-                                            ),
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  c.qusId == 2
-                                                      ? shrinked
-                                                      : GestureDetector(
-                                                          onTap: () {
-                                                            c.skipQuestion =
-                                                                true;
-                                                            c.update([
-                                                              'send-to-amy'
-                                                            ]);
-                                                          },
-                                                          child: skipText(),
-                                                        ),
-                                                  c.qusId == 2
-                                                      ? shrinked
-                                                      : hBox,
-                                                  Wrap(
-                                                    spacing: 5,
-                                                    runSpacing: 5,
-                                                    children: List.generate(
-                                                      c.otherOptionList.length,
-                                                      (index) {
-                                                        final data =
-                                                            c.otherOptionList[
-                                                                index];
-                                                        return InkWell(
-                                                          onTap: () {
-                                                            log("id=>${data.id} item=>${data.item}");
-                                                            c.chatController
-                                                                    .text =
-                                                                data.id
-                                                                    .toString();
-                                                            c.otherOptionController
-                                                                    .text =
-                                                                data.item
-                                                                    .toString();
-                                                            c.sendMessage(
-                                                                context);
-                                                          },
-                                                          child: amyOptionContainer(
-                                                              option: data.item
-                                                                  .toString()),
-                                                        );
+                                              child: amyOptionContainer(
+                                                  option: data),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.3,
+                                        ),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              c.qusId == 2
+                                                  ? shrinked
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        c.skipQuestion = true;
+                                                        c.update(
+                                                            ['send-to-amy']);
                                                       },
+                                                      child: skipText(),
                                                     ),
-                                                  ),
-                                                ],
+                                              c.qusId == 2 ? shrinked : hBox,
+                                              Wrap(
+                                                spacing: 5,
+                                                runSpacing: 5,
+                                                children: List.generate(
+                                                  c.otherOptionList.length,
+                                                  (index) {
+                                                    final data = c
+                                                        .otherOptionList[index];
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        log("id=>${data.id} item=>${data.item}");
+                                                        c.chatController.text =
+                                                            data.id.toString();
+                                                        c.otherOptionController
+                                                                .text =
+                                                            data.item
+                                                                .toString();
+                                                        c.sendMessage(context);
+                                                      },
+                                                      child: amyOptionContainer(
+                                                          option: data.item
+                                                              .toString()),
+                                                    );
+                                                  },
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              if (c.chatController.text.isNotEmpty) {
-                                log(c.chatController.text);
-                                c.sendMessage(context);
-                              }
-                            },
-                            child: c.qusId == 0 ? sendMsgContainer() : shrinked,
-                          ),
-                        ],
-                      );
+                                      ),
+                                    ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (c.chatController.text.isNotEmpty) {
+                            log(c.chatController.text);
+                            c.sendMessage(context);
+                          }
+                        },
+                        child: c.qusId == 0 ? sendMsgContainer() : shrinked,
+                      ),
+                    ],
+                  );
+                }
               },
             ),
           ],

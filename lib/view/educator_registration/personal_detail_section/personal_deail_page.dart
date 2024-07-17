@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
+import 'package:aimshala/models/UserModel/user_details_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/educator_registration/common/widgets/text_widgets.dart';
@@ -15,11 +16,16 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class EducatorPersonalDetailPage extends StatelessWidget {
-  EducatorPersonalDetailPage({super.key});
+  final UserData? user;
+  final UserDataModel? userDetails;
+  EducatorPersonalDetailPage({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(EducatorPersonalDetailController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initializeFields(userDetails, user, controller);
+    });
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
@@ -36,9 +42,10 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                       educatorFields(
                         item: semiBoldChoiceText(text: 'Full Name', size: 9.sp),
                         textfiled: TextFormField(
+                          readOnly: user?.name != null ? true : false,
                           controller: controller.nameController,
                           validator: (value) =>
-                              controller.fieldValidation(value),
+                              controller.nameValidation(value),
                           onChanged: (value) => controller.checkAllFileds(),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
@@ -51,10 +58,10 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                         item: semiBoldChoiceText(text: 'Email', size: 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.emailController,
+                          readOnly: user?.email != null ? true : false,
                           validator: (value) =>
                               controller.fieldValidation(value, email: true),
                           onChanged: (value) => controller.checkAllFileds(),
-                          // autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           decoration: infoFieldDecoration(
                               hintText: 'Enter Email Address'),
@@ -81,6 +88,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                             text: 'Mobile Number', size: 9.5.sp),
                         textfiled: TextFormField(
                           controller: controller.mobileController,
+                          readOnly: user?.phone != null ? true : false,
                           validator: (value) =>
                               controller.mobileValidation(value),
                           onChanged: (value) => controller.checkAllFileds(),
@@ -107,7 +115,9 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: infoFieldDecoration(
                               suffixWidget: GestureDetector(
-                                onTap: () => controller.datePicker(context),
+                                onTap: userDetails?.dob == null
+                                    ? () => controller.datePicker(context)
+                                    : null,
                                 child: calendarIcon(),
                               ),
                               hintText: 'dd-MM-yyyy'),
@@ -120,15 +130,19 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                           value: controller.selectedGender,
                           icon: Icon(Icons.keyboard_arrow_down,
                               size: 26, color: kblack),
-                          onChanged: (newValue) {
-                            controller.selectedGender = newValue;
-                            controller.checkAllFileds();
-                          },
+                          onChanged: userDetails?.gender == null
+                              ? (newValue) {
+                                  controller.selectedGender = newValue;
+                                  controller.checkAllFileds();
+                                }
+                              : null,
                           validator: (value) =>
                               controller.genderValidation(value),
                           items: controller.genderOptions.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
+                              enabled:
+                                  userDetails?.gender == null ? true : false,
                               child: Text(
                                 value,
                                 style: TextStyle(color: kblack, fontSize: 13),
@@ -144,7 +158,9 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                         item: semiBoldChoiceText(
                             text: 'Your Current Status', size: 9.5.sp),
                         textfiled: GestureDetector(
-                          onTap: () => showStatusSheetEducator(context),
+                          onTap: userDetails?.userRole == null
+                              ? () => showStatusSheetEducator(context)
+                              : null,
                           child: AbsorbPointer(
                             child: TextFormField(
                               controller: controller.statusController,
@@ -184,7 +200,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                                   boxColor: c.saveBG.value,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('Name=>${c.nameController.text} email=>${c.emailController.text} location=>${c.locationController.text} mob=>${c.mobileController.text}',
+                                      log('Name=>${c.nameController.text} email=>${c.emailController.text} location=>${c.locationController.text} mob=>${c.mobileController.text} gender=>${c.selectedGender} dob=>${c.dobController.text} status=>${c.statusController.text}',
                                           name: 'edu-personalpage');
                                       Get.to(
                                           () => EducatorBackgroundDetailPage());
@@ -203,6 +219,20 @@ class EducatorPersonalDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void initializeFields(UserDataModel? details, UserData? user,
+      EducatorPersonalDetailController c) {
+    if (user == null) return;
+    if (details == null) return;
+
+    c.nameController.text = user.name ?? c.nameController.text;
+    c.emailController.text = user.email ?? c.emailController.text;
+    c.mobileController.text = user.phone ?? c.mobileController.text;
+    c.dobController.text = details.dob ?? c.dobController.text;
+    c.selectedGender = details.gender;
+    c.statusController.text = details.userRole ?? c.statusController.text;
+    c.update(['edu-personalinfo']);
   }
 
   void showStatusSheetEducator(BuildContext context) {

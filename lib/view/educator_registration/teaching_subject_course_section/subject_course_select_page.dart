@@ -17,171 +17,187 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
   const EducatorSubjectCourseSelectPage({super.key});
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorSubjectCourseController());
+    final c1 = Get.put(EducatorSubjectCourseController());
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              educatorSectionContainer(
-                child: Column(
-                  children: [
-                    boldText(text: 'Teaching Subjects/Courses', size: 15.sp),
-                    hLBox,
-                    educatorFields(
-                      item: semiBoldChoiceText(
-                          text: 'Subjects/Fields You Can Mentor In',
-                          size: 9.5.sp),
-                      textfiled: Obx(
-                        () => subjectMainContainer(
-                          child: Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              ...List.generate(
-                                controller.seletedSubject.length,
-                                (index) {
-                                  return selectedContainer(
-                                    sub: controller.seletedSubject[index],
-                                    onTap: () {
-                                      controller.seletedSubject.removeAt(index);
-                                      controller
-                                          .update(['edu-SubjectCourseinfo']);
-                                    },
-                                  );
-                                },
-                              ),
-                              IntrinsicWidth(
-                                  child: SizedBox(
-                                // color: Colors.yellow,
-                                height: 3.5.h,
-                                child: TextFormField(
-                                  controller: controller.subjectController,
-                                  style: const TextStyle(fontSize: 13),
-                                  cursorColor: mainPurple,
-                                  cursorWidth: 1.5,
-                                  onFieldSubmitted: (value) {
-                                    if (value.isNotEmpty) {
-                                      controller.addSubject(
-                                          sub: controller
-                                              .subjectController.text);
-                                      controller.subjectController.clear();
-                                    }
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            if (c1.subjectController.text.isNotEmpty) {
+              c1.addSubject(sub: c1.subjectController.text);
+              c1.subjectController.clear();
+            }
+            if (c1.topicController.text.isNotEmpty) {
+              c1.addTopic(sub: c1.topicController.text);
+              c1.topicController.clear();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                educatorSectionContainer(
+                  child: Column(
+                    children: [
+                      boldText(text: 'Teaching Subjects/Courses', size: 15.sp),
+                      hLBox,
+                      educatorFields(
+                        item: semiBoldChoiceText(
+                            text: 'Subjects/Fields You Can Mentor In',
+                            size: 9.5.sp),
+                        textfiled: Obx(
+                          () => subjectMainContainer(
+                            child: Wrap(
+                              spacing: 5,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                ...List.generate(
+                                  c1.seletedSubject.length,
+                                  (index) {
+                                    return selectedContainer(
+                                      sub: c1.seletedSubject[index],
+                                      onTap: () {
+                                        c1.seletedSubject
+                                            .removeAt(index);
+                                        c1
+                                            .update(['edu-SubjectCourseinfo']);
+                                      },
+                                    );
                                   },
-                                  decoration: const InputDecoration(
-                                      isDense: true,
-                                      border: InputBorder.none,
-                                      hintText: 'Add more...',
-                                      hintStyle: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 116, 118, 119),
-                                        fontSize: 12,
-                                      )),
                                 ),
-                              ))
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    educatorFields(
-                      item: semiBoldChoiceText(
-                          text: 'Specific Topics Within Those Fields',
-                          size: 9.5.sp),
-                      textfiled: Obx(
-                        () => subjectMainContainer(
-                          child: Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              ...List.generate(
-                                controller.seletedTopic.length,
-                                (index) {
-                                  return selectedContainer(
-                                    sub: controller.seletedTopic[index],
-                                    onTap: () {
-                                      controller.seletedTopic.removeAt(index);
-                                      controller
-                                          .update(['edu-SubjectCourseinfo']);
+                                IntrinsicWidth(
+                                    child: SizedBox(
+                                  // color: Colors.yellow,
+                                  height: 3.5.h,
+                                  child: TextFormField(
+                                    controller: c1.subjectController,
+                                    style: const TextStyle(fontSize: 13),
+                                    cursorColor: mainPurple,
+                                    cursorWidth: 1.5,
+                                    onFieldSubmitted: (value) {
+                                      if (value.isNotEmpty) {
+                                        c1.addSubject(
+                                            sub: c1
+                                                .subjectController.text);
+                                        c1.subjectController.clear();
+                                      }
                                     },
-                                  );
-                                },
-                              ),
-                              IntrinsicWidth(
-                                  child: SizedBox(
-                                // color: Colors.yellow,
-                                height: 3.5.h,
-                                child: TextFormField(
-                                  controller: controller.topicController,
-                                  style: const TextStyle(fontSize: 13),
-                                  cursorColor: mainPurple,
-                                  cursorWidth: 1.5,
-                                  onFieldSubmitted: (value) {
-                                    if (value.isNotEmpty) {
-                                      controller.addTopic(
-                                          sub: controller.topicController.text);
-                                      controller.topicController.clear();
-                                    }
-                                  },
-                                  decoration: const InputDecoration(
-                                      isDense: true,
-                                      border: InputBorder.none,
-                                      hintText: 'Add more...',
-                                      hintStyle: TextStyle(
+                                    decoration: const InputDecoration(
+                                        isDense: true,
+                                        border: InputBorder.none,
+                                        hintText: 'Add more...',
+                                        hintStyle: TextStyle(
                                           color: Color.fromARGB(
                                               255, 116, 118, 119),
-                                          fontSize: 12)),
-                                ),
-                              ))
-                            ],
+                                          fontSize: 12,
+                                        )),
+                                  ),
+                                ))
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    hLBox,
-                    GetBuilder<EducatorSubjectCourseController>(
-                        id: 'edu-SubjectCourseinfo',
-                        builder: (c) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              actionContainer(
-                                text: 'Previous',
-                                textColor: mainPurple,
-                                boxColor: kwhite,
-                                borderColor: mainPurple,
-                                onTap: () => Get.back(),
-                              ),
-                              wMBox,
-                              actionContainer(
-                                text: 'Next',
-                                textColor: c.seletedSubject.isNotEmpty &&
-                                        c.seletedTopic.isNotEmpty
-                                    ? kwhite
-                                    : textFieldColor,
-                                boxColor: c.seletedSubject.isNotEmpty &&
-                                        c.seletedTopic.isNotEmpty
-                                    ? mainPurple
-                                    : buttonColor,
-                                onTap: () {
-                                  if (c.seletedSubject.isNotEmpty &&
-                                      c.seletedTopic.isNotEmpty) {
-                                    log('selected SUB=>${c.seletedSubject} selected TOP=>${c.seletedTopic}',
-                                        name: 'sub&&Top scren');
-                                    Get.to(() => EducatorWorkPreferencePage());
-                                  }
-                                },
-                              ),
-                            ],
-                          );
-                        })
-                  ],
+                      educatorFields(
+                        item: semiBoldChoiceText(
+                            text: 'Specific Topics Within Those Fields',
+                            size: 9.5.sp),
+                        textfiled: Obx(
+                          () => subjectMainContainer(
+                            child: Wrap(
+                              spacing: 5,
+                              runSpacing: 4,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                ...List.generate(
+                                  c1.seletedTopic.length,
+                                  (index) {
+                                    return selectedContainer(
+                                      sub: c1.seletedTopic[index],
+                                      onTap: () {
+                                        c1.seletedTopic.removeAt(index);
+                                        c1
+                                            .update(['edu-SubjectCourseinfo']);
+                                      },
+                                    );
+                                  },
+                                ),
+                                IntrinsicWidth(
+                                    child: SizedBox(
+                                  // color: Colors.yellow,
+                                  height: 3.5.h,
+                                  child: TextFormField(
+                                    controller: c1.topicController,
+                                    style: const TextStyle(fontSize: 13),
+                                    cursorColor: mainPurple,
+                                    cursorWidth: 1.5,
+                                    onFieldSubmitted: (value) {
+                                      if (value.isNotEmpty) {
+                                        c1.addTopic(
+                                            sub: c1
+                                                .topicController.text);
+                                        c1.topicController.clear();
+                                      }
+                                    },
+                                    decoration: const InputDecoration(
+                                        isDense: true,
+                                        border: InputBorder.none,
+                                        hintText: 'Add more...',
+                                        hintStyle: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 116, 118, 119),
+                                            fontSize: 12)),
+                                  ),
+                                ))
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      hLBox,
+                      GetBuilder<EducatorSubjectCourseController>(
+                          id: 'edu-SubjectCourseinfo',
+                          builder: (c2) {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                actionContainer(
+                                  text: 'Previous',
+                                  textColor: mainPurple,
+                                  boxColor: kwhite,
+                                  borderColor: mainPurple,
+                                  onTap: () => Get.back(),
+                                ),
+                                wMBox,
+                                actionContainer(
+                                  text: 'Next',
+                                  textColor: c2.seletedSubject.isNotEmpty &&
+                                          c2.seletedTopic.isNotEmpty
+                                      ? kwhite
+                                      : textFieldColor,
+                                  boxColor: c2.seletedSubject.isNotEmpty &&
+                                          c2.seletedTopic.isNotEmpty
+                                      ? mainPurple
+                                      : buttonColor,
+                                  onTap: () {
+                                    if (c2.seletedSubject.isNotEmpty &&
+                                        c2.seletedTopic.isNotEmpty) {
+                                      log('selec2ted SUB=>${c2.seletedSubject} selec2ted TOP=>${c2.seletedTopic}',
+                                          name: 'sub&&Top scren');
+                                      Get.to(
+                                          () => EducatorWorkPreferencePage());
+                                    }
+                                  },
+                                ),
+                              ],
+                            );
+                          })
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -105,6 +105,15 @@ class MentorPersonalDetailController extends GetxController {
       update(['mentor-personalinfo']);
     }
   }
+  String? nameValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter this field';
+    }
+    if (value.length < 3) {
+      return 'Name should contain atleast 3 characters';
+    }
+    return null;
+  }
 
   String? fieldValidation(String? value, {bool? phone, bool? email}) {
     if (value == null || value.isEmpty) {
