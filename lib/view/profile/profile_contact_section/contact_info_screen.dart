@@ -11,7 +11,9 @@ import 'package:aimshala/view/profile/profile_contact_section/widgets/country_bo
 import 'package:aimshala/view/profile/profile_contact_section/widgets/state_bottom_sheet.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileContactInfoScreen extends StatelessWidget {
@@ -25,6 +27,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFormFields(controller, user);
     });
+
     return Scaffold(
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
       body: Container(
@@ -47,23 +50,161 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 14, color: textFieldColor),
                   ),
                   hLBox,
-                  contactInfoFiled(
-                    text: primarytxt3('Mobile Number', 9.5.sp),
-                    textField: TextFormField(
-                      controller: controller.mobController,
-                      validator: (value) => controller.fieldValidator(value),
-                      onChanged: (value) {
-                        controller.allFieldSelect();
-                        controller.update(['update-contactInfo']);
-                      },
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      keyboardType: TextInputType.phone,
-                      style: const TextStyle(fontSize: 12),
-                      decoration: infoFieldDecoration(
-                        prefix: phoneIcon(),
+                  Obx(
+                    () => contactInfoFiled(
+                      text: primarytxt3('Mobile Number', 9.5.sp),
+                      textField: TextFormField(
+                        controller: controller.mobController,
+                        validator: (value) => controller.fieldValidator(value),
+                        onChanged: (value) {
+                          controller.allFieldSelect();
+                          controller.update(['update-contactInfo']);
+                          if (value.length == 10) {
+                            controller.validateNewNumber(mob: value);
+                            log(value.toString());
+                          } else {
+                            controller.otpError.value = 'OTP verified success';
+                          }
+                        },
+                        inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        keyboardType: TextInputType.phone,
+                        readOnly:
+                            controller.otpVerifiedNum.value == 1 ? false : true,
+                        style: const TextStyle(fontSize: 12),
+                        decoration: infoFieldDecoration(
+                            prefix: phoneIcon(),
+                            suffixWidget: controller.changePhone.value ==
+                                    'onScreen'
+                                ? changePhoneWidget(
+                                    text: "Change",
+                                    onPressed: () {
+                                      controller.otpController.clear();
+                                      controller.phoneNumberOTPverification(
+                                          mobileNo:
+                                              '+91${controller.mobController.text}');
+                                    },
+                                  )
+                                : controller.changePhone.value == 'verified' &&
+                                        controller.otpError.isEmpty
+                                    ? changePhoneWidget(
+                                        text: "Send Code",
+                                        onPressed: () {
+                                          controller.otpController.clear();
+                                          controller.phoneNumberOTPverification(
+                                              mobileNo:
+                                                  '+91${controller.mobController.text}');
+                                        },
+                                      )
+                                    : null),
                       ),
                     ),
                   ),
+                  // hBox,
+                  Obx(() {
+                    final defaultpin = PinTheme(
+                      height: 4.5.h,
+                      width: 10.w,
+                      textStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: kblack.withOpacity(.7),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: kblack.withOpacity(0.2)),
+                      ),
+                    );
+                    return controller.changePhone.value == 'sendOTP'
+                        ? Column(
+                            children: [
+                              hBox,
+                              Pinput(
+                                defaultPinTheme: defaultpin,
+                                focusedPinTheme: defaultpin.copyWith(
+                                  decoration: defaultpin.decoration!.copyWith(
+                                    border: Border.all(color: kpurple),
+                                  ),
+                                ),
+                                onCompleted: (value) => log(value),
+                                onChanged: (value) {},
+                                controller: controller.otpController,
+                                // validator: (value) => controller.otPValidation(value),
+                              ),
+                              // Text("data",style: errorStyle(),),
+                              hBox,
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 7),
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    side: MaterialStateProperty.all(
+                                        BorderSide(color: mainPurple)),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    controller.validateOTP(
+                                        mob:
+                                            '+91${controller.mobController.text}',
+                                        otp: controller.otpController.text);
+                                  },
+                                  child: Text(
+                                    'validate',
+                                    style: TextStyle(
+                                        color: mainPurple, fontSize: 11.sp),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : shrinked;
+                  }),
+                  // hBox,
+                  Obx(() =>
+                      controller.otpError.value == 'OTP verified success' ||
+                              controller.otpError.isEmpty
+                          ? shrinked
+                          : Text(controller.otpError.value,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 8.sp,
+                                fontWeight: FontWeight.w400,
+                              ))),
+                  Obx(
+                    () => controller.changePhone.value == 'sendOTP'
+                        ? Column(
+                            children: [
+                              choiceSizedBox(height: 8),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child:
+                                    primarytxt("Didn't recieve Code?", 11.sp),
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () => controller.resendOTP(
+                                      mob:
+                                          '+91${controller.mobController.text}'),
+                                  child: Text(
+                                    "Resend Code",
+                                    style: TextStyle(
+                                        color: mainPurple,
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : shrinked,
+                  ),
+                  // hBox,
                   contactInfoFiled(
                     text: primarytxt3('Username', 9.5.sp),
                     textField: TextFormField(
@@ -215,11 +356,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Facebook', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.facebookController,
-                      // validator: (value) => controller.fieldValidator(value),
-                      // onChanged: (value) {
-                      //   controller.allFieldSelect();
-                      //   controller.update(['update-contactInfo']);
-                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(hintText: 'Facebook URL'),
@@ -229,11 +365,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Instagram', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.instagramController,
-                      // validator: (value) => controller.fieldValidator(value),
-                      // onChanged: (value) {
-                      //   controller.allFieldSelect();
-                      //   controller.update(['update-contactInfo']);
-                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration:
@@ -244,11 +375,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                     text: primarytxt3('Twitter', 9.5.sp),
                     textField: TextFormField(
                       controller: controller.twitterController,
-                      // validator: (value) => controller.fieldValidator(value),
-                      // onChanged: (value) {
-                      //   controller.allFieldSelect();
-                      //   controller.update(['update-contactInfo']);
-                      // },
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 12),
                       decoration: infoFieldDecoration(hintText: 'Twitter URL'),
@@ -341,11 +467,17 @@ class ProfileContactInfoScreen extends StatelessWidget {
     );
   }
 
+/*-------------only task pending-------------*/
   void showCityBottomsheet(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return const CityBottomSheetClass();
-        });
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: const CityBottomSheetClass(),
+        );
+      },
+    );
   }
 }

@@ -127,7 +127,8 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                       educatorFields(
                         item: semiBoldChoiceText(text: 'Gender', size: 9.5.sp),
                         textfiled: DropdownButtonFormField<String>(
-                          value: controller.selectedGender,
+                          value:
+                              userDetails?.gender ?? controller.selectedGender,
                           icon: Icon(Icons.keyboard_arrow_down,
                               size: 26, color: kblack),
                           onChanged: userDetails?.gender == null
@@ -141,8 +142,8 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                           items: controller.genderOptions.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              enabled:
-                                  userDetails?.gender == null ? true : false,
+                              // enabled:
+                              //     userDetails?.gender == null ? true : false,
                               child: Text(
                                 value,
                                 style: TextStyle(color: kblack, fontSize: 13),
@@ -230,7 +231,7 @@ class EducatorPersonalDetailPage extends StatelessWidget {
     c.emailController.text = user.email ?? c.emailController.text;
     c.mobileController.text = user.phone ?? c.mobileController.text;
     c.dobController.text = details.dob ?? c.dobController.text;
-    c.selectedGender = details.gender;
+    c.selectedGender = details.gender ?? c.selectedGender;
     c.statusController.text = details.userRole ?? c.statusController.text;
     c.update(['edu-personalinfo']);
   }

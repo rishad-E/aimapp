@@ -107,7 +107,7 @@ class MentorPersonalDetailPage extends StatelessWidget {
                       mentorFields(
                         item: semiBoldChoiceText(text: 'Gender', size: 9.5.sp),
                         textfiled: DropdownButtonFormField<String>(
-                          value: controller.selectedGender,
+                          value:userDetails?.gender?? controller.selectedGender,
                           icon: Icon(Icons.keyboard_arrow_down,
                               size: 26, color: kblack),
                           onChanged: userDetails?.gender == null

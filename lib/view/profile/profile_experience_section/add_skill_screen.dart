@@ -32,129 +32,145 @@ class AddExperienceSkillScreen extends StatelessWidget {
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             )),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                        color: textFieldColor.withOpacity(0.3), width: 1),
-                    bottom: BorderSide(
-                        color: textFieldColor.withOpacity(0.3), width: 1),
+      body: SizedBox(
+        height: double.infinity,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            if (skillController.text.isNotEmpty) {
+              addSkilsExperience(skillController.text, controller);
+              skillController.clear();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                            color: textFieldColor.withOpacity(0.3), width: 1),
+                        bottom: BorderSide(
+                            color: textFieldColor.withOpacity(0.3), width: 1),
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    child: Obx(
+                      () {
+                        final data = controller.addedSkillEX;
+                        return data.isEmpty
+                            ? skillTextField(
+                                controller: skillController,
+                                onFieldSubmitted: (value) {
+                                  if (value.isNotEmpty) {
+                                    addSkilsExperience(
+                                        skillController.text, controller);
+                                  }
+                                  skillController.clear();
+                                },
+                              )
+                            : Wrap(
+                                spacing: 5,
+                                runSpacing: 4,
+                                crossAxisAlignment: WrapCrossAlignment.end,
+                                children: [
+                                  ...List.generate(
+                                    data.length,
+                                    (index) {
+                                      return selectedSkillEX(
+                                        skill: data[index],
+                                        onTap: () {
+                                          data.removeAt(index);
+                                          controller
+                                              .update(['skill-experience']);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  IntrinsicWidth(
+                                    child: SizedBox(
+                                        height: 3.5.h,
+                                        child: skillTextField(
+                                          controller: skillController,
+                                          onFieldSubmitted: (value) {
+                                            if (value.isNotEmpty) {
+                                              addSkilsExperience(
+                                                  skillController.text,
+                                                  controller);
+                                            }
+                                            skillController.clear();
+                                          },
+                                        )),
+                                  )
+                                ],
+                              );
+                      },
+                    ),
                   ),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                child: Obx(
-                  () {
-                    final data = controller.addedSkillEX;
-                    return data.isEmpty
-                        ? skillTextField(
-                            controller: skillController,
-                            onFieldSubmitted: (value) {
-                              if (value.isNotEmpty) {
-                                addSkilsExperience(
-                                    skillController.text, controller);
-                              }
-                              skillController.clear();
-                            },
-                          )
-                        : Wrap(
-                            spacing: 5,
-                            runSpacing: 4,
-                            crossAxisAlignment: WrapCrossAlignment.end,
+                  hMBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    width: double.infinity,
+                    child: GetBuilder<ProfileExperienceController>(
+                        id: 'skill-experience',
+                        builder: (c) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                'Suggested Skills',
+                                style: TextStyle(
+                                    fontSize: 11, color: textFieldColor),
+                              ),
                               ...List.generate(
-                                data.length,
+                                c.suggestedSkill.length,
                                 (index) {
-                                  return selectedSkillEX(
-                                    skill: data[index],
+                                  final data = c.suggestedSkill[index];
+                                  return ListTile(
+                                    shape: const Border(
+                                        bottom: BorderSide(
+                                            color: Color.fromARGB(
+                                                255, 202, 201, 201))),
+                                    contentPadding: EdgeInsets.zero,
+                                    title: Text(
+                                      data,
+                                      style: TextStyle(
+                                        color: kblack,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    trailing: Checkbox(
+                                      side:
+                                          const BorderSide(color: Colors.grey),
+                                      activeColor: mainPurple,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6)),
+                                      value: c.addedSkillEX
+                                          .any((element) => element == data),
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          addSkilsExperience(data, c);
+                                        }
+                                      },
+                                    ),
                                     onTap: () {
-                                      data.removeAt(index);
-                                      controller.update(['skill-experience']);
+                                      addSkilsExperience(data, c);
                                     },
                                   );
                                 },
-                              ),
-                              IntrinsicWidth(
-                                child: SizedBox(
-                                    height: 3.5.h,
-                                    child: skillTextField(
-                                      controller: skillController,
-                                      onFieldSubmitted: (value) {
-                                        if (value.isNotEmpty) {
-                                          addSkilsExperience(
-                                              skillController.text, controller);
-                                        }
-                                        skillController.clear();
-                                      },
-                                    )),
                               )
                             ],
                           );
-                  },
-                ),
+                        }),
+                  ),
+                ],
               ),
-              hMBox,
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                width: double.infinity,
-                child: GetBuilder<ProfileExperienceController>(
-                    id: 'skill-experience',
-                    builder: (c) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Suggested Skills',
-                            style:
-                                TextStyle(fontSize: 11, color: textFieldColor),
-                          ),
-                          ...List.generate(
-                            c.suggestedSkill.length,
-                            (index) {
-                              final data = c.suggestedSkill[index];
-                              return ListTile(
-                                shape: const Border(
-                                    bottom: BorderSide(
-                                        color: Color.fromARGB(
-                                            255, 202, 201, 201))),
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  data,
-                                  style: TextStyle(
-                                    color: kblack,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                trailing: Checkbox(
-                                  side: const BorderSide(color: Colors.grey),
-                                  activeColor: mainPurple,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6)),
-                                  value: c.addedSkillEX
-                                      .any((element) => element == data),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      addSkilsExperience(data, c);
-                                    }
-                                  },
-                                ),
-                                onTap: () {
-                                  addSkilsExperience(data, c);
-                                },
-                              );
-                            },
-                          )
-                        ],
-                      );
-                    }),
-              ),
-            ],
+            ),
           ),
         ),
       ),

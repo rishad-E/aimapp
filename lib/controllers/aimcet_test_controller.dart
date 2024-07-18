@@ -256,6 +256,7 @@ class AIMCETController extends GetxController {
         throw const FileSystemException('Unable to access storage directory');
       }
       String savePath = '${directory.path}/$fileName';
+      log(savePath);
       Dio dio = Dio();
       await dio.download(
         pdfUrl,

@@ -44,7 +44,7 @@ class UpdateContactInfoService {
             validateStatus: (status) => status! < 599,
           ));
       log(response.data.toString(), name: 'save contact info res');
-      
+
       if (response.data is Map) {
         Map<String, dynamic> resData = response.data;
         if (resData.containsKey('success')) {
@@ -136,6 +136,32 @@ class UpdateContactInfoService {
     } catch (e) {
       // Handle other exceptions
       log(e.toString(), name: 'profile all data error');
+      throw Exception('error occurred ${e.toString()}');
+    }
+    return null;
+  }
+
+  Future<String?> verifyNewNumber({required String mob}) async {
+    String path = 'http://154.26.130.161/elearning/api/check-user';
+
+    try {
+      Response response = await dio.post(
+        path,
+        queryParameters: {'mobile_no': mob},
+        options: Options(validateStatus: (status) => status! < 599),
+      );
+      String resMessage = response.data["msg"];
+      return resMessage;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        // Handle status code 500 here
+        log('Server error: ${e.message}', name: 'profile verifyNewNumber error');
+        // You can throw a custom exception or return an empty list as needed
+        throw Exception('Server error occurred');
+      }
+    } catch (e) {
+      // Handle other exceptions
+      log(e.toString(), name: 'profile verifyNewNumber error');
       throw Exception('error occurred ${e.toString()}');
     }
     return null;

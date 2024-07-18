@@ -55,8 +55,8 @@ class LoginController extends GetxController {
   Future<void> verifyOTPFunction(
       {required String mobileNo, required String otp}) async {
     otpVerified.value = true;
-    bool? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
-    if (val == true) {
+    String? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
+    if (val == 'OTP verified success') {
       String mobileWithoutCountryCode = mobileNo.substring(2);
 
       Map<String, dynamic>? res = await LoginService()

@@ -166,8 +166,11 @@ class ProfileHomeScreen extends StatelessWidget {
                                     infoHeading("Contact Info"),
                                     GestureDetector(
                                       onTap: () {
-                                        Get.put(UpdateContactInfo())
-                                            .fetchCountryStates();
+                                        final contactC =
+                                            Get.put(UpdateContactInfo());
+                                        contactC.fetchCountryStates();
+                                        contactC.changePhone.value = 'onScreen';
+                                        contactC.otpError.value = '';
                                         Get.to(() => ProfileContactInfoScreen(
                                             user: data, id: id));
                                       },

@@ -22,7 +22,7 @@ class OtpService {
           'authkey': authKey,
         },
       );
-      log(response.data.toString());
+      // log(response.data.toString());
       if (response.data is Map) {
         Map<String, dynamic> resData = response.data;
         if (resData.containsKey('type')) {
@@ -41,7 +41,7 @@ class OtpService {
   }
 
   /*---------- validate otp serviece---------*/
-  Future<bool?> validateOTP(
+  Future<String?> validateOTP(
       {required String otp, required String mobileNo}) async {
     try {
       String path = '${Apis().baseUrlOtp}otp/verify';
@@ -52,11 +52,9 @@ class OtpService {
       });
       log(response.data.toString(), name: 'otp validation');
       String data = response.data['message'];
-      if (data == 'OTP verified success') {
-        return true;
-      } else {
-        return false;
-      }
+      // if (data == 'OTP verified success') {
+        return data;
+      // } 
     } catch (e) {
       log(e.toString(), name: 'otp validate error');
     }
@@ -76,11 +74,6 @@ class OtpService {
       log(response.data.toString(), name: 'resend');
       String data = response.data['message'];
       return data;
-      //  if (data =='retry send successfully') {
-      //    return true;
-      //  }else{
-      //   return false;
-      //  }
     } catch (e) {
       log(e.toString(), name: 'retry error');
     }
