@@ -2,6 +2,7 @@ import 'package:aimshala/controllers/profile_controller/profile_contact_info_con
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/profile/profile_contact_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -16,68 +17,51 @@ class CityBottomSheetClass extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
       decoration: bottomSheetDecoration(),
-      // height: 53.h,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            // width: double.infinity,
-            color: kwhite,
-            padding: const EdgeInsets.only(left: 0, right: 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 7),
-                  trailing: GestureDetector(
-                    onTap: () => Get.back(),
-                    child: SizedBox(
-                        height: 30,
-                        width: 30,
-                        child: Image.asset('assets/images/close.png',
-                            fit: BoxFit.cover)),
-                  ),
-                ),
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Text(
-                    'Select your City',
-                    style: TextStyle(
-                      color: kblack,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                TextFormField(
-                  // controller: searchMicroController,
-                  onChanged: (query) {},
-                  decoration: decorTextfield(
-                    prefixWidget: const Icon(Icons.search, size: 25),
-                    hintText: "Search",
-                  ),
-                ),
-              ],
-            ),
+          Column(
+            children: [
+              buildBottomsheetTop(item: 'City'),
+              GetBuilder<UpdateContactInfo>(
+                  id: 'update-citySearch',
+                  builder: (c) {
+                    return TextFormField(
+                      controller: c.searchController,
+                      onChanged: (query) {
+                        c.filterCity(query);
+                      },
+                      decoration: decorTextfield(
+                        prefixWidget: const Icon(Icons.search, size: 25),
+                        hintText: "Search",
+                      ),
+                    );
+                  }),
+            ],
           ),
           SizedBox(
             height: 36.h,
             child: Obx(
               () => controller.isLoading.isTrue
-                  ? const CircularProgressIndicator()
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          strokeWidth: 1, color: mainPurple))
                   : controller.cityData.isEmpty
-                      ? Text(
-                          "No Cities found",
-                          style: TextStyle(
-                            color: kblack,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Text(
+                            "No Cities found",
+                            style: TextStyle(
+                              color: textFieldColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         )
                       : ListView.builder(
-                          itemCount: controller.cityData.length,
+                          itemCount: controller.filteredCityData.length,
                           itemBuilder: (context, index) {
-                            final data = controller.cityData[index];
+                            final data = controller.filteredCityData[index];
                             return Column(
                               children: [
                                 ListTile(

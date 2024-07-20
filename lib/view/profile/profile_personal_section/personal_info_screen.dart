@@ -144,23 +144,17 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            actionContainer(
-                              text: 'Cancel',
-                              textColor: mainPurple,
+                            saveContainer(
                               boxColor: kwhite,
                               borderColor: mainPurple,
+                              child: saveContainerText(
+                                text: 'Cancel',
+                                textColor: mainPurple,
+                              ),
                               onTap: () => Get.back(),
                             ),
                             wMBox,
-                            actionContainer(
-                              text: 'Save',
-                              textColor: c.nameController.text.isNotEmpty &&
-                                      c.userNameController.text.isNotEmpty &&
-                                      c.dateController.text.isNotEmpty &&
-                                      c.genderController.text.isNotEmpty &&
-                                      c.aboutController.text.isNotEmpty
-                                  ? kwhite
-                                  : textFieldColor,
+                            saveContainer(
                               boxColor: c.nameController.text.isNotEmpty &&
                                       c.userNameController.text.isNotEmpty &&
                                       c.genderController.text.isNotEmpty &&
@@ -168,6 +162,23 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                                       c.dateController.text.isNotEmpty
                                   ? mainPurple
                                   : buttonColor,
+                              child: Obx(() => c.isSaving.value
+                                  ? CircularProgressIndicator(
+                                      strokeWidth: 1, color: kwhite)
+                                  : saveContainerText(
+                                      text: 'Save',
+                                      textColor: c.nameController.text
+                                                  .isNotEmpty &&
+                                              c.userNameController.text
+                                                  .isNotEmpty &&
+                                              c.dateController.text
+                                                  .isNotEmpty &&
+                                              c.genderController.text
+                                                  .isNotEmpty &&
+                                              c.aboutController.text.isNotEmpty
+                                          ? kwhite
+                                          : textFieldColor,
+                                    )),
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
                                   log('name=>${c.nameController.text} username=>${c.userNameController.text} date=> ${c.dateController.text} UID=>$id gender=>${c.genderController.text} about=>${c.aboutController.text}',

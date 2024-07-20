@@ -1,6 +1,7 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
 
 SizedBox wBox = const SizedBox(width: 5);
 SizedBox hBox = const SizedBox(height: 5);
@@ -108,5 +109,36 @@ Widget calendarIcon() {
     'assets/images/calendar-booked.svg',
     colorFilter: ColorFilter.mode(kblack, BlendMode.srcIn),
     fit: BoxFit.scaleDown,
+  );
+}
+
+
+Widget actionContainer(
+    {required String text,
+    required Color textColor,
+    Color? borderColor,
+    required Color boxColor,
+    void Function()? onTap}) {
+  return Expanded(
+    child: GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 4.h,
+        decoration: BoxDecoration(
+          color: boxColor,
+          border: borderColor != null
+              ? Border.all(width: 1, color: borderColor)
+              : null,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+                color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
+          ),
+        ),
+      ),
+    ),
   );
 }

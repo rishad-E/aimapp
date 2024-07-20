@@ -12,12 +12,12 @@ class PerosnalInfoController extends GetxController {
   final genderController = TextEditingController();
   final aboutController = TextEditingController();
   final DateTime dateTime = DateTime.now();
-  // RxBool isDateSelected = false.obs;
 
   var selectedGender = ''.obs;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
+  RxBool isSaving = false.obs;
 
   /* ------ save personal info function ------ */
   Future<void> savepersonalInfoFunction({
@@ -28,25 +28,30 @@ class PerosnalInfoController extends GetxController {
     required String gender,
     required String statement,
   }) async {
-    bool? res = await UpdatePersonalInfoService().updatePersonalInfo(
-        uId: uId,
-        fullName: fullName,
-        userName: userName,
-        dOB: dOB,
-        gender: gender,
-        statement: statement);
-    if (res == true) {
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.showSnackbar(
-        const GetSnackBar(
-          snackStyle: SnackStyle.FLOATING,
-          message: 'personal info update failed',
-          margin: EdgeInsets.all(10),
-          backgroundColor: Colors.red,
-          duration: Duration(seconds: 2),
-        ),
-      );
+    try {
+      isSaving.value = true;
+      bool? res = await UpdatePersonalInfoService().updatePersonalInfo(
+          uId: uId,
+          fullName: fullName,
+          userName: userName,
+          dOB: dOB,
+          gender: gender,
+          statement: statement);
+      if (res == true) {
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.showSnackbar(
+          const GetSnackBar(
+            snackStyle: SnackStyle.FLOATING,
+            message: 'personal info update failed',
+            margin: EdgeInsets.all(10),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } finally {
+      isSaving.value = false;
     }
   }
 
@@ -64,7 +69,7 @@ class PerosnalInfoController extends GetxController {
               primary: Colors.purple,
               onPrimary: Colors.white,
             ),
-            dialogBackgroundColor: Colors.white, 
+            dialogBackgroundColor: Colors.white,
           ),
           child: child!,
         );
@@ -78,7 +83,7 @@ class PerosnalInfoController extends GetxController {
     }
   }
   /* ------ date picker for personal info------ */
-  
+
   String? fieldValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'please select a date';

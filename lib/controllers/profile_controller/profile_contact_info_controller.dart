@@ -23,14 +23,19 @@ class UpdateContactInfo extends GetxController {
   TextEditingController twitterController = TextEditingController();
 
   TextEditingController otpController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
   RxList<StateData> stateData = <StateData>[].obs;
+  RxList<StateData> filteredStateData = <StateData>[].obs;
   RxList<City> cityData = <City>[].obs;
+  RxList<City> filteredCityData = <City>[].obs;
   RxString errorMessage = ''.obs;
   RxBool isLoading = false.obs;
+  RxBool isSaving = false.obs;
+  
   /*-----phone number changing----*/
   RxString changePhone = ''.obs;
   RxInt otpVerifiedNum = 0.obs;
@@ -58,36 +63,42 @@ class UpdateContactInfo extends GetxController {
     required String instagram,
     required String twitter,
   }) async {
-    String? res = await UpdateContactInfoService().updateContactInfo(
-      uId: uId,
-      userName: userName,
-      mobNumber: mobNumber,
-      email: email,
-      address: address,
-      pincode: pincode,
-      city: city,
-      state: state,
-      country: country,
-      facebook: facebook,
-      instagram: instagram,
-      twitter: twitter,
-    );
-    if (res == 'Contact information updated successfully.') {
-      Get.snackbar("Udated successfully", '$res',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2),
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          margin: const EdgeInsets.all(5));
-      Get.off(() => ProfileHomeScreen(id: uId));
-    } else {
-      Get.snackbar("Error", '$res',
-          snackPosition: SnackPosition.BOTTOM,
-          duration: const Duration(seconds: 2),
-          backgroundColor: kred,
-          colorText: Colors.white,
-          margin: const EdgeInsets.all(5));
+    try {
+      isSaving.value = true;
+      String? res = await UpdateContactInfoService().updateContactInfo(
+        uId: uId,
+        userName: userName,
+        mobNumber: mobNumber,
+        email: email,
+        address: address,
+        pincode: pincode,
+        city: city,
+        state: state,
+        country: country,
+        facebook: facebook,
+        instagram: instagram,
+        twitter: twitter,
+      );
+      if (res == 'Contact information updated successfully.') {
+        Get.snackbar("Udated successfully", '$res',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+            margin: const EdgeInsets.all(5));
+        Get.off(() => ProfileHomeScreen(id: uId));
+      } else {
+        Get.snackbar("Error", '$res',
+            snackPosition: SnackPosition.BOTTOM,
+            duration: const Duration(seconds: 2),
+            backgroundColor: kred,
+            colorText: Colors.white,
+            margin: const EdgeInsets.all(5));
+      }
+    } finally {
+      isSaving.value = false;
     }
+    
   }
 
   Future<void> fetchCountryStates() async {
@@ -112,6 +123,19 @@ class UpdateContactInfo extends GetxController {
     }
   }
 
+  void filterStates(String query) {
+    if (query.isEmpty) {
+      filteredStateData.value = stateData;
+    } else {
+      final filterStates = stateData.where((state) {
+        final stateName = state.name?.toLowerCase();
+        final searchQuery = query.toLowerCase();
+        return stateName!.contains(searchQuery);
+      }).toList();
+      filteredStateData.value = filterStates;
+    }
+  }
+
   Future<void> fetchCities({required String stateId}) async {
     try {
       isLoading.value = true;
@@ -119,6 +143,7 @@ class UpdateContactInfo extends GetxController {
           await UpdateContactInfoService().getCitiesService(stateID: stateId);
       if (res != null) {
         cityData.value = res;
+        filteredCityData.value = cityData;
       } else {
         cityData.value = [];
       }
@@ -126,6 +151,21 @@ class UpdateContactInfo extends GetxController {
       cityData.value = [];
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void filterCity(String query) {
+    if (searchController.text.isEmpty) {
+      filteredCityData.value = cityData;
+      update(['update-citySearch']);
+    } else {
+      final filteredCities = cityData.where((city) {
+        final cityName = city.name?.toLowerCase();
+        final searchQuery = query.toLowerCase();
+        return cityName!.contains(searchQuery);
+      }).toList();
+      filteredCityData.value = filteredCities;
+      update(['update-citySearch']);
     }
   }
 

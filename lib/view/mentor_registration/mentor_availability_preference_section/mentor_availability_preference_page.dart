@@ -8,7 +8,6 @@ import 'package:aimshala/view/educator_registration/common/widgets/widgets.dart'
 import 'package:aimshala/view/mentor_registration/common/widgets/widgets.dart';
 import 'package:aimshala/view/mentor_registration/mentor_additional_information_section/mentor_additional_information_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_availability_preference_section/widgets.dart';
-import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

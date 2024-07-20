@@ -13,8 +13,6 @@ class GetStatesCountryModel {
         country: json["country"] == null ? null : Country.fromJson(json["country"]),
         stateDatas: json["stateDatas"] == null ? [] : List<StateData>.from(json["stateDatas"]!.map((x) => StateData.fromJson(x))),
     );
-
-
 }
 
 class Country {
@@ -57,8 +55,6 @@ class Country {
         updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
         lmsId: json["lms_id"],
     );
-
- 
 }
 
 class StateData {
@@ -79,7 +75,5 @@ class StateData {
         name: json["name"],
         countryId: json["country_id"],
         lmsId: json["lms_id"],
-    );
-
- 
+    ); 
 }

@@ -8,7 +8,6 @@ import 'package:aimshala/view/educator_registration/common/widgets/widgets.dart'
 import 'package:aimshala/view/educator_registration/teaching_subject_course_section/widgets/widgets.dart';
 import 'package:aimshala/view/educator_registration/work_preference_secton/work_preference_page.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
-import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';

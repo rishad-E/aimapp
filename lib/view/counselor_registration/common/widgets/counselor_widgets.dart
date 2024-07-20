@@ -1,4 +1,5 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +86,39 @@ Widget counselorFields({required String fieldItem, required Widget textfiled}) {
       children: [
         Align(alignment: Alignment.centerLeft, child: semiBoldChoiceText(text: fieldItem, size: 9.sp),),
         textfiled
+      ],
+    ),
+  );
+}
+
+Widget checkBoxContainer(
+    {required String item, required bool selected}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3),
+    child: Row(
+      children: [
+        Container(
+          height: 15,
+          width: 15,
+          decoration: BoxDecoration(
+            color: selected == true ? mainPurple : kwhite,
+            border: selected == false
+                ? Border.all(
+                    width: 1, color: const Color.fromARGB(255, 195, 197, 198))
+                : null,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: selected == true
+              ? Center(
+                  child: Icon(
+                  Icons.done,
+                  color: kwhite,
+                  size: 13,
+                ))
+              : null,
+        ),
+        wMBox,
+        regularText(item, 11)
       ],
     ),
   );

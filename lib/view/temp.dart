@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
@@ -20,12 +19,6 @@ class TempScreen extends StatelessWidget {
     final mentor = Get.put(MentorPersonalDetailController());
     final educaotr = Get.put(EducatorPersonalDetailController());
     final alldataC = Get.put(AllDataController());
-
-    List<String> data = [
-      'Student at School A= Degree A= Field A',
-      'Student at School B= Degree B= Field B',
-      'Student at School A= Degree C= Field C'
-    ];
     
     return Scaffold(
       appBar: AppBar(
@@ -35,14 +28,6 @@ class TempScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            elevatedButtonItems(
-              onPressed: () {
-                // Get.to(() => TempResultScreen());
-                data.removeWhere((element) => element.contains('Field A'));
-                log(data.toString());
-              },
-              item: "aimcet result screen temp",
-            ),
             hMBox,
             elevatedButtonItems(
               onPressed: () {
@@ -98,7 +83,7 @@ class TempScreen extends StatelessWidget {
             ),
             hMBox,
             elevatedButtonItems(
-              onPressed: () => Get.to(() => const CounselorPersonalSection()),
+              onPressed: () => Get.to(() =>  CounselorPersonalSection()),
               item: "Counselor",
             ),
           ],

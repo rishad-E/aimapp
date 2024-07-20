@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -61,7 +59,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                           controller.update(['update-contactInfo']);
                           if (value.length == 10) {
                             controller.validateNewNumber(mob: value);
-                            log(value.toString());
+                            // log(value.toString());
                           } else {
                             controller.otpError.value = 'OTP verified success';
                           }
@@ -126,12 +124,10 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                     border: Border.all(color: kpurple),
                                   ),
                                 ),
-                                onCompleted: (value) => log(value),
+                                onCompleted: (value) {},
                                 onChanged: (value) {},
                                 controller: controller.otpController,
-                                // validator: (value) => controller.otPValidation(value),
                               ),
-                              // Text("data",style: errorStyle(),),
                               hBox,
                               Container(
                                 padding:
@@ -269,7 +265,10 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   contactInfoFiled(
                     text: primarytxt3('State', 9.5.sp),
                     textField: GestureDetector(
-                      onTap: () => showStateBottomsheet(context: context),
+                      onTap: () {
+                        controller.filterStates('');
+                        showStateBottomsheet(context: context);
+                      },
                       child: AbsorbPointer(
                         child: TextFormField(
                           readOnly: true,
@@ -294,7 +293,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
                   contactInfoFiled(
                     text: primarytxt3('City', 9.5.sp),
                     textField: GestureDetector(
-                      onTap: () => showCityBottomsheet(context),
+                      onTap: () {
+                        controller.searchController.clear();
+                        controller.filterCity('a');
+                        showCityBottomsheet(context);
+                      },
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: controller.cityController,
@@ -387,36 +390,42 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          actionContainer(
-                            text: 'Cancel',
-                            textColor: mainPurple,
+                          saveContainer(
                             boxColor: kwhite,
                             borderColor: mainPurple,
+                            child: saveContainerText(
+                              text: 'Cancel',
+                              textColor: mainPurple,
+                            ),
                             onTap: () => Get.back(),
                           ),
                           wMBox,
-                          actionContainer(
-                            text: 'Save',
-                            textColor: c.saveText.value,
+                          saveContainer(
                             boxColor: c.saveBG.value,
+                            child: Obx(
+                              () => c.isSaving.value
+                                  ? CircularProgressIndicator(
+                                      strokeWidth: 1, color: kwhite)
+                                  : saveContainerText(
+                                      text: 'Save',
+                                      textColor: c.saveText.value,
+                                    ),
+                            ),
                             onTap: () {
-                              if (formKey.currentState!.validate()) {
-                                log('validate');
-                                c.saveContactInfoFunction(
-                                  uId: id.toString(),
-                                  userName: c.usernameController.text,
-                                  mobNumber: c.mobController.text,
-                                  email: c.emailController.text,
-                                  address: c.addressController.text,
-                                  pincode: c.pincodeController.text,
-                                  city: c.cityController.text,
-                                  state: c.stateController.text,
-                                  country: c.countryController.text,
-                                  facebook: c.facebookController.text,
-                                  instagram: c.instagramController.text,
-                                  twitter: c.twitterController.text,
-                                );
-                              }
+                              c.saveContactInfoFunction(
+                                uId: id.toString(),
+                                userName: c.usernameController.text,
+                                mobNumber: c.mobController.text,
+                                email: c.emailController.text,
+                                address: c.addressController.text,
+                                pincode: c.pincodeController.text,
+                                city: c.cityController.text,
+                                state: c.stateController.text,
+                                country: c.countryController.text,
+                                facebook: c.facebookController.text,
+                                instagram: c.instagramController.text,
+                                twitter: c.twitterController.text,
+                              );
                             },
                           ),
                         ],
@@ -452,8 +461,29 @@ class ProfileContactInfoScreen extends StatelessWidget {
   void showStateBottomsheet({required BuildContext context}) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      useSafeArea: false,
       builder: (context) {
-        return const StateBottomSheetClass();
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: StateBottomSheetClass(),
+        );
+      },
+    );
+  }
+
+  void showCityBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: false,
+      builder: (context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: const CityBottomSheetClass(),
+        );
       },
     );
   }
@@ -463,20 +493,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return const CountryBottomSheet();
-      },
-    );
-  }
-
-/*-------------only task pending-------------*/
-  void showCityBottomsheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: const CityBottomSheetClass(),
-        );
       },
     );
   }
