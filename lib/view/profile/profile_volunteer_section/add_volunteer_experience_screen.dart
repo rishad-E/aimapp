@@ -423,7 +423,13 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
 
   void initializeFormFields(
       ProfileVolunteerController controller, VolunteerExperience? volunteer) {
-    if (volunteer == null) return;
+    if (volunteer == null) {
+      if (controller.organizationController.text.isEmpty) {
+        controller.currentlyWorking.value = false;
+        controller.update(['currentlyWorking-volunteer']);
+      }
+      return;
+    }
 
     controller.organizationController.text =
         controller.organizationController.text.isEmpty &&

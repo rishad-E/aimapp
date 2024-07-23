@@ -134,16 +134,15 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                       if (value == 'True')
                                         {
                                           showDialogBoxFunction(
-                                            context,
-                                            userId.toString(),
-                                            controller,
-                                            controller.nameController.text,
-                                          ),
+                                              context,
+                                              userId.toString(),
+                                              controller,
+                                              controller.nameController.text)
                                         }
                                       else
                                         {
                                           SnackbarPopUps.popUpB(
-                                              '"Booking failed"'),
+                                              '"Booking failed"')
                                         }
                                     });
                           },

@@ -38,7 +38,6 @@ class MentorAddMediaController extends GetxController {
 
   RxBool agree = false.obs;
   RxBool saveDataLoading = false.obs;
-  // late MentorRegistrationFormData model;
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -49,7 +48,6 @@ class MentorAddMediaController extends GetxController {
     if (result == null) return;
     cvNew = result.files.single;
     PlatformFile? file = result.files.single;
-    // log(cvNew!.toString(), name: 'selected file');
     String? path = file.path;
     filePath.value = path!;
     extenstion.value = file.extension.toString();

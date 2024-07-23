@@ -17,7 +17,7 @@ ShapeBorder appBarBorder() {
   ));
 }
 
-PreferredSizeWidget appbarHome({String? name}) {
+PreferredSizeWidget appbarHome({String? name,required String uId}) {
   return AppBar(
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),
@@ -76,7 +76,7 @@ PreferredSizeWidget appbarHome({String? name}) {
         child: GestureDetector(
           onTap: () {
             log('temp screen', name: 'temp screen');
-            Get.to(() => const TempScreen());
+            Get.to(() =>  TempScreen(uId: uId));
           },
           child: Container(
             // width: 30,

@@ -426,7 +426,13 @@ class ProfileAddProjectScreen extends StatelessWidget {
   }
 
   void initializeFormFields(ProfileProjectController c, Project? project) {
-    if (project == null) return;
+    if (project == null) {
+      if (c.projectnameController.text.isEmpty) {
+        c.currentlyWorking.value = false;
+        c.update(['currentlyWorking-project']);
+      }
+      return;
+    }
     c.projectnameController.text =
         c.projectnameController.text.isEmpty && project.title != null
             ? project.title as String
@@ -464,7 +470,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
         }
       }
     }
-    if (project.endDate.toString() == 'currently_working') {
+    if (project.endDate == 'currently_working') {
       c.currentlyWorking.value = true;
       c.update(['currentlyWorking-project']);
     } else {

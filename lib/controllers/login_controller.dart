@@ -72,10 +72,11 @@ class LoginController extends GetxController {
             String? id = user.id.toString();
             String? name = user.name.toString();
             String? email = user.email.toString();
+            String? phone = user.phone.toString();
             storage.write(key: 'email', value: user.email.toString());
             log('name=>$name email=>$email id=>$id');
             Get.offAll(() => SignUpAmyScreen(
-                name: name.toString(), email: email.toString(), uId: id));
+                name: name, email: email, uId: id, phone: phone));
           } else {
             Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
           }

@@ -12,12 +12,17 @@ class SignUpAmyScreen extends StatelessWidget {
   final String name;
   final String email;
   final String uId;
+  final String phone;
   const SignUpAmyScreen(
-      {super.key, required this.name, required this.email, required this.uId});
+      {super.key,
+      required this.name,
+      required this.email,
+      required this.uId,
+      required this.phone});
   @override
   Widget build(BuildContext context) {
     log(uId, name: 'splasssssssssssssh');
-    final controller = Get.put(AmySignUpController(name, email, uId));
+    final controller = Get.put(AmySignUpController(name, email, uId, phone));
     return Scaffold(
       appBar: signupAmyAppbar(),
       body: Padding(
@@ -104,30 +109,41 @@ class SignUpAmyScreen extends StatelessWidget {
                                   },
                                 )
                               : c.qusId == 1
-                                  ? Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: Wrap(
-                                        spacing: 5,
-                                        runSpacing: 5,
-                                        children: List.generate(
-                                          c.genderOptionList.length,
-                                          (index) {
-                                            final data =
-                                                c.genderOptionList[index];
-                                            return InkWell(
-                                              onTap: () {
-                                                log(data);
-                                                c.chatController.text = data;
-                                                c.sendMessage(context);
+                                  ? c.otherSelected
+                                      ? TextFormField(
+                                          decoration: amyTextfieldDecor(),
+                                        )
+                                      : Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Wrap(
+                                            spacing: 5,
+                                            runSpacing: 5,
+                                            children: List.generate(
+                                              c.genderOptionList.length,
+                                              (index) {
+                                                final data =
+                                                    c.genderOptionList[index];
+                                                return InkWell(
+                                                  onTap: () {
+                                                    log(data);
+                                                    c.chatController.text =
+                                                        data;
+                                                    if (data == 'Other') {
+                                                      c.otherSelected = true;
+                                                      c.update(['send-to-amy']);
+                                                    } else {
+                                                      c.sendMessage(context);
+                                                      c.otherSelected = false;
+                                                    }
+                                                  },
+                                                  child: amyOptionContainer(
+                                                      option: data),
+                                                );
                                               },
-                                              child: amyOptionContainer(
-                                                  option: data),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    )
+                                            ),
+                                          ),
+                                        )
                                   : Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
@@ -190,11 +206,20 @@ class SignUpAmyScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           if (c.chatController.text.isNotEmpty) {
+                            if (c.chatController.text == 'Other') {
+                              c.otherSelected = true;
+                              c.update(['send-to-amy']);
+                            } else {
+                              c.sendMessage(context);
+                              c.otherSelected = false;
+                            }
                             log(c.chatController.text);
-                            c.sendMessage(context);
+                            // c.sendMessage(context);
                           }
                         },
-                        child: c.qusId == 0 ? sendMsgContainer() : shrinked,
+                        child: c.qusId == 0 || c.otherSelected
+                            ? sendMsgContainer()
+                            : shrinked,
                       ),
                     ],
                   );

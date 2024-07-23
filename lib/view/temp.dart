@@ -12,14 +12,17 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class TempScreen extends StatelessWidget {
-  const TempScreen({super.key});
+  final String uId;
+  const TempScreen({super.key, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     final mentor = Get.put(MentorPersonalDetailController());
     final educaotr = Get.put(EducatorPersonalDetailController());
     final alldataC = Get.put(AllDataController());
-    
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      alldataC.getUserallData(uId: uId);
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -60,13 +63,13 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(mentor.isMentor, name: 'isMentor');
                 if (mentor.isMentor == 'no') {
-                  Get.to(
-                    () => MentorPersonalDetailPage(
-                      user: alldataC.userData,
-                      userDetails: alldataC.userDetails,
-                    ),
-                    transition: Transition.fadeIn,
-                  );
+                Get.to(
+                  () => MentorPersonalDetailPage(
+                    user: alldataC.userData,
+                    userDetails: alldataC.userDetails,
+                  ),
+                  transition: Transition.fadeIn,
+                );
                 } else {
                   Get.snackbar(
                     "Hi ",
@@ -83,7 +86,7 @@ class TempScreen extends StatelessWidget {
             ),
             hMBox,
             elevatedButtonItems(
-              onPressed: () => Get.to(() =>  CounselorPersonalSection()),
+              onPressed: () => Get.to(() => CounselorPersonalSection()),
               item: "Counselor",
             ),
           ],

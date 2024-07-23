@@ -14,7 +14,7 @@ class DiscoveryContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25),
-      margin: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 11),
       width: 39.5.w,
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill),

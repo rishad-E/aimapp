@@ -66,8 +66,8 @@ class CounselorProfBackgroundPage extends StatelessWidget {
                   onChanged: (value) =>
                       controller.update(['couns-ProfessionalBG']),
                   decoration: infoFieldDecoration(
-                    hintText: 'Please select',
-                    suffixWidget: const Icon(Icons.keyboard_arrow_down),
+                    hintText: 'Enter Professional Experience',
+                    // suffixWidget: const Icon(Icons.keyboard_arrow_down),
                   ),
                   style: const TextStyle(fontSize: 13),
                 ),

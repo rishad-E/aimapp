@@ -21,7 +21,18 @@ class DateInputFormatter extends TextInputFormatter {
       text =
           '${text.substring(0, 2)}/${text.substring(2, 4)}/${text.substring(4, 8)}';
     }
-
+    if (text.length >= 2) {
+      int day = int.tryParse(text.substring(0, 2)) ?? 0;
+      if (day < 1 || day > 31) {
+        text = oldValue.text;
+      }
+    }
+    if (text.length >= 5) {
+      int month = int.tryParse(text.substring(3, 5)) ?? 0;
+      if (month < 1 || month > 12) {
+        text = oldValue.text;
+      }
+    }
     // Returning the formatted value
     return TextEditingValue(
       text: text,

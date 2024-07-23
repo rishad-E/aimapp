@@ -24,9 +24,7 @@ class OTPScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: appbarContainer(onPressed: () {
-          Get.back();
-        }),
+        title: appbarContainer(onPressed: () => Get.back()),
       ),
       body: Container(
         height: double.infinity,
@@ -95,13 +93,20 @@ class OTPScreen extends StatelessWidget {
                                       border: Border.all(color: kpurple),
                                     ),
                                   ),
-                                  onCompleted: (value) => log(value),
+                                  onCompleted: (value) {
+                                    log(value);
+                                    otpController.verifyOTPFunction(mobileNo: mobileNo, otp: value);
+                                  },
                                   onChanged: (value) {
                                     otpController.validationMessage.value =
                                         'newvalue';
                                     log(otpController.validationMessage.value
                                         .toString());
-                                    onchangeButton(otpController);
+                                   
+                                    otpController.updateButtonColor();
+                                    if (value.length == 4) {
+                                      log(value,name: 'dddd');
+                                    }
                                   },
                                   controller: otpController.otpController,
                                 );

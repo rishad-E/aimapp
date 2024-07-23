@@ -24,9 +24,7 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: appbarContainer(onPressed: () {
-          Get.offAll(() => const LoginScreen());
-        }),
+        title: appbarContainer(onPressed: () => Get.offAll(() => const LoginScreen())),
       ),
       body: Container(
         height: double.infinity,
@@ -59,7 +57,7 @@ class SignUpScreen extends StatelessWidget {
                             controller: signUp.nameController,
                             decoration: roleContainer(hintText: 'Enter Name'),
                             validator: (value) => signUp.nameValidation(value),
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ),
                         hBox,
@@ -71,7 +69,7 @@ class SignUpScreen extends StatelessWidget {
                             decoration: roleContainer(hintText: 'Enter Email'),
                             validator: (value) => signUp.emailValidation(value),
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 13),
                           ),
                         ),
                         hLBox,

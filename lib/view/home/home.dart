@@ -26,16 +26,18 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     String? name;
     String? id;
+  
     final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       name = userData.user?.name ?? '';
       id = userData.user?.id.toString();
     }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: HomeDrawer(uId: id.toString()),
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
-      appBar: appbarHome(name: name),
+      appBar: appbarHome(name: name, uId: id.toString()),
       body: SingleChildScrollView(
         child: Stack(
           clipBehavior: Clip.none,
@@ -155,7 +157,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-        bottomNavigationBar: bottomNavContainer(
+      bottomNavigationBar: bottomNavContainer(
         child: GetBuilder<HomeController>(
           init: HomeController(),
           id: 'bottom-nav',

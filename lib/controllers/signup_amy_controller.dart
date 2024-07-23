@@ -1,4 +1,7 @@
 import 'dart:developer';
+// import 'package:aimshala/controllers/login_controller.dart';
+// import 'package:aimshala/models/UserModel/user_model.dart';
+// import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
 import 'package:aimshala/services/signup_service/amy_signup_service.dart';
 import 'package:aimshala/view/signup/widget/amy_signup_chat_model.dart';
@@ -10,19 +13,23 @@ class AmySignUpController extends GetxController {
   final String name;
   final String email;
   final String uId;
-  AmySignUpController(this.name, this.email, this.uId);
+  final String phone;
+  AmySignUpController(this.name, this.email, this.uId, this.phone);
   TextEditingController chatController = TextEditingController();
   TextEditingController otherOptionController = TextEditingController();
+  TextEditingController otherController = TextEditingController();
   ScrollController scrollController = ScrollController();
   RxList<ChatMessageSignup> msgs = <ChatMessageSignup>[].obs;
   bool isTyping = false;
   bool isAskingDOB = false;
-  bool isAskingGender = false;
+  bool otherSelected = false;
   int qusId = 0;
   bool skipQuestion = false;
 
   List<Option> otherOptionList = [];
   List<String> genderOptionList = [];
+
+  //  final loginController = Get.put(LoginController());
 
   @override
   void onInit() {
@@ -33,6 +40,7 @@ class AmySignUpController extends GetxController {
   void addDefaultMessage() async {
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
+    isTyping = true;
     Map<String, dynamic>? res = await AmySignUpService()
         .sendToAmyRegister(uId: uId, msg: 'hai', qusId: '019');
     if (res != null) {
@@ -41,22 +49,31 @@ class AmySignUpController extends GetxController {
       List<String> msgParts = resMsg.split('#');
       // Add each part of the message to msgs
       // Add each part of the message to msgs in reverse order
-      for (int i = msgParts.length - 1; i >= 0; i--) {
+      for (int i = 0; i < msgParts.length; i++) {
         String part = msgParts[i];
         if (part.trim().isNotEmpty) {
           if (i == msgParts.length - 1) {
-            msgs.add(ChatMessageSignup(false, part, currentTime, false));
+            msgs.insert(0, ChatMessageSignup(false, part, currentTime, false));
           } else if (i == 0) {
-            msgs.add(ChatMessageSignup(false, part, 'no', true));
+            msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
           } else {
-            msgs.add(ChatMessageSignup(false, part, 'no', false));
+            msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
           }
         }
       }
+      // Map<String, dynamic>? resData =
+      //     await LoginService().verifyUserExist(mobileNo: '9846126154');
+      // if (resData != null) {
+      //   loginController.userData = UserModel.fromJson(resData);
+      //   // User? user = User.fromJson(resData["user"]);
+      //   String? nameSe = loginController.userData?.user?.name;
+      //   log('name=>$nameSe', name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+      // }
 
-      isAskingDOB = true;
+      isTyping = false;
       update(['send-to-amy']);
     }
+    isAskingDOB = true;
   }
 
   void sendMessage(BuildContext context) async {
@@ -125,7 +142,7 @@ class AmySignUpController extends GetxController {
             }
           }
         }
-       
+
         scrollController.animateTo(0.0,
             duration: const Duration(seconds: 1), curve: Curves.easeOut);
         isTyping = false;

@@ -56,29 +56,40 @@ class SplashController extends GetxController {
       log("phone=>$phone email=>$email name=>$name",
           name: 'splash mobile and email');
       Map<String, dynamic>? res =
-          await LoginService().verifyUserExist(mobileNo: phone.toString());
+          await LoginService().verifyUserExist(mobileNo: '9846126154');
       if (res != null) {
         if (res.containsKey('error')) {
           String errorMessage = res["error"];
           if (errorMessage == "Please fill first three questions.") {
             User? user = User.fromJson(res["user"]);
             String? id = user.id.toString();
+            String? phone = user.phone.toString();
+            // log(phone, name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
             Get.offAll(() => SignUpAmyScreen(
-                name: name.toString(), email: email.toString(), uId: id));
+                name: name.toString(),
+                email: email.toString(),
+                uId: id,
+                phone: phone));
           } else {
             Get.offAll(() => const LoginScreen());
           }
         } else if (res.containsKey('status')) {
           User? user = User.fromJson(res["user"]);
           String? id = user.id.toString();
+          String? phone = user.phone.toString();
+          // log(phone, name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm2');
           Get.offAll(() => SignUpAmyScreen(
-              name: name.toString(), email: email.toString(), uId: id));
+              name: name.toString(),
+              email: email.toString(),
+              uId: id,
+              phone: phone));
         } else if (res.containsKey('token')) {
           loginController.userData = UserModel.fromJson(res);
           if (loginController.userData != null) {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();
             log('userID=>$id  name=>$uName', name: 'userid and username');
+            alldataController.getUserallData(uId: id.toString());
             bookingController.checkCounsellcallBookingFuntion(
                 userId: id.toString());
             aimtestController
@@ -92,7 +103,7 @@ class SplashController extends GetxController {
             });
             mentorController.checkMentorRegtakenFunction(uId: id.toString());
             eduController.checkEducatorRegTakenFunction(uId: id.toString());
-            alldataController.getUserallData(uId: id.toString());
+
             Get.off(() => const HomeScreen());
           }
         }

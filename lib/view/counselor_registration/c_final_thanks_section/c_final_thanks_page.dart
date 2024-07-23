@@ -1,0 +1,103 @@
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
+import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/counselor_registration/c_final_thanks_section/widgets/texts.dart';
+import 'package:aimshala/view/counselor_registration/common/widgets/counselor_widgets.dart';
+import 'package:aimshala/view/home/home.dart';
+import 'package:aimshala/view/profile/common/widgets/texts.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
+
+class CounselorThanksPage extends StatelessWidget {
+  const CounselorThanksPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: counselorAppBar(backArrow: false),
+      body: counselorContainer(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: boldText(text: 'Dear name,', size: 9.sp),
+            ),
+            // hBox,
+            Align(
+              alignment: Alignment.center,
+              child:
+                  boldText(text: 'Thank You', size: 12.5.sp, color: mainPurple),
+            ),
+            hBox,
+            regularText(
+              thanksTextC,
+              9.sp,
+              textAlign: TextAlign.center,
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: const Color.fromARGB(255, 250, 250, 252),
+              child: regularText(dedicationTextC, 9.sp),
+            ),
+            hBox,
+            semiBoldChoiceText(
+              text: "Here's what you can expect next:",
+              size: 12.5.sp,
+              textAlign: TextAlign.left,
+            ),
+            choiceSizedBox(height: 8),
+            boldText(text: '1. Review Process', size: 9.sp),
+            regularText(reviewTextC, 9.sp),
+            choiceSizedBox(height: 8),
+            boldText(text: '2. Email Notification', size: 9.sp),
+            regularText(emailTextC, 9.sp),
+            choiceSizedBox(height: 8),
+            boldText(text: '3. Dashboard Access', size: 9.sp),
+            regularText(dashboardTextC, 9.sp),
+            choiceSizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              color: const Color.fromARGB(255, 250, 250, 252),
+              child: Column(
+                children: [
+                  regularText(noticeTextC1, 9.sp),
+                  hMBox,
+                  regularText(noticeTextC2, 9.sp),
+                ],
+              ),
+            ),
+            choiceSizedBox(height: 8),
+            regularText(thanksTextC2, 9.sp, color: kblack),
+            choiceSizedBox(height: 8),
+            regularText("Warm regards,", 9.sp, color: kblack),
+            choiceSizedBox(height: 8),
+            semiBoldChoiceText(
+                text: 'The Aimshala Team', size: 9.sp, color: mainPurple),
+            choiceSizedBox(height: 8),
+            GestureDetector(
+              onTap: () => Get.offAll(() => const HomeScreen()),
+              child: Container(
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: mainPurple,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                    child: Text(
+                  'Back to home',
+                  style: TextStyle(
+                    color: kwhite,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                )),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

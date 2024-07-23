@@ -20,7 +20,6 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        // title: appbarContainer(onPressed: () {}),
       ),
       body: Container(
         height: double.infinity,
@@ -63,9 +62,7 @@ class LoginScreen extends StatelessWidget {
                                 hintText: " Enter Mobile Number",
                                 prefixWidget: phoneIcon(),
                               ),
-                              onChanged: (value) {
-                                onchanged(controller, value);
-                              },
+                              onChanged: (value) => onchanged(controller, value),
                               validator: (value) =>
                                   controller.phoneValidation(value),
                             ),

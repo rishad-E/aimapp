@@ -112,7 +112,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                   maxCrossAxisExtent: 110,
                                   childAspectRatio: 2 / 6,
                                   crossAxisSpacing: 10,
-                                  mainAxisSpacing: 5,
+                                  mainAxisSpacing: 1,
                                 ),
                                 itemCount: controller.careers.length,
                                 itemBuilder: (BuildContext ctx, index) {
@@ -167,7 +167,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                   maxCrossAxisExtent: 110,
                                   childAspectRatio: 2 / 6.5,
                                   crossAxisSpacing: 10,
-                                  mainAxisSpacing: 3,
+                                  mainAxisSpacing: 2,
                                 ),
                                 itemCount: controller.degrees.length,
                                 itemBuilder: (BuildContext ctx, index) {

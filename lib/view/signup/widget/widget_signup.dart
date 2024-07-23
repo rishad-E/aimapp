@@ -22,7 +22,7 @@ InputDecoration roleContainer({String? hintText, Widget? suffixWidget}) {
     hintText: hintText,
     suffixIcon: suffixWidget,
     contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-    hintStyle: TextStyle(color: kblack.withOpacity(0.4), fontSize: 14),
+    hintStyle: TextStyle(color: kblack.withOpacity(0.4), fontSize: 13),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.red),

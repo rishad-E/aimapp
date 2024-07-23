@@ -121,7 +121,7 @@ class CounselorReferencePage extends StatelessWidget {
                           boxColor: c.saveBG.value,
                           onTap: () {
                             if (formKey.currentState!.validate()) {
-                              Get.to(()=>CounselorMediaPage());
+                              Get.to(() => CounselorMediaPage());
                             }
                           },
                         )

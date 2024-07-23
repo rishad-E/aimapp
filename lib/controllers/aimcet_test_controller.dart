@@ -217,7 +217,6 @@ class AIMCETController extends GetxController {
     if (data != null) {
       if (data['Test Status'] == 'Not Given') {
         testDone.value = 'no';
-        // log(data['Test Status']);
       } else if (data['Test Status'] == 'Continue Test') {
         testDone.value = 'continue';
       } else if (data['Test Status'] == 'Test Given') {
@@ -234,23 +233,33 @@ class AIMCETController extends GetxController {
         directory = await getApplicationDocumentsDirectory();
       } else {
         if (await Permission.storage.isGranted) {
+          log('granded');
           directory = Directory('/storage/emulated/0/Download');
           if (!await directory.exists()) {
             directory = Directory('/storage/emulated/0/Downloads');
           }
         } else {
-          var status = await Permission.storage.request();
-          if (status.isGranted) {
-            directory = Directory('/storage/emulated/0/Download');
-            if (!await directory.exists()) {
-              directory = Directory('/storage/emulated/0/Downloads');
-            }
-          } else {
-            directory = await getExternalStorageDirectory();
-          }
-
+          // var status = await Permission.storage.request();
+          // if (status.isGranted) {
+          //   directory = Directory('/storage/emulated/0/Download');
+          //   if (!await directory.exists()) {
+          //     directory = Directory('/storage/emulated/0/Downloads');
+          //   }
+          // } else {
+          directory = await getExternalStorageDirectory();
+          // }
           // directory = await getExternalStorageDirectory();
         }
+
+        //////////////////////////////////////////////////////////////
+        // if (await Permission.manageExternalStorage.isGranted) {
+        //   directory = Directory('/storage/emulated/0/Download');
+        //   if (!await directory.exists()) {
+        //     directory = Directory('/storage/emulated/0/Downloads');
+        //   }
+        // } else {
+        //   directory = await getExternalStorageDirectory();
+        // }
       }
       if (directory == null) {
         throw const FileSystemException('Unable to access storage directory');
@@ -258,18 +267,48 @@ class AIMCETController extends GetxController {
       String savePath = '${directory.path}/$fileName';
       log(savePath);
       Dio dio = Dio();
-      await dio.download(
-        pdfUrl,
-        savePath,
-        options: Options(
-          responseType: ResponseType.bytes,
-        ),
-        onReceiveProgress: (received, total) {
-          if (total != -1) {
-            // downloadProgress.value = received / total * 100;
+      try {
+        await dio.download(
+          pdfUrl,
+          savePath,
+          options: Options(
+            responseType: ResponseType.bytes,
+          ),
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              // downloadProgress.value = received / total * 100;
+            }
+          },
+        );
+      } on PathAccessException catch (e) {
+        log(e.toString(), name: 'path exception');
+        if (await Permission.manageExternalStorage.isGranted) {
+          directory = Directory('/storage/emulated/0/Download');
+          if (!await directory.exists()) {
+            directory = Directory('/storage/emulated/0/Downloads');
           }
-        },
-      );
+        } else {
+          directory = await getExternalStorageDirectory();
+        }
+        if (directory == null) {
+          throw const FileSystemException('Unable to access storage directory');
+        }
+        savePath = '${directory.path}/$fileName';
+        log(savePath);
+        await dio.download(
+          pdfUrl,
+          savePath,
+          options: Options(
+            responseType: ResponseType.bytes,
+          ),
+          onReceiveProgress: (received, total) {
+            if (total != -1) {
+              // downloadProgress.value = received / total * 100;
+            }
+          },
+        );
+      }
+  
 
       isLoading.value = false;
       Get.snackbar(
@@ -285,6 +324,15 @@ class AIMCETController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       log("Error downloading file: $e");
+      Get.snackbar(
+        "Downloade Failed",
+        "Error downloading file: $e",
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 2),
+        backgroundColor:
+            const Color.fromARGB(255, 86, 21, 171).withOpacity(0.7),
+        colorText: Colors.white,
+      );
     }
     isDownloading.value = false;
     // Determine the download directory path based on platform and availability

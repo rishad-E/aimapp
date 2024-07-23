@@ -171,6 +171,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                         contactC.fetchCountryStates();
                                         contactC.changePhone.value = 'onScreen';
                                         contactC.otpError.value = '';
+                                        contactC.otpVerifiedNum.value = 0;
                                         Get.to(() => ProfileContactInfoScreen(
                                             user: data, id: id));
                                       },

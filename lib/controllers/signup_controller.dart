@@ -27,7 +27,9 @@ class SignUpController extends GetxController {
       if (res.containsKey('message')) {
         User? user = User.fromJson(res["user"]);
         String? id = user.id.toString();
-        Get.offAll(() => SignUpAmyScreen(name: name, email: email, uId: id));
+        String? phone = user.phone.toString();
+        Get.offAll(() =>
+            SignUpAmyScreen(name: name, email: email, uId: id, phone: phone));
         //   Navigator.of(context).pushAndRemoveUntil(
         //   MaterialPageRoute(
         //     builder: (context) => SignUpAmyScreen(name: name, email: email),
@@ -59,7 +61,7 @@ class SignUpController extends GetxController {
             duration: const Duration(seconds: 2),
           ));
           if (errorMessage == "Phone number already registered") {
-            Get.offAll(()=>const SplashScreen());
+            Get.offAll(() => const SplashScreen());
           }
         }
       }
