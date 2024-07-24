@@ -2,7 +2,10 @@ import 'dart:developer';
 // import 'package:aimshala/controllers/login_controller.dart';
 // import 'package:aimshala/models/UserModel/user_model.dart';
 // import 'package:aimshala/services/login_service/login_service.dart';
+import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
+import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/signup_service/amy_signup_service.dart';
 import 'package:aimshala/view/signup/widget/amy_signup_chat_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +20,7 @@ class AmySignUpController extends GetxController {
   AmySignUpController(this.name, this.email, this.uId, this.phone);
   TextEditingController chatController = TextEditingController();
   TextEditingController otherOptionController = TextEditingController();
-  TextEditingController otherController = TextEditingController();
+  // TextEditingController otherController = TextEditingController();
   ScrollController scrollController = ScrollController();
   RxList<ChatMessageSignup> msgs = <ChatMessageSignup>[].obs;
   bool isTyping = false;
@@ -29,7 +32,10 @@ class AmySignUpController extends GetxController {
   List<Option> otherOptionList = [];
   List<String> genderOptionList = [];
 
-  //  final loginController = Get.put(LoginController());
+  String? nameSecond;
+  String? idSecond;
+
+  final loginC = Get.put(LoginController());
 
   @override
   void onInit() {
@@ -69,7 +75,6 @@ class AmySignUpController extends GetxController {
       //   String? nameSe = loginController.userData?.user?.name;
       //   log('name=>$nameSe', name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
       // }
-
       isTyping = false;
       update(['send-to-amy']);
     }
@@ -82,7 +87,10 @@ class AmySignUpController extends GetxController {
     String userMessage = chatController.text;
     String otheroptionMsg = otherOptionController.text;
     chatController.clear();
-
+    // otherController.clear();
+    log(userMessage, name: 'usermsg');
+    otherSelected = false;
+    log(otherSelected.toString(), name: 'other selected');
     if (userMessage.isNotEmpty) {
       if (qusId > 1) {
         msgs.insert(
@@ -102,44 +110,72 @@ class AmySignUpController extends GetxController {
       Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
           uId: uId, msg: userMessage, qusId: qusId.toString());
       if (res != null) {
-        qusId = res["upd_ques_index"];
-        String resMsg = res["bot_reply"];
-        log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
-        if (qusId == 1) {
-          genderOptionList.clear();
-          List<dynamic> resOption = res["options"];
-          genderOptionList.addAll(resOption.cast<String>());
+        if (res.containsKey('errors')) {
+          String errorMessage = res['errors']['msg.valid']?.join(', ') ?? '';
+          log(errorMessage);
+          if (errorMessage.contains('Please specify')) {
+            otherSelected = true;
+            msgs.insert(0,
+                ChatMessageSignup(false, 'Please specify', currentTime, true));
+          }
         } else {
-          otherOptionList.clear();
-          log("otheroptionlist=>$otherOptionList", name: 'checkkkkkkk option');
-          List<Option> list = [];
-          if (res["options"] is Map) {
-            Map<String, dynamic> data = res['options'];
-            data.forEach((key, value) {
-              list.add(Option(id: int.tryParse(key), item: value));
-            });
-          } else if (res["options"] is List) {
-            List<dynamic> data = res["options"];
-            for (int i = 0; i < data.length; i++) {
-              list.add(Option(id: i, item: data[i]));
+          qusId = res["upd_ques_index"];
+          String resMsg = res["bot_reply"];
+          log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
+          if (qusId == 1) {
+            genderOptionList.clear();
+            List<dynamic> resOption = res["options"];
+            genderOptionList.addAll(resOption.cast<String>());
+          } else {
+            otherOptionList.clear();
+            log("otheroptionlist=>$otherOptionList",
+                name: 'checkkkkkkk option');
+            List<Option> list = [];
+            if (res["options"] is Map) {
+              Map<String, dynamic> data = res['options'];
+              data.forEach((key, value) {
+                list.add(Option(id: int.tryParse(key), item: value));
+              });
+            } else if (res["options"] is List) {
+              List<dynamic> data = res["options"];
+              for (int i = 0; i < data.length; i++) {
+                list.add(Option(id: i, item: data[i]));
+              }
+            }
+            otherOptionList.addAll(list);
+            log("items=>$otherOptionList", name: 'checkkkkkkk option');
+          }
+          List<String> parts = resMsg.split('#');
+
+          for (int i = 0; i < parts.length; i++) {
+            String part = parts[i].trim();
+            if (part.isNotEmpty) {
+              if (i == part.length - 1) {
+                msgs.insert(
+                    0, ChatMessageSignup(false, part, currentTime, false));
+              } else if (i == 0) {
+                msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
+              } else {
+                msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+              }
             }
           }
-          otherOptionList.addAll(list);
-          log("items=>$otherOptionList", name: 'checkkkkkkk option');
-        }
-        List<String> parts = resMsg.split('#');
-
-        for (int i = 0; i < parts.length; i++) {
-          String part = parts[i].trim();
-          if (part.isNotEmpty) {
-            if (i == part.length - 1) {
-              msgs.insert(
-                  0, ChatMessageSignup(false, part, currentTime, false));
-            } else if (i == 0) {
-              msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
-            } else {
-              msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+          isTyping = false;
+          update(['send-to-amy']);
+          if (qusId > 4 && qusId < 15) {
+            Map<String, dynamic>? resData =
+                await LoginService().verifyUserExist(mobileNo: phone);
+            if (resData != null) {
+              if (resData.containsKey('token')) {
+                loginC.userData = UserModel.fromJson(resData);
+                if (loginC.userData != null) {
+                  String? id = loginC.userData?.user?.id.toString();
+                  String? uName = loginC.userData?.user?.name.toString();
+                  log('userID=>$id  name=>$uName', name: 'userid and username');
+                }
+              }
             }
+            update(['send-to-amy']);
           }
         }
 
@@ -159,6 +195,12 @@ class AmySignUpController extends GetxController {
         );
       }
     }
+    // final UserModel? userData = Get.put(LoginController()).userData;
+    // if (userData != null) {
+    //   nameSecond = userData.user?.name ?? '';
+    //   idSecond = userData.user?.id.toString();
+    //   log('userID=>$idSecond  name=>$nameSecond', name: 'userid and username');
+    // }
     update(['send-to-amy']);
   }
 

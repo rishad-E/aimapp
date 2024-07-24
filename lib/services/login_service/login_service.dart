@@ -16,7 +16,7 @@ class LoginService {
         options: Options(validateStatus: (status) => status! < 599),
       );
 
-      log(response.statusCode.toString(), name: 'userverify');
+      // log(response.data.toString(), name: 'userverify');
       if (response.data is Map) {
         Map<String, dynamic>? resData = response.data;
         if (response.statusCode == 200 || response.statusCode == 300) {

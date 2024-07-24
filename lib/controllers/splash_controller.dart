@@ -56,7 +56,7 @@ class SplashController extends GetxController {
       log("phone=>$phone email=>$email name=>$name",
           name: 'splash mobile and email');
       Map<String, dynamic>? res =
-          await LoginService().verifyUserExist(mobileNo: '9846126154');
+          await LoginService().verifyUserExist(mobileNo: phone.toString());
       if (res != null) {
         if (res.containsKey('error')) {
           String errorMessage = res["error"];

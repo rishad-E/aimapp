@@ -7,6 +7,7 @@ import 'package:aimshala/services/AIMCET_TEST/aimcet_gp_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/personality_career_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/trait_career_result.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -289,6 +290,15 @@ class AIMCETController extends GetxController {
           }
         } else {
           directory = await getExternalStorageDirectory();
+          // var status = await Permission.storage.request();
+          // if (status.isGranted) {
+          //   directory = Directory('/storage/emulated/0/Download');
+          //   if (!await directory.exists()) {
+          //     directory = Directory('/storage/emulated/0/Downloads');
+          //   }
+          // } else {
+          //   directory = await getExternalStorageDirectory();
+          // }
         }
         if (directory == null) {
           throw const FileSystemException('Unable to access storage directory');
@@ -308,7 +318,6 @@ class AIMCETController extends GetxController {
           },
         );
       }
-  
 
       isLoading.value = false;
       Get.snackbar(
@@ -330,7 +339,7 @@ class AIMCETController extends GetxController {
         snackPosition: SnackPosition.TOP,
         duration: const Duration(seconds: 2),
         backgroundColor:
-            const Color.fromARGB(255, 86, 21, 171).withOpacity(0.7),
+          kred.withOpacity(0.7),
         colorText: Colors.white,
       );
     }

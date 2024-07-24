@@ -19,8 +19,8 @@ class MentorPersonalDetailController extends GetxController {
   final refmentroController = Get.put(MentorReferencesController());
 
   DateTime dateTime = DateTime.now();
-  String? selectedGender;
-  final List<String> genderOptions = ['Male', 'Female', 'Other'];
+  RxString selectedGender = ''.obs;
+  final List<String> genderOptions = ['Male', 'Female', 'Other', ''];
   List<QualificationData> statusList = [];
   String isMentor = 'no';
   // List<DegreeData> degreeList = [];
@@ -105,6 +105,7 @@ class MentorPersonalDetailController extends GetxController {
       update(['mentor-personalinfo']);
     }
   }
+
   String? nameValidation(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter this field';
@@ -151,7 +152,7 @@ class MentorPersonalDetailController extends GetxController {
         locationController.text.isNotEmpty &&
         mobileController.text.isNotEmpty &&
         dobController.text.isNotEmpty &&
-        (selectedGender != null) &&
+        (selectedGender.isNotEmpty) &&
         statusController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;

@@ -77,7 +77,6 @@ class UpdateEducationInfoService {
             String first = errors.keys.first;
             if (errors[first] is List && (errors[first] as List).isNotEmpty) {
               String errorMessage = errors[first][0].toString();
-
               return errorMessage;
             }
           } else if (responseData['error'] is String) {

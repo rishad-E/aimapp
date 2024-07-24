@@ -104,7 +104,7 @@ class SignUpAmyScreen extends StatelessWidget {
                                   decoration: amyTextfieldDecor(
                                       isAskingDOB: c.isAskingDOB),
                                   onFieldSubmitted: (value) {
-                                    log(c.chatController.text);
+                                    log(c.chatController.text, name: 'dob');
                                     c.sendMessage(context);
                                   },
                                 )
@@ -112,6 +112,13 @@ class SignUpAmyScreen extends StatelessWidget {
                                   ? c.otherSelected
                                       ? TextFormField(
                                           decoration: amyTextfieldDecor(),
+                                          controller: c.chatController,
+                                          style: const TextStyle(fontSize: 13),
+                                          onFieldSubmitted: (value) {
+                                            if (value.isNotEmpty) {
+                                              c.sendMessage(context);
+                                            }
+                                          },
                                         )
                                       : Container(
                                           padding: const EdgeInsets.symmetric(
@@ -126,16 +133,11 @@ class SignUpAmyScreen extends StatelessWidget {
                                                     c.genderOptionList[index];
                                                 return InkWell(
                                                   onTap: () {
-                                                    log(data);
+                                                    log(data,
+                                                        name: 'g selected');
                                                     c.chatController.text =
                                                         data;
-                                                    if (data == 'Other') {
-                                                      c.otherSelected = true;
-                                                      c.update(['send-to-amy']);
-                                                    } else {
-                                                      c.sendMessage(context);
-                                                      c.otherSelected = false;
-                                                    }
+                                                    c.sendMessage(context);
                                                   },
                                                   child: amyOptionContainer(
                                                       option: data),
@@ -144,77 +146,95 @@ class SignUpAmyScreen extends StatelessWidget {
                                             ),
                                           ),
                                         )
-                                  : Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: ConstrainedBox(
-                                        constraints: BoxConstraints(
-                                          maxHeight: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.3,
-                                        ),
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              c.qusId == 2
-                                                  ? shrinked
-                                                  : GestureDetector(
-                                                      onTap: () {
-                                                        c.skipQuestion = true;
-                                                        c.update(
-                                                            ['send-to-amy']);
+                                  : c.otherSelected
+                                      ? TextFormField(
+                                          controller: c.chatController,
+                                          decoration: amyTextfieldDecor(),
+                                          style: const TextStyle(fontSize: 13),
+                                          onChanged: (value) => log(
+                                              c.chatController.text,
+                                              name: 'chatC'),
+                                          onFieldSubmitted: (value) {
+                                            if (value.isNotEmpty) {
+                                              c.sendMessage(context);
+                                            }
+                                          },
+                                        )
+                                      : Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                              maxHeight: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.3,
+                                            ),
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  c.qusId == 2
+                                                      ? shrinked
+                                                      : GestureDetector(
+                                                          onTap: () {
+                                                            c.skipQuestion =
+                                                                true;
+                                                            c.update([
+                                                              'send-to-amy'
+                                                            ]);
+                                                          },
+                                                          child: skipText(),
+                                                        ),
+                                                  c.qusId == 2
+                                                      ? shrinked
+                                                      : hBox,
+                                                  Wrap(
+                                                    spacing: 5,
+                                                    runSpacing: 5,
+                                                    children: List.generate(
+                                                      c.otherOptionList.length,
+                                                      (index) {
+                                                        final data =
+                                                            c.otherOptionList[
+                                                                index];
+                                                        return InkWell(
+                                                          onTap: () {
+                                                            log("id=>${data.id} item=>${data.item}",
+                                                                name:
+                                                                    'other option selected');
+                                                            c.chatController
+                                                                    .text =
+                                                                data.id
+                                                                    .toString();
+                                                            c.otherOptionController
+                                                                    .text =
+                                                                data.item
+                                                                    .toString();
+                                                            c.sendMessage(
+                                                                context);
+                                                          },
+                                                          child: amyOptionContainer(
+                                                              option: data.item
+                                                                  .toString()),
+                                                        );
                                                       },
-                                                      child: skipText(),
                                                     ),
-                                              c.qusId == 2 ? shrinked : hBox,
-                                              Wrap(
-                                                spacing: 5,
-                                                runSpacing: 5,
-                                                children: List.generate(
-                                                  c.otherOptionList.length,
-                                                  (index) {
-                                                    final data = c
-                                                        .otherOptionList[index];
-                                                    return InkWell(
-                                                      onTap: () {
-                                                        log("id=>${data.id} item=>${data.item}");
-                                                        c.chatController.text =
-                                                            data.id.toString();
-                                                        c.otherOptionController
-                                                                .text =
-                                                            data.item
-                                                                .toString();
-                                                        c.sendMessage(context);
-                                                      },
-                                                      child: amyOptionContainer(
-                                                          option: data.item
-                                                              .toString()),
-                                                    );
-                                                  },
-                                                ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
                         ),
                       ),
                       InkWell(
                         onTap: () {
                           if (c.chatController.text.isNotEmpty) {
-                            if (c.chatController.text == 'Other') {
-                              c.otherSelected = true;
-                              c.update(['send-to-amy']);
-                            } else {
-                              c.sendMessage(context);
-                              c.otherSelected = false;
-                            }
-                            log(c.chatController.text);
-                            // c.sendMessage(context);
+                            log(c.chatController.text, name: 'chat controller');
+
+                            c.sendMessage(context);
                           }
                         },
                         child: c.qusId == 0 || c.otherSelected

@@ -104,32 +104,40 @@ class MentorPersonalDetailPage extends StatelessWidget {
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
-                      mentorFields(
-                        item: semiBoldChoiceText(text: 'Gender', size: 9.5.sp),
-                        textfiled: DropdownButtonFormField<String>(
-                          value:userDetails?.gender?? controller.selectedGender,
-                          icon: Icon(Icons.keyboard_arrow_down,
-                              size: 26, color: kblack),
-                          onChanged: userDetails?.gender == null
-                              ? (newValue) {
-                                  controller.selectedGender = newValue;
-                                  controller.checkAllFileds();
-                                }
-                              : null,
-                          validator: (value) =>
-                              controller.genderValidation(value),
-                          items: controller.genderOptions.map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(color: kblack, fontSize: 13),
-                              ),
-                            );
-                          }).toList(),
-                          decoration:
-                              infoFieldDecoration(hintText: 'Please Select'),
-                          style: const TextStyle(fontSize: 13),
+                      Obx(
+                        () => mentorFields(
+                          item:
+                              semiBoldChoiceText(text: 'Gender', size: 9.5.sp),
+                          textfiled: DropdownButtonFormField<String>(
+                            value: controller.selectedGender.value,
+                            icon: Icon(Icons.keyboard_arrow_down,
+                                size: 26, color: kblack),
+                            onChanged: userDetails?.gender == null
+                                ? (newValue) {
+                                    if (userDetails?.gender == null) {
+                                      controller.selectedGender.value =
+                                          newValue!;
+                                      controller.checkAllFileds();
+                                    }
+                                  }
+                                : null,
+                            validator: (value) =>
+                                controller.genderValidation(value),
+                            items: controller.genderOptions.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                // enabled:
+                                //     userDetails?.gender == null ? true : false,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(color: kblack, fontSize: 13),
+                                ),
+                              );
+                            }).toList(),
+                            decoration:
+                                infoFieldDecoration(hintText: 'Please Select'),
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ),
                       ),
                       mentorFields(
@@ -227,7 +235,10 @@ class MentorPersonalDetailPage extends StatelessWidget {
     c.emailController.text = user.email ?? c.emailController.text;
     c.mobileController.text = user.phone ?? c.mobileController.text;
     c.dobController.text = details.dob ?? c.dobController.text;
-    c.selectedGender = details.gender;
+    if (details.gender != null && !c.genderOptions.contains(details.gender)) {
+      c.genderOptions.add(details.gender!);
+    }
+    c.selectedGender.value = details.gender ?? c.selectedGender.value;
     c.statusController.text = details.userRole ?? c.statusController.text;
     c.checkAllFileds();
     c.update(['mentor-personalinfo']);

@@ -19,8 +19,8 @@ class EducatorPersonalDetailController extends GetxController {
   final refEduController = Get.put(EducatorReferenceController());
 
   DateTime dateTime = DateTime.now();
-  String? selectedGender;
-  final List<String> genderOptions = ['Male', 'Female', 'Other'];
+  RxString selectedGender = ''.obs;
+  final List<String> genderOptions = ['Male', 'Female', 'Other',''];
   List<QualificationData> statusList = [];
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
@@ -148,7 +148,7 @@ class EducatorPersonalDetailController extends GetxController {
         locationController.text.isNotEmpty &&
         mobileController.text.isNotEmpty &&
         dobController.text.isNotEmpty &&
-        (selectedGender != null) &&
+        selectedGender.isNotEmpty &&
         statusController.text.isNotEmpty;
     saveText.value = isAllFiledSelected ? kwhite : textFieldColor;
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
