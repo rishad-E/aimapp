@@ -13,13 +13,52 @@ class CounselorReferenceController extends GetxController {
   TextEditingController otherRela1Controller = TextEditingController();
   TextEditingController otherRela2Controller = TextEditingController();
 
-
   List<RelationData> relationList = [];
   RxString otherRela1 = ''.obs;
   RxString otherRela2 = ''.obs;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
+
+  List<String> referenceNames = [];
+  List<String> referenceRelation = [];
+  List<String> referencePhone = [];
+  List<String?> refOtherRelation = [];
+
+  void addReferenceFields(
+      {required String refName1,
+      required String refRelation1,
+      required String refPhone1,
+      required String refName2,
+      required String refRelation2,
+      required String refPhone2,
+      String? otherRelation1,
+      String? otherRelation2}) {
+    if (!referenceNames.contains(refName1)) {
+      referenceNames.add(refName1);
+    }
+    if (!referenceNames.contains(refName2)) {
+      referenceNames.add(refName2);
+    }
+    if (!referenceRelation.contains(refRelation1)) {
+      referenceRelation.add(refRelation1);
+    }
+    if (!referenceRelation.contains(refRelation2)) {
+      referenceRelation.add(refRelation2);
+    }
+    if (!referencePhone.contains(refPhone1)) {
+      referencePhone.add(refPhone1);
+    }
+    if (!referencePhone.contains(refPhone2)) {
+      referencePhone.add(refPhone2);
+    }
+    if (!refOtherRelation.contains(otherRelation1)) {
+      refOtherRelation.add(otherRelation1);
+    }
+    if (!refOtherRelation.contains(otherRelation2)) {
+      refOtherRelation.add(otherRelation2);
+    }
+  }
 
   String? mobValiation(String? value) {
     if (value == null || value.isEmpty) {

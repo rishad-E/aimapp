@@ -35,6 +35,7 @@ class CounselorAdditionalinfoPage extends StatelessWidget {
                   decoration: infoFieldDecoration(
                     hintText: 'Enter Describe Your Counseling Philosophy     ',
                   ),
+                  style: const TextStyle(fontSize: 13),
                 ),
               ),
               counselorFields(
@@ -51,6 +52,7 @@ class CounselorAdditionalinfoPage extends StatelessWidget {
                     hintText:
                         'Enter Why do you want to be a Counselor with Aimshala?:',
                   ),
+                  style: const TextStyle(fontSize: 13),
                 ),
               ),
               hLBox,

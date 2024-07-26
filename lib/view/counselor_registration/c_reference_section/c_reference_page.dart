@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/counselor_controllers/counselor_reference_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
@@ -148,6 +150,17 @@ class CounselorReferencePage extends StatelessWidget {
                           boxColor: c.saveBG.value,
                           onTap: () {
                             if (formKey.currentState!.validate()) {
+                              c.addReferenceFields(
+                                refName1: c.name1Controller.text,
+                                refRelation1: c.relation1Controller.text,
+                                refPhone1: c.mob1Controller.text,
+                                refName2: c.name2Controller.text,
+                                refRelation2: c.relation2Controller.text,
+                                refPhone2: c.mob2Controller.text,
+                                otherRelation1: c.otherRela1Controller.text,
+                                otherRelation2: c.otherRela2Controller.text,
+                              );
+                              log('nameL=>${c.referenceNames} relaL=>${c.referenceRelation} phoneL=>${c.referencePhone}  otherRL=>${c.refOtherRelation}');
                               Get.to(() => CounselorMediaPage());
                             }
                           },

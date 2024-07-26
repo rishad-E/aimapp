@@ -10,7 +10,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class CounselorThanksPage extends StatelessWidget {
-  const CounselorThanksPage({super.key});
+  final String name;
+  const CounselorThanksPage({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class CounselorThanksPage extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.center,
-              child: boldText(text: 'Dear name,', size: 9.sp),
+              child: boldText(text: 'Dear $name,', size: 9.sp),
             ),
             // hBox,
             Align(
