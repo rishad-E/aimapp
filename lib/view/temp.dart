@@ -63,13 +63,13 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(mentor.isMentor, name: 'isMentor');
                 if (mentor.isMentor == 'no') {
-                Get.to(
-                  () => MentorPersonalDetailPage(
-                    user: alldataC.userData,
-                    userDetails: alldataC.userDetails,
-                  ),
-                  transition: Transition.fadeIn,
-                );
+                  Get.to(
+                    () => MentorPersonalDetailPage(
+                      user: alldataC.userData,
+                      userDetails: alldataC.userDetails,
+                    ),
+                    transition: Transition.fadeIn,
+                  );
                 } else {
                   Get.snackbar(
                     "Hi ",
@@ -86,7 +86,12 @@ class TempScreen extends StatelessWidget {
             ),
             hMBox,
             elevatedButtonItems(
-              onPressed: () => Get.to(() => CounselorPersonalSection()),
+              onPressed: () => Get.to(
+                () => CounselorPersonalSection(
+                  user: alldataC.userData,
+                  userDetails: alldataC.userDetails,
+                ),
+              ),
               item: "Counselor",
             ),
           ],
@@ -115,3 +120,61 @@ Widget elevatedButtonItems(
     ),
   );
 }
+
+/*
+
+      Directory? directory;
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        if (await Permission.manageExternalStorage.isGranted) {
+          directory = Directory('/storage/emulated/0/Download');
+          if (!await directory.exists()) {
+            directory = Directory('/storage/emulated/0/Downloads');
+          }
+        } else {
+          var status = await Permission.manageExternalStorage.request();
+          if (status.isGranted) {
+            directory = Directory('/storage/emulated/0/Download');
+            if (!await directory.exists()) {
+              directory = Directory('/storage/emulated/0/Downloads');
+            }
+          } else {
+            directory = await getExternalStorageDirectory();
+          }
+
+          // directory = await getExternalStorageDirectory();
+        }
+      }
+      if (directory == null) {
+        throw const FileSystemException('Unable to access storage directory');
+      }
+
+
+      Directory? directory;
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        if (await Permission.storage.isGranted) {
+          directory = Directory('/storage/emulated/0/Download');
+          if (!await directory.exists()) {
+            directory = Directory('/storage/emulated/0/Downloads');
+          }
+        } else {
+          var status = await Permission.storage.request();
+          if (status.isGranted) {
+            directory = Directory('/storage/emulated/0/Download');
+            if (!await directory.exists()) {
+              directory = Directory('/storage/emulated/0/Downloads');
+            }
+          } else {
+            directory = await getExternalStorageDirectory();
+          }
+
+          // directory = await getExternalStorageDirectory();
+        }
+      }
+      if (directory == null) {
+        throw const FileSystemException('Unable to access storage directory');
+      }
+ */

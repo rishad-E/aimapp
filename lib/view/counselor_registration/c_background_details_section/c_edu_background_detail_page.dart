@@ -39,6 +39,27 @@ class CounselorEduBackgroundPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 13),
                 ),
               ),
+              Obx(
+                () => controller.otherDegree.value == 'Others'
+                    ? Column(
+                        children: [
+                          hBox,
+                          TextFormField(
+                            controller: controller.otherDegreeController,
+                            onChanged: (value) =>
+                                controller.update(['couns-EduBGupdate']),
+                            // onTap: () => showCounselDegreeOption(context),
+                            validator: (value) =>
+                                controller.fieldValidation(value),
+                            decoration: infoFieldDecoration(
+                                hintText: 'Enter highest earned degree'),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          hBox,
+                        ],
+                      )
+                    : shrinked,
+              ),
               counselorFields(
                 fieldItem: 'Certifications',
                 textfiled: TextFormField(

@@ -1,7 +1,9 @@
 import 'package:aimshala/controllers/counselor_controllers/counselor_personal_controller.dart';
+import 'package:aimshala/models/UserModel/user_details_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/counselor_registration/c_background_details_section/c_edu_background_detail_page.dart';
+import 'package:aimshala/view/counselor_registration/c_personal_detail_section/widget/c_status_bottom_sheet.dart';
 import 'package:aimshala/view/counselor_registration/common/widgets/counselor_widgets.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +11,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class CounselorPersonalSection extends StatelessWidget {
-  CounselorPersonalSection({super.key});
+  final UserData? user;
+  final UserDataModel? userDetails;
+  CounselorPersonalSection({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(CounselorPersonalController());
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initializeFields(userDetails, user, controller);
+    });
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(
@@ -26,6 +33,7 @@ class CounselorPersonalSection extends StatelessWidget {
               counselorFields(
                 fieldItem: 'Full Name',
                 textfiled: TextFormField(
+                  readOnly: user?.name != null,
                   controller: controller.nameController,
                   validator: (value) => controller.namedValidation(value),
                   onChanged: (value) => controller.checkAllFileds(),
@@ -37,6 +45,7 @@ class CounselorPersonalSection extends StatelessWidget {
               counselorFields(
                 fieldItem: 'Email',
                 textfiled: TextFormField(
+                  readOnly: user?.email != null,
                   controller: controller.emailController,
                   validator: (value) => controller.emailValidation(value),
                   onChanged: (value) => controller.checkAllFileds(),
@@ -77,34 +86,43 @@ class CounselorPersonalSection extends StatelessWidget {
                   style: const TextStyle(fontSize: 13),
                 ),
               ),
-              counselorFields(
-                fieldItem: 'Gender',
-                textfiled: DropdownButtonFormField<String>(
-                  value: controller.selectedGender,
-                  icon:
-                      Icon(Icons.keyboard_arrow_down, size: 26, color: kblack),
-                  onChanged: (newValue) {
-                    controller.selectedGender = newValue;
-                    controller.checkAllFileds();
-                  },
-                  validator: (value) => controller.fieldValidation(value),
-                  items: controller.genderOptions.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(color: kblack, fontSize: 13),
-                      ),
-                    );
-                  }).toList(),
-                  decoration: infoFieldDecoration(hintText: 'Please Select'),
-                  style: const TextStyle(fontSize: 13),
+              Obx(
+                () => counselorFields(
+                  fieldItem: 'Gender',
+                  textfiled: DropdownButtonFormField<String>(
+                    value: controller.selectedGender.value,
+                    icon: Icon(Icons.keyboard_arrow_down,
+                        size: 26, color: kblack),
+                    onChanged: userDetails?.gender == null
+                        ? (newValue) {
+                            controller.selectedGender.value = newValue!;
+                            controller.checkAllFileds();
+                          }
+                        : null,
+                    validator: (value) => controller.fieldValidation(value),
+                    // hint: Text("dafdaf"),
+                    items: controller.genderOptions.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(color: kblack, fontSize: 13),
+                        ),
+                      );
+                    }).toList(),
+                    decoration: infoFieldDecoration(hintText: 'Please Select'),
+                    style: const TextStyle(fontSize: 13),
+                  ),
                 ),
               ),
               counselorFields(
                 fieldItem: 'Your Current Status',
                 textfiled: TextFormField(
                   controller: controller.statusController,
+                  readOnly: true,
+                  onTap: userDetails?.userRole != null
+                      ? null
+                      : () => showStatusSheet(context),
                   validator: (value) => controller.fieldValidation(value),
                   onChanged: (value) => controller.checkAllFileds(),
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -119,6 +137,7 @@ class CounselorPersonalSection extends StatelessWidget {
               counselorFields(
                 fieldItem: 'Mobile Number',
                 textfiled: TextFormField(
+                  readOnly: user?.phone != null,
                   controller: controller.mobileController,
                   validator: (value) => controller.mobileValidation(value),
                   onChanged: (value) => controller.checkAllFileds(),
@@ -152,7 +171,7 @@ class CounselorPersonalSection extends StatelessWidget {
                         boxColor: c.saveBG.value,
                         onTap: () {
                           if (formKey.currentState!.validate()) {
-                            Get.to(() =>  CounselorEduBackgroundPage());
+                            Get.to(() => CounselorEduBackgroundPage());
                           }
                         },
                       ),
@@ -164,6 +183,31 @@ class CounselorPersonalSection extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void initializeFields(
+      UserDataModel? details, UserData? user, CounselorPersonalController c) {
+    if (user == null) return;
+    if (details == null) return;
+
+    c.nameController.text = user.name ?? c.nameController.text;
+    c.emailController.text = user.email ?? c.emailController.text;
+    c.mobileController.text = user.phone ?? c.mobileController.text;
+    c.dobController.text = details.dob ?? c.dobController.text;
+    if (details.gender != null && !c.genderOptions.contains(details.gender)) {
+      c.genderOptions.add(details.gender!);
+    }
+    c.selectedGender.value = details.gender ?? c.selectedGender.value;
+    c.statusController.text = details.userRole ?? c.statusController.text;
+    c.checkAllFileds();
+    c.update(['couns-Personal details']);
+  }
+
+  void showStatusSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const CounselorStatusSheet(),
     );
   }
 }

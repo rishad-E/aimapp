@@ -25,7 +25,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFormFields(controller, user);
     });
-
     return Scaffold(
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
       body: Container(
@@ -129,33 +128,14 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                 controller: controller.otpController,
                               ),
                               hBox,
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 7),
-                                child: TextButton(
-                                  style: ButtonStyle(
-                                    side: MaterialStateProperty.all(
-                                        BorderSide(color: mainPurple)),
-                                    shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    controller.validateOTP(
-                                        mob:
-                                            '+91${controller.mobController.text}',
-                                        otp: controller.otpController.text);
-                                  },
-                                  child: Text(
-                                    'validate',
-                                    style: TextStyle(
-                                        color: mainPurple, fontSize: 11.sp),
-                                  ),
-                                ),
-                              ),
+                              otpValidateBox(
+                                onPressed: () {
+                                  controller.validateOTP(
+                                      mob:
+                                          '+91${controller.mobController.text}',
+                                      otp: controller.otpController.text);
+                                },
+                              )
                             ],
                           )
                         : shrinked;
@@ -408,24 +388,28 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                       strokeWidth: 1, color: kwhite)
                                   : saveContainerText(
                                       text: 'Save',
-                                      textColor: c.saveText.value,
+                                      textColor: c.canSave.value == false
+                                          ? textFieldColor
+                                          : c.saveText.value,
                                     ),
                             ),
                             onTap: () {
-                              c.saveContactInfoFunction(
-                                uId: id.toString(),
-                                userName: c.usernameController.text,
-                                mobNumber: c.mobController.text,
-                                email: c.emailController.text,
-                                address: c.addressController.text,
-                                pincode: c.pincodeController.text,
-                                city: c.cityController.text,
-                                state: c.stateController.text,
-                                country: c.countryController.text,
-                                facebook: c.facebookController.text,
-                                instagram: c.instagramController.text,
-                                twitter: c.twitterController.text,
-                              );
+                              c.canSave.value == false
+                                  ? null
+                                  : c.saveContactInfoFunction(
+                                      uId: id.toString(),
+                                      userName: c.usernameController.text,
+                                      mobNumber: c.mobController.text,
+                                      email: c.emailController.text,
+                                      address: c.addressController.text,
+                                      pincode: c.pincodeController.text,
+                                      city: c.cityController.text,
+                                      state: c.stateController.text,
+                                      country: c.countryController.text,
+                                      facebook: c.facebookController.text,
+                                      instagram: c.instagramController.text,
+                                      twitter: c.twitterController.text,
+                                    );
                             },
                           ),
                         ],

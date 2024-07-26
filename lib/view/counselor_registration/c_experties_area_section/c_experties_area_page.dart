@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CounselorExpertiesPage extends StatelessWidget {
-  const CounselorExpertiesPage({super.key});
-
+  CounselorExpertiesPage({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(CounselorExpertiesController());
@@ -30,101 +30,118 @@ class CounselorExpertiesPage extends StatelessWidget {
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(
-        child: Column(
-          children: [
-            counselorRichText(text1: 'Areas of Expertise', text2: ''),
-            hLBox,
-            counselorFields(
-              fieldItem: 'Primary Areas of Expertise',
-              textfiled: GetBuilder<CounselorExpertiesController>(
-                id: 'update-Primary',
-                builder: (c) {
-                  return Column(
-                    children: List.generate(
-                      primaryExperties.length,
-                      (index) => GestureDetector(
-                        onTap: () => c.addPrimaryArea(primaryExperties[index]),
-                        child: checkBoxContainer(
-                          item: primaryExperties[index],
-                          selected: c.primaryAreaList
-                              .any((i) => i == primaryExperties[index]),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            TextFormField(
-              controller: controller.primaryController,
-              style: const TextStyle(fontSize: 13),
-              decoration: infoFieldDecoration(
-                hintText: 'Write Other Primary Areas of Expertise ',
-              ),
-            ),
-            counselorFields(
-              fieldItem: 'Secondary Areas of Expertise',
-              textfiled: GetBuilder<CounselorExpertiesController>(
-                  id: 'update-Secondary',
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              counselorRichText(text1: 'Areas of Expertise', text2: ''),
+              hLBox,
+              counselorFields(
+                fieldItem: 'Primary Areas of Expertise',
+                textfiled: GetBuilder<CounselorExpertiesController>(
+                  id: 'update-Primary',
                   builder: (c) {
                     return Column(
                       children: List.generate(
-                        secondaryExperties.length,
+                        primaryExperties.length,
                         (index) => GestureDetector(
                           onTap: () =>
-                              c.addSecondaryArea(secondaryExperties[index]),
+                              c.addPrimaryArea(primaryExperties[index]),
                           child: checkBoxContainer(
-                            item: secondaryExperties[index],
-                            selected: c.secondaryAreaList
-                                .any((i) => i == secondaryExperties[index]),
+                            item: primaryExperties[index],
+                            selected: c.primaryAreaList
+                                .any((i) => i == primaryExperties[index]),
                           ),
                         ),
                       ),
                     );
-                  }),
-            ),
-            TextFormField(
-              controller: controller.secondaryController,
-              style: const TextStyle(fontSize: 13),
-              decoration: infoFieldDecoration(
-                hintText: 'Write Other Secondary Areas of Expertise ',
+                  },
+                ),
               ),
-            ),
-            hLBox,
-            GetBuilder<CounselorExpertiesController>(
-                id: 'update-Experties',
-                builder: (c) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      actionContainer(
-                        text: 'Previous',
-                        textColor: mainPurple,
-                        boxColor: kwhite,
-                        borderColor: mainPurple,
-                        onTap: () => Get.back(),
-                      ),
-                      wMBox,
-                      actionContainer(
-                        text: 'Next',
-                        textColor: c.primaryAreaList.isNotEmpty &&
-                                c.secondaryAreaList.isNotEmpty
-                            ? kwhite
-                            : textFieldColor,
-                        boxColor: c.primaryAreaList.isNotEmpty &&
-                                c.secondaryAreaList.isNotEmpty
-                            ? mainPurple
-                            : buttonColor,
-                        onTap: () {
-                          if (c.primaryAreaList.isNotEmpty && c.secondaryAreaList.isNotEmpty) {
-                            Get.to(()=>CounselorAdditionalinfoPage());
-                          }
-                        },
-                      ),
-                    ],
-                  );
-                })
-          ],
+              Obx(
+                () => controller.isPrimaryOther.value == 'Other'
+                    ? TextFormField(
+                        controller: controller.primaryController,
+                        validator: (value) => controller.fieldValidation(value),
+                        style: const TextStyle(fontSize: 13),
+                        decoration: infoFieldDecoration(
+                          hintText: 'Write Other Primary Areas of Expertise ',
+                        ),
+                      )
+                    : shrinked,
+              ),
+              counselorFields(
+                fieldItem: 'Secondary Areas of Expertise',
+                textfiled: GetBuilder<CounselorExpertiesController>(
+                    id: 'update-Secondary',
+                    builder: (c) {
+                      return Column(
+                        children: List.generate(
+                          secondaryExperties.length,
+                          (index) => GestureDetector(
+                            onTap: () =>
+                                c.addSecondaryArea(secondaryExperties[index]),
+                            child: checkBoxContainer(
+                              item: secondaryExperties[index],
+                              selected: c.secondaryAreaList
+                                  .any((i) => i == secondaryExperties[index]),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+              Obx(
+                () => controller.isSecondaryOther.value == 'Other'
+                    ? TextFormField(
+                        controller: controller.secondaryController,
+                        validator: (value) => controller.fieldValidation(value),
+                        style: const TextStyle(fontSize: 13),
+                        decoration: infoFieldDecoration(
+                          hintText: 'Write Other Secondary Areas of Expertise ',
+                        ),
+                      )
+                    : shrinked,
+              ),
+              hLBox,
+              GetBuilder<CounselorExpertiesController>(
+                  id: 'update-Experties',
+                  builder: (c) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        actionContainer(
+                          text: 'Previous',
+                          textColor: mainPurple,
+                          boxColor: kwhite,
+                          borderColor: mainPurple,
+                          onTap: () => Get.back(),
+                        ),
+                        wMBox,
+                        actionContainer(
+                          text: 'Next',
+                          textColor: c.primaryAreaList.isNotEmpty &&
+                                  c.secondaryAreaList.isNotEmpty
+                              ? kwhite
+                              : textFieldColor,
+                          boxColor: c.primaryAreaList.isNotEmpty &&
+                                  c.secondaryAreaList.isNotEmpty
+                              ? mainPurple
+                              : buttonColor,
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              if (c.primaryAreaList.isNotEmpty &&
+                                  c.secondaryAreaList.isNotEmpty) {
+                                Get.to(() => CounselorAdditionalinfoPage());
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  })
+            ],
+          ),
         ),
       ),
     );

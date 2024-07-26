@@ -21,7 +21,7 @@ class SignUpAmyScreen extends StatelessWidget {
       required this.phone});
   @override
   Widget build(BuildContext context) {
-    log(uId, name: 'splasssssssssssssh');
+    log('uId=>$uId name=>$name email=>$email phone=>$phone', name: 'amy screeeeeeeeen');
     final controller = Get.put(AmySignUpController(name, email, uId, phone));
     return Scaffold(
       appBar: signupAmyAppbar(),

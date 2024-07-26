@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/otp_service/otp_service.dart';
@@ -73,11 +71,12 @@ class LoginController extends GetxController {
             String? name = user.name.toString();
             String? email = user.email.toString();
             String? phone = user.phone.toString();
-            storage.write(key: 'email', value: user.email.toString());
-            log('name=>$name email=>$email id=>$id');
+            storage.write(key: 'email', value: email);
+            // log('name=>$name email=>$email id=>$id');
             Get.offAll(() => SignUpAmyScreen(
                 name: name, email: email, uId: id, phone: phone));
           } else {
+            storage.write(key: 'phone', value: mobileWithoutCountryCode);
             Get.offAll(() => SignUpScreen(mobileNo: mobileNo));
           }
         } else if (res.containsKey('token')) {

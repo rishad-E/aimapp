@@ -7,24 +7,31 @@ import 'package:aimshala/view/login/login_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class SignUpScreen extends StatelessWidget {
   final String mobileNo;
   SignUpScreen({super.key, required this.mobileNo});
-
+ final  storage = const FlutterSecureStorage();
   final GlobalKey<FormState> formKey = GlobalKey();
   final signUp = Get.put(SignUpController());
 
+  void getphoen()async {
+    String? phone = await storage.read(key: 'phone');
+    log(phone.toString(),name: 'signupscreen');
+  }
   @override
   Widget build(BuildContext context) {
+    getphoen();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: appbarContainer(onPressed: () => Get.offAll(() => const LoginScreen())),
+        title: appbarContainer(
+            onPressed: () => Get.offAll(() => const LoginScreen())),
       ),
       body: Container(
         height: double.infinity,
@@ -86,11 +93,12 @@ class SignUpScreen extends StatelessWidget {
                                       c.areAllFieldsSelected.value) {
                                     String mobileWithoutCountryCode =
                                         mobileNo.substring(2);
-                                    log('name=>${c.nameController.text} email=>${c.emailController.text} mobile=>$mobileWithoutCountryCode');
+                                    log('name=>${c.nameController.text} email=>${c.emailController.text} mobile=>$mobileWithoutCountryCode',
+                                        name: 'signupScreen');
                                     c.signUpUserFunction(
                                       name: c.nameController.text,
                                       email: c.emailController.text,
-                                      mobileNo: mobileWithoutCountryCode,
+                                      mobileNo:  mobileWithoutCountryCode,
                                     );
                                   }
                                 },
@@ -102,7 +110,10 @@ class SignUpScreen extends StatelessWidget {
                                         : bbColor;
                                   },
                                 ),
-                                textColor: c.buttonTextColor.value,
+                                child: c.isSaving.value
+                                    ? CircularProgressIndicator(color: kwhite,strokeWidth: 1)
+                                    : signUpText(
+                                        textColor: c.buttonTextColor.value),
                               );
                             },
                           ),

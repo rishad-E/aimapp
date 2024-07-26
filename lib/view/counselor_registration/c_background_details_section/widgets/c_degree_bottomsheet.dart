@@ -74,12 +74,14 @@ class CounselDegreeSheet extends StatelessWidget {
                       onChanged: (value) {
                         if (value != null && value) {
                           c.degreeController.text = degreeItems[index];
+                          c.otherDegree.value = degreeItems[index];
                           Get.back();
                         }
                       },
                     ),
                     onTap: () {
                       c.degreeController.text = degreeItems[index];
+                      c.otherDegree.value = degreeItems[index];
                       Get.back();
                     },
                   );

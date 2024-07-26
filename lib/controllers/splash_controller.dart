@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
+import 'package:aimshala/controllers/counselor_controllers/counselor_personal_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
@@ -25,6 +26,7 @@ class SplashController extends GetxController {
   final bookingController = Get.put(BookCareerCounsellController());
   final mentorController = Get.put(MentorPersonalDetailController());
   final eduController = Get.put(EducatorPersonalDetailController());
+  final counsController = Get.put(CounselorPersonalController());
   final alldataController = Get.put(AllDataController());
   final Connectivity connectivity = Connectivity();
   bool isConnected = false;
@@ -63,13 +65,16 @@ class SplashController extends GetxController {
           if (errorMessage == "Please fill first three questions.") {
             User? user = User.fromJson(res["user"]);
             String? id = user.id.toString();
-            String? phone = user.phone.toString();
-            // log(phone, name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+            String? phone = user.phone;
+            String? email2 = user.email;
+            String? name2 = user.name;
+            log("phone=>$phone email=>$email2 name=>$name2 id=>$id",
+                name: 'splash mobile and email error section');
             Get.offAll(() => SignUpAmyScreen(
-                name: name.toString(),
-                email: email.toString(),
+                name: name2.toString(),
+                email: email2.toString(),
                 uId: id,
-                phone: phone));
+                phone: phone.toString()));
           } else {
             Get.offAll(() => const LoginScreen());
           }
@@ -77,10 +82,13 @@ class SplashController extends GetxController {
           User? user = User.fromJson(res["user"]);
           String? id = user.id.toString();
           String? phone = user.phone.toString();
-          // log(phone, name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm2');
+          String? email2 = user.email;
+          String? name2 = user.name;
+          log("phone=>$phone email=>$email2 name=>$name2 id=>$id",
+              name: 'splash mobile and email status section');
           Get.offAll(() => SignUpAmyScreen(
-              name: name.toString(),
-              email: email.toString(),
+              name: name2.toString(),
+              email: email2.toString(),
               uId: id,
               phone: phone));
         } else if (res.containsKey('token')) {
@@ -103,7 +111,7 @@ class SplashController extends GetxController {
             });
             mentorController.checkMentorRegtakenFunction(uId: id.toString());
             eduController.checkEducatorRegTakenFunction(uId: id.toString());
-
+            counsController.checkCounselorRegtakenFunction(uId: id.toString());
             Get.off(() => const HomeScreen());
           }
         }

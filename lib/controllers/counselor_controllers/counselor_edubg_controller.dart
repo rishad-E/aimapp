@@ -5,6 +5,8 @@ class CounserlorEduBGController extends GetxController {
   TextEditingController degreeController = TextEditingController();
   TextEditingController certificationController = TextEditingController();
   TextEditingController specializationController = TextEditingController();
+  TextEditingController otherDegreeController = TextEditingController();
+  RxString otherDegree = ''.obs;
 
   String? fieldValidation(String? value) {
     if (value == null || value.isEmpty) {

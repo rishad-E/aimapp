@@ -1,17 +1,15 @@
-import 'dart:developer';
-
-import 'package:aimshala/controllers/mentor_controllers/mentor_reference_controller.dart';
+import 'package:aimshala/controllers/counselor_controllers/counselor_reference_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MentorOtherRelationBottomsheet extends StatelessWidget {
+class CounselorRelationSheet extends StatelessWidget {
   final String ref;
-  const MentorOtherRelationBottomsheet({super.key, required this.ref});
+  const CounselorRelationSheet({super.key, required this.ref});
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<MentorReferencesController>();
+    final c = Get.find<CounselorReferenceController>();
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 10, 40),
       child: SingleChildScrollView(
@@ -52,7 +50,7 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
                             color: Color.fromARGB(255, 202, 201, 201))),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      data.name.toString(),
+                      data.name ?? '',
                       style: TextStyle(
                         color: kblack,
                         fontSize: 14,
@@ -65,22 +63,18 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5)),
                       value: ref == '1'
-                          ? c.relationController1.text == data.name
-                          : c.relationController2.text == data.name,
+                          ? c.relation1Controller.text == data.name
+                          : c.relation2Controller.text == data.name,
                       onChanged: (value) {
                         if (value != null && value) {
                           if (ref == '1') {
-                            c.relationController1.text = data.name.toString();
-                            c.otherRelation1.value = data.name.toString();
-                            log(c.otherRelation1.value);
-                            c.checkAlFields();
-                            c.update(['mentor-reference']);
+                            c.relation1Controller.text = data.name ?? '';
+                            c.otherRela1.value = data.name.toString();
+                            c.checkAllFileds();
                           } else {
-                            c.relationController2.text = data.name.toString();
-                            c.otherRelation2.value = data.name.toString();
-                            log(c.otherRelation2.value);
-                            c.checkAlFields();
-                            c.update(['mentor-reference']);
+                            c.relation2Controller.text = data.name ?? '';
+                            c.otherRela2.value = data.name.toString();
+                            c.checkAllFileds();
                           }
                           Get.back();
                         }
@@ -88,17 +82,13 @@ class MentorOtherRelationBottomsheet extends StatelessWidget {
                     ),
                     onTap: () {
                       if (ref == '1') {
-                        c.relationController1.text = data.name.toString();
-                        c.otherRelation1.value = data.name.toString();
-                        log(c.otherRelation1.value);
-                        // c.checkAlFields();
-                        // c.update(['edu-referenceInfo']);
+                        c.relation1Controller.text = data.name ?? '';
+                        c.otherRela1.value = data.name.toString();
+                        c.checkAllFileds();
                       } else {
-                        c.relationController2.text = data.name.toString();
-                        c.otherRelation2.value = data.name.toString();
-                        log(c.otherRelation2.value);
-                        // c.checkAlFields();
-                        // c.update(['edu-referenceInfo']);
+                        c.relation2Controller.text = data.name ?? '';
+                        c.otherRela2.value = data.name.toString();
+                        c.checkAllFileds();
                       }
                       Get.back();
                     },

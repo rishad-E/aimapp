@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CounselorAvailabilityController extends GetxController {
+  TextEditingController additionalnoteController = TextEditingController();
   List<String> availableDays = [];
   List<String> availableTimes = [];
 

@@ -35,10 +35,12 @@ class UpdateContactInfo extends GetxController {
   RxString errorMessage = ''.obs;
   RxBool isLoading = false.obs;
   RxBool isSaving = false.obs;
-  
+
   /*-----phone number changing----*/
   RxString changePhone = ''.obs;
   RxInt otpVerifiedNum = 0.obs;
+  RxBool canSave = true.obs;
+
   /* ---phases---
     1.onScreen
     1. sendOTP
@@ -98,7 +100,6 @@ class UpdateContactInfo extends GetxController {
     } finally {
       isSaving.value = false;
     }
-    
   }
 
   Future<void> fetchCountryStates() async {
@@ -171,6 +172,7 @@ class UpdateContactInfo extends GetxController {
 
   /*--------OTP validation------ */
   Future<void> phoneNumberOTPverification({required String mobileNo}) async {
+    canSave.value = false;
     String? res = await OtpService().sendOTP(mobileNo: mobileNo);
     if (res == 'success') {
       changePhone.value = 'sendOTP';
@@ -186,6 +188,7 @@ class UpdateContactInfo extends GetxController {
       //for send code disable function
       otpError.value = 'OTP verified success';
       otpVerifiedNum.value++;
+      canSave.value = true;
     }
   }
 

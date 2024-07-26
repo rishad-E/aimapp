@@ -3,6 +3,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/counselor_registration/c_experties_area_section/c_experties_area_page.dart';
 import 'package:aimshala/view/counselor_registration/common/widgets/counselor_widgets.dart';
+import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,7 @@ class CounselorAvailabilityPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CounselorAvailabilityController());
     List<String> dayList = [
       "Monday",
       "Tuesday",
@@ -37,7 +39,7 @@ class CounselorAvailabilityPage extends StatelessWidget {
               fieldItem: 'Preferred Days for Teaching',
               textfiled: GetBuilder<CounselorAvailabilityController>(
                 id: 'update-counsAvaiableday',
-                init: CounselorAvailabilityController(),
+                // init: CounselorAvailabilityController(),
                 builder: (c) {
                   return Column(
                     children: List.generate(
@@ -60,7 +62,7 @@ class CounselorAvailabilityPage extends StatelessWidget {
               fieldItem: 'Preferred Time Slots',
               textfiled: GetBuilder<CounselorAvailabilityController>(
                 id: 'update-counsAvaiableTime',
-                init: CounselorAvailabilityController(),
+                // init: CounselorAvailabilityController(),
                 builder: (c) {
                   return Column(
                     children: List.generate(
@@ -77,6 +79,16 @@ class CounselorAvailabilityPage extends StatelessWidget {
                     ),
                   );
                 },
+              ),
+            ),
+            hBox,
+            counselorFields(
+              fieldItem: 'Additional Notes on Availability',
+              textfiled: TextFormField(
+                controller: controller.additionalnoteController,
+                decoration:
+                    infoFieldDecoration(hintText: 'Enter Current Job Title'),
+                style: const TextStyle(fontSize: 13),
               ),
             ),
             hLBox,
@@ -107,7 +119,26 @@ class CounselorAvailabilityPage extends StatelessWidget {
                         onTap: () {
                           if (c.availableDays.isNotEmpty &&
                               c.availableTimes.isNotEmpty) {
-                            Get.to(() => const CounselorExpertiesPage());
+                            Get.to(() => CounselorExpertiesPage());
+                          } else {
+                            // Get.showSnackbar(
+                            //   const GetSnackBar(
+                            //     snackStyle: SnackStyle.FLOATING,
+                            //     message:
+                            //         'Please select atleast one Prefered Day and Time',
+                            //     margin: EdgeInsets.all(10),
+                            //     backgroundColor: Colors.red,
+                            //     duration: Duration(seconds: 2),
+                            //   ),
+                            // );
+                            // Get.snackbar(
+                            //   "Please select atleast one Prefered Day and Time",
+                            //   '',
+                            //   snackPosition: SnackPosition.TOP,
+                            //   duration: const Duration(seconds: 2),
+                            //   backgroundColor: kred,
+                            //   colorText: Colors.white,
+                            // );
                           }
                         },
                       ),

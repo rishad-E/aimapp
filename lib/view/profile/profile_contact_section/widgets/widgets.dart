@@ -26,7 +26,9 @@ Widget changePhoneWidget(
   );
 }
 
-Widget buildBottomsheetTop({required String item,}) {
+Widget buildBottomsheetTop({
+  required String item,
+}) {
   return Container(
     color: kwhite,
     padding: const EdgeInsets.only(left: 0, right: 10),
@@ -55,8 +57,28 @@ Widget buildBottomsheetTop({required String item,}) {
             ),
           ),
         ),
-        
       ],
+    ),
+  );
+}
+
+Widget otpValidateBox({required void Function()? onPressed}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 7),
+    child: TextButton(
+      style: ButtonStyle(
+        side: MaterialStateProperty.all(BorderSide(color: mainPurple)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      onPressed:onPressed,
+      child: Text(
+        'validate',
+        style: TextStyle(color: mainPurple, fontSize: 11.sp),
+      ),
     ),
   );
 }

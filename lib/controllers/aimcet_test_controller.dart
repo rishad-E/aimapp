@@ -240,6 +240,14 @@ class AIMCETController extends GetxController {
             directory = Directory('/storage/emulated/0/Downloads');
           }
         } else {
+          if (await Permission.manageExternalStorage.isGranted) {
+            directory = Directory('/storage/emulated/0/Download');
+            if (!await directory.exists()) {
+              directory = Directory('/storage/emulated/0/Downloads');
+            }
+          } else {
+            directory = await getExternalStorageDirectory();
+          }
           // var status = await Permission.storage.request();
           // if (status.isGranted) {
           //   directory = Directory('/storage/emulated/0/Download');
@@ -247,9 +255,9 @@ class AIMCETController extends GetxController {
           //     directory = Directory('/storage/emulated/0/Downloads');
           //   }
           // } else {
-          directory = await getExternalStorageDirectory();
-          // }
           // directory = await getExternalStorageDirectory();
+          // }
+          //// directory = await getExternalStorageDirectory();
         }
 
         //////////////////////////////////////////////////////////////
@@ -290,15 +298,6 @@ class AIMCETController extends GetxController {
           }
         } else {
           directory = await getExternalStorageDirectory();
-          // var status = await Permission.storage.request();
-          // if (status.isGranted) {
-          //   directory = Directory('/storage/emulated/0/Download');
-          //   if (!await directory.exists()) {
-          //     directory = Directory('/storage/emulated/0/Downloads');
-          //   }
-          // } else {
-          //   directory = await getExternalStorageDirectory();
-          // }
         }
         if (directory == null) {
           throw const FileSystemException('Unable to access storage directory');
@@ -338,8 +337,7 @@ class AIMCETController extends GetxController {
         "Error downloading file: $e",
         snackPosition: SnackPosition.TOP,
         duration: const Duration(seconds: 2),
-        backgroundColor:
-          kred.withOpacity(0.7),
+        backgroundColor: kred.withOpacity(0.7),
         colorText: Colors.white,
       );
     }

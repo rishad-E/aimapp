@@ -172,6 +172,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                         contactC.changePhone.value = 'onScreen';
                                         contactC.otpError.value = '';
                                         contactC.otpVerifiedNum.value = 0;
+                                        contactC.canSave.value = true;
                                         Get.to(() => ProfileContactInfoScreen(
                                             user: data, id: id));
                                       },

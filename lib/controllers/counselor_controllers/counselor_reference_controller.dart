@@ -1,3 +1,4 @@
+import 'package:aimshala/models/mentor_check_model/mentor_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,13 +10,20 @@ class CounselorReferenceController extends GetxController {
   TextEditingController name2Controller = TextEditingController();
   TextEditingController relation2Controller = TextEditingController();
   TextEditingController mob2Controller = TextEditingController();
+  TextEditingController otherRela1Controller = TextEditingController();
+  TextEditingController otherRela2Controller = TextEditingController();
+
+
+  List<RelationData> relationList = [];
+  RxString otherRela1 = ''.obs;
+  RxString otherRela2 = ''.obs;
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
   String? mobValiation(String? value) {
     if (value == null || value.isEmpty) {
-      return null;  // No validation if the field is empty
+      return null; // No validation if the field is empty
     }
     if (!value.isNumericOnly) {
       return "Please enter a valid Mobile Number";

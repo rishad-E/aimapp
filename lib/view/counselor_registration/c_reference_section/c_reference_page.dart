@@ -3,6 +3,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/counselor_registration/c_final_media_section/c_final_media_page.dart';
+import 'package:aimshala/view/counselor_registration/c_reference_section/widget/c_reference_relation_bottomsheet.dart';
 import 'package:aimshala/view/counselor_registration/common/widgets/counselor_widgets.dart';
 import 'package:aimshala/view/profile/common/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,8 @@ class CounselorReferencePage extends StatelessWidget {
               counselorFields(
                 fieldItem: 'Relationship',
                 textfiled: TextFormField(
+                  readOnly: true,
+                  onTap: () => showCounselorRelation(context, '1'),
                   controller: controller.relation1Controller,
                   onChanged: (value) => controller.checkAllFileds(),
                   style: const TextStyle(fontSize: 13),
@@ -48,6 +51,17 @@ class CounselorReferencePage extends StatelessWidget {
                       hintText: 'Please select',
                       suffixWidget: const Icon(Icons.keyboard_arrow_down)),
                 ),
+              ),
+              Obx(
+                () => controller.otherRela1.value == 'Other (Please Specify)'
+                    ? TextFormField(
+                        controller: controller.otherRela1Controller,
+                        onChanged: (value) => controller.checkAllFileds(),
+                        style: const TextStyle(fontSize: 13),
+                        decoration:
+                            infoFieldDecoration(hintText: 'Enter Relation'),
+                      )
+                    : shrinked,
               ),
               counselorFields(
                 fieldItem: 'Mobile Number',
@@ -80,6 +94,8 @@ class CounselorReferencePage extends StatelessWidget {
               counselorFields(
                 fieldItem: 'Relationship',
                 textfiled: TextFormField(
+                  readOnly: true,
+                  onTap: () => showCounselorRelation(context, '2'),
                   controller: controller.relation2Controller,
                   onChanged: (value) => controller.checkAllFileds(),
                   style: const TextStyle(fontSize: 13),
@@ -87,6 +103,17 @@ class CounselorReferencePage extends StatelessWidget {
                       hintText: 'Please select',
                       suffixWidget: const Icon(Icons.keyboard_arrow_down)),
                 ),
+              ),
+              Obx(
+                () => controller.otherRela2.value == 'Other (Please Specify)'
+                    ? TextFormField(
+                        controller: controller.otherRela2Controller,
+                        onChanged: (value) => controller.checkAllFileds(),
+                        style: const TextStyle(fontSize: 13),
+                        decoration:
+                            infoFieldDecoration(hintText: 'Enter Relation'),
+                      )
+                    : shrinked,
               ),
               counselorFields(
                 fieldItem: 'Mobile Number',
@@ -132,6 +159,13 @@ class CounselorReferencePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showCounselorRelation(BuildContext context, String ref) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => CounselorRelationSheet(ref: ref),
     );
   }
 }

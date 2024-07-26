@@ -73,18 +73,21 @@ Widget aimshalaContainerSignUp() {
 
 Widget signUpButton(
     {MaterialStateProperty<Color?>? backgroundColor,
-    Color? textColor,
+    required Widget child,
     required void Function()? onPressed}) {
   return TextButton(
-    style: ButtonStyle(
-      backgroundColor: backgroundColor,
-      shape: buttonShape(round: 10),
-    ),
-    onPressed: onPressed,
-    child: Text(
-      'Sign up',
-      style: TextStyle(
-          color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
-    ),
+      style: ButtonStyle(
+        backgroundColor: backgroundColor,
+        shape: buttonShape(round: 10),
+      ),
+      onPressed: onPressed,
+      child: child);
+}
+
+Widget signUpText({Color? textColor}) {
+  return Text(
+    'Sign up',
+    style:
+        TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
   );
 }

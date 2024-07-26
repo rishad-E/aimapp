@@ -15,34 +15,48 @@ class SignUpController extends GetxController {
   RxBool areAllFieldsSelected = false.obs;
   Rx<Color> buttonTextColor = Rx<Color>(const Color.fromARGB(255, 83, 83, 83));
   String selectedRole = 'Select your role';
-
+  RxBool isSaving = false.obs;
   Future<void> signUpUserFunction({
     required String name,
     required String email,
     required String mobileNo,
   }) async {
-    Map<String, dynamic>? res = await SignUpService()
-        .signUpUser(email: email, mobile: mobileNo, name: name);
-    if (res != null) {
-      if (res.containsKey('message')) {
-        User? user = User.fromJson(res["user"]);
-        String? id = user.id.toString();
-        String? phone = user.phone.toString();
-        Get.offAll(() =>
-            SignUpAmyScreen(name: name, email: email, uId: id, phone: phone));
-        //   Navigator.of(context).pushAndRemoveUntil(
-        //   MaterialPageRoute(
-        //     builder: (context) => SignUpAmyScreen(name: name, email: email),
-        //   ),
-        //   (Route<dynamic> route) => route.isFirst, // Keep only the first screen
-        // );
-      } else if (res.containsKey('error')) {
-        dynamic errorData = res['error'];
-        if (errorData is Map) {
-          Map<String, dynamic> errors = res['error'];
-          String first = errors.keys.first;
-          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
-            String errorMessage = errors[first][0].toString();
+    try {
+      isSaving.value = true;
+      update(['button-signup']);
+      Map<String, dynamic>? res = await SignUpService()
+          .signUpUser(email: email, mobile: mobileNo, name: name);
+      if (res != null) {
+        if (res.containsKey('message')) {
+          User? user = User.fromJson(res["user"]);
+          String? id = user.id.toString();
+          String? phone = user.phone.toString();
+          storage.write(key: 'phone', value: phone);
+          Get.offAll(() =>
+              SignUpAmyScreen(name: name, email: email, uId: id, phone: phone));
+          //   Navigator.of(context).pushAndRemoveUntil(
+          //   MaterialPageRoute(
+          //     builder: (context) => SignUpAmyScreen(name: name, email: email),
+          //   ),
+          //   (Route<dynamic> route) => route.isFirst, // Keep only the first screen
+          // );
+        } else if (res.containsKey('error')) {
+          dynamic errorData = res['error'];
+          if (errorData is Map) {
+            Map<String, dynamic> errors = res['error'];
+            String first = errors.keys.first;
+            if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+              String errorMessage = errors[first][0].toString();
+              Get.showSnackbar(GetSnackBar(
+                snackStyle: SnackStyle.FLOATING,
+                message: errorMessage,
+                margin: const EdgeInsets.all(10),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 2),
+              ));
+            }
+          } else if (errorData is String) {
+            String errorMessage = res['error'];
             Get.showSnackbar(GetSnackBar(
               snackStyle: SnackStyle.FLOATING,
               message: errorMessage,
@@ -50,21 +64,15 @@ class SignUpController extends GetxController {
               backgroundColor: Colors.red,
               duration: const Duration(seconds: 2),
             ));
-          }
-        } else if (errorData is String) {
-          String errorMessage = res['error'];
-          Get.showSnackbar(GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: errorMessage,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          ));
-          if (errorMessage == "Phone number already registered") {
-            Get.offAll(() => const SplashScreen());
+            if (errorMessage == "Phone number already registered") {
+              Get.offAll(() => const SplashScreen());
+            }
           }
         }
       }
+    } finally {
+      isSaving.value = false;
+      update(['button-signup']);
     }
   }
 

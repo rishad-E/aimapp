@@ -1,7 +1,4 @@
 import 'dart:developer';
-// import 'package:aimshala/controllers/login_controller.dart';
-// import 'package:aimshala/models/UserModel/user_model.dart';
-// import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
@@ -20,7 +17,6 @@ class AmySignUpController extends GetxController {
   AmySignUpController(this.name, this.email, this.uId, this.phone);
   TextEditingController chatController = TextEditingController();
   TextEditingController otherOptionController = TextEditingController();
-  // TextEditingController otherController = TextEditingController();
   ScrollController scrollController = ScrollController();
   RxList<ChatMessageSignup> msgs = <ChatMessageSignup>[].obs;
   bool isTyping = false;
@@ -53,8 +49,6 @@ class AmySignUpController extends GetxController {
       qusId = int.tryParse(res["upd_ques_index"])!;
       String resMsg = res["bot_reply"];
       List<String> msgParts = resMsg.split('#');
-      // Add each part of the message to msgs
-      // Add each part of the message to msgs in reverse order
       for (int i = 0; i < msgParts.length; i++) {
         String part = msgParts[i];
         if (part.trim().isNotEmpty) {
@@ -67,14 +61,6 @@ class AmySignUpController extends GetxController {
           }
         }
       }
-      // Map<String, dynamic>? resData =
-      //     await LoginService().verifyUserExist(mobileNo: '9846126154');
-      // if (resData != null) {
-      //   loginController.userData = UserModel.fromJson(resData);
-      //   // User? user = User.fromJson(resData["user"]);
-      //   String? nameSe = loginController.userData?.user?.name;
-      //   log('name=>$nameSe', name: 'mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
-      // }
       isTyping = false;
       update(['send-to-amy']);
     }
@@ -87,7 +73,6 @@ class AmySignUpController extends GetxController {
     String userMessage = chatController.text;
     String otheroptionMsg = otherOptionController.text;
     chatController.clear();
-    // otherController.clear();
     log(userMessage, name: 'usermsg');
     otherSelected = false;
     log(otherSelected.toString(), name: 'other selected');
@@ -162,7 +147,7 @@ class AmySignUpController extends GetxController {
           }
           isTyping = false;
           update(['send-to-amy']);
-          if (qusId > 4 && qusId < 15) {
+          if (qusId > 3 && qusId < 15) {
             Map<String, dynamic>? resData =
                 await LoginService().verifyUserExist(mobileNo: phone);
             if (resData != null) {
