@@ -6,7 +6,6 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_bottomsheet/aimcet_dailoguebox.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_bottomsheet/test_bottomsheet.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_bottom_list.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_texts.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/aimcet_widgets.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_widgets/completed_warning.dart';
@@ -176,12 +175,13 @@ class AIMCETTestPage extends StatelessWidget {
                           alignment: Alignment.topLeft,
                           child: Text(
                             controller.end.value == 'done'
-                                ? aimcetList[int.parse(
-                                    (aimcetList.length - 1).toString())]
+                                ? controller.aimcetList[int.parse(
+                                    (controller.aimcetList.length - 1)
+                                        .toString())]
                                 : controller.end.value == 'yes'
-                                    ? aimcetList[int.parse(
+                                    ? controller.aimcetList[int.parse(
                                         controller.secID.value.toString())]
-                                    : aimcetList[int.parse(
+                                    : controller.aimcetList[int.parse(
                                             controller.secID.value.toString()) -
                                         1],
                             style: TextStyle(
@@ -195,9 +195,9 @@ class AIMCETTestPage extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: List.generate(
-                          aimcetList.length,
+                          controller.aimcetList.length,
                           (index) {
-                            if (index == aimcetList.length - 1) {
+                            if (index == controller.aimcetList.length - 1) {
                               {
                                 return Container(
                                   height: 6,
@@ -277,89 +277,3 @@ class AIMCETTestPage extends StatelessWidget {
     );
   }
 }
-
-// Row(
-//   mainAxisSize: MainAxisSize.min,
-//   children: List.generate(
-//     aimcetList.length,
-//     (index) {
-//       // Determine completion based on section ID
-//       final completed = int.parse(controller.allQuestions![index].sectionId) > index + 1;
-
-//       return Row(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           // Bar indicating completion
-//           Container(
-//             height: 6,
-//             width: 11,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(4),
-//               color: completed ? mainPurple : mainPurple.withOpacity(0.4),
-//             ),
-//           ),
-//           // Spacer
-//           Container(
-//             height: 5,
-//             width: 18,
-//             decoration: BoxDecoration(
-//               borderRadius: BorderRadius.circular(1),
-//               color: completed ? mainPurple.withOpacity(0.4) : mainPurple.withOpacity(0.2),
-//             ),
-//           ),
-//         ],
-//       );
-//     },
-//   ),
-// )
-
-// class StepperExample extends StatelessWidget {
-//   const StepperExample({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // int _index = 0;
-//     return Stepper(
-//       // currentStep: _index,
-//       // onStepCancel: () {
-//       //   if (_index > 0) {
-//       //     setState(() {
-//       //       _index -= 1;
-//       //     });
-//       //   }
-//       // },
-//       // onStepContinue: () {
-//       //   if (_index <= 0) {
-//       //     setState(() {
-//       //       _index += 1;
-//       //     });
-//       //   }
-//       // },
-//       // onStepTapped: (int index) {
-//       //   setState(() {
-//       //     _index = index;
-//       //   });
-//       // },
-
-//       steps: const <Step>[
-//         Step(
-//           title: Text('Step 1 title'),
-//           content:Text(''),
-//         ),
-//         Step(
-//           title: Text('Step 1 title'),
-//           content:Text(''),
-//         ),Step(
-//           title: Text('Step 1 title'),
-//           content:Text(''),
-//         ),Step(
-//           title: Text('Step 1 title'),
-//           content:Text(''),
-//         ),Step(
-//           title: Text('Step 1 title'),
-//           content:Text(''),
-//         ),
-//       ],
-//     );
-//   }
-// }

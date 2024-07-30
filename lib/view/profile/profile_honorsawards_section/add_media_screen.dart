@@ -59,7 +59,7 @@ class AddHonorAwardsMediaScreen extends StatelessWidget {
                 textField: TextFormField(
                   controller: controller.mediaTitleController,
                   validator: (value) => controller.filedValidation(value),
-                  decoration: infoFieldDecoration(hintText: 'Ex: Certificate'),
+                  decoration: infoFieldDecoration(hintText: 'Enter Title'),
                   style: const TextStyle(fontSize: 13),
                 ),
               ),

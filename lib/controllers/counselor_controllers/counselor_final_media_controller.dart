@@ -10,6 +10,7 @@ import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/counselor_reg_service/save_counselor_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/view/counselor_registration/c_final_thanks_section/c_final_thanks_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -251,7 +252,6 @@ class CounselorMediaController extends GetxController {
         cv: cv,
         videoFile: video,
       );
-      log(res.toString());
       if (res == 'Counsellor data saved successfully.') {
         Get.showSnackbar(
           GetSnackBar(
@@ -263,7 +263,7 @@ class CounselorMediaController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        // Get.to(() => CounselorThanksPage(name: name));
+        Get.to(() => CounselorThanksPage(name: name));
       } else {
         Get.showSnackbar(
           GetSnackBar(

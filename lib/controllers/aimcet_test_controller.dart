@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_Test_model/test_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Personality_model/personality_report_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
+import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_gp_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/personality_career_report_service.dart';
@@ -30,6 +31,7 @@ class AIMCETController extends GetxController {
   RxString testDone = 'no'.obs;
   int? totalQ;
   int? secQuestion;
+  List<String> aimcetList = [];
 
   List<String> personality = [];
   String? traitType;
@@ -43,9 +45,14 @@ class AIMCETController extends GetxController {
   RxBool isDownloading = false.obs;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
+    totalQ = 0;
+    secQuestion = 0;
     isLoading.value = true;
+    log('sectionQuesNum==>$secQuestion  totalQusNum==>$totalQ',
+        name: 'secques and total ques frst');
+
     Map<String, dynamic>? data =
-        await AIMCETTestService().getTestResult(userId: userId);
+        await AIMCETTestService().getTestQuestions(userId: userId);
 
     if (data != null) {
       Map<String, dynamic>? questionData = data['data'];
@@ -75,6 +82,8 @@ class AIMCETController extends GetxController {
     }
     isLoading.value = false;
     log(allQuestions.toString(), name: 'fetch allqus func');
+    log('sectionQuesNum==>$secQuestion  totalQusNum==>$totalQ',
+        name: 'secques and total ques second');
   }
 
   Future<void> submitAimTest({
@@ -345,6 +354,19 @@ class AIMCETController extends GetxController {
     // Determine the download directory path based on platform and availability
   }
 
+  Future<void> getTestSectionTextsFunc() async {
+    List<Section>? data = await AIMCETTestService().getTestSectionTexts();
+    if (data != null) {
+      if (data.isNotEmpty) {
+        for (var item in data) {
+          if (!aimcetList.contains(item.name)) {
+            aimcetList.add(item.name.toString());
+          }
+        }
+      }
+    }
+  }
+
   void toggleSelection() {
     guideSelect = !guideSelect;
     // guidebutton.value = !guidebutton.value;
@@ -353,10 +375,11 @@ class AIMCETController extends GetxController {
   }
 
   void totalQuestionNumber(int secID) {
+    totalQ = totalQ! + 1;
     if (secID <= 8) {
-      if (secQuestion! < 5) {
+      if (secQuestion! < 10) {
         secQuestion = secQuestion! + 1;
-      } else if (secQuestion! == 5) {
+      } else if (secQuestion! == 10) {
         secQuestion = 1;
       }
     } else if (secID == 9 || secID == 10) {
@@ -366,14 +389,14 @@ class AIMCETController extends GetxController {
         secQuestion = 1;
       }
     }
-    if (totalQ == 40) {
-      secQuestion = 1;
-    }
-    if (totalQ! < 70) {
-      totalQ = totalQ! + 1;
-    } else if (totalQ == 70) {
-      totalQ = 1;
-    }
+    // if (totalQ == 40) {
+    //   secQuestion = 1;
+    // }
+    // if (totalQ! < 110) {
+    //   totalQ = totalQ! + 1;
+    // } else if (totalQ == 110) {
+    //   totalQ = 1;
+    // }
     update(['aimcet-test']);
   }
 }

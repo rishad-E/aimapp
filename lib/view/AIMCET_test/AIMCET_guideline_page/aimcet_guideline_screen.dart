@@ -1,5 +1,4 @@
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
@@ -228,21 +227,41 @@ class AIMCETGuideLinePage extends StatelessWidget {
                     Obx(
                       () => Expanded(
                         child: GestureDetector(
-                          onTap: () {
+                          onTap: () async {
                             if (controller.guideSelect == true) {
-                              controller
-                                  .fetchAllTestQuestions(userId: uId)
-                                  .then((value) {
+                              try {
+                                await Future.wait([
+                                  controller.fetchAllTestQuestions(userId: uId),
+                                  controller.getTestSectionTextsFunc(),
+                                ]);
                                 if (controller.allQuestions != null &&
                                     controller.allQuestions!.isNotEmpty) {
                                   Get.to(() => const AIMCETTestPage());
-                                } else {
-                                  // Handle the case where questions are not fetched
-                                  // Get.snackbar('Error', 'No questions fetched.');
-                                  SnackbarPopUps.popUpB(
-                                      'Error,Failed to fetch questions');
                                 }
-                              });
+                              } catch (e) {
+                                Get.snackbar(
+                                  "Error",
+                                  "Failed to Fetch your Questions...",
+                                  snackPosition: SnackPosition.TOP,
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: kred,
+                                  colorText: Colors.white,
+                                );
+                              }
+                              // await Future.wait([
+                              //   controller.fetchAllTestQuestions(userId: uId),
+                              //   controller.anotherFunction(userId: uId),
+                              // ]).then((value) {
+                              //   if (controller.allQuestions != null &&
+                              //       controller.allQuestions!.isNotEmpty) {
+                              //     Get.to(() => const AIMCETTestPage());
+                              //   } else {
+                              //     // Handle the case where questions are not fetched
+                              //     // Get.snackbar('Error', 'No questions fetched.');
+                              //     SnackbarPopUps.popUpB(
+                              //         'Error,Failed to fetch questions');
+                              //   }
+                              // });
                             }
                           },
                           child: Container(

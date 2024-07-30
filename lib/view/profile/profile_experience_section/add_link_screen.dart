@@ -43,6 +43,7 @@ class AddExperienceLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
+                      hintText: 'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -72,44 +73,6 @@ class AddExperienceLinkScreen extends StatelessWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
-                // hMBox,
-                // educationInfoFiled(
-                //   text: primarytxt3('Title', 9.5.sp),
-                //   textField: TextFormField(
-                //     decoration:
-                //         infoFieldDecoration(hintText: 'Ex: Certificate'),
-                //     style: const TextStyle(fontSize: 13),
-                //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                //   ),
-                // ),
-                // educationInfoFiled(
-                //   text: primarytxt3('Description', 9.5.sp),
-                //   textField: TextFormField(
-                //     decoration:
-                //         infoFieldDecoration(hintText: 'Enter Description'),
-                //     style: const TextStyle(fontSize: 13),
-                //     minLines: 3,
-                //     maxLines: null,
-                //     autovalidateMode: AutovalidateMode.onUserInteraction,
-                //   ),
-                // ),
-                // hMBox,
-                // SizedBox(
-                //   height: 17.h,
-                //   width: double.infinity,
-                //   // color: Colors.yellow,
-                //   child:
-                //       //  image != null
-                //       // ? Image.file(image!, fit: BoxFit.contain)
-                //       // :
-                //       Center(
-                //     child: Text(
-                //       "Please select an image",
-                //       style: TextStyle(color: textFieldColor),
-                //       textAlign: TextAlign.center,
-                //     ),
-                //   ),
-                // )
               ],
             ),
           ),

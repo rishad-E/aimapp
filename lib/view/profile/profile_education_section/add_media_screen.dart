@@ -57,7 +57,7 @@ class AddProfileMediaScreen extends StatelessWidget {
                   text: primarytxt3('Title', 9.5.sp),
                   textField: TextFormField(
                     decoration:
-                        infoFieldDecoration(hintText: 'Ex: Certificate'),
+                        infoFieldDecoration(hintText: 'Enter Title'),
                     style: const TextStyle(fontSize: 13),
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.filedValidation(value),

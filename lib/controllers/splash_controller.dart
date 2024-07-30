@@ -107,6 +107,7 @@ class SplashController extends GetxController {
                 log('aimcet test done', name: 'spalsh done');
                 aimtestController.aimcetTestResultFunction(
                     userId: id.toString(), userName: uName.toString());
+                    aimtestController.getTestSectionTextsFunc();
               }
             });
             mentorController.checkMentorRegtakenFunction(uId: id.toString());

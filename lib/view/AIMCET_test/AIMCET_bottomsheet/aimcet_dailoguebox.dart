@@ -5,6 +5,7 @@ import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
+import 'package:aimshala/view/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -54,48 +55,61 @@ class AIMCETDialogueBox extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(kpurple),
                   shape: buttonShape(round: 10)),
               onPressed: () async {
-               
-                await controller.aimcetTestResultFunction(
-                    userId: userId, userName: userName);
-                // Show the dialog with CircularProgressIndicator for 5 seconds
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: kwhite,
-                      surfaceTintColor: kwhite,
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(color: mainPurple),
-                          hLBox,
-                          primarytxt2(
-                              "Your result is being processed...", 11.sp),
-                        ],
-                      ),
-                    );
-                  },
-                );
-                await Future.delayed(const Duration(seconds: 5));
-                // Call gpReportSubmitFunction
-                await controller
-                    .gpReportSubmitFunction(
-                  uId: userId,
-                  personality: controller.personality[0],
-                  trait: controller.traitType.toString(),
-                )
-                    .then((_) async {
-                  // Call fetchPersonalityReport and fetchTraitReport
-                  await Future.wait([
-                    controller.fetchPersonalityReport(userId: userId),
-                    controller.fetchTraitReport(userId: userId),
-                  ]);
-                });
+                try {
+                  await controller.aimcetTestResultFunction(
+                      userId: userId, userName: userName);
 
-                // Navigate to AIMCETResultScreen
-                Get.off(
-                    () => AIMCETResultScreen(userName: userName, uId: userId));
+                  // Show the dialog with CircularProgressIndicator for 5 seconds
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: kwhite,
+                        surfaceTintColor: kwhite,
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircularProgressIndicator(
+                                color: mainPurple, strokeWidth: 1),
+                            hLBox,
+                            primarytxt2(
+                                "Your result is being processed...", 11.sp),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                  await Future.delayed(const Duration(seconds: 5));
+                  // Call gpReportSubmitFunction
+                  await controller
+                      .gpReportSubmitFunction(
+                    uId: userId,
+                    personality: controller.personality[0],
+                    trait: controller.traitType.toString(),
+                  )
+                      .then((_) async {
+                    // Call fetchPersonalityReport and fetchTraitReport
+                    await Future.wait([
+                      controller.fetchPersonalityReport(userId: userId),
+                      controller.fetchTraitReport(userId: userId),
+                    ]);
+                  });
+
+                  // Navigate to AIMCETResultScreen
+                  Get.off(() =>
+                      AIMCETResultScreen(userName: userName, uId: userId));
+                } catch (e) {
+                  Get.snackbar(
+                    'Error',
+                    'An error occurred: ${e.toString()}',
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                  // Navigate to the homepage
+                  Get.offAll(() => const HomeScreen());
+                }
               },
               child: Text(
                 'Click Here To Check Result',

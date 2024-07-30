@@ -36,6 +36,7 @@ class AddVolunteerLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
+                      hintText:  'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {

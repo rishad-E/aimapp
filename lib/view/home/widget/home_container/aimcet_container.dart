@@ -90,34 +90,46 @@ class AimcetContainer extends StatelessWidget {
                         //     );
                         //   },
                         // );
-                        Get.snackbar(
-                          "Hi $userName",
-                          "Fetching your AIMCET result...",
-                          snackPosition: SnackPosition.TOP,
-                          duration: const Duration(seconds: 2),
-                          backgroundColor:
-                              const Color.fromARGB(255, 86, 21, 171)
-                                  .withOpacity(0.7),
-                          colorText: Colors.white,
-                        );
-                        await controller
-                            .gpReportSubmitFunction(
-                                uId: id,
-                                personality: controller.personality[0],
-                                trait: controller.traitType.toString())
-                            .then((_) {
-                          controller.fetchPersonalityReport(userId: id);
-                          controller.fetchTraitReport(userId: id);
-                        });
-                        await Future.delayed(const Duration(seconds: 1));
-                        // Navigator.of(context).pop();
-                        Get.back();
-                        Get.to(() =>
-                            AIMCETResultScreen(userName: userName, uId: id));
+                        try {
+                          Get.snackbar(
+                            "Hi $userName",
+                            "Fetching your AIMCET result...",
+                            snackPosition: SnackPosition.TOP,
+                            duration: const Duration(seconds: 2),
+                            backgroundColor:
+                                const Color.fromARGB(255, 86, 21, 171)
+                                    .withOpacity(0.7),
+                            colorText: Colors.white,
+                          );
+                          await controller
+                              .gpReportSubmitFunction(
+                                  uId: id,
+                                  personality: controller.personality[0],
+                                  trait: controller.traitType.toString())
+                              .then((_) {
+                            controller.fetchPersonalityReport(userId: id);
+                            controller.fetchTraitReport(userId: id);
+                          });
+                          await Future.delayed(const Duration(seconds: 1));
+                          // Navigator.of(context).pop();
+                          Get.back();
+                          Get.to(() =>
+                              AIMCETResultScreen(userName: userName, uId: id));
+                        } catch (e) {
+                          Get.snackbar(
+                            "Hi $userName,Error occured",
+                            "Failed to Fetch your AIMCET result...",
+                            snackPosition: SnackPosition.TOP,
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: kred,
+                            colorText: Colors.white,
+                          );
+                        }
                       },
                     );
                   } else if (controller.testDone.value == 'continue') {
                     controller.fetchAllTestQuestions(userId: id);
+                    controller.getTestSectionTextsFunc();
                     return ElevatedButton.icon(
                       style: ButtonStyle(
                         shape: buttonShape(round: 8),

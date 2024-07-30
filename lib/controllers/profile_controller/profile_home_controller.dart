@@ -109,7 +109,7 @@ class ProfileHomeController extends GetxController {
             ),
           );
           selectedImage.value = "http://154.26.130.161/elearning/$resImage";
-          // Get.off(() => ProfileHomeScreen(id: uId));
+       
         } else {
           Get.showSnackbar(
             const GetSnackBar(

@@ -60,7 +60,7 @@ class AddLicenseMediaScreen extends StatelessWidget {
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.fieldValidation(value),
                     decoration:
-                        infoFieldDecoration(hintText: 'Ex: Certificate'),
+                        infoFieldDecoration(hintText: 'Enter Title'),
                     style: const TextStyle(fontSize: 13),
                   ),
                 ),

@@ -231,4 +231,17 @@ class UpdateContactInfo extends GetxController {
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['update-contactInfo']);
   }
+  // void clearFormField(){
+  //   usernameController.clear();
+  //   mobController.clear();
+  //   emailController.clear();
+  //   addressController.clear();
+  //   pincodeController.clear();
+  //   cityController.clear();
+  //   stateController.clear();
+  //   countryController.clear();
+  //   facebookController.clear();
+  //   instagramController.clear();
+  //   twitterController.clear();
+  // }
 }

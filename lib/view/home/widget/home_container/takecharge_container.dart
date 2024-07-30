@@ -143,7 +143,7 @@ Widget counselBooked(
                   child: ElevatedButton.icon(
                     style: ButtonStyle(
                       padding: const MaterialStatePropertyAll(
-                          EdgeInsets.symmetric(horizontal: 15)),
+                          EdgeInsets.symmetric(horizontal: 12)),
                       shape: buttonShape(round: 8),
                     ),
                     onPressed: onPressed,

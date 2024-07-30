@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
@@ -6,7 +7,8 @@ import 'package:dio/dio.dart';
 class AIMCETTestService {
   Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> getTestResult({required String userId}) async {
+  Future<Map<String, dynamic>?> getTestQuestions(
+      {required String userId}) async {
     String path = Apis().aimUrl + Apis().aimcetTest;
     try {
       Response response = await dio.post(path,
@@ -40,7 +42,7 @@ class AIMCETTestService {
     required String totalQues,
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log(userId + questionId + sectionId + cAnswer + secQues + totalQues,
+    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer secQues=>$secQues totalQues=>$totalQues',
         name: 'serviceeeeeee');
     try {
       Response response = await dio.post(path,
@@ -97,7 +99,7 @@ class AIMCETTestService {
       Response response = await dio.post(
         path,
         data: {"user_id": userId, "username": userName},
-        options: Options(validateStatus: (status) => status! < 500),
+        options: Options(validateStatus: (status) => status! < 599),
       );
       if (response.statusCode == 200) {
         // log(response.data.toString(), name: 'aimcet result submit');
@@ -141,6 +143,38 @@ class AIMCETTestService {
           'Error fetching data...Please try after sometime');
     }
 
+    return null;
+  }
+
+  Future<List<Section>?> getTestSectionTexts() async {
+    String path = 'http://154.26.130.161/elearning/api/test-sections';
+
+    try {
+      Response response = await dio.get(
+        path,
+        options: Options(validateStatus: (status) => status! < 599),
+      );
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('sections')) {
+          List<dynamic> data = resData['sections'];
+          List<Section> texts =
+              data.map((e) => Section.fromJson(e)).toList();
+            return texts;
+          // log(texts.toString(), name: 'sec Texts');
+        }
+      } else if (response.data is String) {
+        String msg = response.data;
+        SnackbarPopUps.popUpB(
+            'Error fetching data $msg...Please try after sometime');
+      }
+    } on DioException catch (e) {
+      // Handle other exceptions
+      log('Exception: ${e.toString()}',
+          name: 'aimcet getTestSectionTexts error');
+      throw SnackbarPopUps.popUpB(
+          'Error fetching data...Please try after sometime');
+    }
     return null;
   }
 }

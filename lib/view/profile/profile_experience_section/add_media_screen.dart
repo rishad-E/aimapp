@@ -62,7 +62,7 @@ class AddExperienceMediaScreen extends StatelessWidget {
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.filedValidation(value),
                     decoration:
-                        infoFieldDecoration(hintText: 'Ex: Certificate'),
+                        infoFieldDecoration(hintText: 'Enter Title'),
                     style: const TextStyle(fontSize: 13),
                   ),
                 ),
