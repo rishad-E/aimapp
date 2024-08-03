@@ -81,15 +81,6 @@ class AimcetContainer extends StatelessWidget {
                         color: const Color.fromARGB(255, 147, 38, 143),
                       ),
                       onPressed: () async {
-                        // showDialog(
-                        //   context: context,
-                        //   barrierDismissible: false,
-                        //   builder: (BuildContext context) {
-                        //     return const Center(
-                        //       child: CircularProgressIndicator(),
-                        //     );
-                        //   },
-                        // );
                         try {
                           Get.snackbar(
                             "Hi $userName",
@@ -112,7 +103,8 @@ class AimcetContainer extends StatelessWidget {
                           });
                           await Future.delayed(const Duration(seconds: 1));
                           // Navigator.of(context).pop();
-                          Get.back();
+                          // Get.back();
+                          controller.showAllreview = false;
                           Get.to(() =>
                               AIMCETResultScreen(userName: userName, uId: id));
                         } catch (e) {

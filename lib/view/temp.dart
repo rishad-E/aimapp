@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/all_data_controller.dart';
+import 'package:aimshala/controllers/counselor_controllers/counselor_personal_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -18,10 +19,14 @@ class TempScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mentor = Get.put(MentorPersonalDetailController());
-    final educaotr = Get.put(EducatorPersonalDetailController());
+    final educator = Get.put(EducatorPersonalDetailController());
+    final counselor = Get.put(CounselorPersonalController());
     final alldataC = Get.put(AllDataController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       alldataC.getUserallData(uId: uId);
+      mentor.checkMentorRegtakenFunction(uId: uId);
+      educator.checkEducatorRegTakenFunction(uId: uId);
+      counselor.checkCounselorRegtakenFunction(uId: uId);
     });
     return Scaffold(
       appBar: AppBar(
@@ -34,9 +39,9 @@ class TempScreen extends StatelessWidget {
             hMBox,
             elevatedButtonItems(
               onPressed: () {
-                log(educaotr.isEducator, name: 'isEducator');
-                if (educaotr.isEducator == 'no') {
-                  educaotr.clearAllfields();
+                log(educator.isEducator, name: 'isEducator');
+                if (educator.isEducator == 'no') {
+                  educator.clearAllfields();
                   Get.to(
                     () => EducatorPersonalDetailPage(
                       user: alldataC.userData,
@@ -63,6 +68,7 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(mentor.isMentor, name: 'isMentor');
                 if (mentor.isMentor == 'no') {
+                  mentor.clearAllfields();
                   Get.to(
                     () => MentorPersonalDetailPage(
                       user: alldataC.userData,
@@ -86,12 +92,28 @@ class TempScreen extends StatelessWidget {
             ),
             hMBox,
             elevatedButtonItems(
-              onPressed: () => Get.to(
-                () => CounselorPersonalSection(
-                  user: alldataC.userData,
-                  userDetails: alldataC.userDetails,
-                ),
-              ),
+              onPressed: () {
+                log(counselor.isCounselor, name: 'isCounselor');
+                if (counselor.isCounselor == 'no') {
+                  counselor.clearAllfields();
+                  Get.to(
+                    () => CounselorPersonalSection(
+                      user: alldataC.userData,
+                      userDetails: alldataC.userDetails,
+                    ),
+                  );
+                } else {
+                  Get.snackbar(
+                    "Hi ",
+                    "You are already a Counselor...",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
+                  );
+                }
+              },
               item: "Counselor",
             ),
           ],

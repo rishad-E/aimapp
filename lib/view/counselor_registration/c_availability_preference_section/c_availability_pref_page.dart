@@ -120,25 +120,6 @@ class CounselorAvailabilityPage extends StatelessWidget {
                           if (c.availableDays.isNotEmpty &&
                               c.availableTimes.isNotEmpty) {
                             Get.to(() => CounselorExpertiesPage());
-                          } else {
-                            // Get.showSnackbar(
-                            //   const GetSnackBar(
-                            //     snackStyle: SnackStyle.FLOATING,
-                            //     message:
-                            //         'Please select atleast one Prefered Day and Time',
-                            //     margin: EdgeInsets.all(10),
-                            //     backgroundColor: Colors.red,
-                            //     duration: Duration(seconds: 2),
-                            //   ),
-                            // );
-                            // Get.snackbar(
-                            //   "Please select atleast one Prefered Day and Time",
-                            //   '',
-                            //   snackPosition: SnackPosition.TOP,
-                            //   duration: const Duration(seconds: 2),
-                            //   backgroundColor: kred,
-                            //   colorText: Colors.white,
-                            // );
                           }
                         },
                       ),

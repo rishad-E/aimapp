@@ -130,7 +130,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
                     GetBuilder<ProfileSkillController>(
                         id: 'update-ExID',
                         builder: (c) {
-                          return c.exSkillIdList.isEmpty
+                          return c.exSkillsList.isEmpty
                               ? shrinked
                               : selectExtraSkill(
                                   text: 'Experience',
@@ -415,6 +415,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
 
   void initializeFields(ProfileSkillController c, Skill? skill) {
     if (skill == null) return;
+
     c.skillController.text = skill.skillName.toString();
     List<String>? experience = skill.experiencesId;
     if (experience != null && experience.isNotEmpty) {
@@ -470,7 +471,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
         }
       }
     }
-    if (skill.followupPermission.toString() == "yes") {
+    if (skill.followupPermission == "yes") {
       c.permission = true;
       c.update(['update-permission']);
     }

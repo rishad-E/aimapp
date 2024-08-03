@@ -5,6 +5,7 @@ import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/aimcet_re
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/discovery_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/mentorship_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/review_widgets.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/review_write_box.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topcareer_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/topdegree_container.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/widgets/widgets.dart';
@@ -28,9 +29,7 @@ class AIMCETResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int initialVal = 0;
     final controller = Get.put(AIMCETController());
-    // final data = controller.personalityReport;
-    // final trait = controller.traitReport;
-    return PopScope(
+       return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
           controller.checkAimcetTestTakenFunction(userId: uId);
@@ -155,8 +154,7 @@ class AIMCETResultScreen extends StatelessWidget {
                       hMBox,
                       controller.degrees.isEmpty
                           ? notReadyContainer(
-                              text: 'Your career result is not processed',
-                            )
+                              text: 'Your career result is not processed')
                           : Container(
                               height: 150,
                               padding: const EdgeInsets.only(left: 15),
@@ -277,13 +275,48 @@ class AIMCETResultScreen extends StatelessWidget {
                 hMBox,
                 ratingContainer(),
                 choiceSizedBox(height: 12),
-                writeReview(),
-                userReviewWidget(),
-                userReviewWidget(),
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
-                  child: reviewWriteViewButton(matter: 'Show All Reviews'),
+                writeReview(
+                  onPressed: () {
+                    controller.starCount = 0;
+                    showRatingBox(context);
+                  },
+                ),
+                GetBuilder<AIMCETController>(
+                  id: 'show-Allreviews',
+                  builder: (c) {
+                    // final data = c.testReviews;
+                    return c.testReviews.isEmpty
+                        ? shrinked
+                        : Column(
+                            children: [
+                              ...List.generate(
+                                c.showAllreview ? c.testReviews.length : 2,
+                                (index) {
+                                  final data = c.testReviews[index];
+                                  return userReviewWidget(
+                                    initials: data.nameinitials.toString(),
+                                    name: data.userName.toString(),
+                                    time: data.timeElapsed.toString(),
+                                    rating: data.review!.ratings == null
+                                        ? '0'
+                                        : data.review!.ratings.toString(),
+                                    review: data.review!.review.toString(),
+                                  );
+                                },
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 12),
+                                child: reviewWriteViewButton(
+                                  matter: c.showAllreview
+                                      ? 'Show Less Reviews'
+                                      : 'Show All Reviews',
+                                  onPressed: () => c.toggleShowReview(),
+                                ),
+                              ),
+                            ],
+                          );
+                  },
                 ),
                 hMBox,
               ],
@@ -291,6 +324,13 @@ class AIMCETResultScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void showRatingBox(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => const WriteAimcetReview(),
     );
   }
 }

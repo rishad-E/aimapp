@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_Test_model/test_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Personality_model/personality_report_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
+import 'package:aimshala/models/AIMCET_TEST/test_all_reviews/test_all_reviews.dart';
+import 'package:aimshala/models/AIMCET_TEST/test_res_userdetails/test_res_user_details.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_gp_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
@@ -24,7 +26,6 @@ class AIMCETController extends GetxController {
   RxBool isLoading = false.obs;
   Map<String, List<Question>>? testRes;
   List<Question>? allQuestions;
-  String? submitRes;
   RxInt secID = RxInt(1);
   RxString end = 'no'.obs;
   RxString gp = ''.obs;
@@ -37,12 +38,15 @@ class AIMCETController extends GetxController {
   String? traitType;
   List<String> degrees = [];
   List<String> careers = [];
-  // PersonalityReportModel? personalityReport;
-  // TraitReportModel? traitReport;
 
   var personalityReort = Rxn<PersonalityReportModel>();
   var traitReport = Rxn<TraitReportModel>();
   RxBool isDownloading = false.obs;
+  int starCount = 0;
+  TextEditingController reviewController = TextEditingController();
+  TestuserDetails? testuserDetails;
+  List<AlltestReview> testReviews = [];
+  bool showAllreview = false;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
     totalQ = 0;
@@ -94,7 +98,7 @@ class AIMCETController extends GetxController {
     required String secQues,
     required String totalQues,
   }) async {
-    submitRes = await AIMCETTestService().sumbitAIMTest(
+    await AIMCETTestService().sumbitAIMTest(
         userId: userId,
         cAnswer: cAnswer,
         sectionId: sectionId,
@@ -163,7 +167,10 @@ class AIMCETController extends GetxController {
         } else {
           careers = [];
         }
-
+        if (result['userDetails'] != null) {
+          testuserDetails = TestuserDetails.fromJson(result['userDetails']);
+        }
+        fetchAllTestReviews();
         // log(personality.toString(), name: 'personality');
         // log(degrees.toString(), name: 'degree');
         // log(careers.toString(), name: 'careers');
@@ -367,6 +374,54 @@ class AIMCETController extends GetxController {
     }
   }
 
+  Future<void> submitTestReview(
+      {required String uId,
+      required String testId,
+      required String rating,
+      required String review}) async {
+    String? res = await AIMCETTestService().submitTestReview(
+        uId: uId, testId: testId, rating: rating, review: review);
+    if (res == 'Review saved successfully') {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    } else {
+      Get.showSnackbar(
+        GetSnackBar(
+          snackStyle: SnackStyle.FLOATING,
+          message: res,
+          borderRadius: 4,
+          margin: const EdgeInsets.all(10),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
+    reviewController.clear();
+  }
+
+  Future<void> fetchAllTestReviews() async {
+    List<dynamic>? res = await AIMCETTestService().getAllTestReviews();
+    if (res != null) {
+      List<AlltestReview> data =
+          res.map((e) => AlltestReview.fromJson(e)).toList();
+      for (var item in data) {
+        if (!testReviews.any((i) => i.review?.id == item.review?.id)) {
+          testReviews.add(item);
+        }
+      }
+      // testReviews.addAll(data);
+    }
+    update(['show-Allreviews']);
+  }
+
   void toggleSelection() {
     guideSelect = !guideSelect;
     // guidebutton.value = !guidebutton.value;
@@ -398,5 +453,15 @@ class AIMCETController extends GetxController {
     //   totalQ = 1;
     // }
     update(['aimcet-test']);
+  }
+
+  void updateStarCount(int count) {
+    starCount = count;
+    update(['review-star']);
+  }
+
+  void toggleShowReview() {
+    showAllreview = !showAllreview;
+    update(['show-Allreviews']);
   }
 }

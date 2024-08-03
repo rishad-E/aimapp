@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_home_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
@@ -13,10 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class UpdateProfilePhotoScreen extends StatelessWidget {
-  // final ImageProvider<Object>? image;
   final String uId;
   UpdateProfilePhotoScreen({super.key, required this.uId});
-  final profileC = Get.put(ProfileHomeController());
+  final profileC = Get.find<ProfileHomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +58,8 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () async {
-                  log('camera');
-                  // Navigator.pop(context);
-                  await profileC.selectProfilePic(
-                      source: ImageSource.camera, uId: uId);
-                },
+                onTap: () async => await profileC.selectProfilePic(
+                    source: ImageSource.camera, uId: uId),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,11 +74,8 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () async {
-                  log('media');
-                  await profileC.selectProfilePic(
-                      source: ImageSource.gallery, uId: uId);
-                },
+                onTap: () async => await profileC.selectProfilePic(
+                    source: ImageSource.gallery, uId: uId),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,10 +90,7 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () async {
-                  await profileC.deleteProfilePic(uId: uId);
-                  log('delete');
-                },
+                onTap: () async => await profileC.deleteProfilePic(uId: uId),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

@@ -225,13 +225,14 @@ class ProfileSkillController extends GetxController {
                   .contains(associatedItemEx)) {
                 awardController.assosiatedListdata.add(associatedItemEx);
               }
-              // projectController.associatedListdata.addAll(awardController.assosiatedListdata);
               log(exSkillsList.toString(), name: 'newskills c');
             }
           }
+          update(['update-ExID']);
         } else {
           experience.value = [];
           exSkillsList = [];
+          update(['update-ExID']);
         }
 
         /* -------extracting education---------- */
@@ -256,10 +257,12 @@ class ProfileSkillController extends GetxController {
               }
             }
           }
+          update(['update-EdID']);
           log(edSchoolList.toString(), name: 'newEducationList data');
         } else {
           education.value = [];
           edSchoolList = [];
+          update(['update-EdID']);
         }
 
         /* -------extracting license---------- */
@@ -277,10 +280,12 @@ class ProfileSkillController extends GetxController {
               }
             }
           }
+          update(['update-LiID']);
           log(licenseNameList.toString(), name: 'New licenseNameList c');
         } else {
           license.value = [];
           licenseNameList = [];
+          update(['update-LiID']);
         }
 
         /* -------extracting projects---------- */
@@ -298,10 +303,12 @@ class ProfileSkillController extends GetxController {
               }
             }
           }
+          update(['update-PrID']);
           log(projectTitleList.toString(), name: 'New projectTitleList c');
         } else {
           project.value = [];
           projectTitleList = [];
+          update(['update-PrID']);
         }
         /* -------extracting courses---------- */
         List<dynamic> coursedata = alldata["courses"];
@@ -317,10 +324,12 @@ class ProfileSkillController extends GetxController {
               }
             }
           }
+          update(['update-courseID']);
           log(courseNameList.toString(), name: 'New courseNameList c');
         } else {
           course.value = [];
           courseNameList = [];
+          update(['update-courseID']);
         }
 
         /* -------extracting award---------- */
@@ -337,10 +346,12 @@ class ProfileSkillController extends GetxController {
               }
             }
           }
+          update(['update-awardIDs']);
           log(awardNameList.toString(), name: 'New awardNameList c');
         } else {
           award.value = [];
           awardNameList = [];
+          update(['update-awardIDs']);
         }
 
         /* -------extracting publication ---------- */

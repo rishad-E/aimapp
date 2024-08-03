@@ -52,7 +52,7 @@ class ProfileHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileSkillController());
     final profileC = Get.put(ProfileHomeController());
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((time) {
       log(id, name: 'callback uid profile Home');
       controller.getProfileAlldataFunction(uId: id);
       profileC.fetchAlluserData(uId: id);
@@ -108,128 +108,148 @@ class ProfileHomeScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      infoContainer(child: Obx(() {
+                      Obx(() {
                         final data = profileC.userData.value;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                infoHeading("Personal Info"),
-                                GestureDetector(
-                                  onTap: () =>
-                                      Get.to(() => ProfilePersonalInfoScreen(
-                                            user: data,
-                                            id: id,
-                                            dob: profileC.userDOB.value,
-                                            gender: profileC.userGender.value,
-                                          )),
-                                  child: Icon(Icons.edit, color: kpurple),
-                                )
-                              ],
-                            ),
-                            hBox,
-                            infoText(
-                              text1: 'Full Name:',
-                              text2: data?.name ?? '_',
-                            ),
-                            infoText(
-                              text1: 'Username:',
-                              text2: data?.username ?? '_',
-                            ),
-                            infoText(
-                              text1: 'Date of Birth:',
-                              text2: profileC.userDOB.value,
-                            ),
-                            infoText(
-                              text1: 'Gender:',
-                              text2: profileC.userGender.value,
-                            ),
-                            hBox,
-                            hBox,
-                            regularText(data?.about ?? '_', 12)
-                          ],
-                        );
-                      })),
+                        return profileC.isDataLoading.value
+                            ? shrinked
+                            : infoContainer(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        infoHeading("Personal Info"),
+                                        GestureDetector(
+                                          onTap: () => Get.to(
+                                              () => ProfilePersonalInfoScreen(
+                                                    user: data,
+                                                    id: id,
+                                                    dob: profileC.userDOB.value,
+                                                    gender: profileC
+                                                        .userGender.value,
+                                                  )),
+                                          child:
+                                              Icon(Icons.edit, color: kpurple),
+                                        )
+                                      ],
+                                    ),
+                                    hBox,
+                                    infoText(
+                                      text1: 'Full Name:',
+                                      text2: data?.name ?? '_',
+                                    ),
+                                    infoText(
+                                      text1: 'Username:',
+                                      text2: data?.username ?? '_',
+                                    ),
+                                    infoText(
+                                      text1: 'Date of Birth:',
+                                      text2: profileC.userDOB.value,
+                                    ),
+                                    infoText(
+                                      text1: 'Gender:',
+                                      text2: profileC.userGender.value,
+                                    ),
+                                    hBox,
+                                    hBox,
+                                    regularText(data?.about ?? '_', 12)
+                                  ],
+                                ),
+                              );
+                      }),
                       Obx(
                         () {
                           final data = profileC.userData.value;
-                          return infoContainer(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    infoHeading("Contact Info"),
-                                    GestureDetector(
-                                      onTap: () {
-                                        final contactC =
-                                            Get.put(UpdateContactInfo());
-                                        contactC.fetchCountryStates();
-                                        contactC.changePhone.value = 'onScreen';
-                                        contactC.otpError.value = '';
-                                        contactC.otpVerifiedNum.value = 0;
-                                        contactC.canSave.value = true;
-                                        Get.to(() => ProfileContactInfoScreen(
-                                            user: data, id: id));
-                                      },
-                                      child: Icon(Icons.edit, color: kpurple),
-                                    )
-                                  ],
-                                ),
-                                hBox,
-                                data?.phone == null
-                                    ? shrinked
-                                    : contactInfos(
-                                        text: '+91 ${data?.phone}',
-                                        svg: 'assets/images/call.svg',
-                                        height: 22,
-                                        fit: BoxFit.fitHeight,
+                          return profileC.isDataLoading.value
+                              ? shrinked
+                              : infoContainer(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          infoHeading("Contact Info"),
+                                          GestureDetector(
+                                            onTap: () {
+                                              final contactC =
+                                                  Get.put(UpdateContactInfo());
+                                              contactC.fetchCountryStates();
+                                              contactC.changePhone.value =
+                                                  'onScreen';
+                                              contactC.otpError.value = '';
+                                              contactC.otpVerifiedNum.value = 0;
+                                              contactC.canSave.value = true;
+                                              contactC
+                                                  .isNumChangedAfterVerification
+                                                  .value = false;
+                                              Get.to(() =>
+                                                  ProfileContactInfoScreen(
+                                                      user: data, id: id));
+                                            },
+                                            child: Icon(Icons.edit,
+                                                color: kpurple),
+                                          )
+                                        ],
                                       ),
-                                data?.email == null
-                                    ? shrinked
-                                    : contactInfos(
-                                        text: "${data?.email}",
-                                        svg: 'assets/images/email.svg',
-                                        fit: BoxFit.contain,
-                                      ),
-                                data?.address == null
-                                    ? shrinked
-                                    : contactInfos(
-                                        text:
-                                            "${data?.address}, ${data?.city}, ${data?.state}",
-                                        svg: 'assets/images/location.svg',
-                                        height: 27,
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                data?.instagram == "" || data?.instagram == null
-                                    ? shrinked
-                                    : contactInfos(
-                                        text: data?.instagram,
-                                        svg: 'assets/images/Instagram.svg',
-                                        fit: BoxFit.contain,
-                                      ),
-                                data?.facebook == "" || data?.facebook == null
-                                    ? shrinked
-                                    : contactInfos(
-                                        text: data?.facebook,
-                                        svg: 'assets/images/facebook.svg',
-                                        height: 23,
-                                        fit: BoxFit.contain,
-                                      ),
-                                data?.twitter == null || data?.twitter == ''
-                                    ? shrinked
-                                    : contactInfos(
-                                        text: data?.twitter,
-                                        svg: 'assets/images/twitter.svg',
-                                        fit: BoxFit.contain,
-                                      ),
-                              ],
-                            ),
-                          );
+                                      hBox,
+                                      data?.phone == null
+                                          ? shrinked
+                                          : contactInfos(
+                                              text: '+91 ${data?.phone}',
+                                              svg: 'assets/images/call.svg',
+                                              height: 22,
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                      data?.email == null
+                                          ? shrinked
+                                          : contactInfos(
+                                              text: "${data?.email}",
+                                              svg: 'assets/images/email.svg',
+                                              fit: BoxFit.contain,
+                                            ),
+                                      data?.address == null
+                                          ? shrinked
+                                          : contactInfos(
+                                              text:
+                                                  "${data?.address}, ${data?.city}, ${data?.state}",
+                                              svg: 'assets/images/location.svg',
+                                              height: 27,
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                      data?.instagram == "" ||
+                                              data?.instagram == null
+                                          ? shrinked
+                                          : contactInfos(
+                                              text: data?.instagram,
+                                              svg:
+                                                  'assets/images/Instagram.svg',
+                                              fit: BoxFit.contain,
+                                            ),
+                                      data?.facebook == "" ||
+                                              data?.facebook == null
+                                          ? shrinked
+                                          : contactInfos(
+                                              text: data?.facebook,
+                                              svg: 'assets/images/facebook.svg',
+                                              height: 23,
+                                              fit: BoxFit.contain,
+                                            ),
+                                      data?.twitter == null ||
+                                              data?.twitter == ''
+                                          ? shrinked
+                                          : contactInfos(
+                                              text: data?.twitter,
+                                              svg: 'assets/images/twitter.svg',
+                                              fit: BoxFit.contain,
+                                            ),
+                                    ],
+                                  ),
+                                );
                         },
                       ),
                       Obx(() {

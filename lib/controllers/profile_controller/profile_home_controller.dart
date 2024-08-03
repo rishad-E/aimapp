@@ -14,9 +14,11 @@ class ProfileHomeController extends GetxController {
   RxString userGender = ''.obs;
   Rx<User?> userData = Rx<User?>(null);
   RxBool isLoading = false.obs;
+  RxBool isDataLoading = false.obs;
 
   Future<void> fetchAlluserData({required String uId}) async {
     try {
+      isDataLoading.value = true;
       dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
       if (alldata != null) {
         /* ------- extracting user data ---------- */
@@ -32,6 +34,8 @@ class ProfileHomeController extends GetxController {
     } catch (e) {
       log('Error fetching profile data: $e', name: 'profile-alldata');
       userData.value = null;
+    } finally {
+      isDataLoading.value = false;
     }
   }
 
@@ -109,7 +113,6 @@ class ProfileHomeController extends GetxController {
             ),
           );
           selectedImage.value = "http://154.26.130.161/elearning/$resImage";
-       
         } else {
           Get.showSnackbar(
             const GetSnackBar(

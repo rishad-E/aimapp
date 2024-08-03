@@ -3,7 +3,9 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:sizer/sizer.dart';
 
 Widget ratingContainer() {
   return Container(
@@ -72,7 +74,7 @@ Decoration reviewContainerDec() {
   );
 }
 
-Widget writeReview() {
+Widget writeReview({required void Function()? onPressed}) {
   return Container(
     decoration: reviewContainerDec(),
     margin: const EdgeInsets.symmetric(horizontal: 18),
@@ -82,13 +84,20 @@ Widget writeReview() {
         semiBoldChoiceText(text: 'Review ACE Test', size: 14, color: kblack),
         regularText('Write a review for this ACE Test', 11),
         hBox,
-        reviewWriteViewButton(matter: 'Write a Course Review')
+        reviewWriteViewButton(
+            matter: 'Write a Course Review', onPressed: onPressed)
       ],
     ),
   );
 }
 
-Widget userReviewWidget() {
+Widget userReviewWidget(
+    {required String initials,
+    required String name,
+    required String time,
+    required String rating,
+    required String review}) {
+  int ratingValue = int.tryParse(rating) ?? 0;
   return Container(
     margin: const EdgeInsets.only(left: 18, right: 18, top: 12),
     padding: const EdgeInsets.all(12),
@@ -102,7 +111,7 @@ Widget userReviewWidget() {
               color: Color.fromARGB(255, 15, 187, 195), shape: BoxShape.circle),
           child: Center(
               child: Text(
-            'VS',
+            initials,
             style: TextStyle(color: kwhite),
           )),
         ),
@@ -112,19 +121,36 @@ Widget userReviewWidget() {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   semiBoldChoiceText(
-                    text: 'Somia Adeel  ●',
+                    text: '$name .',
                     size: 12,
                   ),
-                  wMBox,
-                  regularText('5 months ago', 8)
+                  wBox,
+                  regularText(time, 8.sp)
                 ],
               ),
-              regularText('⭐⭐⭐⭐ 3.0 Ratings', 11, color: kblack),
-              regularText(
-                  'I have a better understanding how the environment works',
-                  11),
+              // regularText('⭐⭐⭐⭐ $rating Ratings', 11, color: kblack),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(
+                  5,
+                  (index) => Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 1),
+                    child: SvgPicture.asset(
+                      'assets/images/star-review.svg',
+                      height: 15,
+                      colorFilter: ColorFilter.mode(
+                          ratingValue >= (index + 1)
+                              ? Colors.yellow
+                              : Colors.grey.shade300,
+                          BlendMode.srcIn),
+                    ),
+                  ),
+                ),
+              ),
+              review.isEmpty ? shrinked : regularText(review, 11),
               hBox,
               semiBoldChoiceText(
                 text: 'Was this review helpful?',
@@ -171,7 +197,8 @@ Widget userReviewWidget() {
   );
 }
 
-Widget reviewWriteViewButton({required String matter}) {
+Widget reviewWriteViewButton(
+    {required String matter, required void Function()? onPressed}) {
   return Container(
     width: double.infinity,
     margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -184,7 +211,7 @@ Widget reviewWriteViewButton({required String matter}) {
           ),
         ),
       ),
-      onPressed: () {},
+      onPressed: onPressed,
       child: semiBoldChoiceText(
         text: matter,
         size: 14,

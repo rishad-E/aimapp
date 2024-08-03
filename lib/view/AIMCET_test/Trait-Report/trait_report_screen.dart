@@ -14,14 +14,17 @@ import 'package:flutter/material.dart';
 class TraitReportPage extends StatelessWidget {
   final AIMCETController controller;
   final String uId;
-  const TraitReportPage({super.key, required this.controller, required this.uId});
+  const TraitReportPage(
+      {super.key, required this.controller, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     final data = controller.traitReport.value;
     if (data == null) {
       controller.fetchTraitReport(userId: uId);
-      return const Center(child: CircularProgressIndicator());
+      return Center(
+        child: CircularProgressIndicator(strokeWidth: 1, color: textFieldColor),
+      );
     }
     return Container(
       color: kwhite,

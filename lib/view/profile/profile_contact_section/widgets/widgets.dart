@@ -74,11 +74,20 @@ Widget otpValidateBox({required void Function()? onPressed}) {
           ),
         ),
       ),
-      onPressed:onPressed,
+      onPressed: onPressed,
       child: Text(
         'validate',
         style: TextStyle(color: mainPurple, fontSize: 11.sp),
       ),
     ),
   );
+}
+
+Widget otpErrorText(String error) {
+  return Text(error,
+      style: TextStyle(
+        color: Colors.red,
+        fontSize: 8.sp,
+        fontWeight: FontWeight.w400,
+      ));
 }

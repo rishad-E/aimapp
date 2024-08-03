@@ -104,7 +104,9 @@ class EducatorReferencePage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(prefix: phoneIcon()),
+                          decoration: infoFieldDecoration(
+                              prefix: phoneIcon(),
+                              hintText: 'Enter Mobile Number'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -176,7 +178,9 @@ class EducatorReferencePage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(prefix: phoneIcon()),
+                          decoration: infoFieldDecoration(
+                              prefix: phoneIcon(),
+                              hintText: 'Enter Mobile Number'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),

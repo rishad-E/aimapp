@@ -20,7 +20,7 @@ class EducatorPersonalDetailController extends GetxController {
 
   DateTime dateTime = DateTime.now();
   RxString selectedGender = ''.obs;
-  final List<String> genderOptions = ['Male', 'Female', 'Other',''];
+  final List<String> genderOptions = ['Male', 'Female', 'Other', ''];
   List<QualificationData> statusList = [];
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
@@ -160,5 +160,7 @@ class EducatorPersonalDetailController extends GetxController {
     emailController.clear();
     locationController.clear();
     mobileController.clear();
+    dobController.clear();
+    statusController.clear();
   }
 }

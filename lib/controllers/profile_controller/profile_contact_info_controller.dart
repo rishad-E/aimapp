@@ -40,6 +40,7 @@ class UpdateContactInfo extends GetxController {
   RxString changePhone = ''.obs;
   RxInt otpVerifiedNum = 0.obs;
   RxBool canSave = true.obs;
+  RxBool isNumChangedAfterVerification = false.obs;
 
   /* ---phases---
     1.onScreen
@@ -189,6 +190,7 @@ class UpdateContactInfo extends GetxController {
       otpError.value = 'OTP verified success';
       otpVerifiedNum.value++;
       canSave.value = true;
+      isNumChangedAfterVerification.value = false;
     }
   }
 
@@ -206,7 +208,7 @@ class UpdateContactInfo extends GetxController {
 
   Future<void> resendOTP({required String mob}) async {
     String? res = await OtpService().resendOTP(mobileNo: mob);
-    // if (res == 'OTP verified success') {}
+
     log(res.toString());
   }
   /*--------OTP validation------ */

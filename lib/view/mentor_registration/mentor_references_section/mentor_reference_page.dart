@@ -106,7 +106,9 @@ class MentorReferencesPage extends StatelessWidget {
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(10)
                           ],
-                          decoration: infoFieldDecoration(prefix: phoneIcon()),
+                          decoration: infoFieldDecoration(
+                              prefix: phoneIcon(),
+                              hintText: 'Enter Mobile Number'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -180,8 +182,8 @@ class MentorReferencesPage extends StatelessWidget {
                             LengthLimitingTextInputFormatter(10)
                           ],
                           decoration: infoFieldDecoration(
-                            prefix: phoneIcon(),
-                          ),
+                              prefix: phoneIcon(),
+                              hintText: 'Enter Mobile Number'),
                           style: const TextStyle(fontSize: 13),
                         ),
                       ),
@@ -193,7 +195,7 @@ class MentorReferencesPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 actionContainer(
-                                  text: 'Cancel',
+                                  text: 'Previous',
                                   textColor: mainPurple,
                                   boxColor: kwhite,
                                   borderColor: mainPurple,

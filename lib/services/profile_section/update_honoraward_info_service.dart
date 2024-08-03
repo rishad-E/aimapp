@@ -54,6 +54,7 @@ class UpdateHonorAwardService {
         ),
       );
       Map<String, dynamic> responseData = response.data;
+      log(responseData.toString(),name: 'awaaaaaaaaaaard');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         return successMessage;

@@ -145,4 +145,13 @@ class CounselorPersonalController extends GetxController {
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['couns-Personal details']);
   }
+
+  void clearAllfields() {
+    nameController.clear();
+    emailController.clear();
+    locationController.clear();
+    mobileController.clear();
+    dobController.clear();
+    statusController.clear();
+  }
 }

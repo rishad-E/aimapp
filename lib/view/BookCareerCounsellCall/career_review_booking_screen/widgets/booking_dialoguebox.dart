@@ -25,7 +25,6 @@ class BookingDialogueBox extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-         
           const Padding(
             padding: EdgeInsets.only(right: 50),
             child: AmyBotRadialColor(),

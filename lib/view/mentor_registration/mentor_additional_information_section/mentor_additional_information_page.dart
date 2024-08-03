@@ -79,7 +79,7 @@ class MentorAdditionalInfoPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 actionContainer(
-                                  text: 'Cancel',
+                                  text: 'Previous',
                                   textColor: mainPurple,
                                   boxColor: kwhite,
                                   borderColor: mainPurple,

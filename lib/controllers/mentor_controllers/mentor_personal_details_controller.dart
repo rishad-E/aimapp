@@ -164,5 +164,7 @@ class MentorPersonalDetailController extends GetxController {
     emailController.clear();
     locationController.clear();
     mobileController.clear();
+    dobController.clear();
+    statusController.clear();
   }
 }

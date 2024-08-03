@@ -25,6 +25,7 @@ class UpdateProfilePhotoService {
           headers: {'Content-Type': 'multipart/form-data'},
         ),
       );
+      log(response.data.toString(), name: 'update profile res');
       Map<String, dynamic> responseData = response.data;
       if (responseData.containsKey("message")) {
         return responseData;

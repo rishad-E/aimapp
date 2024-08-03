@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -22,9 +24,11 @@ class ProfileContactInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(UpdateContactInfo());
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFormFields(controller, user);
     });
+    log(controller.otpError.value, name: 'otp error value');
     return Scaffold(
       appBar: profileAppBar(title: 'Profile', doneWidget: shrinked),
       body: Container(
@@ -56,6 +60,8 @@ class ProfileContactInfoScreen extends StatelessWidget {
                         onChanged: (value) {
                           controller.allFieldSelect();
                           controller.update(['update-contactInfo']);
+                          controller.isNumChangedAfterVerification.value = true;
+                          controller.canSave.value = false;
                           if (value.length == 10) {
                             controller.validateNewNumber(mob: value);
                             // log(value.toString());
@@ -145,12 +151,7 @@ class ProfileContactInfoScreen extends StatelessWidget {
                       controller.otpError.value == 'OTP verified success' ||
                               controller.otpError.isEmpty
                           ? shrinked
-                          : Text(controller.otpError.value,
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 8.sp,
-                                fontWeight: FontWeight.w400,
-                              ))),
+                          : otpErrorText(controller.otpError.value)),
                   Obx(
                     () => controller.changePhone.value == 'sendOTP'
                         ? Column(
@@ -388,28 +389,47 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                       strokeWidth: 1, color: kwhite)
                                   : saveContainerText(
                                       text: 'Save',
-                                      textColor: c.canSave.value == false
+                                      textColor: c.canSave.value == false ||
+                                              c.isNumChangedAfterVerification
+                                                  .value
                                           ? textFieldColor
                                           : c.saveText.value,
                                     ),
                             ),
                             onTap: () {
-                              c.canSave.value == false
-                                  ? null
-                                  : c.saveContactInfoFunction(
-                                      uId: id.toString(),
-                                      userName: c.usernameController.text,
-                                      mobNumber: c.mobController.text,
-                                      email: c.emailController.text,
-                                      address: c.addressController.text,
-                                      pincode: c.pincodeController.text,
-                                      city: c.cityController.text,
-                                      state: c.stateController.text,
-                                      country: c.countryController.text,
-                                      facebook: c.facebookController.text,
-                                      instagram: c.instagramController.text,
-                                      twitter: c.twitterController.text,
-                                    );
+                              if (c.canSave.value &&
+                                  !c.isNumChangedAfterVerification.value) {
+                                c.saveContactInfoFunction(
+                                  uId: id.toString(),
+                                  userName: c.usernameController.text,
+                                  mobNumber: c.mobController.text,
+                                  email: c.emailController.text,
+                                  address: c.addressController.text,
+                                  pincode: c.pincodeController.text,
+                                  city: c.cityController.text,
+                                  state: c.stateController.text,
+                                  country: c.countryController.text,
+                                  facebook: c.facebookController.text,
+                                  instagram: c.instagramController.text,
+                                  twitter: c.twitterController.text,
+                                );
+                              }
+                              // c.canSave.value == false&& !c.isNumChangedAfterVerification.value
+                              //     ? null
+                              //     : c.saveContactInfoFunction(
+                              //         uId: id.toString(),
+                              //         userName: c.usernameController.text,
+                              //         mobNumber: c.mobController.text,
+                              //         email: c.emailController.text,
+                              //         address: c.addressController.text,
+                              //         pincode: c.pincodeController.text,
+                              //         city: c.cityController.text,
+                              //         state: c.stateController.text,
+                              //         country: c.countryController.text,
+                              //         facebook: c.facebookController.text,
+                              //         instagram: c.instagramController.text,
+                              //         twitter: c.twitterController.text,
+                              //       );
                             },
                           ),
                         ],

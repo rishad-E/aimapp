@@ -11,15 +11,16 @@ import 'package:flutter/material.dart';
 class PersonalityReportPage extends StatelessWidget {
   final AIMCETController controller;
   final String uId;
-  const PersonalityReportPage({super.key, required this.controller, required this.uId});
+  const PersonalityReportPage(
+      {super.key, required this.controller, required this.uId});
 
   @override
   Widget build(BuildContext context) {
     final data = controller.personalityReort.value;
     if (data == null) {
       controller.fetchPersonalityReport(userId: uId);
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Center(
+        child: CircularProgressIndicator(strokeWidth: 1, color: textFieldColor),
       );
     }
     return Container(
