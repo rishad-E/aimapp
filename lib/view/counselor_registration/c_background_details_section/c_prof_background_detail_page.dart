@@ -10,9 +10,9 @@ import 'package:get/get.dart';
 class CounselorProfBackgroundPage extends StatelessWidget {
   CounselorProfBackgroundPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(CounserlorProfBGController(),permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounserlorProfBGController());
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(
@@ -103,7 +103,7 @@ class CounselorProfBackgroundPage extends StatelessWidget {
                               : buttonColor,
                           onTap: () {
                             if (formKey.currentState!.validate()) {
-                              Get.to(() => const CounselorAvailabilityPage());
+                              Get.to(() =>  CounselorAvailabilityPage());
                             }
                           },
                         ),

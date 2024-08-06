@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/mentor_controllers/mentor_background_detail_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +56,7 @@ class MentorDegreeBottomsheet extends StatelessWidget {
                 controller.degreeList.length,
                 (index) {
                   final data = controller.degreeList[index];
+                  log(data.toString());
                   return ListTile(
                     shape: const Border(
                         bottom: BorderSide(

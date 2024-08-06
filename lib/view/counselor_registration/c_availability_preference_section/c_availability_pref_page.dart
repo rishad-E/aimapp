@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CounselorAvailabilityPage extends StatelessWidget {
-  const CounselorAvailabilityPage({super.key});
-
+  CounselorAvailabilityPage({super.key});
+  final controller =
+      Get.put(CounselorAvailabilityController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounselorAvailabilityController());
     List<String> dayList = [
       "Monday",
       "Tuesday",

@@ -19,4 +19,13 @@ class EducatorBackgroundDetailController extends GetxController {
     }
     return null;
   }
+
+  void clearEduBgFields() {
+    degreeController.clear();
+    expertiesController.clear();
+    professionalController.clear();
+    affiliatedController.clear();
+    otherDegreeController.clear();
+    other.value = '';
+  }
 }

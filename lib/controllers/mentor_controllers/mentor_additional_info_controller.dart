@@ -25,4 +25,10 @@ class MentorAdditionalInfoController extends GetxController {
     }
     return null;
   }
+
+  void clearMentorAdditionalFields() {
+    philosophyController.clear();
+    mentorController.clear();
+    answers.clear();
+  }
 }

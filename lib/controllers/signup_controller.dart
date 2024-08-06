@@ -9,8 +9,9 @@ import 'package:get/get.dart';
 class SignUpController extends GetxController {
   final storage = const FlutterSecureStorage();
   TextEditingController nameController = TextEditingController();
-  TextEditingController roleController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
 
   RxBool areAllFieldsSelected = false.obs;
   Rx<Color> buttonTextColor = Rx<Color>(const Color.fromARGB(255, 83, 83, 83));

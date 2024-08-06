@@ -14,4 +14,12 @@ class CounserlorEduBGController extends GetxController {
     }
     return null;
   }
+
+  void clearCounselroBgFields() {
+    degreeController.clear();
+    certificationController.clear();
+    specializationController.clear();
+    otherDegreeController.clear();
+    otherDegree.value = '';
+  }
 }

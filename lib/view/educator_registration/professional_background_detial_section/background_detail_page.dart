@@ -15,9 +15,9 @@ import 'package:sizer/sizer.dart';
 class EducatorBackgroundDetailPage extends StatelessWidget {
   EducatorBackgroundDetailPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(EducatorBackgroundDetailController(),permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorBackgroundDetailController());
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
@@ -163,7 +163,7 @@ class EducatorBackgroundDetailPage extends StatelessWidget {
                                       log('degree=>${c.degreeController.text} experties=>${c.expertiesController.text} profession=>${c.professionalController.text} currently=>${c.affiliatedController.text} otherD=>${c.otherDegreeController.text}',
                                           name: 'edu-backgroundpage');
                                       Get.to(() =>
-                                          const EducatorSubjectCourseSelectPage());
+                                          EducatorSubjectCourseSelectPage());
                                     }
                                   },
                                 ),

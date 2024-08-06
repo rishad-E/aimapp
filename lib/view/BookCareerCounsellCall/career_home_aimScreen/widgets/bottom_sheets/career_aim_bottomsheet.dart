@@ -22,7 +22,7 @@ class CareerAimBottomsheet extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
         decoration: bottomSheetDecoration(),
-        height: 46.5.h,
+        height: 48.5.h,
         // height: 363,
         child: Column(
           children: [
@@ -39,7 +39,7 @@ class CareerAimBottomsheet extends StatelessWidget {
             ),
             hMBox,
             SizedBox(
-              height: 24.h,
+              height: 23.h,
               child: Obx(
                 () {
                   return controller.searchAimRes.isEmpty

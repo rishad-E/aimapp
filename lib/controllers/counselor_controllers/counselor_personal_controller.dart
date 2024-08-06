@@ -153,5 +153,6 @@ class CounselorPersonalController extends GetxController {
     mobileController.clear();
     dobController.clear();
     statusController.clear();
+    checkAllFileds();
   }
 }

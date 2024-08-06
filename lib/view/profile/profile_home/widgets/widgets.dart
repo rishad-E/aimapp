@@ -35,50 +35,53 @@ Widget buildTopContent(
   );
 }
 
-Widget buildProfileImage(
-        {required double profileHeight,
-        required void Function()? onPressed,
-        ImageProvider<Object>? image}) =>
-    Stack(
-      alignment: Alignment.bottomRight,
-      clipBehavior: Clip.none,
-      children: [
-        Container(
-          decoration: BoxDecoration(shape: BoxShape.circle, color: kwhite),
-          padding: const EdgeInsets.all(3),
-          child: CircleAvatar(
-            radius: profileHeight / 2,
-            backgroundColor: kwhite,
-            backgroundImage: image,
-          ),
+Widget buildProfileImage({
+  required double profileHeight,
+  required void Function()? onPressed,
+  ImageProvider<Object>? image,
+}) {
+  return Stack(
+    alignment: Alignment.bottomRight,
+    clipBehavior: Clip.none,
+    children: [
+      Container(
+        decoration: BoxDecoration(shape: BoxShape.circle, color: kwhite),
+        padding: const EdgeInsets.all(3),
+        child: CircleAvatar(
+          radius: profileHeight / 2,
+          backgroundColor: kwhite,
+          backgroundImage: image,
         ),
-        Positioned(
-          top: profileHeight / 1.4,
-          left: profileHeight / 1.3,
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: kwhite,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 1.2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: onPressed,
-              icon: Icon(
-                Icons.camera_alt,
-                color: kblack,
+      ),
+      Positioned(
+        top: profileHeight / 1.4,
+        left: profileHeight / 1.3,
+        child: Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: kwhite,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: const Offset(0, 1.2),
               ),
+            ],
+          ),
+          child: IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              Icons.camera_alt,
+              color: kblack,
             ),
           ),
         ),
-      ],
-    );
+      ),
+    ],
+  );
+}
+
 Widget infoContainer({required Widget child}) => Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

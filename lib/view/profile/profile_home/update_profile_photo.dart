@@ -40,16 +40,16 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                     : Container(
                         margin: const EdgeInsets.symmetric(horizontal: 25),
                         decoration: BoxDecoration(
-                            // color: Colors.red,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: profileC.selectedImage.value.isNotEmpty
-                                  ? NetworkImage(profileC.selectedImage.value)
-                                      as ImageProvider
-                                  : const AssetImage(
-                                      'assets/images/person.png'),
-                            )),
+                          // color: Colors.red,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: profileC.selectedImage.value.isNotEmpty
+                                ? NetworkImage(profileC.selectedImage.value)
+                                    as ImageProvider
+                                : const AssetImage('assets/images/person.png'),
+                          ),
+                        ),
                       ),
               ),
             ),

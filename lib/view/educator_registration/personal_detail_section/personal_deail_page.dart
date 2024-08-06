@@ -20,9 +20,9 @@ class EducatorPersonalDetailPage extends StatelessWidget {
   final UserDataModel? userDetails;
   EducatorPersonalDetailPage({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(EducatorPersonalDetailController());
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorPersonalDetailController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFields(userDetails, user, controller);
     });

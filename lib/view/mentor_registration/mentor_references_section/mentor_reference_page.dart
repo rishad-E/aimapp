@@ -16,9 +16,9 @@ import 'package:sizer/sizer.dart';
 class MentorReferencesPage extends StatelessWidget {
   MentorReferencesPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(MentorReferencesController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorReferencesController());
     return Scaffold(
       appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
@@ -224,7 +224,7 @@ class MentorReferencesPage extends StatelessWidget {
                                       );
                                       log('nameList=${c.referenceNames} relationList=${c.referenceRelation} mobList=>${c.referencePhone}  otherRelList=>${c.otherRelation}',
                                           name: 'reference page');
-                                      Get.to(() => const MentorMediaPage());
+                                      Get.to(() => MentorMediaPage());
                                     }
                                   },
                                 ),

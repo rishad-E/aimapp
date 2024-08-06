@@ -1,27 +1,35 @@
 import 'dart:developer';
 import 'package:aimshala/controllers/all_data_controller.dart';
+import 'package:aimshala/controllers/counselor_controllers/counselor_final_media_controller.dart';
 import 'package:aimshala/controllers/counselor_controllers/counselor_personal_controller.dart';
+import 'package:aimshala/controllers/educator_controllers/educator_add_media_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
+import 'package:aimshala/controllers/mentor_controllers/mentor_add_media_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/counselor_registration/c_final_thanks_section/c_final_thanks_page.dart';
 import 'package:aimshala/view/counselor_registration/c_personal_detail_section/c_personal_detail_page.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
+import 'package:aimshala/view/educator_registration/submitted_section/submitted_final_page.dart';
+import 'package:aimshala/view/mentor_registration/mentor_final_submit_page/mentor_final_submit_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
+import 'package:aimshala/view/your_journey_temp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class TempScreen extends StatelessWidget {
   final String uId;
-  const TempScreen({super.key, required this.uId});
+  final String name;
+  TempScreen({super.key, required this.uId, required this.name});
 
+  final mentor = Get.put(MentorPersonalDetailController());
+  final educator = Get.put(EducatorPersonalDetailController());
+  final counselor = Get.put(CounselorPersonalController());
+  final alldataC = Get.put(AllDataController());
   @override
   Widget build(BuildContext context) {
-    final mentor = Get.put(MentorPersonalDetailController());
-    final educator = Get.put(EducatorPersonalDetailController());
-    final counselor = Get.put(CounselorPersonalController());
-    final alldataC = Get.put(AllDataController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       alldataC.getUserallData(uId: uId);
       mentor.checkMentorRegtakenFunction(uId: uId);
@@ -41,7 +49,8 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(educator.isEducator, name: 'isEducator');
                 if (educator.isEducator == 'no') {
-                  educator.clearAllfields();
+                  Get.put(EducatorMediaAddController())
+                      .deleteAllEducatorControllers();
                   Get.to(
                     () => EducatorPersonalDetailPage(
                       user: alldataC.userData,
@@ -50,14 +59,9 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.snackbar(
-                    "Hi ",
-                    "You are already an Educator...",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
+                  Get.to(
+                    () => EducatorSubmitFinalPage(name: name),
+                    transition: Transition.fadeIn,
                   );
                 }
               },
@@ -68,7 +72,8 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(mentor.isMentor, name: 'isMentor');
                 if (mentor.isMentor == 'no') {
-                  mentor.clearAllfields();
+                  Get.put(MentorAddMediaController())
+                      .deleteAllMentorControllers();
                   Get.to(
                     () => MentorPersonalDetailPage(
                       user: alldataC.userData,
@@ -77,14 +82,9 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.snackbar(
-                    "Hi ",
-                    "You are already a Mentor...",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
+                  Get.to(
+                    () => MentorFinalSubmitPage(name: name),
+                    transition: Transition.fadeIn,
                   );
                 }
               },
@@ -95,7 +95,8 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(counselor.isCounselor, name: 'isCounselor');
                 if (counselor.isCounselor == 'no') {
-                  counselor.clearAllfields();
+                  // counselor.clearAllfields();
+                  Get.put(CounselorMediaController()).clearAllControllerClass();
                   Get.to(
                     () => CounselorPersonalSection(
                       user: alldataC.userData,
@@ -103,19 +104,18 @@ class TempScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  Get.snackbar(
-                    "Hi ",
-                    "You are already a Counselor...",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
+                  Get.to(
+                    () => CounselorThanksPage(name: name),
+                    transition: Transition.fadeIn,
                   );
                 }
               },
               item: "Counselor",
             ),
+            elevatedButtonItems(
+              onPressed: () => Get.to(() => const EducationTimeline()),
+              item: 'your-journey-temp',
+            )
           ],
         ),
       ),
@@ -200,3 +200,14 @@ Widget elevatedButtonItems(
         throw const FileSystemException('Unable to access storage directory');
       }
  */
+
+
+ // Get.snackbar(
+                  //   "Hi ",
+                  //   "You are already an Educator...",
+                  //   snackPosition: SnackPosition.TOP,
+                  //   duration: const Duration(seconds: 2),
+                  //   backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                  //       .withOpacity(0.7),
+                  //   colorText: mainPurple,
+                  // );

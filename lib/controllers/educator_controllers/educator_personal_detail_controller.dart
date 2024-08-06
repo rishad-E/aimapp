@@ -56,20 +56,35 @@ class EducatorPersonalDetailController extends GetxController {
           List<dynamic> data = res['qualifications'];
           List<QualificationData> list =
               data.map((e) => QualificationData.fromJson(e)).toList();
-          statusList.addAll(list);
+          for (var item in list) {
+            if (!statusList.any((element) => element.title == item.title)) {
+              statusList.add(item);
+            }
+          }
+          // statusList.addAll(list);
         }
         if (res.containsKey('degreeData')) {
           List<dynamic> data = res['degreeData'];
           List<DegreeData> list =
               data.map((e) => DegreeData.fromJson(e)).toList();
           // degreeList.addAll(list);
-          bgEduController.degreeList.addAll(list);
+          for (var item in list) {
+            if (!bgEduController.degreeList
+                .any((element) => element.name == item.name)) {
+              bgEduController.degreeList.add(item);
+            }
+          }
         }
         if (res.containsKey('relationData')) {
           List<dynamic> data = res['relationData'];
           List<RelationData> list =
               data.map((e) => RelationData.fromJson(e)).toList();
-          refEduController.relationList.addAll(list);
+          for (var item in list) {
+            if (!refEduController.relationList
+                .any((element) => element.name == item.name)) {
+              refEduController.relationList.add(item);
+            }
+          }
         }
       }
     }
@@ -162,5 +177,6 @@ class EducatorPersonalDetailController extends GetxController {
     mobileController.clear();
     dobController.clear();
     statusController.clear();
+    checkAllFileds();
   }
 }

@@ -16,9 +16,9 @@ import 'package:sizer/sizer.dart';
 class EducatorReferencePage extends StatelessWidget {
   EducatorReferencePage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(EducatorReferenceController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorReferenceController());
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(

@@ -26,4 +26,11 @@ class EducatorSubjectCourseController extends GetxController {
     }
     update(['edu-SubjectCourseinfo']);
   }
+
+  void clearEducatorTeachFields(){
+    subjectController.clear();
+    topicController.clear();
+    seletedSubject.clear();
+    seletedTopic.clear();
+  }
 }

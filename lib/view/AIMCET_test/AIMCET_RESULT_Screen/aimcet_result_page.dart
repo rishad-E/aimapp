@@ -29,6 +29,7 @@ class AIMCETResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     int initialVal = 0;
     final controller = Get.put(AIMCETController());
+    // controller.fetchAllTestReviews();
        return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
@@ -273,7 +274,7 @@ class AIMCETResultScreen extends StatelessWidget {
                   );
                 }),
                 hMBox,
-                ratingContainer(),
+                ratingContainer(reviewData: controller.aimcetReviewData),
                 choiceSizedBox(height: 12),
                 writeReview(
                   onPressed: () {

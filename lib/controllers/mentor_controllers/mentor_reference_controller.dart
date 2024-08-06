@@ -70,4 +70,21 @@ class MentorReferencesController extends GetxController {
     nextBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['mentor-reference']);
   }
+
+  void clearMentorReferenceFields() {
+    nameController1.clear();
+    relationController1.clear();
+    mobileController1.clear();
+    nameController2.clear();
+    relationController2.clear();
+    mobileController2.clear();
+    otherRelationController1.clear();
+    otherRelationController2.clear();
+    referenceNames.clear();
+    referenceRelation.clear();
+    referencePhone.clear();
+    otherRelation.clear();
+    otherRelation1.value = '';
+    otherRelation2.value = '';
+  }
 }

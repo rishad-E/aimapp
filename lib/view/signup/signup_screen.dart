@@ -14,17 +14,18 @@ import 'package:sizer/sizer.dart';
 class SignUpScreen extends StatelessWidget {
   final String mobileNo;
   SignUpScreen({super.key, required this.mobileNo});
- final  storage = const FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   final GlobalKey<FormState> formKey = GlobalKey();
   final signUp = Get.put(SignUpController());
 
-  void getphoen()async {
+  void getphone() async {
     String? phone = await storage.read(key: 'phone');
-    log(phone.toString(),name: 'signupscreen');
+    log(phone.toString(), name: 'signupscreen');
   }
+
   @override
   Widget build(BuildContext context) {
-    getphoen();
+    getphone();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -55,7 +56,7 @@ class SignUpScreen extends StatelessWidget {
                         twoStyleTexts(
                             text1: 'Tell us More about', text2: 'You!'),
                         hBox,
-                        primarytxt("Your Name, Email& Current Role", 10.7.sp),
+                        primarytxt("Your Name & Email", 10.7.sp),
                         hLBox,
                         signupBox(
                           text: primarytxt3('Name', 9.5.sp),
@@ -79,6 +80,30 @@ class SignUpScreen extends StatelessWidget {
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
+                        // hBox,
+                        // signupBox(
+                        //   text: primarytxt3('Gender', 9.5.sp),
+                        //   textField: TextFormField(
+                        //     onChanged: (value) => signUp.allFieldsSelected(),
+                        //     controller: signUp.genderController,
+                        //     decoration: roleContainer(hintText: 'Enter Email'),
+                        //     validator: (value) => signUp.emailValidation(value),
+                        //     keyboardType: TextInputType.emailAddress,
+                        //     style: const TextStyle(fontSize: 13),
+                        //   ),
+                        // ),
+                        // hBox,
+                        // signupBox(
+                        //   text: primarytxt3('Date Of Birth', 9.5.sp),
+                        //   textField: TextFormField(
+                        //     onChanged: (value) => signUp.allFieldsSelected(),
+                        //     controller: signUp.dobController,
+                        //     decoration: roleContainer(hintText: 'DD/MM/YYYY'),
+                        //     validator: (value) => signUp.emailValidation(value),
+                        //     keyboardType: TextInputType.emailAddress,
+                        //     style: const TextStyle(fontSize: 13),
+                        //   ),
+                        // ),
                         hLBox,
                         SizedBox(
                           width: double.infinity,
@@ -98,7 +123,7 @@ class SignUpScreen extends StatelessWidget {
                                     c.signUpUserFunction(
                                       name: c.nameController.text,
                                       email: c.emailController.text,
-                                      mobileNo:  mobileWithoutCountryCode,
+                                      mobileNo: mobileWithoutCountryCode,
                                     );
                                   }
                                 },
@@ -111,7 +136,8 @@ class SignUpScreen extends StatelessWidget {
                                   },
                                 ),
                                 child: c.isSaving.value
-                                    ? CircularProgressIndicator(color: kwhite,strokeWidth: 1)
+                                    ? CircularProgressIndicator(
+                                        color: kwhite, strokeWidth: 1)
                                     : signUpText(
                                         textColor: c.buttonTextColor.value),
                               );

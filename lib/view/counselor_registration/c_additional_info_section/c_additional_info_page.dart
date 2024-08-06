@@ -10,9 +10,10 @@ import 'package:get/get.dart';
 class CounselorAdditionalinfoPage extends StatelessWidget {
   CounselorAdditionalinfoPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller =
+      Get.put(CounselorAdditionalinfoController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounselorAdditionalinfoController());
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(

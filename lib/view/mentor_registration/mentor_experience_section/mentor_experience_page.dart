@@ -15,11 +15,11 @@ import 'package:sizer/sizer.dart';
 class MentorExperiencePage extends StatelessWidget {
   MentorExperiencePage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(MentorExperienceController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorExperienceController());
     return Scaffold(
-     appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -145,8 +145,7 @@ class MentorExperiencePage extends StatelessWidget {
                                       log('RewardEarn=>${c.reward} experience=>${c.experienceController.text}',
                                           name: 'edu-personalpage');
                                       c.rewardSelected.value = '';
-                                      Get.to(
-                                          () => const MentorPreferencePage());
+                                      Get.to(() => MentorPreferencePage());
                                     } else if (c.reward.value == null) {
                                       c.rewardSelected.value = 'no';
                                     }

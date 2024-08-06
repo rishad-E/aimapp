@@ -14,11 +14,11 @@ import 'package:sizer/sizer.dart';
 class MentorAdditionalInfoPage extends StatelessWidget {
   MentorAdditionalInfoPage({super.key});
   final GlobalKey<FormState> formkey = GlobalKey();
+  final controller = Get.put(MentorAdditionalInfoController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorAdditionalInfoController());
     return Scaffold(
-    appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(
@@ -100,9 +100,11 @@ class MentorAdditionalInfoPage extends StatelessWidget {
                                           : buttonColor,
                                   onTap: () {
                                     if (formkey.currentState!.validate()) {
-                                      c.addAnswers(ans1: c.philosophyController.text, ans2: c.mentorController.text);
+                                      c.addAnswers(
+                                          ans1: c.philosophyController.text,
+                                          ans2: c.mentorController.text);
                                       log('qustions=>${c.qustions} answers=>${c.answers}');
-                                      Get.to(()=>MentorReferencesPage());
+                                      Get.to(() => MentorReferencesPage());
                                     }
                                   },
                                 ),

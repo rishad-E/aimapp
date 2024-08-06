@@ -13,10 +13,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class EducatorSubjectCourseSelectPage extends StatelessWidget {
-  const EducatorSubjectCourseSelectPage({super.key});
+   EducatorSubjectCourseSelectPage({super.key});
+  final c1 = Get.put(EducatorSubjectCourseController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final c1 = Get.put(EducatorSubjectCourseController());
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
@@ -57,10 +57,8 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                     return selectedContainer(
                                       sub: c1.seletedSubject[index],
                                       onTap: () {
-                                        c1.seletedSubject
-                                            .removeAt(index);
-                                        c1
-                                            .update(['edu-SubjectCourseinfo']);
+                                        c1.seletedSubject.removeAt(index);
+                                        c1.update(['edu-SubjectCourseinfo']);
                                       },
                                     );
                                   },
@@ -77,8 +75,7 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                     onFieldSubmitted: (value) {
                                       if (value.isNotEmpty) {
                                         c1.addSubject(
-                                            sub: c1
-                                                .subjectController.text);
+                                            sub: c1.subjectController.text);
                                         c1.subjectController.clear();
                                       }
                                     },
@@ -116,8 +113,7 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                       sub: c1.seletedTopic[index],
                                       onTap: () {
                                         c1.seletedTopic.removeAt(index);
-                                        c1
-                                            .update(['edu-SubjectCourseinfo']);
+                                        c1.update(['edu-SubjectCourseinfo']);
                                       },
                                     );
                                   },
@@ -134,8 +130,7 @@ class EducatorSubjectCourseSelectPage extends StatelessWidget {
                                     onFieldSubmitted: (value) {
                                       if (value.isNotEmpty) {
                                         c1.addTopic(
-                                            sub: c1
-                                                .topicController.text);
+                                            sub: c1.topicController.text);
                                         c1.topicController.clear();
                                       }
                                     },

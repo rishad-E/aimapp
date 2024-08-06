@@ -23,4 +23,9 @@ class MentorAvailabilityController extends GetxController {
     update(['mentor-availableTime']);
     update(['mentor-availability']);
   }
+
+  void clearMentorAvailabilityField(){
+    availableDays.clear();
+    availableTimes.clear();
+  }
 }

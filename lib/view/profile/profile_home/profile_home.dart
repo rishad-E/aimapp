@@ -78,7 +78,7 @@ class ProfileHomeScreen extends StatelessWidget {
                 () => buildProfileImage(
                   profileHeight: profileHeight,
                   image: profileC.selectedImage.value.isNotEmpty
-                      ? NetworkImage(profileC.selectedImage.value)
+                      ? NetworkImage(profileC.selectedImage.value,)
                           as ImageProvider
                       : const AssetImage('assets/images/person.png'),
                   onPressed: () =>

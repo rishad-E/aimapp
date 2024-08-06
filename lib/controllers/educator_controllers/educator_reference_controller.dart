@@ -59,8 +59,6 @@ class EducatorReferenceController extends GetxController {
     }
   }
 
- 
-
   void checkAlFields() {
     bool isAllFieldSelected = nameController1.text.isNotEmpty &&
         relationController1.text.isNotEmpty &&
@@ -71,5 +69,19 @@ class EducatorReferenceController extends GetxController {
     nextText.value = isAllFieldSelected ? kwhite : textFieldColor;
     nextBG.value = isAllFieldSelected ? mainPurple : buttonColor;
     update(['edu-referenceInfo']);
+  }
+
+  void clearEducatorRefFields() {
+    nameController1.clear();
+    relationController1.clear();
+    mobileController1.clear();
+    nameController2.clear();
+    relationController2.clear();
+    mobileController2.clear();
+    otherRelationController1.clear();
+    otherRelationController2.clear();
+    referenceNames.clear();
+    referenceRelation.clear();
+    referencePhone.clear();
   }
 }

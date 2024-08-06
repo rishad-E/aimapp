@@ -12,8 +12,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class EducatorAvailabilitySelectPage extends StatelessWidget {
-  const EducatorAvailabilitySelectPage({super.key});
-
+  EducatorAvailabilitySelectPage({super.key});
+  final controller = Get.put(EducatorAvailabilityController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     List<String> dayList = [
@@ -32,8 +32,7 @@ class EducatorAvailabilitySelectPage extends StatelessWidget {
       "Night (8-12)"
     ];
     return Scaffold(
-      appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
-
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Column(
@@ -46,7 +45,6 @@ class EducatorAvailabilitySelectPage extends StatelessWidget {
                     educatorFields(
                       item: primarytxt3('Preferred Days for Teaching', 9.5.sp),
                       textfiled: GetBuilder<EducatorAvailabilityController>(
-                          init: EducatorAvailabilityController(),
                           id: 'update-selectedDay',
                           builder: (c) {
                             return Column(
@@ -71,7 +69,6 @@ class EducatorAvailabilitySelectPage extends StatelessWidget {
                     educatorFields(
                       item: primarytxt3('Preferred Time Slots', 9.5.sp),
                       textfiled: GetBuilder<EducatorAvailabilityController>(
-                          init: EducatorAvailabilityController(),
                           id: 'update-selectedTime',
                           builder: (c) {
                             return Column(

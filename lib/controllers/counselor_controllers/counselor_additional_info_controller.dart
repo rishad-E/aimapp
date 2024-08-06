@@ -11,4 +11,9 @@ class CounselorAdditionalinfoController extends GetxController {
     }
     return null;
   }
+
+  void clearCounselorAddiationalFields(){
+    describeController.clear();
+    whyCounselor.clear();
+  }
 }

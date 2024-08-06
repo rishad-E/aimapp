@@ -63,8 +63,8 @@ class CareerHomeBottomSheet extends StatelessWidget {
                         activeColor: mainPurple,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
-                        value:
-                            controller.careerSelectedRole == valueListTile[index],
+                        value: controller.careerSelectedRole ==
+                            valueListTile[index],
                         onChanged: (value) {
                           if (value != null && value) {
                             bottomSheetListValueOnchanged(
@@ -107,7 +107,7 @@ void bottomSheetListValueOnchanged(
 TextStyle optionText() {
   return TextStyle(
     color: kblack,
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: FontWeight.w400,
   );
 }

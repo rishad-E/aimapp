@@ -11,11 +11,11 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class MentorPreferencePage extends StatelessWidget {
-  const MentorPreferencePage({super.key});
+  MentorPreferencePage({super.key});
+  final c1 = Get.put(MentorPreferenceController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
-    final c1 = Get.put(MentorPreferenceController());
     List<String> mentorModeList = ["Online", "Face-to-Face", "Both"];
     return Scaffold(
       appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
@@ -193,7 +193,7 @@ class MentorPreferencePage extends StatelessWidget {
                                           c.seletedSubject.isNotEmpty &&
                                           c.seletedTopic.isNotEmpty) {
                                         Get.to(() =>
-                                            const MentorAvailabilityPreferencePage());
+                                            MentorAvailabilityPreferencePage());
                                       }
                                     },
                                   ),

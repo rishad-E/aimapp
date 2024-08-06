@@ -11,9 +11,9 @@ import 'package:get/get.dart';
 class CounselorEduBackgroundPage extends StatelessWidget {
   CounselorEduBackgroundPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(CounserlorEduBGController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounserlorEduBGController());
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(

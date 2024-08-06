@@ -10,9 +10,9 @@ import 'package:get/get.dart';
 class CounselorExpertiesPage extends StatelessWidget {
   CounselorExpertiesPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(CounselorExpertiesController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounselorExpertiesController());
     List<String> primaryExperties = [
       'Career Counseling',
       'Academic Counseling',

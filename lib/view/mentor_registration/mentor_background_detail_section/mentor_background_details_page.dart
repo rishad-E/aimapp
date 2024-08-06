@@ -15,11 +15,12 @@ import 'package:sizer/sizer.dart';
 class MentorBackgroundDetailPage extends StatelessWidget {
   MentorBackgroundDetailPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller =
+      Get.put(MentorBackgroundDetailController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorBackgroundDetailController());
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Form(

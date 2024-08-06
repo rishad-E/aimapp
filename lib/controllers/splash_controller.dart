@@ -3,10 +3,7 @@ import 'dart:developer';
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
-import 'package:aimshala/controllers/counselor_controllers/counselor_personal_controller.dart';
-import 'package:aimshala/controllers/educator_controllers/educator_personal_detail_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -24,9 +21,6 @@ class SplashController extends GetxController {
   final loginController = Get.put(LoginController());
   final aimtestController = Get.put(AIMCETController());
   final bookingController = Get.put(BookCareerCounsellController());
-  final mentorController = Get.put(MentorPersonalDetailController());
-  final eduController = Get.put(EducatorPersonalDetailController());
-  final counsController = Get.put(CounselorPersonalController());
   final alldataController = Get.put(AllDataController());
   final Connectivity connectivity = Connectivity();
   bool isConnected = false;
@@ -110,9 +104,7 @@ class SplashController extends GetxController {
                     aimtestController.getTestSectionTextsFunc();
               }
             });
-            mentorController.checkMentorRegtakenFunction(uId: id.toString());
-            eduController.checkEducatorRegTakenFunction(uId: id.toString());
-            counsController.checkCounselorRegtakenFunction(uId: id.toString());
+          
             Get.off(() => const HomeScreen());
           }
         }

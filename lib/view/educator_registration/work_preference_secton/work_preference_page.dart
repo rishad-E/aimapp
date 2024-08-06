@@ -14,7 +14,8 @@ import 'package:sizer/sizer.dart';
 
 class EducatorWorkPreferencePage extends StatelessWidget {
   EducatorWorkPreferencePage({super.key});
-  final controller = Get.put(EducatorWorkPreferenceController());
+  final controller =
+      Get.put(EducatorWorkPreferenceController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     List<String> workModeList = ["Work from Home", "Work from Office", "Both"];
@@ -142,8 +143,8 @@ class EducatorWorkPreferencePage extends StatelessWidget {
                                       name: 'work preference');
                                   if (c.workMode.isNotEmpty &&
                                       c.teachingMode.isNotEmpty) {
-                                    Get.to(() =>
-                                        const EducatorAvailabilitySelectPage());
+                                    Get.to(
+                                        () => EducatorAvailabilitySelectPage());
                                   }
                                 },
                               ),

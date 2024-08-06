@@ -25,4 +25,10 @@ class CounselorAvailabilityController extends GetxController {
     update(['update-counsAvaiableTime']);
     update(['couns-availability']);
   }
+
+  void clearCounselorAvailableFields(){
+    additionalnoteController.clear();
+    availableDays.clear();
+    availableTimes.clear();
+  }
 }

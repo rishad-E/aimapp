@@ -74,7 +74,7 @@ class DrawerTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(14),
           color: textFieldColor.withOpacity(0.1),
         ),
         height: MediaQuery.of(context).size.height * 0.06,

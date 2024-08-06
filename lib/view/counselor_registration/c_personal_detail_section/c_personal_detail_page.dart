@@ -15,9 +15,9 @@ class CounselorPersonalSection extends StatelessWidget {
   final UserDataModel? userDetails;
   CounselorPersonalSection({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(CounselorPersonalController());
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CounselorPersonalController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFields(userDetails, user, controller);
     });

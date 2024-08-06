@@ -14,12 +14,12 @@ import 'package:sizer/sizer.dart';
 class EducatorAdditionalInfoPage extends StatelessWidget {
   EducatorAdditionalInfoPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller =
+      Get.put(EducatorAdditionalInfoController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorAdditionalInfoController());
     return Scaffold(
-       appBar: educatorAppBar(title: 'Educator Registration',backArrow: true),
-
+      appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
         child: SingleChildScrollView(
           child: Form(

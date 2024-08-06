@@ -37,7 +37,15 @@ class EducatorMediaAddController extends GetxController {
   RxString errorAgreement = ''.obs;
 
   RxBool saveDataLoading = false.obs;
-
+/*-----controllers------ */
+  final pController = Get.put(EducatorPersonalDetailController());
+  final bgController = Get.put(EducatorBackgroundDetailController());
+  final subjController = Get.put(EducatorSubjectCourseController());
+  final workController = Get.put(EducatorWorkPreferenceController());
+  final availableController = Get.put(EducatorAvailabilityController());
+  final additionaleController = Get.put(EducatorAdditionalInfoController());
+  final referenceController = Get.put(EducatorReferenceController());
+/*-----controllers------ */
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -117,13 +125,7 @@ class EducatorMediaAddController extends GetxController {
   void fetchAlldatas() async {
     try {
       saveDataLoading.value = true;
-      final pController = Get.put(EducatorPersonalDetailController());
-      final bgController = Get.put(EducatorBackgroundDetailController());
-      final subjController = Get.put(EducatorSubjectCourseController());
-      final workController = Get.put(EducatorWorkPreferenceController());
-      final availableController = Get.put(EducatorAvailabilityController());
-      final additionaleController = Get.put(EducatorAdditionalInfoController());
-      final referenceController = Get.put(EducatorReferenceController());
+
       String name = pController.nameController.text;
       String email = pController.emailController.text;
       String dob = pController.dobController.text;
@@ -162,9 +164,9 @@ class EducatorMediaAddController extends GetxController {
          highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
          experience=>$experience insittute=>$institute subs=>$subjects topics=>$topics relocate=$relocate workMode=>$workMode
          teachPrefer=>$teachPrefers prefDays=>$prefereDays prefTimes=>$prefereTimes  ques=>$questions ansrs=>$answers
-         refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations 
-         linkedIn=>${linkedInController.text}  resume=>$cv 
-         videoLink=>${mediaLinkController.text} videoFile=>$videoFile 
+         refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations
+         linkedIn=>${linkedInController.text}  resume=>$cv
+         videoLink=>${mediaLinkController.text} videoFile=>$videoFile
          id=>$id
          ''', name: 'all-fields');
       String? res =
@@ -212,6 +214,7 @@ class EducatorMediaAddController extends GetxController {
           ),
         );
         Get.to(() => EducatorSubmitFinalPage(name: name));
+        deleteAllEducatorControllers();
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -224,9 +227,26 @@ class EducatorMediaAddController extends GetxController {
           ),
         );
       }
+      // await Future.delayed(const Duration(seconds: 2));
+      // Get.to(() => EducatorSubmitFinalPage(name: name));
+      // deleteAllEducatorControllers();
     } catch (e) {
       saveDataLoading.value = false;
       log(e.toString(), name: 'educator submit data error');
     }
+  }
+
+  void deleteAllEducatorControllers() {
+    pController.clearAllfields();
+    bgController.clearEduBgFields();
+    subjController.clearEducatorTeachFields();
+    workController.clearEducatorWorkPrefFields();
+    availableController.clearEducatorAvailableFields();
+    additionaleController.clearEducatorAddiationalFields();
+    referenceController.clearEducatorRefFields();
+    linkedInController.clear();
+    mediaLinkController.clear();
+    filePath.value = '';
+    videofilePath.value = '';
   }
 }

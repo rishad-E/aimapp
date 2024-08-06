@@ -23,4 +23,10 @@ class MentorExperienceController extends GetxController {
     }
     return null;
   }
+
+  void clearMentorExpField() {
+    experienceController.clear();
+    reward.value = null;
+    rewardSelected.value = '';
+  }
 }

@@ -221,7 +221,7 @@ class AIMCETTestService {
     return null;
   }
 
-  Future<List?> getAllTestReviews() async {
+  Future<Map<String, dynamic>?> getAllTestReviews() async {
     String path = 'http://154.26.130.161/elearning/api/show-review';
     try {
       Response response = await dio.get(
@@ -231,8 +231,10 @@ class AIMCETTestService {
 
       Map<String, dynamic> resData = response.data;
       if (resData.containsKey('data')) {
-        List<dynamic> data = resData['data'];
-        return data;
+        // List<dynamic> data = resData['data'];
+        // log(resData.toString());
+        // return data;
+        return resData;
       } else if (resData.containsKey('error')) {
         if (resData['error'] is Map) {
           Map<String, dynamic> errors = resData['error'];

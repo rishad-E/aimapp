@@ -13,11 +13,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class MentorAvailabilityPreferencePage extends StatelessWidget {
-  const MentorAvailabilityPreferencePage({super.key});
-
+  MentorAvailabilityPreferencePage({super.key});
+  final controller = Get.put(MentorAvailabilityController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.put(MentorAvailabilityController());
     List<String> dayList = [
       "Monday",
       "Tuesday",
@@ -34,7 +33,7 @@ class MentorAvailabilityPreferencePage extends StatelessWidget {
       "Night (8-12)"
     ];
     return Scaffold(
-      appBar: mentorAppbar(title: 'Mentor Registration',backArrow: true),
+      appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(
         child: SingleChildScrollView(
           child: Column(
@@ -45,10 +44,9 @@ class MentorAvailabilityPreferencePage extends StatelessWidget {
                     boldText(text: 'Availability Preferences', size: 15.sp),
                     hLBox,
                     educatorFields(
-                      item:
-                          primarytxt3('Preferred Days for Teaching', 9.5.sp),
+                      item: primarytxt3('Preferred Days for Teaching', 9.5.sp),
                       textfiled: GetBuilder<MentorAvailabilityController>(
-                        init: MentorAvailabilityController(),
+                        init: controller,
                         id: 'mentor-availableDay',
                         builder: (c) {
                           return Column(
@@ -71,7 +69,7 @@ class MentorAvailabilityPreferencePage extends StatelessWidget {
                     educatorFields(
                       item: primarytxt3('Preferred Time Slots', 9.5.sp),
                       textfiled: GetBuilder<MentorAvailabilityController>(
-                        init: MentorAvailabilityController(),
+                        init: controller,
                         id: 'mentor-availableTime',
                         builder: (c) {
                           return Column(
@@ -119,7 +117,7 @@ class MentorAvailabilityPreferencePage extends StatelessWidget {
                                   if (c.availableDays.isNotEmpty &&
                                       c.availableTimes.isNotEmpty) {
                                     log('days=>${c.availableDays} times=>${c.availableTimes}');
-                                    Get.to(()=>MentorAdditionalInfoPage());
+                                    Get.to(() => MentorAdditionalInfoPage());
                                   }
                                 },
                               ),

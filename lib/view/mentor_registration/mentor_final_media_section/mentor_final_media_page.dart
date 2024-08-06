@@ -12,11 +12,11 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class MentorMediaPage extends StatelessWidget {
-  const MentorMediaPage({super.key});
+  MentorMediaPage({super.key});
+  final controller = Get.put(MentorAddMediaController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorAddMediaController());
     return Scaffold(
       appBar: mentorAppbar(title: 'Mentor Registration', backArrow: true),
       body: mentorBGContainer(

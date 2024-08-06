@@ -1,3 +1,4 @@
+import 'package:aimshala/models/AIMCET_TEST/test_all_reviews/test_all_reviews.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -7,7 +8,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sizer/sizer.dart';
 
-Widget ratingContainer() {
+Widget ratingContainer({AimcetReviewData? reviewData}) {
+  if (reviewData == null) {
+    return shrinked;
+  }
+  double doubleValue =
+      double.tryParse(reviewData.averageRating.toString()) ?? 0.0;
+  // int rating = doubleValue.toInt();
+
+  List<double> percentages =
+      reviewData.starPercentages!.map((percentageString) {
+    final match = RegExp(r"(\d+(\.\d+)?) %").firstMatch(percentageString);
+    if (match != null) {
+      return double.parse(match.group(1)!);
+    }
+    return 0.0;
+  }).toList();
   return Container(
     margin: const EdgeInsets.symmetric(horizontal: 18),
     padding: const EdgeInsets.all(10),
@@ -24,8 +40,28 @@ Widget ratingContainer() {
           children: [
             Column(
               children: [
-                semiBoldChoiceText(text: '4.0', size: 32, color: mainPurple),
-                regularText('⭐⭐⭐⭐', 12),
+                semiBoldChoiceText(
+                    text: reviewData.averageRating ?? '',
+                    size: 32,
+                    color: mainPurple),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List.generate(
+                    5,
+                    (index) => Container(
+                      padding: const EdgeInsets.only(right: 1, bottom: 4),
+                      child: SvgPicture.asset(
+                        'assets/images/star-review.svg',
+                        height: 15,
+                        colorFilter: ColorFilter.mode(
+                            doubleValue >= (index + 1)
+                                ? Colors.yellow
+                                : Colors.grey.shade300,
+                            BlendMode.srcIn),
+                      ),
+                    ),
+                  ),
+                ),
                 semiBoldChoiceText(
                   text: 'Course Rating',
                   size: 10,
@@ -35,7 +71,10 @@ Widget ratingContainer() {
             ),
             Expanded(
                 child: Column(
-              children: List.generate(5, (index) => linearPercentReview()),
+              children: List.generate(
+                  5,
+                  (index) =>
+                      linearPercentReview(5 - index, percentages[index])),
             ))
           ],
         ),
@@ -44,22 +83,40 @@ Widget ratingContainer() {
   );
 }
 
-Widget linearPercentReview() {
+Widget linearPercentReview(int starCount, double percentage) {
   return Row(
     children: [
       Expanded(
         child: LinearPercentIndicator(
           barRadius: const Radius.circular(20),
-          percent: .68,
+          percent: percentage / 100,
           progressColor: mainPurple,
           backgroundColor: const Color.fromARGB(255, 231, 230, 240),
           animation: true,
         ),
       ),
       wBox,
-      regularText('⭐⭐⭐⭐', 12),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: List.generate(
+          5,
+          (index) => Container(
+            padding: const EdgeInsets.only(right: 1, bottom: 4),
+            child: SvgPicture.asset(
+              'assets/images/star-review.svg',
+              height: 15,
+              colorFilter: ColorFilter.mode(
+                starCount >= (index + 1) ? Colors.yellow : Colors.grey.shade300,
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+        ),
+      ),
       choiceSizedBox(width: 3),
-      regularText('68%', 11),
+      percentage < 10
+          ? regularText('$percentage%  ', 11)
+          : regularText('$percentage%', 11),
     ],
   );
 }

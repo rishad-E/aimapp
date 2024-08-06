@@ -58,20 +58,37 @@ class MentorPersonalDetailController extends GetxController {
           List<dynamic> data = resData['qualifications'];
           List<QualificationData> list =
               data.map((e) => QualificationData.fromJson(e)).toList();
-          statusList.addAll(list);
+
+          for (var item in list) {
+            if (!statusList.any((element) => element.title == item.title)) {
+              statusList.add(item);
+            }
+          }
         }
         if (resData.containsKey('degreeData')) {
           List<dynamic> data = resData['degreeData'];
           List<DegreeData> list =
               data.map((e) => DegreeData.fromJson(e)).toList();
           // degreeList.addAll(list);
-          bgControllerMentor.degreeList.addAll(list);
+          // bgControllerMentor.degreeList.addAll(list);
+          for (var item in list) {
+            if (!bgControllerMentor.degreeList
+                .any((i) => i.name == item.name)) {
+              bgControllerMentor.degreeList.add(item);
+            }
+          }
         }
+
         if (resData.containsKey('relationData')) {
           List<dynamic> data = resData['relationData'];
           List<RelationData> list =
               data.map((e) => RelationData.fromJson(e)).toList();
-          refmentroController.relationList.addAll(list);
+          for (var item in list) {
+            if (!refmentroController.relationList
+                .any((i) => i.name == item.name)) {
+              refmentroController.relationList.add(item);
+            }
+          }
         }
       }
     }
@@ -166,5 +183,7 @@ class MentorPersonalDetailController extends GetxController {
     mobileController.clear();
     dobController.clear();
     statusController.clear();
+    checkAllFileds();
+    // statusList.clear();
   }
 }

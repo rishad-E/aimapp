@@ -47,4 +47,11 @@ class CounselorExpertiesController extends GetxController {
     }
     return null;
   }
+
+  void clearCounselorExpetiesFields(){
+    primaryController.clear();
+    secondaryController.clear();
+    primaryAreaList.clear();
+    secondaryAreaList.clear();
+  }
 }

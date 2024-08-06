@@ -24,4 +24,10 @@ class EducatorAvailabilityController extends GetxController {
     update(['update-selectedTime']);
     update(['edu-WorkPreference']);
   }
+
+  void clearEducatorAvailableFields(){
+    selectedDays.clear();
+    selectedTimes.clear();
+    
+  }
 }

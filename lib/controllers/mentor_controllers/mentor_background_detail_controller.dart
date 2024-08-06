@@ -18,4 +18,14 @@ class MentorBackgroundDetailController extends GetxController {
     }
     return null;
   }
+
+  void clearMentorBGfield() {
+    degreeController.clear();
+    expertiesController.clear();
+    professionalController.clear();
+    affiliatedController.clear();
+    otherDegreecontroller.clear();
+    other.value = '';
+    // degreeList.clear();
+  }
 }

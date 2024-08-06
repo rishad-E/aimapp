@@ -1,3 +1,5 @@
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
+import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/controllers/home_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
@@ -19,19 +21,46 @@ import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    String? name;
-    String? id;
-  
-    final UserModel? userData = Get.put(LoginController()).userData;
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? name;
+  String? id;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Fetch user data and call functions when the widget is initialized
+    final UserModel? userData = Get.find<LoginController>().userData;
     if (userData != null) {
       name = userData.user?.name ?? '';
       id = userData.user?.id.toString();
     }
+
+    // Call the functions with the fetched user ID
+    if (id != null) {
+      Get.find<AIMCETController>()
+          .checkAimcetTestTakenFunction(userId: id.toString());
+      Get.find<BookCareerCounsellController>()
+          .checkCounsellcallBookingFuntion(userId: id.toString());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // String? name;
+    // String? id;
+    // final UserModel? userData = Get.put(LoginController()).userData;
+    // if (userData != null) {
+    //   name = userData.user?.name ?? '';
+    //   id = userData.user?.id.toString();
+    // }
 
     return Scaffold(
       extendBodyBehindAppBar: true,

@@ -38,6 +38,15 @@ class MentorAddMediaController extends GetxController {
 
   RxBool agree = false.obs;
   RxBool saveDataLoading = false.obs;
+  /*-------controllers--------- */
+  final pController = Get.put(MentorPersonalDetailController());
+  final bgController = Get.put(MentorBackgroundDetailController());
+  final mExController = Get.put(MentorExperienceController());
+  final mPrefController = Get.put(MentorPreferenceController());
+  final mAvalController = Get.put(MentorAvailabilityController());
+  final mAdditionalController = Get.put(MentorAdditionalInfoController());
+  final mRefController = Get.put(MentorReferencesController());
+  /*-------controllers--------- */
 
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -108,13 +117,6 @@ class MentorAddMediaController extends GetxController {
   void fetchDataAndSubmit() async {
     try {
       saveDataLoading.value = true;
-      final pController = Get.put(MentorPersonalDetailController());
-      final bgController = Get.put(MentorBackgroundDetailController());
-      final mExController = Get.put(MentorExperienceController());
-      final mPrefController = Get.put(MentorPreferenceController());
-      final mAvalController = Get.put(MentorAvailabilityController());
-      final mAdditionalController = Get.put(MentorAdditionalInfoController());
-      final mRefController = Get.put(MentorReferencesController());
 
       String name = pController.nameController.text;
       String email = pController.emailController.text;
@@ -209,6 +211,7 @@ id=>$id''', name: 'mentor all data');
           ),
         );
         Get.to(() => MentorFinalSubmitPage(name: name));
+        deleteAllMentorControllers();
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -221,28 +224,28 @@ id=>$id''', name: 'mentor all data');
           ),
         );
       }
+      // await Future.delayed(const Duration(seconds: 2));
+      // Get.to(() => MentorFinalSubmitPage(name: name));
+      // deleteAllMentorControllers();
     } catch (e) {
       saveDataLoading.value = false;
       log(e.toString(), name: 'mentor submit error c');
+    } finally {
+      saveDataLoading.value = false;
     }
   }
+
+  void deleteAllMentorControllers() {
+    pController.clearAllfields();
+    bgController.clearMentorBGfield();
+    mExController.clearMentorExpField();
+    mPrefController.clearMentorPreferenceField();
+    mAvalController.clearMentorAvailabilityField();
+    mAdditionalController.clearMentorAdditionalFields();
+    mRefController.clearMentorReferenceFields();
+    linkedInController.clear();
+    mediaLinkController.clear();
+    filePath.value = '';
+    videofilePath.value = '';
+  }
 }
-
-
-
-
-
-
-
-//       log('''name=>$name email=>$email phone=>$phone address=$address
-// highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
-// earn=>$earnReward  rewardDes=>$rewardDescription
-// mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
-// prefDays=>$prefDays prefTimes=>$prefTimes
-// questions=>$questions answers=>$answers
-// refName=>$refNames refRel=>$refRelations refPhone=>$refPhones refOther=>$refOtherRel
-// linkedINLink=>${linkedInController.text} videoLink=>${mediaLinkController.text}
-// cvFileX=>$filePath
-// cvFileFile=>$cv
-// videoX=>$videofilePath
-// videoFile=>$video''');

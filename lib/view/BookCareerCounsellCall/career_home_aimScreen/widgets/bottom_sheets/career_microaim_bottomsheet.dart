@@ -20,9 +20,9 @@ class CareerMicroAimBottomsheet extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20, 10, 10, 0),
+        padding: const EdgeInsets.fromLTRB(20, 8, 10, 0),
         decoration: bottomSheetDecoration(),
-        height: 53.h,
+        height: 54.h,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

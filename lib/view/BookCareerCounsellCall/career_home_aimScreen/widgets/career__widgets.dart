@@ -111,7 +111,7 @@ Widget aimInitialWidget({Widget? textField}) {
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading:
-              bottomHeading('Select your Aim', 18, FontWeight.w700, kblack),
+              bottomHeading('Select your Aim', 17, FontWeight.w700, kblack),
         ),
         Container(child: textField),
       ],
@@ -142,7 +142,7 @@ Widget remindWidget() {
       ),
       Text(
         " You can Choose more than one Micro aim",
-        style: TextStyle(color: textFieldColor),
+        style: TextStyle(color: textFieldColor,fontSize: 13),
       ),
     ],
   );

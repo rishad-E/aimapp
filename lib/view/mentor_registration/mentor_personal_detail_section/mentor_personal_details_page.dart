@@ -19,9 +19,9 @@ class MentorPersonalDetailPage extends StatelessWidget {
   final UserDataModel? userDetails;
   MentorPersonalDetailPage({super.key, this.user, this.userDetails});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(MentorPersonalDetailController());
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MentorPersonalDetailController());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       initializeFields(userDetails, user, controller);
     });

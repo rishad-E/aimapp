@@ -152,8 +152,10 @@ class AimcetContainer extends StatelessWidget {
                         shape: buttonShape(round: 8),
                       ),
                       onPressed: () {
-                        // Get.to(() => AIMCETQualificationScreen(uId: id));
                         Get.to(() => AIMCETGuideLinePage(uId: id));
+                        // controller.showAllreview = false;
+                        // Get.to(() =>
+                        //     AIMCETResultScreen(userName: userName, uId: id));
                       },
                       icon: Text(
                         "Take Psychometric Test",

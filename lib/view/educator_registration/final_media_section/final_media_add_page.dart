@@ -14,9 +14,9 @@ import 'package:sizer/sizer.dart';
 class EducatorMediaAddPage extends StatelessWidget {
   EducatorMediaAddPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final controller = Get.put(EducatorMediaAddController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(EducatorMediaAddController());
     return Scaffold(
       appBar: educatorAppBar(title: 'Educator Registration', backArrow: true),
       body: educatorBGContainer(
@@ -153,8 +153,10 @@ class EducatorMediaAddPage extends StatelessWidget {
                           wBox,
                           Expanded(
                               child: finalAgreementText(
-                            onTapTerms: () => log('Terms and Conditions', name: 'ontap-terms'),
-                            onTapPrivacy: () => log('Privacy policy', name: 'ontap-privacy'),
+                            onTapTerms: () => log('Terms and Conditions',
+                                name: 'ontap-terms'),
+                            onTapPrivacy: () =>
+                                log('Privacy policy', name: 'ontap-privacy'),
                           ))
                         ],
                       ),

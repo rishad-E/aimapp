@@ -22,4 +22,10 @@ class EducatorAdditionalInfoController extends GetxController {
     }
     return null;
   }
+
+  void clearEducatorAddiationalFields(){
+    descriptionController.clear();
+    joinAimshalaController.clear();
+    answers.clear();
+  }
 }

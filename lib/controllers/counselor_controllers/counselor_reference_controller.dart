@@ -85,4 +85,21 @@ class CounselorReferenceController extends GetxController {
     saveBG.value = isAllFiledSelected ? mainPurple : buttonColor;
     update(['update-counsReference']);
   }
+
+  void clearCounselorRefFields() {
+    name1Controller.clear();
+    relation1Controller.clear();
+    mob1Controller.clear();
+    name2Controller.clear();
+    relation2Controller.clear();
+    mob2Controller.clear();
+    otherRela1Controller.clear();
+    otherRela2Controller.clear();
+    otherRela1.value = '';
+    otherRela2.value = '';
+    referenceNames.clear();
+    referenceRelation.clear();
+    referencePhone.clear();
+    refOtherRelation.clear();
+  }
 }

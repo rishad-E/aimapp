@@ -13,4 +13,11 @@ class CounserlorProfBGController extends GetxController {
     }
     return null;
   }
+
+  void clearCounselorProfFields(){
+    jobTitleController.clear();
+    expertiesController.clear();
+    currentController.clear();
+    experienceController.clear();
+  }
 }

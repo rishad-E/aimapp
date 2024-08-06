@@ -38,6 +38,16 @@ class CounselorMediaController extends GetxController {
   RxString errorAgreement = ''.obs;
   RxBool isSaving = false.obs;
 
+  /*-------controllers-------- */
+  final pController = Get.put(CounselorPersonalController());
+  final eduBGController = Get.put(CounserlorEduBGController());
+  final profBGController = Get.put(CounserlorProfBGController());
+  final availabilityController = Get.put(CounselorAvailabilityController());
+  final expertiesControler = Get.put(CounselorExpertiesController());
+  final additionalinfoC = Get.put(CounselorAdditionalinfoController());
+  final refController = Get.put(CounselorReferenceController());
+  /*-------controllers-------- */
+
   Future<void> pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -124,13 +134,6 @@ class CounselorMediaController extends GetxController {
   void fetchDataSubmit() async {
     try {
       isSaving.value = true;
-      final pController = Get.put(CounselorPersonalController());
-      final eduBGController = Get.put(CounserlorEduBGController());
-      final profBGController = Get.put(CounserlorProfBGController());
-      final availabilityController = Get.put(CounselorAvailabilityController());
-      final expertiesControler = Get.put(CounselorExpertiesController());
-      final additionalinfoC = Get.put(CounselorAdditionalinfoController());
-      final refController = Get.put(CounselorReferenceController());
 
       String name = pController.nameController.text;
       String email = pController.emailController.text;
@@ -175,43 +178,43 @@ class CounselorMediaController extends GetxController {
       }
 
       String logEntry = '''
-      id: $id
-      Name: $name
-      Email: $email
-      Address: $address
-      DOB: $dob
-      Gender: $gender
-      Status: $status
-      Phone: $phone
-      Highest Degree: $highDegree
-      Other Degree: $otherDegree
-      Certification: $certification
-      Specialization: $specialization
-      Job Title: $jobTitle
-      Experties: $experties
-      Experience: $experience
-      Company: $company
-      Available Days: $days
-      Available Times: $times
-      Additional Note: $additionalNote
-      Primary Expertise: $primaryExp
-      Secondary Expertise: $secondaryExp
-      Other Primary: $otherPrimary
-      Other Secondary: $otherSecondary
-      Counsel Philosophy Qus: $counselPhilosophyQus
-      Counsel Philosophy Ans: $counselPhilosophyAns
-      Why Counsel Qus: $whyCounselQus
-      Why Counsel Ans: $whyCounselAns
-      Reference Names: $refNames
-      Reference Relations: $refRelations
-      Reference Phones: $refPhones
-      Reference Other Relations: $refOtherRel
-      lnkedLink: $linkedInLink
-      videoLink: $videoLink
-      cv: $cv
-      video: $video
-      temsAgree: $termsAgree
-    ''';
+        id: $id
+        Name: $name
+        Email: $email
+        Address: $address
+        DOB: $dob
+        Gender: $gender
+        Status: $status
+        Phone: $phone
+        Highest Degree: $highDegree
+        Other Degree: $otherDegree
+        Certification: $certification
+        Specialization: $specialization
+        Job Title: $jobTitle
+        Experties: $experties
+        Experience: $experience
+        Company: $company
+        Available Days: $days
+        Available Times: $times
+        Additional Note: $additionalNote
+        Primary Expertise: $primaryExp
+        Secondary Expertise: $secondaryExp
+        Other Primary: $otherPrimary
+        Other Secondary: $otherSecondary
+        Counsel Philosophy Qus: $counselPhilosophyQus
+        Counsel Philosophy Ans: $counselPhilosophyAns
+        Why Counsel Qus: $whyCounselQus
+        Why Counsel Ans: $whyCounselAns
+        Reference Names: $refNames
+        Reference Relations: $refRelations
+        Reference Phones: $refPhones
+        Reference Other Relations: $refOtherRel
+        lnkedLink: $linkedInLink
+        videoLink: $videoLink
+        cv: $cv
+        video: $video
+        temsAgree: $termsAgree
+      ''';
 
       log(logEntry);
       String? res = await SaveCounselorRegService().saveCounselorRegistraion(
@@ -264,6 +267,7 @@ class CounselorMediaController extends GetxController {
           ),
         );
         Get.to(() => CounselorThanksPage(name: name));
+        clearAllControllerClass();
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -276,11 +280,26 @@ class CounselorMediaController extends GetxController {
           ),
         );
       }
-      
+
       // await Future.delayed(const Duration(seconds: 2));
-      // Get.to(() => const CounselorThanksPage());
+      // Get.to(() => CounselorThanksPage(name: name));
+      // clearAllControllerClass();
     } finally {
       isSaving.value = false;
     }
+  }
+
+  void clearAllControllerClass() {
+    pController.clearAllfields();
+    eduBGController.clearCounselroBgFields();
+    profBGController.clearCounselorProfFields();
+    availabilityController.clearCounselorAvailableFields();
+    expertiesControler.clearCounselorExpetiesFields();
+    additionalinfoC.clearCounselorAddiationalFields();
+    refController.clearCounselorRefFields();
+    linkController.clear();
+    videoController.clear();
+    filePath.value = '';
+    videofilePath.value = '';
   }
 }

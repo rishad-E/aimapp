@@ -47,6 +47,7 @@ class AIMCETController extends GetxController {
   TestuserDetails? testuserDetails;
   List<AlltestReview> testReviews = [];
   bool showAllreview = false;
+  AimcetReviewData? aimcetReviewData;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
     totalQ = 0;
@@ -408,16 +409,18 @@ class AIMCETController extends GetxController {
   }
 
   Future<void> fetchAllTestReviews() async {
-    List<dynamic>? res = await AIMCETTestService().getAllTestReviews();
-    if (res != null) {
+    Map<String, dynamic>? resData =
+        await AIMCETTestService().getAllTestReviews();
+    if (resData != null) {
+      aimcetReviewData = AimcetReviewData.fromJson(resData);
+      List<dynamic> reviewData = resData['data'];
       List<AlltestReview> data =
-          res.map((e) => AlltestReview.fromJson(e)).toList();
+          reviewData.map((e) => AlltestReview.fromJson(e)).toList();
       for (var item in data) {
         if (!testReviews.any((i) => i.review?.id == item.review?.id)) {
           testReviews.add(item);
         }
       }
-      // testReviews.addAll(data);
     }
     update(['show-Allreviews']);
   }

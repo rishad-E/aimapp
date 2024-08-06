@@ -14,9 +14,9 @@ import 'package:sizer/sizer.dart';
 class CounselorMediaPage extends StatelessWidget {
   CounselorMediaPage({super.key});
   final GlobalKey<FormState> formKey = GlobalKey();
+  final c = Get.put(CounselorMediaController(), permanent: true);
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(CounselorMediaController());
     return Scaffold(
       appBar: counselorAppBar(backArrow: true),
       body: counselorContainer(
@@ -153,7 +153,8 @@ class CounselorMediaPage extends StatelessWidget {
                     () => saveContainer(
                       boxColor: c.agree.value ? mainPurple : buttonColor,
                       child: c.isSaving.value
-                          ? CircularProgressIndicator(strokeWidth: 1,color: kwhite)
+                          ? CircularProgressIndicator(
+                              strokeWidth: 1, color: kwhite)
                           : saveContainerText(
                               text: 'Save',
                               textColor:

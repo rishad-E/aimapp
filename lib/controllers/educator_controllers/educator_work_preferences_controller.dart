@@ -22,4 +22,10 @@ class EducatorWorkPreferenceController extends GetxController {
     update(['update-teachingMode']);
     update(['edu-WorkPreference']);
   }
+
+  void clearEducatorWorkPrefFields() {
+    relocate.value = null;
+    workMode = '';
+    teachingMode = '';
+  }
 }

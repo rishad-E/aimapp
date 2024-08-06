@@ -37,4 +37,12 @@ class MentorPreferenceController extends GetxController {
     }
     update(['mentor-preferences']);
   }
+
+  void clearMentorPreferenceField() {
+    subjectController.clear();
+    topicController.clear();
+    seletedSubject.clear();
+    seletedTopic.clear();
+    mentorMode = '';
+  }
 }
