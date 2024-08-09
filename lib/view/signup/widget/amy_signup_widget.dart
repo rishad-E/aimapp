@@ -157,32 +157,39 @@ InputDecoration amyTextfieldDecor({bool isAskingDOB = false}) {
       ));
 }
 
-Widget amyOptionContainer({required String option}) {
+Widget amyOptionContainer({required String option, required bool multiselect}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
     margin: const EdgeInsets.only(right: 7),
     decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 244, 244, 244),
+        color:
+            multiselect ? mainPurple.withOpacity(0.04) : const Color.fromARGB(255, 244, 244, 244),
         borderRadius: BorderRadius.circular(8)),
     child: Text(
       option,
-      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w400),
+      style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w400,
+          color: multiselect ? mainPurple : kblack),
     ),
   );
 }
 
-Widget skipText() {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: const Color.fromARGB(255, 251, 237, 250)),
-    child: const Text(
-      "Skip all questions for now",
-      style: TextStyle(
-          color: Color.fromARGB(255, 182, 56, 175),
-          fontSize: 12,
-          fontWeight: FontWeight.w600),
+Widget skipText({void Function()? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: const Color.fromARGB(255, 251, 237, 250)),
+      child: const Text(
+        "I'll do it Later",
+        style: TextStyle(
+            color: Color.fromARGB(255, 182, 56, 175),
+            fontSize: 12,
+            fontWeight: FontWeight.w600),
+      ),
     ),
   );
 }
@@ -191,12 +198,12 @@ Widget goHomeContainer() {
   return Container(
     // height: 35,
     margin: const EdgeInsets.symmetric(vertical: 12),
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: const Color.fromARGB(255, 251, 237, 250)),
+        color: mainPurple.withOpacity(0.04)),
     child: const Text(
-      "Go to Homepage",
+      "Let's Explore Aimshala",
       style: TextStyle(
           color: Color.fromARGB(255, 182, 56, 175),
           fontSize: 12,
