@@ -5,6 +5,8 @@ import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/login/login_screen.dart';
 import 'package:aimshala/view/login/widget/widgets_login.dart';
+import 'package:aimshala/view/signup/widget/custom_textfiled.dart';
+import 'package:aimshala/view/signup/widget/signup_bottomsheet.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -18,14 +20,14 @@ class SignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey();
   final signUp = Get.put(SignUpController());
 
-  void getphone() async {
-    String? phone = await storage.read(key: 'phone');
-    log(phone.toString(), name: 'signupscreen');
-  }
+  // void getphone() async {
+  //   String? phone = await storage.read(key: 'phone');
+  //   log(phone.toString(), name: 'signupscreen');
+  // }
 
   @override
   Widget build(BuildContext context) {
-    getphone();
+    // getphone();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -59,7 +61,7 @@ class SignUpScreen extends StatelessWidget {
                         primarytxt("Your Name & Email", 10.7.sp),
                         hLBox,
                         signupBox(
-                          text: primarytxt3('Name', 9.5.sp),
+                          text: primarytxt3('Name', 9.sp),
                           textField: TextFormField(
                             onChanged: (value) => signUp.allFieldsSelected(),
                             controller: signUp.nameController,
@@ -70,7 +72,7 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         hBox,
                         signupBox(
-                          text: primarytxt3('Email', 9.5.sp),
+                          text: primarytxt3('Email', 9.sp),
                           textField: TextFormField(
                             onChanged: (value) => signUp.allFieldsSelected(),
                             controller: signUp.emailController,
@@ -80,30 +82,34 @@ class SignUpScreen extends StatelessWidget {
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),
-                        // hBox,
-                        // signupBox(
-                        //   text: primarytxt3('Gender', 9.5.sp),
-                        //   textField: TextFormField(
-                        //     onChanged: (value) => signUp.allFieldsSelected(),
-                        //     controller: signUp.genderController,
-                        //     decoration: roleContainer(hintText: 'Enter Email'),
-                        //     validator: (value) => signUp.emailValidation(value),
-                        //     keyboardType: TextInputType.emailAddress,
-                        //     style: const TextStyle(fontSize: 13),
-                        //   ),
-                        // ),
-                        // hBox,
-                        // signupBox(
-                        //   text: primarytxt3('Date Of Birth', 9.5.sp),
-                        //   textField: TextFormField(
-                        //     onChanged: (value) => signUp.allFieldsSelected(),
-                        //     controller: signUp.dobController,
-                        //     decoration: roleContainer(hintText: 'DD/MM/YYYY'),
-                        //     validator: (value) => signUp.emailValidation(value),
-                        //     keyboardType: TextInputType.emailAddress,
-                        //     style: const TextStyle(fontSize: 13),
-                        //   ),
-                        // ),
+                        hBox,
+                        signupBox(
+                          text: primarytxt3('Gender', 9.sp),
+                          textField: TextFormField(
+                            onChanged: (value) => signUp.allFieldsSelected(),
+                            controller: signUp.genderController,
+                            decoration:
+                                roleContainer(hintText: 'Select Gender'),
+                            validator: (value) => signUp.fieldValidation(value),
+                            // keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(fontSize: 13),
+                            readOnly: true,
+                            onTap: () => showSignUpGenderOptions(context),
+                          ),
+                        ),
+                        hBox,
+                        signupBox(
+                          text: primarytxt3('Date Of Birth', 9.sp),
+                          textField: TextFormField(
+                            onChanged: (value) => signUp.allFieldsSelected(),
+                            controller: signUp.dobController,
+                            decoration: roleContainer(hintText: 'DD/MM/YYYY'),
+                            validator: (value) => signUp.fieldValidation(value),
+                            keyboardType: TextInputType.datetime,
+                            inputFormatters: [DateInputFormatter()],
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
                         hLBox,
                         SizedBox(
                           width: double.infinity,
@@ -118,12 +124,14 @@ class SignUpScreen extends StatelessWidget {
                                       c.areAllFieldsSelected.value) {
                                     String mobileWithoutCountryCode =
                                         mobileNo.substring(2);
-                                    log('name=>${c.nameController.text} email=>${c.emailController.text} mobile=>$mobileWithoutCountryCode',
+                                    log('name=>${c.nameController.text} email=>${c.emailController.text} mobile=>$mobileWithoutCountryCode gender=>${c.genderController.text} dob=>${c.dobController.text}',
                                         name: 'signupScreen');
                                     c.signUpUserFunction(
                                       name: c.nameController.text,
                                       email: c.emailController.text,
                                       mobileNo: mobileWithoutCountryCode,
+                                      gender: c.genderController.text,
+                                      dob: c.dobController.text,
                                     );
                                   }
                                 },
@@ -153,6 +161,13 @@ class SignUpScreen extends StatelessWidget {
           )),
         ),
       ),
+    );
+  }
+
+  void showSignUpGenderOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const SignupGenderSheet(),
     );
   }
 }

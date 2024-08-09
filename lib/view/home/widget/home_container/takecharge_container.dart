@@ -1,78 +1,117 @@
+import 'dart:async';
 import 'dart:developer';
-
+import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_date_time_Booking/career_date_time_booking_screen.dart';
-import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/career_aim_screen.dart';
-import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/career_home_screen.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_aim_screen/career_aim_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
-class TakeChargeC extends StatelessWidget {
+class TakeChargeC extends StatefulWidget {
   final String userName;
-  const TakeChargeC({super.key, required this.userName});
+  final String uId;
+  const TakeChargeC({super.key, required this.userName, required this.uId});
+
+  @override
+  State<TakeChargeC> createState() => _TakeChargeCState();
+}
+
+class _TakeChargeCState extends State<TakeChargeC> {
+  Timer? _timer;
+  final controller = Get.put(BookCareerCounsellController());
+  final allDataC = Get.put(AllDataController());
+  final now = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize and start the timer
+    _timer = Timer.periodic(const Duration(minutes: 5), (Timer timer) {
+      Get.find<AIMCETController>()
+          .checkAimcetTestTakenFunction(userId: widget.uId);
+      Get.find<BookCareerCounsellController>()
+          .checkCounsellcallBookingFuntion(userId: widget.uId);
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(BookCareerCounsellController());
-    final allDataC = Get.put(AllDataController());
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        // color: kwhite,
         image: const DecorationImage(
             image: AssetImage('assets/images/2box.png'), fit: BoxFit.cover),
       ),
       child: Obx(
         () {
           final data = controller.counselBookedModel?.data;
-          return controller.isBooked.value == 'yes' &&
-                  controller.counselBookedModel?.data != null
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(height: 2.h),
-                    counselBooked(
-                      context: context,
-                      time: data!.formattedTime.toString(),
-                      date: data.formattedDate.toString(),
-                      onPressed: () {},
-                    )
-                  ],
+          if (controller.isBooked.value == 'yes' && data != null) {
+            try {
+              final timeFormat = DateFormat('HH:mm');
+              final startTime = timeFormat.parse(data.startTime.toString());
+              final endTime = timeFormat.parse(data.endTime.toString());
+              final todayStart = DateTime(now.year, now.month, now.day,
+                  startTime.hour, startTime.minute);
+              final todayEnd = DateTime(
+                  now.year, now.month, now.day, endTime.hour, endTime.minute);
+              final isJoinNow =
+                  now.isAfter(todayStart) && now.isBefore(todayEnd);
+              // log('starttime=>$startTime    endtime=>$endTime   todaystart=>$todayStart todayE=>$todayEnd  isjoin=>$isJoinNow');
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(height: 2.h),
+                  counselBooked(
+                    context: context,
+                    time: data.formattedTime.toString(),
+                    date: data.formattedDate.toString(),
+                    onPressed: () {},
+                    isJoinNow: isJoinNow,
+                  )
+                ],
+              );
+            } catch (e) {
+              log("Error parsing time: $e");
+              return const Center(child: Text("Error displaying session"));
+            }
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(height: 3.5.h),
+                counselNotBooked(
+                  onPressed: () {
+                    log("career aim=>${allDataC.userDetails?.aim}",
+                        name: 'takecha');
+                    if (allDataC.userDetails?.aim?.isEmpty == true) {
+                      Get.to(() => BookCareerAimPage(),
+                          transition: Transition.fade);
+                    } else {
+                      Get.to(() => const CareerDateTimeBookingScreen(),
+                          transition: Transition.fade);
+                    }
+                  },
                 )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(height: 3.5.h),
-                    counselNotBooked(
-                      onPressed: () {
-                        if (allDataC.userDetails?.userRole == null) {
-                          Get.to(() => BookCareerHomePage());
-                        } else {
-                          log("micro=>${allDataC.userDetails?.aim?.name}");
-                          if (allDataC.userDetails?.userRole != null &&
-                              (allDataC.userDetails?.aim?.name == "" ||
-                                  allDataC.userDetails?.aim?.name == null)) {
-                            controller.searchAimOptions(query: '');
-                            Get.to(() => BookCareerAimPage(),
-                                transition: Transition.fade);
-                          } else {
-                            Get.to(() => const CareerDateTimeBookingScreen(),
-                                transition: Transition.fade);
-                          }
-                        }
-                      },
-                    )
-                  ],
-                );
+              ],
+            );
+          }
         },
       ),
     );
@@ -83,7 +122,8 @@ Widget counselBooked(
     {required BuildContext context,
     required String time,
     required String date,
-    required void Function()? onPressed}) {
+    required void Function()? onPressed,
+    required bool isJoinNow}) {
   return Container(
     padding: const EdgeInsets.only(bottom: 8, top: 0),
     child: Column(
@@ -138,7 +178,8 @@ Widget counselBooked(
                 ],
               ),
               wMBox,
-              SizedBox(
+              Expanded(
+                child: SizedBox(
                   height: 4.2.h,
                   child: ElevatedButton.icon(
                     style: ButtonStyle(
@@ -148,14 +189,16 @@ Widget counselBooked(
                     ),
                     onPressed: onPressed,
                     icon: Text(
-                      "Counseling Session",
+                      isJoinNow ? 'Join Now' : "Counseling Session",
                       style: TextStyle(
                           fontSize: 11.sp,
                           color: const Color.fromARGB(255, 15, 187, 195),
                           fontWeight: FontWeight.w600),
                     ),
                     label: SvgPicture.asset('assets/images/Video-booked.svg'),
-                  ))
+                  ),
+                ),
+              )
             ],
           ),
         ),

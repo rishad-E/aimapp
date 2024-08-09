@@ -21,12 +21,14 @@ class SignUpController extends GetxController {
     required String name,
     required String email,
     required String mobileNo,
+    required String gender,
+    required String dob,
   }) async {
     try {
       isSaving.value = true;
       update(['button-signup']);
-      Map<String, dynamic>? res = await SignUpService()
-          .signUpUser(email: email, mobile: mobileNo, name: name);
+      Map<String, dynamic>? res = await SignUpService().signUpUser(
+          email: email, mobile: mobileNo, name: name, gender: gender, dob: dob);
       if (res != null) {
         if (res.containsKey('message')) {
           User? user = User.fromJson(res["user"]);
@@ -100,9 +102,18 @@ class SignUpController extends GetxController {
     return null;
   }
 
+  String? fieldValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter this Filed';
+    }
+    return null;
+  }
+
   void allFieldsSelected() {
-    bool allFieldsSelected =
-        nameController.text.isNotEmpty && emailController.text.isNotEmpty;
+    bool allFieldsSelected = nameController.text.isNotEmpty &&
+        emailController.text.isNotEmpty &&
+        genderController.text.isNotEmpty &&
+        dobController.text.isNotEmpty;
     // Update the reactive variable
     areAllFieldsSelected.value = allFieldsSelected;
     buttonTextColor.value = allFieldsSelected

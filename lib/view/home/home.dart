@@ -1,5 +1,3 @@
-import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/controllers/career_booking_controller.dart';
 import 'package:aimshala/controllers/home_controller.dart';
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
@@ -21,46 +19,18 @@ import 'package:aimshala/view/home/widget/home_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String? name;
-  String? id;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Fetch user data and call functions when the widget is initialized
-    final UserModel? userData = Get.find<LoginController>().userData;
+  Widget build(BuildContext context) {
+    String? name;
+    String? id;
+    final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       name = userData.user?.name ?? '';
       id = userData.user?.id.toString();
     }
-
-    // Call the functions with the fetched user ID
-    if (id != null) {
-      Get.find<AIMCETController>()
-          .checkAimcetTestTakenFunction(userId: id.toString());
-      Get.find<BookCareerCounsellController>()
-          .checkCounsellcallBookingFuntion(userId: id.toString());
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // String? name;
-    // String? id;
-    // final UserModel? userData = Get.put(LoginController()).userData;
-    // if (userData != null) {
-    //   name = userData.user?.name ?? '';
-    //   id = userData.user?.id.toString();
-    // }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -78,12 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   const YourJourneyContiner(),
                   homeCHB,
-                  TakeChargeC(userName: name.toString()),
+                  TakeChargeC(userName: name.toString(), uId: id.toString()),
                   homeCHB,
-                  AimcetContainer(
-                    userName: name.toString(),
-                    id: id.toString(),
-                  ),
+                  AimcetContainer(userName: name.toString(), id: id.toString()),
                   homeCHB,
                   Padding(
                     padding: const EdgeInsets.only(left: 18),

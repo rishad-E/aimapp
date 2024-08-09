@@ -20,7 +20,7 @@ class CareerAimService {
       );
       // log(response.data.toString(), name: 'search aim res');
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data['Aims'];
+        List<dynamic> data = response.data['aims'];
         final res = data.map((json) => Aim.fromJson(json)).toList();
         return res;
       } else {

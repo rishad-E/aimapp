@@ -7,11 +7,15 @@ class SignUpService {
   Dio dio = Dio();
   String path = 'http://154.26.130.161/elearning/api/user-registeration';
 
-  Future<Map<String, dynamic>?> signUpUser(
-      {required String email,
-      required String mobile,
-      required String name}) async {
-    log(email + mobile + name, name: 'service');
+  Future<Map<String, dynamic>?> signUpUser({
+    required String email,
+    required String mobile,
+    required String name,
+    required String gender,
+    required String dob,
+  }) async {
+    log('email=>$email  mobile=>$mobile  name=>$name gender=>$gender dob=>$dob',
+        name: 'signup-service');
     try {
       Response response = await dio.post(
         path,
@@ -22,6 +26,8 @@ class SignUpService {
           'phone': mobile,
           'name': name,
           'email': email,
+          'gender': gender,
+          'dob': dob,
           "user_active": "1",
           "referral_code": "AIM001"
         },

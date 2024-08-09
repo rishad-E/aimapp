@@ -1,6 +1,5 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/bottom_sheets/career_home_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -30,6 +29,7 @@ PreferredSizeWidget careerAppBar() {
       style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
     ),
     centerTitle: true,
+    // leading: IconButton(onPressed: ()=>isSaving ? null : Get.back(), icon: Icon(Icons.arrow_back,color: kpurple)),
   );
 }
 
@@ -139,16 +139,18 @@ Widget remindWidget() {
       SvgPicture.asset(
         "assets/images/aimicon.svg",
         // color: Colors.purple,
+        // fit: BoxFit.scaleDown,
       ),
+      wBox,
       Text(
-        " You can Choose more than one Micro aim",
-        style: TextStyle(color: textFieldColor,fontSize: 13),
+        "You can Choose more than one Micro aim",
+        style: TextStyle(color: textFieldColor, fontSize: 12),
       ),
     ],
   );
 }
 
-Widget checking({required String microAim, required Function()? onTap}) {
+Widget selectedAimContainer({required String microAim, required Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Container(
@@ -163,9 +165,10 @@ Widget checking({required String microAim, required Function()? onTap}) {
           Flexible(
             child: Text(
               microAim,
-              style: const TextStyle(
-                fontSize: 14,
+              style:  TextStyle(
+                fontSize: 13,
                 fontWeight: FontWeight.w500,
+                color: kblack.withOpacity(.8)
               ),
               overflow: TextOverflow.ellipsis,
             ),
@@ -215,5 +218,37 @@ BoxDecoration bottomSheetDecoration() {
       topLeft: Radius.circular(27),
       topRight: Radius.circular(27),
     ),
+  );
+}
+
+TextStyle optionText() {
+  return TextStyle(
+    color: kblack,
+    fontSize: 13,
+    fontWeight: FontWeight.w400,
+  );
+}
+
+Text bottomHeading(
+    String text, double size, FontWeight? fontWeight, Color? color) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: color,
+      fontSize: size,
+      fontWeight: FontWeight.w700,
+    ),
+  );
+}
+
+Widget careerAimContainer({Widget? child}) {
+  return Container(
+    width: double.infinity,
+    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+    decoration: BoxDecoration(
+      border: Border.all(color: const Color.fromARGB(255, 173, 174, 175)),
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: child,
   );
 }

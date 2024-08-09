@@ -28,8 +28,8 @@ class AmySignUpController extends GetxController {
   List<Option> otherOptionList = [];
   List<String> genderOptionList = [];
 
-  String? nameSecond;
-  String? idSecond;
+  // String? nameSecond;
+  // String? idSecond;
 
   final loginC = Get.put(LoginController());
 
@@ -64,7 +64,7 @@ class AmySignUpController extends GetxController {
       isTyping = false;
       update(['send-to-amy']);
     }
-    isAskingDOB = true;
+    // isAskingDOB = true;
   }
 
   void sendMessage(BuildContext context) async {

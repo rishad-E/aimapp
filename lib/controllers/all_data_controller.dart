@@ -17,7 +17,6 @@ class AllDataController extends GetxController {
       userData = UserData.fromJson(res['user'])  ;
       log(userData!.name.toString(), name: 'user-all-role');
       
-
       // log(userDetails!.gender.toString(), name: 'user-all-data');
     }
   }

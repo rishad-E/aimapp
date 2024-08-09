@@ -10,11 +10,10 @@ class SlotBookingService {
     required String uId,
     required String appointDate,
     required String appointTime,
-    required String aimId,
     required List<String> microAim,
   }) async {
     String path = Apis().aimUrl + Apis().saveSlote;
-    log('id=>$uId appointDate=>$appointDate appointTime=>$appointTime aimId=>$aimId microAim=>$microAim',
+    log('id=>$uId appointDate=>$appointDate appointTime=>$appointTime  microAim=>$microAim',
         name: 'reviewBooking servie');
     try {
       Response response = await dio.post(
@@ -23,17 +22,31 @@ class SlotBookingService {
           "user_id": uId,
           "appoint_date": appointDate,
           "appoint_time": appointTime,
-          "aim_category": aimId,
-          "micro_aim": microAim
+          "career_class": microAim
         },
         options: Options(validateStatus: (status) => status! < 599),
       );
-      log(response.statusCode.toString(), name: 'slot booking res');
-
-      if (response.statusCode == 200) {
-        String res = response.data["message"];
-        log(res, name: 'slot booking msg success');
-        return res;
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('status')) {
+          if (resData['status'] == 'success') {
+            String success = resData['message'];
+            return success;
+          } else {
+            String error = resData['message'];
+            return error;
+          }
+        } else if (resData.containsKey('error')) {
+          Map<String, dynamic> errors = resData['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            return errorMessage;
+          }
+        }
+      } else if (response.data is String) {
+        String msg = response.data;
+        return msg;
       }
     } catch (e) {
       log(e.toString(), name: 'slot booking error');

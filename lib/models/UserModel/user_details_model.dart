@@ -1,12 +1,9 @@
-
-
 class UserDataModel {
   UserData? userData;
   String? userRole;
   String? gender;
   String? dob;
-  Aim? aim;
-  Aim? microAim;
+  List<Aim>? aim;
   String? userDataModelClass;
   String? program;
   String? childProgram;
@@ -18,7 +15,6 @@ class UserDataModel {
     this.gender,
     this.dob,
     this.aim,
-    this.microAim,
     this.userDataModelClass,
     this.program,
     this.childProgram,
@@ -32,9 +28,9 @@ class UserDataModel {
         userRole: json["user_role"],
         gender: json["gender"],
         dob: json["DOB"],
-        aim: json["aim"] == null ? null : Aim.fromJson(json["aim"]),
-        microAim:
-            json["micro_aim"] == null ? null : Aim.fromJson(json["micro_aim"]),
+        aim: json["aim"] == null || json['aim'] == 'Null'
+            ? []
+            : List<Aim>.from(json["aim"]!.map((x) => Aim.fromJson(x))),
         userDataModelClass: json["class"],
         program: json["program"],
         childProgram: json["child_program"],
@@ -46,8 +42,8 @@ class UserDataModel {
         "user_role": userRole,
         "gender": gender,
         "DOB": dob,
-        "aim": aim?.toJson(),
-        "micro_aim": microAim?.toJson(),
+        "aim":
+            aim == null ? [] : List<dynamic>.from(aim!.map((x) => x.toJson())),
         "class": userDataModelClass,
         "program": program,
         "child_program": childProgram,
@@ -58,31 +54,48 @@ class UserDataModel {
 class Aim {
   int? id;
   String? name;
+  int? parentId;
+  int? industryId;
+  int? status;
+  String? slug;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Aim({
     this.id,
     this.name,
+    this.parentId,
+    this.industryId,
+    this.status,
+    this.slug,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  factory Aim.fromJson(Map<String, dynamic> json) {
-    var idValue = json["id"];
-    int? parsedId;
-    if (idValue != null) {
-      if (idValue is int) {
-        parsedId = idValue;
-      } else if (idValue is String) {
-        parsedId = int.tryParse(idValue);
-      }
-    }
-    return Aim(
-      id: parsedId,
-      name: json["name"],
-    );
-  }
+  factory Aim.fromJson(Map<String, dynamic> json) => Aim(
+        id: json["id"],
+        name: json["name"],
+        parentId: json["parent_id"],
+        industryId: json["industry_id"],
+        status: json["status"],
+        slug: json["slug"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "parent_id": parentId,
+        "industry_id": industryId,
+        "status": status,
+        "slug": slug,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }
 

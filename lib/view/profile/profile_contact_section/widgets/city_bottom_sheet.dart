@@ -1,7 +1,7 @@
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/bookcareercounsellcall/career_home_aimScreen/widgets/career__widgets.dart';
+import 'package:aimshala/view/bookcareercounsellcall/career_aim_screen/widgets/career__widgets.dart';
 import 'package:aimshala/view/profile/profile_contact_section/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

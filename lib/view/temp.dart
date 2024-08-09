@@ -28,14 +28,19 @@ class TempScreen extends StatelessWidget {
   final educator = Get.put(EducatorPersonalDetailController());
   final counselor = Get.put(CounselorPersonalController());
   final alldataC = Get.put(AllDataController());
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((time) {
       alldataC.getUserallData(uId: uId);
       mentor.checkMentorRegtakenFunction(uId: uId);
       educator.checkEducatorRegTakenFunction(uId: uId);
       counselor.checkCounselorRegtakenFunction(uId: uId);
     });
+
+      // Timer.periodic(Duration(seconds: 5), (Timer timer) {
+      //   yourFunction();
+      // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -59,9 +64,16 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.to(
-                    () => EducatorSubmitFinalPage(name: name),
-                    transition: Transition.fadeIn,
+                  Get.to(() => EducatorSubmitFinalPage(name: name),
+                      transition: Transition.fadeIn);
+                  Get.snackbar(
+                    "Hi $name",
+                    "You are already an Educator...",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
                   );
                 }
               },
@@ -82,9 +94,17 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.to(
-                    () => MentorFinalSubmitPage(name: name),
-                    transition: Transition.fadeIn,
+                  Get.to(() => MentorFinalSubmitPage(name: name),
+                      transition: Transition.fadeIn);
+
+                  Get.snackbar(
+                    "Hi $name",
+                    "You are already a Mentor...",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
                   );
                 }
               },
@@ -104,16 +124,23 @@ class TempScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  Get.to(
-                    () => CounselorThanksPage(name: name),
-                    transition: Transition.fadeIn,
+                  Get.to(() => CounselorThanksPage(name: name),
+                      transition: Transition.fadeIn);
+                  Get.snackbar(
+                    "Hi $name",
+                    "You are already a Counselor....",
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
+                        .withOpacity(0.7),
+                    colorText: mainPurple,
                   );
                 }
               },
               item: "Counselor",
             ),
             elevatedButtonItems(
-              onPressed: () => Get.to(() => const EducationTimeline()),
+              onPressed: () => Get.to(() => EducationTimeline()),
               item: 'your-journey-temp',
             )
           ],
@@ -121,6 +148,10 @@ class TempScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void yourFunction() {
+  log("Function called at: ${DateTime.now()}", name: 'sample');
 }
 
 Widget elevatedButtonItems(
