@@ -19,8 +19,8 @@ class MentorPersonalDetailController extends GetxController {
   final refmentroController = Get.put(MentorReferencesController());
 
   DateTime dateTime = DateTime.now();
-  RxString selectedGender = ''.obs;
-  final List<String> genderOptions = ['Male', 'Female', 'Other', ''];
+  RxString selectedGender = 'Please Select'.obs;
+  final List<String> genderOptions = ['Male', 'Female', 'Other', 'Please Select'];
   List<QualificationData> statusList = [];
   String isMentor = 'no';
   // List<DegreeData> degreeList = [];

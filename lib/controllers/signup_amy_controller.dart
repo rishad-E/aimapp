@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:aimshala/controllers/login_controller.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
+import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/signup_service/amy_signup_service.dart';
 import 'package:aimshala/view/signup/widget/amy_signup_chat_model.dart';
 import 'package:flutter/material.dart';
@@ -22,15 +24,13 @@ class AmySignUpController extends GetxController {
   // bool isAskingDOB = false;
   bool otherSelected = false;
   int qusId = 0;
-  bool skipQuestion = false;
+  RxBool skipQuestion = false.obs;
+  RxBool isAllSubmitted = false.obs;
   String isMultiSelect = 'single-select';
 
   List<Option> singleSelectList = [];
   List<String> multiselectList = [];
   List<String> checkMulti = [];
-
-  // String? nameSecond;
-  // String? idSecond;
 
   final loginC = Get.put(LoginController());
 
@@ -95,8 +95,8 @@ class AmySignUpController extends GetxController {
           name: 'selected item');
 
       isTyping = true;
-      Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
-          uId: uId, msg: optionId, qusId: qusId.toString());
+      Map<String, dynamic>? res = await AmySignUpService()
+          .sendToAmyRegister(uId: uId, msg: optionId, qusId: qusId.toString());
       if (res != null) {
         qusId = res["upd_ques_index"];
         String resMsg = res["bot_reply"];
@@ -130,6 +130,10 @@ class AmySignUpController extends GetxController {
         }
         isTyping = false;
         update(['send-to-amy']);
+        if (qusId > 3 && qusId < 15) {
+          verifyUser(phone);
+        }
+        update(['send-to-amy']);
       } else {
         Get.showSnackbar(
           const GetSnackBar(
@@ -140,6 +144,21 @@ class AmySignUpController extends GetxController {
             duration: Duration(seconds: 2),
           ),
         );
+      }
+    }
+  }
+
+  void verifyUser(String phone) async {
+    Map<String, dynamic>? resData =
+        await LoginService().verifyUserExist(mobileNo: phone);
+    if (resData != null) {
+      if (resData.containsKey('token')) {
+        loginC.userData = UserModel.fromJson(resData);
+        if (loginC.userData != null) {
+          String? id = loginC.userData?.user?.id.toString();
+          String? uName = loginC.userData?.user?.name.toString();
+          log('userID=>$id  name=>$uName', name: 'userid and username');
+        }
       }
     }
   }
@@ -260,8 +279,8 @@ class AmySignUpController extends GetxController {
   // update(['send-to-amy']);
   // }
 
-  bool isValidDOB(String dob) {
-    // Add validation logic for DOB format (DD/MM/YYYY)
-    return RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(dob);
-  }
+  // bool isValidDOB(String dob) {
+  // Add validation logic for DOB format (DD/MM/YYYY)
+  // return RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(dob);
+  // }
 }

@@ -19,8 +19,8 @@ class EducatorPersonalDetailController extends GetxController {
   final refEduController = Get.put(EducatorReferenceController());
 
   DateTime dateTime = DateTime.now();
-  RxString selectedGender = ''.obs;
-  final List<String> genderOptions = ['Male', 'Female', 'Other', ''];
+  RxString selectedGender = 'Please Select'.obs;
+  final List<String> genderOptions = ['Male', 'Female', 'Other', 'Please Select'];
   List<QualificationData> statusList = [];
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);

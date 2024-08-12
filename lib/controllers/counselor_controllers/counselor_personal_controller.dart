@@ -17,8 +17,8 @@ class CounselorPersonalController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
   DateTime dateTime = DateTime.now();
-  RxString selectedGender = ''.obs;
-  final List<String> genderOptions = ['Male', 'Female', 'Other', ''];
+  RxString selectedGender = 'Please Select'.obs;
+  final List<String> genderOptions = ['Male', 'Female', 'Other', 'Please Select'];
   List<QualificationData> statusList = [];
   String isCounselor = 'no';
   final refCounsController = Get.put(CounselorReferenceController());

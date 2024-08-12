@@ -56,7 +56,7 @@ class LoginController extends GetxController {
     String? val = await OtpService().validateOTP(otp: otp, mobileNo: mobileNo);
     if (val == 'OTP verified success') {
       String mobileWithoutCountryCode = mobileNo.substring(2);
-
+      storage.write(key: 'phone', value: mobileWithoutCountryCode);
       Map<String, dynamic>? res = await LoginService()
           .verifyUserExist(mobileNo: mobileWithoutCountryCode);
       if (res != null) {

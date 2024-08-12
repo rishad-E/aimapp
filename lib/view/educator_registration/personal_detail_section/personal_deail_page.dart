@@ -132,7 +132,8 @@ class EducatorPersonalDetailPage extends StatelessWidget {
                             value: controller.selectedGender.value,
                             icon: Icon(Icons.keyboard_arrow_down,
                                 size: 26, color: kblack),
-                            onChanged: userDetails?.gender == null
+                            onChanged: userDetails?.gender == null ||
+                                    userDetails?.gender == ''
                                 ? (newValue) {
                                     if (userDetails?.gender == null) {
                                       controller.selectedGender.value =
@@ -236,11 +237,22 @@ class EducatorPersonalDetailPage extends StatelessWidget {
     c.emailController.text = user.email ?? c.emailController.text;
     c.mobileController.text = user.phone ?? c.mobileController.text;
     c.dobController.text = details.dob ?? c.dobController.text;
-    if (details.gender != null && !c.genderOptions.contains(details.gender)) {
-      c.genderOptions.add(details.gender!);
+    log('gender=>${details.gender!} bool=>${details.gender?.isEmpty}');
+    if (details.gender == null || details.gender!.isEmpty) {
+      c.selectedGender.value = 'Please Select'; // Set to placeholder
+    } else {
+      // Add gender to options if it's not already present
+      if (!c.genderOptions.contains(details.gender)) {
+        c.genderOptions.add(details.gender!);
+      }
+      c.selectedGender.value = details.gender!;
     }
 
-    c.selectedGender.value = details.gender ?? c.selectedGender.value;
+    // if (details.gender != null && !c.genderOptions.contains(details.gender)) {
+    //   c.genderOptions.add(details.gender!);
+    // }
+
+    // c.selectedGender.value = details.gender ?? c.selectedGender.value;
     c.statusController.text = details.userRole ?? c.statusController.text;
     c.update(['edu-personalinfo']);
   }

@@ -93,12 +93,13 @@ class CounselorPersonalSection extends StatelessWidget {
                     value: controller.selectedGender.value,
                     icon: Icon(Icons.keyboard_arrow_down,
                         size: 26, color: kblack),
-                    onChanged: userDetails?.gender == null
-                        ? (newValue) {
-                            controller.selectedGender.value = newValue!;
-                            controller.checkAllFileds();
-                          }
-                        : null,
+                    onChanged:
+                        userDetails?.gender == null || userDetails?.gender == ''
+                            ? (newValue) {
+                                controller.selectedGender.value = newValue!;
+                                controller.checkAllFileds();
+                              }
+                            : null,
                     validator: (value) => controller.fieldValidation(value),
                     // hint: Text("dafdaf"),
                     items: controller.genderOptions.map((String value) {
@@ -195,10 +196,18 @@ class CounselorPersonalSection extends StatelessWidget {
     c.emailController.text = user.email ?? c.emailController.text;
     c.mobileController.text = user.phone ?? c.mobileController.text;
     c.dobController.text = details.dob ?? c.dobController.text;
-    if (details.gender != null && !c.genderOptions.contains(details.gender)) {
-      c.genderOptions.add(details.gender!);
+    if (details.gender == null || details.gender!.isEmpty) {
+      c.selectedGender.value = 'Please Select';
+    } else {
+      if (!c.genderOptions.contains(details.gender)) {
+        c.genderOptions.add(details.gender!);
+      }
+      c.selectedGender.value = details.gender!;
     }
-    c.selectedGender.value = details.gender ?? c.selectedGender.value;
+    // if (details.gender != null && !c.genderOptions.contains(details.gender)) {
+    //   c.genderOptions.add(details.gender!);
+    // }
+    // c.selectedGender.value = details.gender ?? c.selectedGender.value;
     c.statusController.text = details.userRole ?? c.statusController.text;
     c.checkAllFileds();
     c.update(['couns-Personal details']);

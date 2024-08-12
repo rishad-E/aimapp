@@ -1,4 +1,5 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -162,8 +163,9 @@ Widget amyOptionContainer({required String option, required bool multiselect}) {
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
     margin: const EdgeInsets.only(right: 7),
     decoration: BoxDecoration(
-        color:
-            multiselect ? mainPurple.withOpacity(0.04) : const Color.fromARGB(255, 244, 244, 244),
+        color: multiselect
+            ? mainPurple.withOpacity(0.04)
+            : const Color.fromARGB(255, 244, 244, 244),
         borderRadius: BorderRadius.circular(8)),
     child: Text(
       option,
@@ -208,6 +210,68 @@ Widget goHomeContainer() {
           color: Color.fromARGB(255, 182, 56, 175),
           fontSize: 12,
           fontWeight: FontWeight.w600),
+    ),
+  );
+}
+
+Widget thnksSkipText(String name) {
+  return Center(
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 28,
+          width: 28,
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 255, 223, 169),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(140),
+                bottomRight: Radius.circular(140),
+                topRight: Radius.circular(140)),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/images/person.png'),
+            ),
+          ),
+        ),
+        wBox,
+        wBox,
+        Expanded(
+          child: Container(
+            // padding: const EdgeInsets.all(15),
+            color: const Color.fromARGB(255, 250, 250, 252),
+            // padding: const EdgeInsets.all(8),
+            child: regularText('''
+Thank you, $name for taking the time to share your aspirations with me! It's wonderful to learn about your goals and strengths.
+
+Remember, I am always here to assist you whenever you need guidance. Just look for me in the bottom-left corner of the Aimshala platform.
+
+Feel free to explore the Aimshala platform and take the ACE Test to get started on your personalized career path. The ACETest will help you understand your strengths and guide you towards the best career choices for you.
+
+also, Please confirm your email by clicking the link we've sent to your inbox.
+
+Let's Take Charge and Explore your future with Aimshala!''', 9.sp,
+                color: mainPurple),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget thnksAllSubmittedText(String name) {
+  return Center(
+    child: Container(
+      padding: const EdgeInsets.all(15),
+      color: const Color.fromARGB(255, 250, 250, 252),
+      // padding: const EdgeInsets.all(8),
+      child: regularText('''
+Thank you, $name 
+
+Please confirm your email by clicking the link we've sent to your inbox.
+
+Let's Take Charge and Explore your future with Aimshala!''', 9.sp,
+          color: mainPurple),
     ),
   );
 }

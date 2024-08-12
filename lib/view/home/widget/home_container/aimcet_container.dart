@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
+import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
+import 'package:aimshala/view/signup/signup_amy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -16,7 +20,9 @@ class AimcetContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // bool isLoading = false;
     final controller = Get.put(AIMCETController());
+    final allDataC = Get.put(AllDataController());
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -64,22 +70,9 @@ class AimcetContainer extends StatelessWidget {
                   if (controller.testDone.value == 'done') {
                     controller.aimcetTestResultFunction(
                         userId: id, userName: userName);
-                    return ElevatedButton.icon(
-                      style: ButtonStyle(
-                        shape: buttonShape(round: 8),
-                      ),
-                      icon: Text(
-                        "Check AIMCET Result",
-                        style: TextStyle(
-                            fontSize: 11.sp,
-                            color: const Color.fromARGB(255, 147, 38, 143),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      label: Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 11.sp,
-                        color: const Color.fromARGB(255, 147, 38, 143),
-                      ),
+                    return acecetElevatedButton(
+                      bText: "Check AIMCET Result",
+                      bIcon: Icons.arrow_forward_ios_sharp,
                       onPressed: () async {
                         try {
                           Get.snackbar(
@@ -122,10 +115,7 @@ class AimcetContainer extends StatelessWidget {
                   } else if (controller.testDone.value == 'continue') {
                     controller.fetchAllTestQuestions(userId: id);
                     controller.getTestSectionTextsFunc();
-                    return ElevatedButton.icon(
-                      style: ButtonStyle(
-                        shape: buttonShape(round: 8),
-                      ),
+                    return acecetElevatedButton(
                       onPressed: () {
                         if (controller.allQuestions != null) {
                           controller.secID.value =
@@ -133,42 +123,32 @@ class AimcetContainer extends StatelessWidget {
                         }
                         Get.to(() => const AIMCETTestPage());
                       },
-                      icon: Text(
-                        "Continue AIMCET Test",
-                        style: TextStyle(
-                            fontSize: 11.sp,
-                            color: const Color.fromARGB(255, 147, 38, 143),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      label: Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 11.sp,
-                        color: const Color.fromARGB(255, 147, 38, 143),
-                      ),
+                      bText: "Continue AIMCET Test",
+                      bIcon: Icons.arrow_forward_ios_sharp,
                     );
                   } else {
-                    return ElevatedButton.icon(
-                      style: ButtonStyle(
-                        shape: buttonShape(round: 8),
-                      ),
-                      onPressed: () {
-                        Get.to(() => AIMCETGuideLinePage(uId: id));
-                        // controller.showAllreview = false;
-                        // Get.to(() =>
-                        //     AIMCETResultScreen(userName: userName, uId: id));
+                    return acecetElevatedButton(
+                      onPressed: () async {
+                        log("career aim=>${allDataC.userDetails?.aim}",
+                            name: 'takecha');
+                        if (allDataC.userDetails?.aim?.isEmpty == true) {
+                          // await Future.delayed(Duration(seconds: 1));
+                          Get.to(
+                              () => SignUpAmyScreen(
+                                    name: userName,
+                                    uId: id,
+                                    email: allDataC.userData?.email ?? '',
+                                    phone: allDataC.userData?.phone ?? '',
+                                  ),
+                              transition: Transition.fade);
+                        } else {
+                          Get.to(() => AIMCETGuideLinePage(uId: id),
+                              transition: Transition.fade);
+                        }
+                        // Get.to(() => AIMCETGuideLinePage(uId: id));
                       },
-                      icon: Text(
-                        "Take Psychometric Test",
-                        style: TextStyle(
-                            fontSize: 11.sp,
-                            color: const Color.fromARGB(255, 147, 38, 143),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      label: Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 11.sp,
-                        color: const Color.fromARGB(255, 147, 38, 143),
-                      ),
+                      bText: "Take Psychometric Test",
+                      bIcon: Icons.arrow_forward_ios_sharp,
                     );
                   }
                 },
@@ -179,4 +159,28 @@ class AimcetContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget acecetElevatedButton(
+    {required void Function()? onPressed,
+    required String bText,
+    required IconData bIcon}) {
+  return ElevatedButton.icon(
+    style: ButtonStyle(
+      shape: buttonShape(round: 8),
+    ),
+    onPressed: onPressed,
+    icon: Text(
+      bText,
+      style: TextStyle(
+          fontSize: 11.sp,
+          color: const Color.fromARGB(255, 147, 38, 143),
+          fontWeight: FontWeight.w600),
+    ),
+    label: Icon(
+      bIcon,
+      size: 11.sp,
+      color: const Color.fromARGB(255, 147, 38, 143),
+    ),
+  );
 }

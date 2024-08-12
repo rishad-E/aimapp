@@ -15,7 +15,7 @@ class EducationTimeline extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () async {
         log('called');
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(const Duration(seconds: 2));
         contoller.clear();
       },
       triggerMode: RefreshIndicatorTriggerMode.anywhere,
@@ -189,3 +189,6 @@ class EducationTimelinePainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
+
+
