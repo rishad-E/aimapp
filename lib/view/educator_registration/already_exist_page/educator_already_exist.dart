@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class EducatorSubmitFinalPage extends StatelessWidget {
+class EducatorAlreadyExistPage extends StatelessWidget {
   final String name;
-  const EducatorSubmitFinalPage({super.key, required this.name});
+  const EducatorAlreadyExistPage({super.key, required this.name});
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -38,10 +38,10 @@ class EducatorSubmitFinalPage extends StatelessWidget {
                         child: boldText(
                             text: 'Thank You',
                             size: 12.5.sp,
-                            color: kblack),
+                            color: mainPurple),
                       ),
                       hBox,
-                      regularText('For taking the time to complete the Educator Signup Form. We are thrilled to have you show interest in joining the Aimshala family.', 9.sp,
+                      regularText('For your interest in becoming a educator with Aimshala. It looks like you are already registered as a Educator.', 9.sp,
                           textAlign: TextAlign.center),
                       hBox,
                       Container(
@@ -70,7 +70,7 @@ class EducatorSubmitFinalPage extends StatelessWidget {
                         color: const Color.fromARGB(255, 250, 250, 252),
                         child: Column(
                           children: [
-                            regularText('We are diligently working towards the launch of Aimshala. We appreciate your patience and enthusiasm.', 9.sp),
+                            regularText(noticeText1, 9.sp),
                             regularText(noticeText2, 9.sp),
                           ],
                         ),

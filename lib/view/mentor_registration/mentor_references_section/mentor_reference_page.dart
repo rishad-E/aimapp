@@ -208,6 +208,10 @@ class MentorReferencesPage extends StatelessWidget {
                                   boxColor: c.nextBG.value,
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
+                                      c.referenceNames.clear();
+                                      c.referenceRelation.clear();
+                                      c.referencePhone.clear();
+                                      c.otherRelation.clear();
                                       c.addReferenceFields(
                                         refName1: c.nameController1.text,
                                         refRelation1:

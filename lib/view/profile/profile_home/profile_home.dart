@@ -257,7 +257,7 @@ class ProfileHomeScreen extends StatelessWidget {
                         final eduController =
                             Get.put(ProfileEducationController());
                         return controller.profileDataLoading.value
-                            ? loadingWidget()
+                            ? loadingWidget(16)
                             : data.isEmpty
                                 ? profileNodataContainer(
                                     headingText: 'Education',

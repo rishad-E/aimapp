@@ -64,7 +64,6 @@ class EducatorMediaAddController extends GetxController {
 
   String formatBytes(int bytes) {
     if (bytes == 0) return '0 B';
-
     final kb = bytes / 1024;
     final mb = kb / 1024;
     final filesize =
@@ -250,3 +249,31 @@ class EducatorMediaAddController extends GetxController {
     videofilePath.value = '';
   }
 }
+
+
+
+// [all-fields] name=>Rishad E email=>rishadekrocx@gmail.com location=>Kerala phone=>7034527959 dob=>05/10/2001 gender=>Male status=>Professional
+//                       highDegree=>Bachelor's Degree experties=>It otherDegree=>
+//                       experience=>1 insittute=>Ekrocx subs=>[Flutter] topics=>[Statemanagment] relocate=No workMode=>Work from Office
+//                       teachPrefer=>Institute Near Me prefDays=>[Wednesday] prefTimes=>[Morning (8-12)]  ques=>[Description, Why do you want to join Aimshala?] ansrs=>[description, join aimshala]
+//                       refnames=>[refname 1, refname 2] refRel=>[Professional Colleague, Other (Please Specify)] refPhones=>[1111111111, 2222222222] refOther=>[, student]
+//                       linkedIn=>https://www.google.com/  resume=>null
+//                       videoLink=>https://www.google.com/ videoFile=>null
+//                       id=>675
+
+// [all-fields] name=>Rishad E email=>rishadekrocx@gmail.com location=>Kerala phone=>7034527959 dob=>05/10/2001 gender=>Male status=>Professional
+//                       highDegree=>Bachelor's Degree experties=>It otherDegree=>
+//                       experience=>1 insittute=>Ekrocx subs=>[Flutter] topics=>[Statemanagment] relocate=No workMode=>Work from Office
+//                       teachPrefer=>Institute Near Me prefDays=>[Wednesday] prefTimes=>[Morning (8-12)]  ques=>[Description, Why do you want to join Aimshala?] ansrs=>[description, join aimshala]
+//                       refnames=>[refname 1, refname 2] refRel=>[Professional Colleague, Other (Please Specify)] refPhones=>[1111111111, 2222222222] refOther=>[, student]
+//                       linkedIn=>https://www.google.com/  resume=>null
+//                       videoLink=>https://www.google.com/ videoFile=>null
+//                       id=>675
+
+// [all-fields] name=>Rishad E email=>rishadekrocx@gmail.com location=>Kerala phone=>7034527959 dob=>05/10/2001 gender=>Male status=>Professional
+//                       highDegree=>Bachelor's Degree experties=>vvv otherDegree=>
+//                       experience=>bbn insittute=>bn subs=>[Cc] topics=>[Dcc] relocate=No workMode=>Work from Office
+//                       teachPrefer=>Institute Near Me prefDays=>[Saturday] prefTimes=>[Evening (4-8)]  ques=>[Description, Why do you want to join Aimshala?] ansrs=>[cvvv, vvb]
+//                       refnames=>[, refname q, refname 2] refRel=>[, Professional Colleague, Other (Please Specify)] refPhones=>[, 1111111111, 5555558888] refOther=>[, cfff]
+//                       linkedIn=>https://www.google.com/  resume=>null
+//                       videoLink=>https://www.google.com/ videoFile=>null

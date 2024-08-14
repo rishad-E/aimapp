@@ -207,6 +207,10 @@ class EducatorReferencePage extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       // log('name1=${c.nameController1.text} relation1=${c.relationController1.text} mob=>${c.mobileController1.text} name2=${c.nameController2.text} relation2=${c.relationController2.text} mob2=>${c.mobileController2.text} other1=>${c.otherRelationController1.text} other2=>${c.otherRelationController2.text}',
                                       //     name: 'reference page');
+                                      c.referenceNames.clear();
+                                      c.referenceRelation.clear();
+                                      c.referencePhone.clear();
+                                      c.otherRelation.clear();
                                       c.addtoLists(
                                           refName1: c.nameController1.text,
                                           refRelation1:

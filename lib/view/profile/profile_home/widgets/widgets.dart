@@ -370,11 +370,44 @@ Widget sectionDataWidget({
   );
 }
 
-Widget loadingWidget() {
-  return infoContainer(
-    child: Center(
-        child:
-            CircularProgressIndicator(strokeWidth: 1, color: textFieldColor)),
+Widget loadingWidget(double defaultPadding) {
+  return Column(
+    children: List.generate(
+      2,
+      (index) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 3),
+        child: Row(
+          children: [
+            Skeleton(height: 120, width: 120, defaultPadding: defaultPadding),
+            SizedBox(width: defaultPadding),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Skeleton(width: 80, defaultPadding: defaultPadding),
+                  SizedBox(height: defaultPadding / 2),
+                  Skeleton(defaultPadding: defaultPadding),
+                  SizedBox(height: defaultPadding / 2),
+                  Skeleton(defaultPadding: defaultPadding),
+                  SizedBox(height: defaultPadding / 2),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Skeleton(defaultPadding: defaultPadding),
+                      ),
+                      SizedBox(width: defaultPadding),
+                      Expanded(
+                        child: Skeleton(defaultPadding: defaultPadding),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
   );
 }
 
@@ -390,4 +423,25 @@ Widget viewAllButton({required void Function()? onPressedViewAll}) {
           color: mainPurple, fontWeight: FontWeight.w600, fontSize: 8.5.sp),
     ),
   );
+}
+
+class Skeleton extends StatelessWidget {
+  const Skeleton(
+      {Key? key, this.height, this.width, required this.defaultPadding})
+      : super(key: key);
+
+  final double? height, width;
+  final double defaultPadding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      width: width,
+      padding: EdgeInsets.all(defaultPadding / 2),
+      decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.04),
+          borderRadius: BorderRadius.all(Radius.circular(defaultPadding))),
+    );
+  }
 }

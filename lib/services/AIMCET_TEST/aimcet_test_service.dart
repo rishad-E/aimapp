@@ -45,18 +45,18 @@ class AIMCETTestService {
     log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer secQues=>$secQues totalQues=>$totalQues',
         name: 'serviceeeeeee');
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": userId,
-            "c_answer": cAnswer,
-            "section_id": sectionId,
-            "question_id": questionId,
-            "section_qus": secQues,
-            "total_question": totalQues
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "user_id": userId,
+          "c_answer": cAnswer,
+          "section_id": sectionId,
+          "question_id": questionId,
+          "section_qus": secQues,
+          "total_question": totalQues
+        },
+        options: Options(validateStatus: (status) => status! < 599),
+      );
       log(response.data.toString(), name: 'aimcet sumbit');
       if (response.statusCode == 200) {
         return 'success';

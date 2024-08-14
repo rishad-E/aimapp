@@ -25,10 +25,11 @@ class AmySignUpController extends GetxController {
   bool otherSelected = false;
   int qusId = 0;
   RxBool skipQuestion = false.obs;
-  RxBool isAllSubmitted = false.obs;
+  // RxBool isAllSubmitted = false.obs;
   String isMultiSelect = 'single-select';
 
-  List<Option> singleSelectList = [];
+  List<Option> singleSelecMapList = [];
+  List<String> singleSelecList = [];
   List<String> multiselectList = [];
   List<String> checkMulti = [];
 
@@ -68,7 +69,7 @@ class AmySignUpController extends GetxController {
       data.forEach((key, value) {
         list.add(Option(id: int.tryParse(key), item: value));
       });
-      singleSelectList.addAll(list);
+      singleSelecMapList.addAll(list);
       // isTyping = false;
       update(['send-to-amy']);
     }
@@ -97,18 +98,19 @@ class AmySignUpController extends GetxController {
       isTyping = true;
       Map<String, dynamic>? res = await AmySignUpService()
           .sendToAmyRegister(uId: uId, msg: optionId, qusId: qusId.toString());
+      checkMulti.clear();
       if (res != null) {
+        singleSelecMapList = [];
+        multiselectList = [];
         qusId = res["upd_ques_index"];
         String resMsg = res["bot_reply"];
         isMultiSelect = res["select_type"];
-        if (res["options"] is Map) {
-          singleSelectList.clear();
+        if (res["options"] is Map<String, dynamic>) {
           Map<String, dynamic> data = res['options'];
           data.forEach((key, value) {
-            singleSelectList.add(Option(id: int.tryParse(key), item: value));
+            singleSelecMapList.add(Option(id: int.tryParse(key), item: value));
           });
-        } else if (res["options"] is List) {
-          multiselectList.clear();
+        } else if (res["options"] is List<dynamic>) {
           List<dynamic> data = res["options"];
           for (int i = 0; i < data.length; i++) {
             multiselectList.add(data[i]);
@@ -118,7 +120,7 @@ class AmySignUpController extends GetxController {
         for (int i = 0; i < parts.length; i++) {
           String part = parts[i].trim();
           if (part.isNotEmpty) {
-            if (i == part.length - 1) {
+            if (i == parts.length - 1) {
               msgs.insert(
                   0, ChatMessageSignup(false, part, currentTime, false));
             } else if (i == 0) {
@@ -162,122 +164,56 @@ class AmySignUpController extends GetxController {
       }
     }
   }
-  // void sendMessage(BuildContext context) async {
-  // DateTime time = DateTime.now();
-  // String currentTime = DateFormat('h:mm a').format(time);
-  // String userMessage = chatController.text;
-  // String otheroptionMsg = otherOptionController.text;
-  // chatController.clear();
-  // log(userMessage, name: 'usermsg');
-  // otherSelected = false;
-  // log(otherSelected.toString(), name: 'other selected');
-  // if (userMessage.isNotEmpty) {
-  //   if (qusId > 1) {
-  //     msgs.insert(
-  //         0, ChatMessageSignup(true, otheroptionMsg, currentTime, false));
-  //   } else {
-  //     msgs.insert(
-  //         0, ChatMessageSignup(true, userMessage, currentTime, false));
-  //   }
-  //   isTyping = false;
-  //   scrollController.animateTo(0.0,
-  //       duration: const Duration(seconds: 1), curve: Curves.easeOut);
-  //   // if (isAskingDOB && isValidDOB(userMessage)) {
-  //   //   isAskingDOB = false;
-  //   //   FocusScope.of(context).unfocus();
-  //   // }
-  //   isTyping = true;
-  //   Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
-  //       uId: uId, msg: userMessage, qusId: qusId.toString());
-  //   if (res != null) {
-  //     if (res.containsKey('errors')) {
-  //       String errorMessage = res['errors']['msg.valid']?.join(', ') ?? '';
-  //       log(errorMessage);
-  //       if (errorMessage.contains('Please specify')) {
-  //         otherSelected = true;
-  //         msgs.insert(0,
-  //             ChatMessageSignup(false, 'Please specify', currentTime, true));
-  //       }
-  //     } else {
-  //       qusId = res["upd_ques_index"];
-  //       String resMsg = res["bot_reply"];
-  //       log("question=>$resMsg   qusid=>$qusId", name: 'controller res amy');
-  //       if (qusId == 1) {
-  //         genderOptionList.clear();
-  //         List<dynamic> resOption = res["options"];
-  //         genderOptionList.addAll(resOption.cast<String>());
-  //       } else {
-  //         otherOptionList.clear();
-  //         log("otheroptionlist=>$otherOptionList",
-  //             name: 'checkkkkkkk option');
-  //         List<Option> list = [];
-  //         if (res["options"] is Map) {
-  //           Map<String, dynamic> data = res['options'];
-  //           data.forEach((key, value) {
-  //             list.add(Option(id: int.tryParse(key), item: value));
-  //           });
-  //         } else if (res["options"] is List) {
-  //           List<dynamic> data = res["options"];
-  //           for (int i = 0; i < data.length; i++) {
-  //             list.add(Option(id: i, item: data[i]));
-  //           }
-  //         }
-  //         otherOptionList.addAll(list);
-  //         log("items=>$otherOptionList", name: 'checkkkkkkk option');
-  //       }
-  //       List<String> parts = resMsg.split('#');
 
-  //       for (int i = 0; i < parts.length; i++) {
-  //         String part = parts[i].trim();
-  //         if (part.isNotEmpty) {
-  //           if (i == part.length - 1) {
-  //             msgs.insert(
-  //                 0, ChatMessageSignup(false, part, currentTime, false));
-  //           } else if (i == 0) {
-  //             msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
-  //           } else {
-  //             msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
-  //           }
-  //         }
-  //       }
-  //       isTyping = false;
-  //       update(['send-to-amy']);
-  //       if (qusId > 3 && qusId < 15) {
-  //         Map<String, dynamic>? resData =
-  //             await LoginService().verifyUserExist(mobileNo: phone);
-  //         if (resData != null) {
-  //           if (resData.containsKey('token')) {
-  //             loginC.userData = UserModel.fromJson(resData);
-  //             if (loginC.userData != null) {
-  //               String? id = loginC.userData?.user?.id.toString();
-  //               String? uName = loginC.userData?.user?.name.toString();
-  //               log('userID=>$id  name=>$uName', name: 'userid and username');
-  //             }
-  //           }
-  //         }
-  //         update(['send-to-amy']);
-  //       }
-  //     }
+  void skipTextMessage() {
+    DateTime time = DateTime.now();
+    String currentTime = DateFormat('h:mm a').format(time);
+    String msg =
+        '''Please confirm your email by clicking the link we've sent to your inbox.
+#Let's Take Charge and Explore your future with Aimshala!''';
+    List<String> parts = msg.split('#');
+    for (int i = 0; i < parts.length; i++) {
+      String part = parts[i].trim();
+      if (part.isNotEmpty) {
+        if (i == parts.length - 1) {
+          msgs.insert(0, ChatMessageSignup(false, part, currentTime, false));
+        } else if (i == 0) {
+          msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
+        } else {
+          msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+        }
+      }
+    }
+    skipQuestion.value = true;
+    update(['send-to-amy']);
+  }
 
-  //     scrollController.animateTo(0.0,
-  //         duration: const Duration(seconds: 1), curve: Curves.easeOut);
-  //     isTyping = false;
-  //     update(['send-to-amy']);
-  //   } else {
-  //     Get.showSnackbar(
-  //       const GetSnackBar(
-  //         snackStyle: SnackStyle.FLOATING,
-  //         message: 'Some error occurred, please try again!',
-  //         margin: EdgeInsets.all(10),
-  //         backgroundColor: Colors.red,
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // update(['send-to-amy']);
-  // }
+  void allQusSubmittedText() {
+    // log(isAllSubmitted.value.toString());
+    DateTime time = DateTime.now();
+    String currentTime = DateFormat('h:mm a').format(time);
+    String msg =
+        '''Thank you, $name for taking the time to share your aspirations with me! It's wonderful to learn about your goals and strengths.
+#Remember, I am always here to assist you whenever you need guidance. Just look for me in the bottom-left corner of the Aimshala platform.
+#Feel free to explore the Aimshala platform and take the ACE Test to get started on your personalized career path. The ACETest will help you understand your strengths and guide you towards the best career choices for you.
+#also, Please confirm your email by clicking the link we've sent to your inbox.
+#Let's Take Charge and Explore your future with Aimshala! ''';
+    List<String> parts = msg.split('#');
+    for (int i = 0; i < parts.length; i++) {
+      String part = parts[i].trim();
+      if (part.isNotEmpty) {
+        if (i == parts.length - 1) {
+          msgs.insert(0, ChatMessageSignup(false, part, currentTime, false));
+        } else if (i == 0) {
+          msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
+        } else {
+          msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+        }
+      }
+    }
+    // isAllSubmitted.value = true;
+    // update(['send-to-amy']);
+  }
 
   // bool isValidDOB(String dob) {
   // Add validation logic for DOB format (DD/MM/YYYY)

@@ -22,23 +22,10 @@ class BookCareerCounsellController extends GetxController {
   RxList<MicroModel> check = <MicroModel>[].obs;
   RxList<Aim> searchAimRes = <Aim>[].obs;
   RxList<Aim> filteredAims = <Aim>[].obs;
-  // RxList<MicroAim> searchMicorAimRes = <MicroAim>[].obs;
   RxList<Slot> times = <Slot>[].obs;
 
   RxString selectedDate = RxString('');
   String? selectedTime;
-  // RxBool isAllCareerHomeFieldsSelected = false.obs;
-  // RxBool isAllCareerAimFieldsSelected = false.obs;
-  // Rx<Color> careerButtontextAim = Rx<Color>(disableText);
-  // Rx<Color> careerButtontext = Rx<Color>(disableText);
-  // String careerSelectedRole = 'Select your role';
-  // RxString otherRole = ''.obs;
-  // RxString careerAimSelectedRole = 'Your aim'.obs;
-  // String careerMicroAimSelectedRole = 'Your Micro aim';
-  // String? aimId;
-  // RxInt filledOtpFields = RxInt(0);
-  // Rx<Color> careerbuttonColor = Rx<Color>(bbColor);
-  // Rx<Color> careerBTextColor = Rx<Color>(Colors.black.withOpacity(0.6));
   RxString isBooked = ''.obs;
   CounselCallBookedModel? counselBookedModel;
 
@@ -167,76 +154,13 @@ class BookCareerCounsellController extends GetxController {
     }
   }
 
-  /*------------ validation ---------*/
+ 
   String? aimValidation(String? word) {
     if (word == null || word.isEmpty) {
       return 'Please select atleast one Aim';
     }
     return null;
   }
-  // String? nameValidation(String? word) {
-  //   if (word == null || word.isEmpty) {
-  //     return 'Please enter Name';
-  //   }
-  //   if (word.length < 3) {
-  //     return 'Name should be more than 3 characters';
-  //   }
-  //   if (word.length > 35) {
-  //     return 'Name should be less than 35 characters';
-  //   }
-  //   return null;
-  // }
-
-  // String? otherRoleValidation(String? word) {
-  //   if (word == null || word.isEmpty) {
-  //     return 'Please enter your other role';
-  //   }
-  //   return null;
-  // }
-
-  // String? roleValidation(String? word) {
-  //   if (word == null || word.isEmpty) {
-  //     return 'Please enter your role';
-  //   }
-  //   return null;
-  // }
-
-  // String? microAimValidation(String? word) {
-  //   if (word == null || word.isEmpty) {
-  //     return 'Please enter your role';
-  //   }
-  //   return null;
-  // }
-
-  // String? phoneValidation(String? word) {
-  //   if (word == null || word.isEmpty || word.length < 10) {
-  //     return 'Please enter a Valid Mobile Number';
-  //   }
-  //   return null;
-  // }
-
-  // String? emailValidation(String? word) {
-  //   if (word == null || word.isEmpty) {
-  //     return 'Please enter Email';
-  //   } else if (!word.isEmail) {
-  //     return 'Please enter a valid Email';
-  //   }
-  //   return null;
-  // }
-
-  /*------------ button color change ---------*/
-  // void checkAllfieldCareerHome() {
-  //   bool allFieldsSelectedCareer = nameController.text.isNotEmpty &&
-  //       roleController.text.isNotEmpty &&
-  //       (otherRole.value == "Other" && otherRoleController.text.isNotEmpty ||
-  //           otherRole.value.isEmpty && otherRoleController.text.isEmpty);
-
-  //   isAllCareerHomeFieldsSelected.value = allFieldsSelectedCareer;
-  //   careerButtontext.value = allFieldsSelectedCareer
-  //       ? Colors.white
-  //       : const Color.fromARGB(255, 116, 118, 119);
-  //   update(['button-careerHome']);
-  // }
 }
 
 

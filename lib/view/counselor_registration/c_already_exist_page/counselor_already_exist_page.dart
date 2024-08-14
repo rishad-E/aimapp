@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
-class CounselorThanksPage extends StatelessWidget {
+class CounselorAlreadyExistPage extends StatelessWidget {
   final String name;
-  const CounselorThanksPage({super.key, required this.name});
+  const CounselorAlreadyExistPage({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,14 @@ class CounselorThanksPage extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child:
-                    boldText(text: 'Thank You', size: 12.5.sp, color: kblack),
+                    boldText(text: 'Thank You already', size: 12.5.sp, color: mainPurple),
               ),
               hBox,
               regularText(
-                thanksTextC,
+                'For your interest in becoming a counselor with Aimshala. It looks like you are already registered as a counselor.',
                 9.sp,
                 textAlign: TextAlign.center,
-              ),
+              ),hBox,
               Container(
                 padding: const EdgeInsets.all(8),
                 color: const Color.fromARGB(255, 250, 250, 252),

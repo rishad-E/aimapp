@@ -150,6 +150,10 @@ class CounselorReferencePage extends StatelessWidget {
                           boxColor: c.saveBG.value,
                           onTap: () {
                             if (formKey.currentState!.validate()) {
+                              c.referenceNames.clear();
+                              c.referenceRelation.clear();
+                              c.referencePhone.clear();
+                              c.refOtherRelation.clear();
                               c.addReferenceFields(
                                 refName1: c.name1Controller.text,
                                 refRelation1: c.relation1Controller.text,

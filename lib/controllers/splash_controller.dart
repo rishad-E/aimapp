@@ -55,20 +55,42 @@ class SplashController extends GetxController {
           await LoginService().verifyUserExist(mobileNo: phone.toString());
       if (res != null) {
         if (res.containsKey('error')) {
-          String errorMessage = res["error"];
-          if (errorMessage == "Please fill first three questions.") {
-            User? user = User.fromJson(res["user"]);
-            String? id = user.id.toString();
-            String? phone = user.phone;
-            String? email2 = user.email;
-            String? name2 = user.name;
-            log("phone=>$phone email=>$email2 name=>$name2 id=>$id",
-                name: 'splash mobile and email error section');
-            Get.offAll(() => SignUpAmyScreen(
-                name: name2.toString(),
-                email: email2.toString(),
-                uId: id,
-                phone: phone.toString()));
+          if (res['error'] is Map) {
+            Map<String, dynamic> errors = res['error'];
+            String first = errors.keys.first;
+            if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+              String errorMessage = errors[first][0].toString();
+              if (errorMessage ==
+                  'The mobile field can only contain numeric values.') {
+                Get.offAll(() => const LoginScreen());
+              } else {
+                Get.snackbar(
+                  "Error",
+                  errorMessage,
+                  snackPosition: SnackPosition.TOP,
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: kred,
+                  colorText: Colors.white,
+                );
+                Get.offAll(() => const LoginScreen());
+              }
+            }
+          } else if (res['error'] is String) {
+            String errorMessage = res["error"];
+            if (errorMessage == "Please fill first three questions.") {
+              User? user = User.fromJson(res["user"]);
+              String? id = user.id.toString();
+              String? phone = user.phone;
+              String? email2 = user.email;
+              String? name2 = user.name;
+              log("phone=>$phone email=>$email2 name=>$name2 id=>$id",
+                  name: 'splash mobile and email error section');
+              Get.offAll(() => SignUpAmyScreen(
+                  name: name2.toString(),
+                  email: email2.toString(),
+                  uId: id,
+                  phone: phone.toString()));
+            }
           } else {
             Get.offAll(() => const LoginScreen());
           }
@@ -101,10 +123,9 @@ class SplashController extends GetxController {
                 log('aimcet test done', name: 'spalsh done');
                 aimtestController.aimcetTestResultFunction(
                     userId: id.toString(), userName: uName.toString());
-                    aimtestController.getTestSectionTextsFunc();
+                aimtestController.getTestSectionTextsFunc();
               }
             });
-          
             Get.off(() => const HomeScreen());
           }
         }

@@ -8,13 +8,13 @@ import 'package:aimshala/controllers/mentor_controllers/mentor_add_media_control
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/counselor_registration/c_final_thanks_section/c_final_thanks_page.dart';
+import 'package:aimshala/view/counselor_registration/c_already_exist_page/counselor_already_exist_page.dart';
 import 'package:aimshala/view/counselor_registration/c_personal_detail_section/c_personal_detail_page.dart';
+import 'package:aimshala/view/educator_registration/already_exist_page/educator_already_exist.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
-import 'package:aimshala/view/educator_registration/submitted_section/submitted_final_page.dart';
-import 'package:aimshala/view/mentor_registration/mentor_final_submit_page/mentor_final_submit_page.dart';
+import 'package:aimshala/view/mentor_registration/already_exist_mentor/mentor_already_exist_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
-import 'package:aimshala/view/your_journey_temp.dart';
+import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -32,15 +32,12 @@ class TempScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((time) {
+      log('message');
       alldataC.getUserallData(uId: uId);
       mentor.checkMentorRegtakenFunction(uId: uId);
       educator.checkEducatorRegTakenFunction(uId: uId);
       counselor.checkCounselorRegtakenFunction(uId: uId);
     });
-
-      // Timer.periodic(Duration(seconds: 5), (Timer timer) {
-      //   yourFunction();
-      // });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Temp Screen'),
@@ -64,17 +61,8 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.to(() => EducatorSubmitFinalPage(name: name),
+                  Get.to(() => EducatorAlreadyExistPage(name: name),
                       transition: Transition.fadeIn);
-                  Get.snackbar(
-                    "Hi $name",
-                    "You are already an Educator...",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
-                  );
                 }
               },
               item: 'Educator',
@@ -94,18 +82,8 @@ class TempScreen extends StatelessWidget {
                     transition: Transition.fadeIn,
                   );
                 } else {
-                  Get.to(() => MentorFinalSubmitPage(name: name),
+                  Get.to(() => MentorAlreadyExistPage(name: name),
                       transition: Transition.fadeIn);
-
-                  Get.snackbar(
-                    "Hi $name",
-                    "You are already a Mentor...",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
-                  );
                 }
               },
               item: 'Mentor',
@@ -115,7 +93,6 @@ class TempScreen extends StatelessWidget {
               onPressed: () {
                 log(counselor.isCounselor, name: 'isCounselor');
                 if (counselor.isCounselor == 'no') {
-                  // counselor.clearAllfields();
                   Get.put(CounselorMediaController()).clearAllControllerClass();
                   Get.to(
                     () => CounselorPersonalSection(
@@ -123,24 +100,17 @@ class TempScreen extends StatelessWidget {
                       userDetails: alldataC.userDetails,
                     ),
                   );
-                } else {
-                  Get.to(() => CounselorThanksPage(name: name),
+                  Get.to(() => CounselorAlreadyExistPage(name: name),
                       transition: Transition.fadeIn);
-                  Get.snackbar(
-                    "Hi $name",
-                    "You are already a Counselor....",
-                    snackPosition: SnackPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                        .withOpacity(0.7),
-                    colorText: mainPurple,
-                  );
+                } else {
+                  Get.to(() => CounselorAlreadyExistPage(name: name),
+                      transition: Transition.fadeIn);
                 }
               },
               item: "Counselor",
             ),
             elevatedButtonItems(
-              onPressed: () => Get.to(() => EducationTimeline()),
+              onPressed: () => Get.to(() => const Skeleton(defaultPadding: 16)),
               item: 'your-journey-temp',
             )
           ],
@@ -148,10 +118,6 @@ class TempScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-void yourFunction() {
-  log("Function called at: ${DateTime.now()}", name: 'sample');
 }
 
 Widget elevatedButtonItems(
@@ -232,13 +198,3 @@ Widget elevatedButtonItems(
       }
  */
 
-
- // Get.snackbar(
-                  //   "Hi ",
-                  //   "You are already an Educator...",
-                  //   snackPosition: SnackPosition.TOP,
-                  //   duration: const Duration(seconds: 2),
-                  //   backgroundColor: const Color.fromARGB(255, 191, 189, 194)
-                  //       .withOpacity(0.7),
-                  //   colorText: mainPurple,
-                  // );
