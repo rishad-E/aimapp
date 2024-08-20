@@ -32,7 +32,11 @@ class AIMCETController extends GetxController {
   RxString testDone = 'no'.obs;
   int? totalQ;
   int? secQuestion;
+  int subQusCount = 0;
+  int sectionQusCount = 0;
+  int sectionTotalQus = 0;
   List<String> aimcetList = [];
+  List<SectionName> aimcetSectionName = [];
 
   List<String> personality = [];
   String? traitType;
@@ -48,20 +52,32 @@ class AIMCETController extends GetxController {
   List<AlltestReview> testReviews = [];
   bool showAllreview = false;
   AimcetReviewData? aimcetReviewData;
+  int? previousSecID;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
     totalQ = 0;
     secQuestion = 0;
+    subQusCount = 0;
+    sectionQusCount = 0;
     isLoading.value = true;
-    log('sectionQuesNum==>$secQuestion  totalQusNum==>$totalQ',
-        name: 'secques and total ques frst');
-
     Map<String, dynamic>? data =
         await AIMCETTestService().getTestQuestions(userId: userId);
 
     if (data != null) {
+      List<dynamic> sectionData = data['sectionName'];
+      List<SectionName> sections =
+          sectionData.map((e) => SectionName.fromJson(e)).toList();
+      for (var item in sections) {
+        if (!aimcetSectionName.any((i) => i.name == item.name)) {
+          aimcetSectionName.add(item);
+        }
+        if (!aimcetList.contains(item.name)) {
+          aimcetList.add(item.name.toString());
+        }
+      }
+
       Map<String, dynamic>? questionData = data['data'];
-      if (data['indexval'] == null || data['question_attempt'] == null) {
+      if (data['indexval'] == null || data['indexval'] == 0) {
         totalQ = 0;
         secQuestion = 0;
       } else {
@@ -84,28 +100,75 @@ class AIMCETController extends GetxController {
           end.value = 'done';
         }
       }
+      /*--------------changes----------- */
+      if (data['sec_question_attempt'] == null ||
+          data['sec_question_attempt'] == 0) {
+        /////////
+        sectionQusCount = 0;
+      } else {
+        sectionQusCount = data['sec_question_attempt'];
+      }
+      if (data['sub_question_attempt'] == null ||
+          data['sub_question_attempt'] == 0) {
+        //////////
+        subQusCount = 0;
+      } else {
+        subQusCount = data['sub_question_attempt'];
+      }
     }
     isLoading.value = false;
-    log(allQuestions.toString(), name: 'fetch allqus func');
+    log('length====>${allQuestions?.length}', name: 'fetch allqus func');
     log('sectionQuesNum==>$secQuestion  totalQusNum==>$totalQ',
         name: 'secques and total ques second');
   }
 
-  Future<void> submitAimTest({
+  void updateTestFileds(int secionID) {
+    totalQ = totalQ! + 1;
+    if (subQusCount < 6) {
+      subQusCount = subQusCount + 1;
+    } else {
+      subQusCount = 1;
+    }
+    if (previousSecID != secionID) {
+      previousSecID = secionID;
+      for (var item in aimcetSectionName) {
+        // if (aimcetSectionName.any((i) => i.id == previousSecID)) {}
+        if (item.id == previousSecID) {
+          sectionTotalQus = 0;
+          sectionQusCount = 0;
+          sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
+        }
+      }
+    }
+    if (sectionQusCount < sectionTotalQus) {
+      sectionQusCount = sectionQusCount + 1;
+    }
+
+    update(['aimcet-test']);
+  }
+  /*
+
+     Okk  if the section id is 1 then u have u have to check  
+     how many question are there in the section 1 according to thier sections total question count u have to increment the count from 
+     Sec_question_attempt to the end of the respective sections question.
+
+     if the sections change then the count will restart from 1 to the total question count
+
+   */
+
+  Future<void> submitAceTestQuestion({
     required String userId,
+    required String questionId,
     required String cAnswer,
     required String sectionId,
-    required String questionId,
-    required String secQues,
-    required String totalQues,
   }) async {
-    await AIMCETTestService().sumbitAIMTest(
-        userId: userId,
-        cAnswer: cAnswer,
-        sectionId: sectionId,
-        questionId: questionId,
-        secQues: secQues,
-        totalQues: totalQues);
+    await AIMCETTestService().sumbitAceTest(
+      userId: userId,
+      questionId: questionId,
+      cAnswer: cAnswer,
+      sectionId: sectionId,
+      
+    );
     update(['aimcet-test']);
   }
 
@@ -362,19 +425,6 @@ class AIMCETController extends GetxController {
     // Determine the download directory path based on platform and availability
   }
 
-  Future<void> getTestSectionTextsFunc() async {
-    List<Section>? data = await AIMCETTestService().getTestSectionTexts();
-    if (data != null) {
-      if (data.isNotEmpty) {
-        for (var item in data) {
-          if (!aimcetList.contains(item.name)) {
-            aimcetList.add(item.name.toString());
-          }
-        }
-      }
-    }
-  }
-
   Future<void> submitTestReview(
       {required String uId,
       required String testId,
@@ -432,31 +482,23 @@ class AIMCETController extends GetxController {
     update(['button-proceed']);
   }
 
-  void totalQuestionNumber(int secID) {
-    totalQ = totalQ! + 1;
-    if (secID <= 8) {
-      if (secQuestion! < 10) {
-        secQuestion = secQuestion! + 1;
-      } else if (secQuestion! == 10) {
-        secQuestion = 1;
-      }
-    } else if (secID == 9 || secID == 10) {
-      if (secQuestion! < 15) {
-        secQuestion = secQuestion! + 1;
-      } else if (secQuestion! == 15) {
-        secQuestion = 1;
-      }
-    }
-    // if (totalQ == 40) {
-    //   secQuestion = 1;
-    // }
-    // if (totalQ! < 110) {
-    //   totalQ = totalQ! + 1;
-    // } else if (totalQ == 110) {
-    //   totalQ = 1;
-    // }
-    update(['aimcet-test']);
-  }
+  // void totalQuestionNumber(int secID) {
+  //   totalQ = totalQ! + 1;
+  //   if (secID <= 8) {
+  //     if (secQuestion! < 10) {
+  //       secQuestion = secQuestion! + 1;
+  //     } else if (secQuestion! == 10) {
+  //       secQuestion = 1;
+  //     }
+  //   } else if (secID == 9 || secID == 10) {
+  //     if (secQuestion! < 15) {
+  //       secQuestion = secQuestion! + 1;
+  //     } else if (secQuestion! == 15) {
+  //       secQuestion = 1;
+  //     }
+  //   }
+  //   update(['aimcet-test']);
+  // }
 
   void updateStarCount(int count) {
     starCount = count;

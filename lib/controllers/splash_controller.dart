@@ -90,6 +90,8 @@ class SplashController extends GetxController {
                   email: email2.toString(),
                   uId: id,
                   phone: phone.toString()));
+            }else{
+              Get.offAll(() => const LoginScreen());
             }
           } else {
             Get.offAll(() => const LoginScreen());
@@ -123,7 +125,7 @@ class SplashController extends GetxController {
                 log('aimcet test done', name: 'spalsh done');
                 aimtestController.aimcetTestResultFunction(
                     userId: id.toString(), userName: uName.toString());
-                aimtestController.getTestSectionTextsFunc();
+                // aimtestController.getTestSectionTextsFunc();
               }
             });
             Get.off(() => const HomeScreen());

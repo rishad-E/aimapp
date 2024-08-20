@@ -26,8 +26,6 @@ class AimcetTestBottomsheet extends StatelessWidget {
                     topRight: Radius.circular(24))),
             child: Obx(
               () => Column(
-                // mainAxisSize: MainAxisSize.min,
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Align(
                     alignment: Alignment.topCenter,
@@ -62,8 +60,8 @@ class AimcetTestBottomsheet extends StatelessWidget {
                                           radius: 12,
                                           backgroundColor: kwhite,
                                         ),
-                                  // child: Icon(Icons.done,color: kwhite,),
-                                  // child:
+                               
+                               
                                 ),
                                 wMBox,
                                 Text(
@@ -84,15 +82,6 @@ class AimcetTestBottomsheet extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                // CircleAvatar(
-                                //   radius: 12,
-                                //   // backgroundColor: mainPurple,
-                                //   child: Icon(
-                                //     Icons.done_sharp,
-                                //     color: kwhite,
-                                //     size: 15,
-                                //   ),
-                                // ),
                                 Container(
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -110,8 +99,6 @@ class AimcetTestBottomsheet extends StatelessWidget {
                                           radius: 12,
                                           backgroundColor: kwhite,
                                         ),
-                                  // child: Icon(Icons.done,color: kwhite,),
-                                  // child:
                                 ),
                                 wMBox,
                                 Text(
@@ -141,6 +128,7 @@ class AimcetTestBottomsheet extends StatelessWidget {
     );
   }
 }
+
 // if (index == 0) {
 //   return Column(
 //     crossAxisAlignment: CrossAxisAlignment.start,

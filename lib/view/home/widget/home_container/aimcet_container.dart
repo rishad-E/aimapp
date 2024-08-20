@@ -114,14 +114,14 @@ class AimcetContainer extends StatelessWidget {
                     );
                   } else if (controller.testDone.value == 'continue') {
                     controller.fetchAllTestQuestions(userId: id);
-                    controller.getTestSectionTextsFunc();
+                    // controller.getTestSectionTextsFunc();
                     return acecetElevatedButton(
                       onPressed: () {
                         if (controller.allQuestions != null) {
                           controller.secID.value =
-                              controller.allQuestions![0].sectionId;
+                              controller.allQuestions![0].sectionId!;
                         }
-                        Get.to(() => const AIMCETTestPage());
+                        Get.to(() => AIMCETTestPage(uId: id, uName: userName));
                       },
                       bText: "Continue AIMCET Test",
                       bIcon: Icons.arrow_forward_ios_sharp,
@@ -142,7 +142,9 @@ class AimcetContainer extends StatelessWidget {
                                   ),
                               transition: Transition.fade);
                         } else {
-                          Get.to(() => AIMCETGuideLinePage(uId: id),
+                          Get.to(
+                              () =>
+                                  AIMCETGuideLinePage(uId: id, uName: userName),
                               transition: Transition.fade);
                         }
                         // Get.to(() => AIMCETGuideLinePage(uId: id));

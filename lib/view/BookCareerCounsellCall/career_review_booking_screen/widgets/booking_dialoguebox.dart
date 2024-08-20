@@ -113,7 +113,9 @@ class BookingDialogueBox extends StatelessWidget {
                         shape: buttonShape(round: 8),
                         side: MaterialStatePropertyAll(
                             BorderSide(color: mainPurple))),
-                    onPressed: () => Get.to(() => AIMCETGuideLinePage(uId: id)),
+                    onPressed: () => Get.to(
+                      () => AIMCETGuideLinePage(uId: id, uName: userName),
+                    ),
                     icon: Text(
                       "Continue Psychometric Test",
                       style: TextStyle(
@@ -129,7 +131,9 @@ class BookingDialogueBox extends StatelessWidget {
                     style: ButtonStyle(
                         shape: buttonShape(round: 8),
                         backgroundColor: MaterialStatePropertyAll(mainPurple)),
-                    onPressed: () => Get.to(() => AIMCETGuideLinePage(uId: id)),
+                    onPressed: () => Get.to(
+                      () => AIMCETGuideLinePage(uId: id, uName: userName),
+                    ),
                     icon: Text(
                       "Take Psychometric Test",
                       style: TextStyle(

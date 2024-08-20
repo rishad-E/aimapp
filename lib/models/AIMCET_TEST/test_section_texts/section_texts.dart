@@ -10,7 +10,7 @@
 
 class AimcetSecTexts {
     int? status;
-    List<Section>? sections;
+    List<SectionName>? sections;
 
     AimcetSecTexts({
         this.status,
@@ -19,7 +19,7 @@ class AimcetSecTexts {
 
     factory AimcetSecTexts.fromJson(Map<String, dynamic> json) => AimcetSecTexts(
         status: json["Status"],
-        sections: json["sections"] == null ? [] : List<Section>.from(json["sections"]!.map((x) => Section.fromJson(x))),
+        sections: json["sections"] == null ? [] : List<SectionName>.from(json["sections"]!.map((x) => SectionName.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -28,26 +28,43 @@ class AimcetSecTexts {
     };
 }
 
-class Section {
+class SectionName {
     int? id;
     String? name;
+    String? parentId;
+    String? subSectionCount;
+    String? totalQuestion;
+    int? status;
     int? lmsId;
 
-    Section({
+    SectionName({
         this.id,
         this.name,
+        this.parentId,
+        this.subSectionCount,
+        this.totalQuestion,
+        this.status,
         this.lmsId,
     });
 
-    factory Section.fromJson(Map<String, dynamic> json) => Section(
+    factory SectionName.fromJson(Map<String, dynamic> json) => SectionName(
         id: json["id"],
         name: json["name"],
+        parentId: json["parent_id"],
+        subSectionCount: json["sub_section_count"],
+        totalQuestion: json["total_question"],
+        status: json["status"],
         lmsId: json["lms_id"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "parent_id": parentId,
+        "sub_section_count": subSectionCount,
+        "total_question": totalQuestion,
+        "status": status,
         "lms_id": lmsId,
     };
 }
+

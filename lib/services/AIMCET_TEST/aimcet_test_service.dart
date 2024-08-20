@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
 import 'package:aimshala/utils/common/constant/api_const.dart';
 import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:dio/dio.dart';
@@ -33,16 +32,18 @@ class AIMCETTestService {
     return null;
   }
 
-  Future<String?> sumbitAIMTest({
+  Future<String?> sumbitAceTest({
     required String userId,
+    required String questionId,
     required String cAnswer,
     required String sectionId,
-    required String questionId,
-    required String secQues,
-    required String totalQues,
+    // required String subSectionId,
+    // required String sectionQusCount,
+    // required String subQuesCount,
+
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer secQues=>$secQues totalQues=>$totalQues',
+    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer ',
         name: 'serviceeeeeee');
     try {
       Response response = await dio.post(
@@ -52,8 +53,10 @@ class AIMCETTestService {
           "c_answer": cAnswer,
           "section_id": sectionId,
           "question_id": questionId,
-          "section_qus": secQues,
-          "total_question": totalQues
+          "sub_section_id": '',
+          "section_question_count": '',
+          "sub_question_count": '',
+          "total_question": '',
         },
         options: Options(validateStatus: (status) => status! < 599),
       );
@@ -146,36 +149,36 @@ class AIMCETTestService {
     return null;
   }
 
-  Future<List<Section>?> getTestSectionTexts() async {
-    String path = 'http://154.26.130.161/elearning/api/test-sections';
+  // Future<List<Section>?> getTestSectionTexts() async {
+  //   String path = 'http://154.26.130.161/elearning/api/test-sections';
 
-    try {
-      Response response = await dio.get(
-        path,
-        options: Options(validateStatus: (status) => status! < 599),
-      );
-      if (response.data is Map) {
-        Map<String, dynamic> resData = response.data;
-        if (resData.containsKey('sections')) {
-          List<dynamic> data = resData['sections'];
-          List<Section> texts = data.map((e) => Section.fromJson(e)).toList();
-          return texts;
-          // log(texts.toString(), name: 'sec Texts');
-        }
-      } else if (response.data is String) {
-        String msg = response.data;
-        SnackbarPopUps.popUpB(
-            'Error fetching data $msg...Please try after sometime');
-      }
-    } on DioException catch (e) {
-      // Handle other exceptions
-      log('Exception: ${e.toString()}',
-          name: 'aimcet getTestSectionTexts error');
-      throw SnackbarPopUps.popUpB(
-          'Error fetching data...Please try after sometime');
-    }
-    return null;
-  }
+  //   try {
+  //     Response response = await dio.get(
+  //       path,
+  //       options: Options(validateStatus: (status) => status! < 599),
+  //     );
+  //     if (response.data is Map) {
+  //       Map<String, dynamic> resData = response.data;
+  //       if (resData.containsKey('sections')) {
+  //         List<dynamic> data = resData['sections'];
+  //         List<Section> texts = data.map((e) => Section.fromJson(e)).toList();
+  //         return texts;
+  //         // log(texts.toString(), name: 'sec Texts');
+  //       }
+  //     } else if (response.data is String) {
+  //       String msg = response.data;
+  //       SnackbarPopUps.popUpB(
+  //           'Error fetching data $msg...Please try after sometime');
+  //     }
+  //   } on DioException catch (e) {
+  //     // Handle other exceptions
+  //     log('Exception: ${e.toString()}',
+  //         name: 'aimcet getTestSectionTexts error');
+  //     throw SnackbarPopUps.popUpB(
+  //         'Error fetching data...Please try after sometime');
+  //   }
+  //   return null;
+  // }
 
   Future<String?> submitTestReview(
       {required String uId,
