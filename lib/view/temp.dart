@@ -8,13 +8,13 @@ import 'package:aimshala/controllers/mentor_controllers/mentor_add_media_control
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_screen.dart';
 import 'package:aimshala/view/counselor_registration/c_already_exist_page/counselor_already_exist_page.dart';
 import 'package:aimshala/view/counselor_registration/c_personal_detail_section/c_personal_detail_page.dart';
 import 'package:aimshala/view/educator_registration/already_exist_page/educator_already_exist.dart';
 import 'package:aimshala/view/educator_registration/personal_detail_section/personal_deail_page.dart';
 import 'package:aimshala/view/mentor_registration/already_exist_mentor/mentor_already_exist_page.dart';
 import 'package:aimshala/view/mentor_registration/mentor_personal_detail_section/mentor_personal_details_page.dart';
-import 'package:aimshala/view/profile/profile_home/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -110,7 +110,7 @@ class TempScreen extends StatelessWidget {
               item: "Counselor",
             ),
             elevatedButtonItems(
-              onPressed: () => Get.to(() => const Skeleton(defaultPadding: 16)),
+              onPressed: () => Get.to(() =>  AimcetResultScreen()),
               item: 'your-journey-temp',
             )
           ],

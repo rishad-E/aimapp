@@ -6,14 +6,18 @@ import 'package:dio/dio.dart';
 class UserAllDataService {
   Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> fetchUserData({required String uId}) async {
+  Future<Map<String, dynamic>?> fetchUserData(
+      {required String uId, required String token}) async {
     String path = 'http://154.26.130.161/elearning/api/get-user-info';
 
     try {
       Response response = await dio.get(
         path,
         queryParameters: {"user_id": uId},
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          // headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       log("statuscode=====>${response.statusCode}", name: 'user-all-data');
       if (response.statusCode == 200) {

@@ -7,15 +7,20 @@ class AIMCETTestService {
   Dio dio = Dio();
 
   Future<Map<String, dynamic>?> getTestQuestions(
-      {required String userId}) async {
+      {required String userId, required String token}) async {
     String path = Apis().aimUrl + Apis().aimcetTest;
+
     try {
-      Response response = await dio.post(path,
-          data: {"user_id": userId},
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
-      if (response.statusCode == 200) {
+      Response response = await dio.post(
+        path,
+        data: {"user_id": userId},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      // log(response.data.toString());
+      if (response.data is Map) {
         Map<String, dynamic> data = response.data;
         return data;
       } else if (response.statusCode == 500) {
@@ -37,43 +42,59 @@ class AIMCETTestService {
     required String questionId,
     required String cAnswer,
     required String sectionId,
-    // required String subSectionId,
-    // required String sectionQusCount,
-    // required String subQuesCount,
-
+    required String subSectionId,
+    required String sectionQusCount,
+    required String subQuesCount,
+    required String totalQues,
+    required String token,
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer ',
+    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer subsecId=>$subSectionId  secQusCount=>$sectionQusCount subQusCount=>$subQuesCount  totalQus=>$totalQues token=>${token.isNotEmpty}',
         name: 'serviceeeeeee');
     try {
       Response response = await dio.post(
         path,
         data: {
           "user_id": userId,
-          "c_answer": cAnswer,
+          "qid": questionId,
+          "answer": cAnswer,
           "section_id": sectionId,
-          "question_id": questionId,
-          "sub_section_id": '',
-          "section_question_count": '',
-          "sub_question_count": '',
-          "total_question": '',
+          "sub_section_id": subSectionId,
+          "main_secqus": sectionQusCount,
+          "sub_secqus": subQuesCount,
+          "qus": totalQues,
         },
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       log(response.data.toString(), name: 'aimcet sumbit');
-      if (response.statusCode == 200) {
-        return 'success';
-      } else if (response.statusCode == 422) {
-        return 'failed';
-      } else if (response.statusCode == 500) {
-        SnackbarPopUps.popUpB(
-            'Error fetching data...Please try after sometime');
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('status')) {
+          String successMsg = resData['status'];
+          return successMsg;
+        } else if (resData.containsKey('error')) {
+          String errorMessage = resData['error'];
+          return errorMessage;
+        }
+      } else {
+        String msg = response.data;
+        return msg;
       }
     } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        // log('Server error: ${e.message}', name: 'save education info error');
+        log('Exception: ${e.toString()}', name: 'aimcet submit error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      } else {
+        log('Exception: ${e.toString()}', name: 'aimcet submit error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      }
       // Handle other exceptions
-      log('Exception: ${e.toString()}', name: 'aimcet submit error');
-      throw SnackbarPopUps.popUpB(
-          'Error fetching data...Please try after sometime');
     }
     return null;
   }

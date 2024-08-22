@@ -13,12 +13,15 @@ import 'package:aimshala/services/AIMCET_TEST/trait_career_result.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AIMCETController extends GetxController {
   TextEditingController qualificationController = TextEditingController();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
+
   RxString qualify = 'Your qualification'.obs;
   String? qualifyId;
   bool guideSelect = false;
@@ -31,7 +34,7 @@ class AIMCETController extends GetxController {
   RxString gp = ''.obs;
   RxString testDone = 'no'.obs;
   int? totalQ;
-  int? secQuestion;
+  // int? secQuestion;
   int subQusCount = 0;
   int sectionQusCount = 0;
   int sectionTotalQus = 0;
@@ -55,71 +58,81 @@ class AIMCETController extends GetxController {
   int? previousSecID;
 
   Future<void> fetchAllTestQuestions({required String userId}) async {
+    String? token = await storage.read(key: 'token');
     totalQ = 0;
-    secQuestion = 0;
+    // secQuestion = 0;
     subQusCount = 0;
     sectionQusCount = 0;
     isLoading.value = true;
-    Map<String, dynamic>? data =
-        await AIMCETTestService().getTestQuestions(userId: userId);
+    Map<String, dynamic>? data = await AIMCETTestService()
+        .getTestQuestions(userId: userId, token: token.toString());
 
     if (data != null) {
-      List<dynamic> sectionData = data['sectionName'];
-      List<SectionName> sections =
-          sectionData.map((e) => SectionName.fromJson(e)).toList();
-      for (var item in sections) {
-        if (!aimcetSectionName.any((i) => i.name == item.name)) {
-          aimcetSectionName.add(item);
-        }
-        if (!aimcetList.contains(item.name)) {
-          aimcetList.add(item.name.toString());
-        }
-      }
-
-      Map<String, dynamic>? questionData = data['data'];
-      if (data['indexval'] == null || data['indexval'] == 0) {
-        totalQ = 0;
-        secQuestion = 0;
+      if (data.containsKey('error')) {
+        Get.snackbar(
+          "Error",
+          "Failed to Fetch your Questions...",
+          snackPosition: SnackPosition.TOP,
+          duration: const Duration(seconds: 2),
+          backgroundColor: kred,
+          colorText: Colors.white,
+        );
       } else {
-        totalQ = data['indexval'];
-        secQuestion = data['question_attempt'];
-      }
-      if (questionData != null) {
-        Map<String, List<Question>> res = {};
-        questionData.forEach((key, value) {
-          res[key] =
-              List<Question>.from(value.map((x) => Question.fromJson(x)));
-        });
-        testRes = res;
-        allQuestions = [];
-        for (var questions in testRes!.values) {
-          allQuestions!.addAll(questions);
+        List<dynamic> sectionData = data['sectionName'];
+        List<SectionName> sections =
+            sectionData.map((e) => SectionName.fromJson(e)).toList();
+        for (var item in sections) {
+          if (!aimcetSectionName.any((i) => i.name == item.name)) {
+            aimcetSectionName.add(item);
+          }
+          // can remove aimcetList this list if wanted
+          if (!aimcetList.contains(item.name)) {
+            aimcetList.add(item.name.toString());
+          }
         }
 
-        if (allQuestions!.isEmpty) {
-          end.value = 'done';
+        Map<String, dynamic>? questionData = data['data'];
+        if (data['indexval'] == null || data['indexval'] == 0) {
+          totalQ = 0;
+        } else {
+          totalQ = data['indexval'];
         }
-      }
-      /*--------------changes----------- */
-      if (data['sec_question_attempt'] == null ||
-          data['sec_question_attempt'] == 0) {
-        /////////
-        sectionQusCount = 0;
-      } else {
-        sectionQusCount = data['sec_question_attempt'];
-      }
-      if (data['sub_question_attempt'] == null ||
-          data['sub_question_attempt'] == 0) {
-        //////////
-        subQusCount = 0;
-      } else {
-        subQusCount = data['sub_question_attempt'];
+        if (questionData != null) {
+          Map<String, List<Question>> res = {};
+          questionData.forEach((key, value) {
+            res[key] =
+                List<Question>.from(value.map((x) => Question.fromJson(x)));
+          });
+          testRes = res;
+          allQuestions = [];
+          for (var questions in testRes!.values) {
+            allQuestions!.addAll(questions);
+          }
+
+          if (allQuestions!.isEmpty) {
+            end.value = 'done';
+          }
+        }
+        /*--------------changes----------- */
+        if (data['sec_question_attempt'] == null ||
+            data['sec_question_attempt'] == 0) {
+          /////////
+          sectionQusCount = 0;
+        } else {
+          sectionQusCount = data['sec_question_attempt'];
+        }
+        if (data['sub_question_attempt'] == null ||
+            data['sub_question_attempt'] == 0) {
+          //////////
+          subQusCount = 0;
+        } else {
+          subQusCount = data['sub_question_attempt'];
+        }
       }
     }
     isLoading.value = false;
-    log('length====>${allQuestions?.length}', name: 'fetch allqus func');
-    log('sectionQuesNum==>$secQuestion  totalQusNum==>$totalQ',
-        name: 'secques and total ques second');
+    log('length====>${allQuestions?.length} subQuesCount=>$subQusCount sectionqusCount=>$sectionQusCount submittedQus=>$totalQ',
+        name: 'fetch allqus func');
   }
 
   void updateTestFileds(int secionID) {
@@ -146,8 +159,8 @@ class AIMCETController extends GetxController {
 
     update(['aimcet-test']);
   }
-  /*
 
+  /*
      Okk  if the section id is 1 then u have u have to check  
      how many question are there in the section 1 according to thier sections total question count u have to increment the count from 
      Sec_question_attempt to the end of the respective sections question.
@@ -161,13 +174,22 @@ class AIMCETController extends GetxController {
     required String questionId,
     required String cAnswer,
     required String sectionId,
+    required String subSectionId,
+    required String sectionQusCount,
+    required String subQuesCount,
+    required String totalQues,
   }) async {
+    String? token = await storage.read(key: 'token');
     await AIMCETTestService().sumbitAceTest(
       userId: userId,
       questionId: questionId,
       cAnswer: cAnswer,
       sectionId: sectionId,
-      
+      subSectionId: subSectionId,
+      sectionQusCount: sectionQusCount,
+      subQuesCount: subQuesCount,
+      totalQues: totalQues,
+      token: token.toString(),
     );
     update(['aimcet-test']);
   }

@@ -48,8 +48,9 @@ class SplashController extends GetxController {
       String? phone = await storage.read(key: 'phone');
       String? email = await storage.read(key: 'email');
       String? name = await storage.read(key: 'name');
+      String? token = await storage.read(key: 'token');
 
-      log("phone=>$phone email=>$email name=>$name",
+      log("phone=>$phone email=>$email name=>$name token=>$token",
           name: 'splash mobile and email');
       Map<String, dynamic>? res =
           await LoginService().verifyUserExist(mobileNo: phone.toString());
@@ -110,11 +111,12 @@ class SplashController extends GetxController {
               uId: id,
               phone: phone));
         } else if (res.containsKey('token')) {
+          storage.write(key: 'token', value: res['token']);
           loginController.userData = UserModel.fromJson(res);
           if (loginController.userData != null) {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();
-            log('userID=>$id  name=>$uName', name: 'userid and username');
+            log('userID=>$id  name=>$uName ', name: 'userid and username');
             alldataController.getUserallData(uId: id.toString());
             bookingController.checkCounsellcallBookingFuntion(
                 userId: id.toString());

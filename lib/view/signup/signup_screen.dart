@@ -10,6 +10,7 @@ import 'package:aimshala/view/signup/widget/signup_bottomsheet.dart';
 import 'package:aimshala/view/signup/widget/widget_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,14 +21,8 @@ class SignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey();
   final signUp = Get.put(SignUpController());
 
-  // void getphone() async {
-  //   String? phone = await storage.read(key: 'phone');
-  //   log(phone.toString(), name: 'signupscreen');
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // getphone();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -108,6 +103,34 @@ class SignUpScreen extends StatelessWidget {
                             keyboardType: TextInputType.datetime,
                             inputFormatters: [DateInputFormatter()],
                             style: const TextStyle(fontSize: 13),
+                          ),
+                        ),
+                        hBox,
+                        signupBox(
+                          text: primarytxt3('Your Role', 9.sp),
+                          textField: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: kblack.withOpacity(0.3),
+                                )),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: kblack.withOpacity(0.3),
+                                      )),
+                                      child: Row(children: [SvgPicture.asset('assets/images/student-signup.svg')],),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         hLBox,

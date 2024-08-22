@@ -73,38 +73,39 @@ class AIMCETTestPage extends StatelessWidget {
                                         child: GestureDetector(
                                           onTap: () {
                                             isSelected = pageIndex;
-                                            
-                                            // if (index == length - 1) {
-                                            //   showAIMCETDialogFunction(
-                                            //       context: context,
-                                            //       userId: uId,
-                                            //       userName: uName);
-                                            //   c.aimcetTestResultFunction(
-                                            //       userId: uId, userName: uName);
-                                            // }
+                                            if (index == length - 1) {
+                                              showAIMCETDialogFunction(
+                                                  context: context,
+                                                  userId: uId,
+                                                  userName: uName);
+                                              c.aimcetTestResultFunction(
+                                                  userId: uId, userName: uName);
+                                            }
                                             c.secID.value = data.sectionId!;
                                             c.updateTestFileds(data.sectionId!);
-                                            // log('uId=>$uId qusID=>${data.id} c_answer=>$answerText sectionID==>${data.sectionId} subsectionID=>${data.subSectionId} totalQus=>${c.totalQ} subQuesCount=>${c.subQusCount} ',
-                                            //     name: 'items');
-                                            log('section=>${c.secID} totalqus=>${c.sectionQusCount}',
-                                                name:
-                                                    'new sectionID and totalques');
+                                            log('uId=>$uId qusID=>${data.id} c_answer=>$answerText  subsectionID=>${data.subSectionId} sectionID==>${data.sectionId} totalQus=>${c.totalQ} subQuesCount=>${c.subQusCount} sectionqusCount=>${c.sectionQusCount}',
+                                                name: 'items');
                                             c.update(['aimcet-test']);
-
                                             c.submitAceTestQuestion(
                                               userId: uId,
                                               questionId: data.id.toString(),
                                               cAnswer: answerText,
                                               sectionId:
                                                   data.sectionId.toString(),
+                                              subSectionId:
+                                                  data.subSectionId.toString(),
+                                              sectionQusCount:
+                                                  c.sectionQusCount.toString(),
+                                              subQuesCount:
+                                                  c.subQusCount.toString(),
+                                              totalQues: c.totalQ.toString(),
                                             );
                                             if (index < length - 1) {
                                               pageController.animateToPage(
-                                                index + 1,
-                                                duration: const Duration(
-                                                    milliseconds: 800),
-                                                curve: Curves.ease,
-                                              );
+                                                  index + 1,
+                                                  duration: const Duration(
+                                                      milliseconds: 800),
+                                                  curve: Curves.ease);
                                             }
                                             // if (c.totalQ == 40) {
                                             //   log('userId=>$uId  secId=>1',
@@ -119,14 +120,14 @@ class AIMCETTestPage extends StatelessWidget {
                                             //       userId: uId, secId: '3');
                                             // }
 
-                                            // if (length - 2 == index ||
-                                            //     length - 1 == index) {
-                                            //   log('sectionid=>${data.sectionId}   index=>$index',
-                                            //       name: 'check END val');
-                                            //   c.end.value = 'yes';
-                                            // } else {
-                                            //   c.end.value = 'no';
-                                            // }
+                                            if (length - 2 == index ||
+                                                length - 1 == index) {
+                                              log('sectionid=>${data.sectionId}   index=>$index',
+                                                  name: 'check END val');
+                                              c.end.value = 'yes';
+                                            } else {
+                                              c.end.value = 'no';
+                                            }
                                           },
                                           child: answerContainer(
                                             (pageIndex + 1).toString(),

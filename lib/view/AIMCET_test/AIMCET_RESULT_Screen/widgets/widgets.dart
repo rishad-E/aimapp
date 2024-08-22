@@ -84,3 +84,43 @@ Widget fetchErrorText({required String text}) {
     ),
   );
 }
+
+Widget horizontalTabMain({Widget? child}) {
+  return Container(
+    margin: const EdgeInsets.only(left: 16, bottom: 12, top: 12),
+    decoration: BoxDecoration(
+      border: Border.all(color: const Color.fromARGB(255, 222, 219, 219)),
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(8),
+        topLeft: Radius.circular(8),
+      ),
+    ),
+    child: child,
+  );
+}
+
+Widget tabItems({void Function()? onTap, required bool selected}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      width: 96,
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+      decoration: const BoxDecoration(
+          border: Border(
+              right: BorderSide(color: Color.fromARGB(255, 222, 219, 219)))),
+      child: Column(
+        children: [
+          Icon(Icons.done, color: selected ? mainPurple : kblack),
+          Text(
+            "Traits Report",
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color: selected ? mainPurple : kblack),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    ),
+  );
+}
