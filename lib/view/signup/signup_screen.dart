@@ -127,7 +127,7 @@ class SignUpScreen extends StatelessWidget {
                                       border: Border.all(
                                         color: kblack.withOpacity(0.3),
                                       )),
-                                      child: Row(children: [SvgPicture.asset('assets/images/student-signup.svg')],),
+                                      child: Row(children: [SvgPicture.asset('assets/images/Video-booked.svg')],),
                                 )
                               ],
                             ),
