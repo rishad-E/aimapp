@@ -1,6 +1,7 @@
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
+import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -22,7 +23,10 @@ InputDecoration roleContainer({String? hintText, Widget? suffixWidget}) {
     hintText: hintText,
     suffixIcon: suffixWidget,
     contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-    hintStyle: TextStyle(color: kblack.withOpacity(0.4), fontWeight: FontWeight.normal  ,fontSize: 13),
+    hintStyle: TextStyle(
+        color: kblack.withOpacity(0.4),
+        fontWeight: FontWeight.normal,
+        fontSize: 13),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.red),
@@ -86,8 +90,60 @@ Widget signUpButton(
 
 Widget signUpText({Color? textColor}) {
   return Text(
-    'Sign up',
+    'Complete Onboarding',
     style:
         TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: 14),
+  );
+}
+
+Widget signUpRoleBox({Widget? child}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    width: double.infinity,
+    // height: 50,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: kblack.withOpacity(0.3),
+        )),
+    child: child,
+  );
+}
+
+Widget signUpRoleItems(
+    {String? image, required String role, required bool selected,void Function()? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+              color: selected ? mainPurple : textFieldColor.withOpacity(0.3),
+              width: 1.5)),
+      child: Row(
+        // mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          image == null
+              ? shrinked
+              : SizedBox(
+                  height: 24,
+                  child: Image.asset(
+                    'assets/images/student-signup.png',
+                    filterQuality: FilterQuality.high,
+                  ),
+                ),
+          image == null ? shrinked : wBox,
+          selected
+              ? semiBoldChoiceText(
+                  text: role,
+                  size: 14,
+                  color: mainPurple,
+                )
+              : regularText(role, 14, color: textFieldColor)
+        ],
+      ),
+    ),
   );
 }

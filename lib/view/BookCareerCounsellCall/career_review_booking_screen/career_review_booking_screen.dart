@@ -201,16 +201,4 @@ class CareerReviewBookingScreen extends StatelessWidget {
     // userId = alldata.userData?.id.toString();
     return id;
   }
-
-  // void showDialogBoxFunction(BuildContext context, String userId,
-  //     BookCareerCounsellController c, String name) {
-  //   showDialog(
-  //     barrierDismissible: false,
-  //     context: context,
-  //     builder: (context) {
-  //       c.checkCounsellcallBookingFuntion(userId: userId);
-  //       return BookingDialogueBox(id: userId, userName: name);
-  //     },
-  //   );
-  // }
 }
