@@ -9,7 +9,7 @@ class MentorRegistrationService {
   Dio dio = Dio();
 
   Future<String?> saveMentorRegistraion({
-   
+    required String token,
     required String name,
     required String email,
     required String dob,
@@ -102,7 +102,11 @@ class MentorRegistrationService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data', 'Accept': '*/*'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Accept': '*/*',
+            'Authorization': 'Bearer $token'
+          },
         ),
       );
       log(response.data.toString(), name: 'mentor response');

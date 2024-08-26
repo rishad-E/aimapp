@@ -6,7 +6,6 @@ import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart'
 import 'package:aimshala/models/AIMCET_TEST/test_all_reviews/test_all_reviews.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_res_userdetails/test_res_user_details.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
-import 'package:aimshala/services/AIMCET_TEST/aimcet_gp_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/personality_career_report_service.dart';
 import 'package:aimshala/services/AIMCET_TEST/trait_career_result.dart';
@@ -57,16 +56,15 @@ class AIMCETController extends GetxController {
   AimcetReviewData? aimcetReviewData;
   int? previousSecID;
 
-  Future<void> fetchAllTestQuestions({required String userId}) async {
+  Future<void> fetchAllTestQuestions() async {
     String? token = await storage.read(key: 'token');
     totalQ = 0;
     // secQuestion = 0;
     subQusCount = 0;
     sectionQusCount = 0;
     isLoading.value = true;
-    Map<String, dynamic>? data = await AIMCETTestService()
-        .getTestQuestions(userId: userId, token: token.toString());
-
+    Map<String, dynamic>? data =
+        await AIMCETTestService().getTestQuestions(token: token.toString());
     if (data != null) {
       if (data.containsKey('error')) {
         Get.snackbar(
@@ -160,17 +158,8 @@ class AIMCETController extends GetxController {
     update(['aimcet-test']);
   }
 
-  /*
-     Okk  if the section id is 1 then u have u have to check  
-     how many question are there in the section 1 according to thier sections total question count u have to increment the count from 
-     Sec_question_attempt to the end of the respective sections question.
-
-     if the sections change then the count will restart from 1 to the total question count
-
-   */
-
   Future<void> submitAceTestQuestion({
-    required String userId,
+    // required String userId,
     required String questionId,
     required String cAnswer,
     required String sectionId,
@@ -181,7 +170,7 @@ class AIMCETController extends GetxController {
   }) async {
     String? token = await storage.read(key: 'token');
     await AIMCETTestService().sumbitAceTest(
-      userId: userId,
+      // userId: userId,
       questionId: questionId,
       cAnswer: cAnswer,
       sectionId: sectionId,
@@ -194,17 +183,18 @@ class AIMCETController extends GetxController {
     update(['aimcet-test']);
   }
 
-  Future<void> careerResultSubmittion(
-      {required String userId, required String secId}) async {
-    log('career result at 40th and 55th qustion====secid=>$secId',
-        name: '40th and 55th');
-    await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
-  }
+  // Future<void> careerResultSubmittion(
+  //     {required String userId, required String secId}) async {
+  //   log('career result at 40th and 55th qustion====secid=>$secId',
+  //       name: '40th and 55th');
+  //   await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
+  // }
 
-  Future<void> aimcetTestResultFunction(
-      {required String userId, required String userName}) async {
+  Future<void> aimcetTestResultFunction({required String userName}) async {
+    String? token = await storage.read(key: 'token');
+
     dynamic result = await AIMCETTestService()
-        .aimcetTestResult(userId: userId, userName: userName);
+        .aimcetTestResult(token: token.toString(), userName: userName);
 
     if (result is Map) {
       //extracting personality types
@@ -268,24 +258,24 @@ class AIMCETController extends GetxController {
     }
   }
 
-  Future<void> gpReportSubmitFunction(
-      {required String uId,
-      required String personality,
-      required String trait}) async {
-    gp.value = 'wait';
-    String? value = await GPReportService()
-        .gpReportSubmit(uId: uId, personality: personality, trait: trait);
-    if (value == 'sucess') {
-      gp.value = 'sucess';
-    } else {
-      gp.value = 'failed';
-    }
-  }
+  // Future<void> gpReportSubmitFunction(
+  //     {required String personality, required String trait}) async {
+  //   String? token = await storage.read(key: 'token');
+  //   gp.value = 'wait';
+  //   String? value = await GPReportService().gpReportSubmit(
+  //       token: token.toString(), personality: personality, trait: trait);
+  //   if (value == 'sucess') {
+  //     gp.value = 'sucess';
+  //   } else {
+  //     gp.value = 'failed';
+  //   }
+  // }
 
-  Future<void> fetchPersonalityReport({required String userId}) async {
+  Future<void> fetchPersonalityReport() async {
     try {
-      PersonalityReportModel? report =
-          await PersonalityReportService().getPersonalityReport(userId: userId);
+      String? token = await storage.read(key: 'token');
+      PersonalityReportModel? report = await PersonalityReportService()
+          .getPersonalityReport(token: token.toString());
       if (report != null) {
         // personalityReport = report;
         personalityReort.value = report;
@@ -298,10 +288,11 @@ class AIMCETController extends GetxController {
     }
   }
 
-  Future<void> fetchTraitReport({required String userId}) async {
+  Future<void> fetchTraitReport() async {
     try {
+      String? token = await storage.read(key: 'token');
       TraitReportModel? report =
-          await TraitReportService().getTraitReport(userId: userId);
+          await TraitReportService().getTraitReport(token: token.toString());
       if (report != null) {
         traitReport.value = report;
         log(traitType.toString(), name: 'report trait controller');
@@ -314,9 +305,10 @@ class AIMCETController extends GetxController {
     }
   }
 
-  Future<void> checkAimcetTestTakenFunction({required String userId}) async {
+  Future<void> checkAimcetTestTakenFunction() async {
+    String? token = await storage.read(key: 'token');
     Map<String, dynamic>? data =
-        await AIMCETTestService().checkAimcetTestTaken(userId: userId);
+        await AIMCETTestService().checkAimcetTestTaken(token: token.toString());
     if (data != null) {
       if (data['Test Status'] == 'Not Given') {
         testDone.value = 'no';
@@ -330,6 +322,7 @@ class AIMCETController extends GetxController {
 
   Future<void> downloadPDF(String pdfUrl, String fileName) async {
     try {
+      String? token = await storage.read(key: 'token');
       isDownloading.value = true;
       Directory? directory;
       if (Platform.isIOS) {
@@ -383,6 +376,7 @@ class AIMCETController extends GetxController {
           pdfUrl,
           savePath,
           options: Options(
+            headers: {'Authorization': 'Bearer $token'},
             responseType: ResponseType.bytes,
           ),
           onReceiveProgress: (received, total) {
@@ -448,12 +442,15 @@ class AIMCETController extends GetxController {
   }
 
   Future<void> submitTestReview(
-      {required String uId,
-      required String testId,
+      {required String testId,
       required String rating,
       required String review}) async {
+    String? token = await storage.read(key: 'token');
     String? res = await AIMCETTestService().submitTestReview(
-        uId: uId, testId: testId, rating: rating, review: review);
+        token: token.toString(),
+        testId: testId,
+        rating: rating,
+        review: review);
     if (res == 'Review saved successfully') {
       Get.showSnackbar(
         GetSnackBar(
@@ -503,24 +500,6 @@ class AIMCETController extends GetxController {
     guidebutton.value = guideSelect;
     update(['button-proceed']);
   }
-
-  // void totalQuestionNumber(int secID) {
-  //   totalQ = totalQ! + 1;
-  //   if (secID <= 8) {
-  //     if (secQuestion! < 10) {
-  //       secQuestion = secQuestion! + 1;
-  //     } else if (secQuestion! == 10) {
-  //       secQuestion = 1;
-  //     }
-  //   } else if (secID == 9 || secID == 10) {
-  //     if (secQuestion! < 15) {
-  //       secQuestion = secQuestion! + 1;
-  //     } else if (secQuestion! == 15) {
-  //       secQuestion = 1;
-  //     }
-  //   }
-  //   update(['aimcet-test']);
-  // }
 
   void updateStarCount(int count) {
     starCount = count;

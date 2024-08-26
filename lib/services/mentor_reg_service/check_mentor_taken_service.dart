@@ -4,14 +4,17 @@ import 'package:dio/dio.dart';
 class CheckMentorRegTakenService {
   Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> checkMentorRegtaken({required uId}) async {
+  Future<Map<String, dynamic>?> checkMentorRegtaken(
+      {required String token}) async {
     String path = 'http://154.26.130.161/elearning/api/get-mentor-data';
 
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": uId},
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       // log(response.data.toString(), name: 'mentor taken check');
 

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_additional_info_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_availability_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_background_detail_controller.dart';
@@ -7,12 +6,12 @@ import 'package:aimshala/controllers/mentor_controllers/mentor_experience_contro
 import 'package:aimshala/controllers/mentor_controllers/mentor_personal_details_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_preference_controller.dart';
 import 'package:aimshala/controllers/mentor_controllers/mentor_reference_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/mentor_reg_service/mentor_registraion_service.dart';
 import 'package:aimshala/view/mentor_registration/mentor_final_submit_page/mentor_final_submit_page.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class MentorAddMediaController extends GetxController {
@@ -20,6 +19,7 @@ class MentorAddMediaController extends GetxController {
   TextEditingController mediaLinkController = TextEditingController();
   Rx<Color> nextText = Rx<Color>(textFieldColor);
   Rx<Color> nextBG = Rx<Color>(buttonColor);
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
@@ -117,7 +117,7 @@ class MentorAddMediaController extends GetxController {
   void fetchDataAndSubmit() async {
     try {
       saveDataLoading.value = true;
-
+      String? token = await storage.read(key: 'token');
       String name = pController.nameController.text;
       String email = pController.emailController.text;
       String address = pController.locationController.text;
@@ -147,13 +147,13 @@ class MentorAddMediaController extends GetxController {
       List<String> refPhones = mRefController.referencePhone;
       List<String?> refOtherRel = mRefController.otherRelation;
 
-      String? id;
-      final UserModel? userData = Get.put(LoginController()).userData;
-      if (userData != null) {
-        id = userData.user?.id.toString() ?? '';
-      }
+      // String? id;
+      // final UserModel? userData = Get.put(LoginController()).userData;
+      // if (userData != null) {
+      //   id = userData.user?.id.toString() ?? '';
+      // }
 
-      log('''id=>$id  name=>$name email=>$email phone=>$phone address=$address dob=>$dob gender=>$gender status=>$status
+      log('''  name=>$name email=>$email phone=>$phone address=$address dob=>$dob gender=>$gender status=>$status
 highD=>$highDegree otherD=>$otherDegree experties=>$experties experience=>$experience institute=>$institute
 earn=>$earnReward  rewardDes=>$rewardDescription
 mentorMode=>$preferMode subjects=>$subjs Topics=>$topic
@@ -165,7 +165,7 @@ cvFileX=>$filePath
 cvFileFile=>$cvNew
 videoX=>$videofilePath
 videoFile=>$video
-id=>$id''', name: 'mentor all data');
+''', name: 'mentor all data');
 
       String? res = await MentorRegistrationService().saveMentorRegistraion(
         name: name,
@@ -197,6 +197,7 @@ id=>$id''', name: 'mentor all data');
         videoLink: mediaLinkController.text,
         cv: cvNew,
         video: video,
+        token: token.toString(),
       );
       saveDataLoading.value = false;
       if (res == "Mentor created successfully.") {

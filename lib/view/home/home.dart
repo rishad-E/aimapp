@@ -48,9 +48,9 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   const YourJourneyContiner(),
                   homeCHB,
-                  TakeChargeC(userName: name.toString(), uId: id.toString()),
+                  const TakeChargeC(),
                   homeCHB,
-                  AimcetContainer(userName: name.toString(), id: id.toString()),
+                  AimcetContainer(userName: name.toString()),
                   homeCHB,
                   Padding(
                     padding: const EdgeInsets.only(left: 18),

@@ -20,9 +20,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class TempScreen extends StatelessWidget {
-  final String uId;
   final String name;
-  TempScreen({super.key, required this.uId, required this.name});
+  TempScreen({super.key, required this.name});
 
   final mentor = Get.put(MentorPersonalDetailController());
   final educator = Get.put(EducatorPersonalDetailController());
@@ -33,10 +32,10 @@ class TempScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((time) {
       log('message');
-      alldataC.getUserallData(uId: uId);
-      mentor.checkMentorRegtakenFunction(uId: uId);
-      educator.checkEducatorRegTakenFunction(uId: uId);
-      counselor.checkCounselorRegtakenFunction(uId: uId);
+      alldataC.getUserallData();
+      mentor.checkMentorRegtakenFunction();
+      educator.checkEducatorRegTakenFunction();
+      counselor.checkCounselorRegtakenFunction();
     });
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +44,7 @@ class TempScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             hMBox,
             elevatedButtonItems(
               onPressed: () {
@@ -110,7 +109,7 @@ class TempScreen extends StatelessWidget {
               item: "Counselor",
             ),
             elevatedButtonItems(
-              onPressed: () => Get.to(() =>  AimcetResultScreen()),
+              onPressed: () => Get.to(() => const AimcetResultScreen()),
               item: 'your-journey-temp',
             )
           ],

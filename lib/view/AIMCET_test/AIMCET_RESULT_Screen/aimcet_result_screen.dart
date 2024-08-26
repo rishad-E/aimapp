@@ -22,10 +22,10 @@ class AimcetResultScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(top: 100),
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/aimcet-result-bg.png'),
-                  fit: BoxFit.fill),
-            ),
+                // image: DecorationImage(
+                // image: AssetImage('assets/images/aimcet-result-bg.png'),
+                //     fit: BoxFit.fill),
+                ),
             width: double.infinity,
             // height: 250,
             child: Column(
@@ -51,7 +51,7 @@ class AimcetResultScreen extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   height: 60,
-                  child: Image.asset('assets/images/download-report.png'),
+                  // child: Image.asset('assets/images/download-report.png'),
                 ),
               ],
             ),

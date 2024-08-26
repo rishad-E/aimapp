@@ -108,7 +108,6 @@ class WriteAimcetReview extends StatelessWidget {
                     if (controller.reviewController.text.isNotEmpty) {
                       log('review=>${controller.reviewController.text} userId=>$userId testId=>$testId rating=>${controller.starCount}');
                       controller.submitTestReview(
-                        uId: userId,
                         testId: testId,
                         rating: controller.starCount.toString(),
                         review: controller.reviewController.text,

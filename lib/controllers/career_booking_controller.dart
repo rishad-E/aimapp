@@ -9,6 +9,7 @@ import 'package:aimshala/services/career_counsell_services/slot_booking_save_ser
 import 'package:aimshala/view/bookcareercounsellcall/career_aim_screen/widgets/model/microaim_model.dart';
 import 'package:aimshala/view/bookcareercounsellcall/career_review_booking_screen/widgets/booking_dialoguebox.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class BookCareerCounsellController extends GetxController {
@@ -18,6 +19,7 @@ class BookCareerCounsellController extends GetxController {
   TextEditingController aimController = TextEditingController();
   TextEditingController mobNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   RxList<MicroModel> check = <MicroModel>[].obs;
   RxList<Aim> searchAimRes = <Aim>[].obs;
@@ -88,16 +90,16 @@ class BookCareerCounsellController extends GetxController {
   /*------------ save career counsill slot ---------*/
   Future<void> careerBokingSlotSaveFucntion({
     required String name,
-    required String uId,
     required String appointDate,
     required String appointTime,
     required List<String> microAim,
   }) async {
     try {
+      String? token = await storage.read(key: 'token');
       isSaving.value = true;
       // await Future.delayed(Duration(seconds: 2));
       String? slote = await SlotBookingService().slotBooking(
-        uId: uId,
+        token: token.toString(),
         appointDate: appointDate,
         appointTime: appointTime,
         microAim: microAim,
@@ -117,8 +119,8 @@ class BookCareerCounsellController extends GetxController {
           barrierDismissible: false,
           context: Get.context!,
           builder: (context) {
-            checkCounsellcallBookingFuntion(userId: uId);
-            return BookingDialogueBox(id: uId, userName: name);
+            checkCounsellcallBookingFuntion();
+            return BookingDialogueBox(userName: name);
           },
         );
       } else {
@@ -139,9 +141,11 @@ class BookCareerCounsellController extends GetxController {
     }
   }
 
-  Future<void> checkCounsellcallBookingFuntion({required String userId}) async {
+  Future<void> checkCounsellcallBookingFuntion() async {
+    String? token = await storage.read(key: 'token');
+
     Map<String, dynamic>? data = await CheckCounsellBookingService()
-        .checkCounsellcallBooking(userId: userId);
+        .checkCounsellcallBooking(token: token.toString());
     log(data.toString(), name: 'check counsell booking taken');
     if (data != null) {
       if (data['Booking Status'] == 'Not Booked') {
@@ -154,7 +158,6 @@ class BookCareerCounsellController extends GetxController {
     }
   }
 
- 
   String? aimValidation(String? word) {
     if (word == null || word.isEmpty) {
       return 'Please select atleast one Aim';

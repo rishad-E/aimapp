@@ -76,7 +76,7 @@ PreferredSizeWidget appbarHome({String? name, required String uId}) {
         child: GestureDetector(
           onTap: () {
             log('temp screen', name: 'temp screen');
-            Get.to(() => TempScreen(uId: uId, name: name ?? ''));
+            Get.to(() => TempScreen(name: name ?? ''));
           },
           child: Container(
             // width: 30,
@@ -90,9 +90,7 @@ PreferredSizeWidget appbarHome({String? name, required String uId}) {
             child: CircleAvatar(
               radius: 13,
               backgroundColor: kwhite,
-              backgroundImage: const AssetImage(
-                'assets/images/appbarMen.png',
-              ),
+              backgroundImage: const AssetImage('assets/images/appbarMen.png'),
             ),
           ),
         ),

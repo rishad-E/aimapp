@@ -6,14 +6,16 @@ import 'package:dio/dio.dart';
 class TraitReportService {
   Dio dio = Dio();
 
-  Future<TraitReportModel?> getTraitReport({required String userId}) async {
+  Future<TraitReportModel?> getTraitReport({required String token}) async {
     String path = Apis().aimUrl + Apis().traitReport;
 
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": userId},
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -32,4 +34,3 @@ class TraitReportService {
     return null;
   }
 }
-

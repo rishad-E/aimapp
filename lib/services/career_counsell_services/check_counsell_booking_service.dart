@@ -7,13 +7,16 @@ class CheckCounsellBookingService {
   Dio dio = Dio();
 
   Future<Map<String, dynamic>?> checkCounsellcallBooking(
-      {required String userId}) async {
+      {required String token}) async {
     String path = Apis().aimUrl + Apis().checkCounsellcall;
 
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": userId},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       // log(response.data.toString(), name: 'check counsell booking taken');
       if (response.statusCode == 200) {

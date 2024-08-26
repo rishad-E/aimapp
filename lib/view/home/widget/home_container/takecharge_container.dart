@@ -15,9 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class TakeChargeC extends StatefulWidget {
-  final String userName;
-  final String uId;
-  const TakeChargeC({super.key, required this.userName, required this.uId});
+  const TakeChargeC({super.key});
 
   @override
   State<TakeChargeC> createState() => _TakeChargeCState();
@@ -35,10 +33,9 @@ class _TakeChargeCState extends State<TakeChargeC> {
 
     // Initialize and start the timer
     _timer = Timer.periodic(const Duration(minutes: 5), (Timer timer) {
-      Get.find<AIMCETController>()
-          .checkAimcetTestTakenFunction(userId: widget.uId);
+      Get.find<AIMCETController>().checkAimcetTestTakenFunction();
       Get.find<BookCareerCounsellController>()
-          .checkCounsellcallBookingFuntion(userId: widget.uId);
+          .checkCounsellcallBookingFuntion();
     });
   }
 

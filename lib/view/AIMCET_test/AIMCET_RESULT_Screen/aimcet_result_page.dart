@@ -21,19 +21,18 @@ import 'package:get/get.dart';
 
 class AIMCETResultScreen extends StatelessWidget {
   final String userName;
-  final String uId;
-  const AIMCETResultScreen(
-      {super.key, required this.userName, required this.uId});
+  // final String uId;
+  const AIMCETResultScreen({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
     int initialVal = 0;
     final controller = Get.put(AIMCETController());
     // controller.fetchAllTestReviews();
-       return PopScope(
+    return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
-          controller.checkAimcetTestTakenFunction(userId: uId);
+          controller.checkAimcetTestTakenFunction();
           Get.offAll(() => const HomeScreen());
         });
       },
@@ -140,7 +139,7 @@ class AIMCETResultScreen extends StatelessWidget {
                   ),
                 ),
                 const DiscoveryShareContainer(),
-                TestResDownloadPage(uId: uId),
+                const TestResDownloadPage(),
                 Container(
                   decoration: colorGradient3(),
                   child: Column(
@@ -242,7 +241,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                       text: "REPORT is processing");
                                 } else if (controller.gp.value == "sucess") {
                                   return PersonalityReportPage(
-                                      controller: controller, uId: uId);
+                                      controller: controller);
                                 } else if (controller.gp.value ==
                                     "personality-e") {
                                   return fetchErrorText(
@@ -260,7 +259,7 @@ class AIMCETResultScreen extends StatelessWidget {
                                       text: "REPORT is processing");
                                 } else if (controller.gp.value == "sucess") {
                                   return TraitReportPage(
-                                      controller: controller, uId: uId);
+                                      controller: controller);
                                 } else if (controller.gp.value == "trait-e") {
                                   return fetchErrorText(
                                       text: "REPORT Fetch failed...");

@@ -18,7 +18,7 @@ class CareerAimService {
           validateStatus: (status) => status! < 599,
         ),
       );
-      // log(response.data.toString(), name: 'search aim res');
+      log(response.data.toString(), name: 'search aim res');
       if (response.statusCode == 200) {
         List<dynamic> data = response.data['aims'];
         final res = data.map((json) => Aim.fromJson(json)).toList();

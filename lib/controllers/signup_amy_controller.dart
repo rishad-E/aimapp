@@ -7,6 +7,7 @@ import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/services/signup_service/amy_signup_service.dart';
 import 'package:aimshala/view/signup/widget/amy_signup_chat_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +21,7 @@ class AmySignUpController extends GetxController {
   TextEditingController idController = TextEditingController();
   ScrollController scrollController = ScrollController();
   RxList<ChatMessageSignup> msgs = <ChatMessageSignup>[].obs;
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   bool isTyping = false;
   // bool isAskingDOB = false;
   bool otherSelected = false;
@@ -42,11 +44,12 @@ class AmySignUpController extends GetxController {
   }
 
   void addDefaultMessage() async {
+    String? token = await storage.read(key: 'token');
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
     // isTyping = true;
     Map<String, dynamic>? res = await AmySignUpService()
-        .sendToAmyRegister(uId: uId, msg: 'hai', qusId: '019');
+        .sendToAmyRegister(token: token.toString(), msg: 'hai', qusId: '019');
     if (res != null) {
       qusId = int.tryParse(res["upd_ques_index"])!;
       String resMsg = res["bot_reply"];
@@ -77,6 +80,7 @@ class AmySignUpController extends GetxController {
   }
 
   void sendMessage(BuildContext context) async {
+    String? token = await storage.read(key: 'token');
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
     String optionId = isMultiSelect == 'single-select'
@@ -96,8 +100,8 @@ class AmySignUpController extends GetxController {
           name: 'selected item');
 
       isTyping = true;
-      Map<String, dynamic>? res = await AmySignUpService()
-          .sendToAmyRegister(uId: uId, msg: optionId, qusId: qusId.toString());
+      Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
+          token: token.toString(), msg: optionId, qusId: qusId.toString());
       checkMulti.clear();
       if (res != null) {
         singleSelecMapList = [];

@@ -9,11 +9,11 @@ class AllDataController extends GetxController {
   UserDataModel? userDetails;
   UserData? userData;
 
-  Future<void> getUserallData({required String uId}) async {
+  Future<void> getUserallData() async {
     String? token = await storage.read(key: 'token');
 
     Map<String, dynamic>? res =
-        await UserAllDataService().fetchUserData(uId: uId,token: token.toString());
+        await UserAllDataService().fetchUserData(token: token.toString());
 
     if (res != null) {
       userDetails = UserDataModel.fromJson(res);

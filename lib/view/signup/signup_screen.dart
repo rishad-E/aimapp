@@ -348,10 +348,13 @@ class SignUpScreen extends StatelessWidget {
                                       }
                                     }
                                   },
-                                  child: semiBoldChoiceText(
-                                      text: 'I\'ll do it later',
-                                      size: 14,
-                                      color: mainPurple),
+                                  child: c.isSaving.value
+                                      ? CircularProgressIndicator(
+                                          color: kwhite, strokeWidth: 1)
+                                      : semiBoldChoiceText(
+                                          text: 'I\'ll do it later',
+                                          size: 14,
+                                          color: mainPurple),
                                 )
                               ],
                             );

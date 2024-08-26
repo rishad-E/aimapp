@@ -8,14 +8,17 @@ class PersonalityReportService {
   Dio dio = Dio();
 
   Future<PersonalityReportModel?> getPersonalityReport(
-      {required String userId}) async {
+      {required String token}) async {
     String path = Apis().aimUrl + Apis().personalityReport;
 
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": userId},
-        options: Options(validateStatus: (status) => status! < 599,)
+        // queryParameters: {"user_id": userId},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
 
       if (response.statusCode == 200) {

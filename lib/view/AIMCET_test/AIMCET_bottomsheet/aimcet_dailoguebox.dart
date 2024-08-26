@@ -11,10 +11,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETDialogueBox extends StatelessWidget {
-  final String userId;
   final String userName;
-  const AIMCETDialogueBox(
-      {super.key, required this.userId, required this.userName});
+  const AIMCETDialogueBox({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +54,7 @@ class AIMCETDialogueBox extends StatelessWidget {
                   shape: buttonShape(round: 10)),
               onPressed: () async {
                 try {
-                  await controller.aimcetTestResultFunction(
-                      userId: userId, userName: userName);
+                  await controller.aimcetTestResultFunction(userName: userName);
 
                   // Show the dialog with CircularProgressIndicator for 5 seconds
                   showDialog(
@@ -82,23 +79,21 @@ class AIMCETDialogueBox extends StatelessWidget {
                   );
                   await Future.delayed(const Duration(seconds: 5));
                   // Call gpReportSubmitFunction
-                  await controller
-                      .gpReportSubmitFunction(
-                    uId: userId,
-                    personality: controller.personality[0],
-                    trait: controller.traitType.toString(),
-                  )
-                      .then((_) async {
-                    // Call fetchPersonalityReport and fetchTraitReport
-                    await Future.wait([
-                      controller.fetchPersonalityReport(userId: userId),
-                      controller.fetchTraitReport(userId: userId),
-                    ]);
-                  });
+                  // await controller
+                  //     .gpReportSubmitFunction(
+                  //   personality: controller.personality[0],
+                  //   trait: controller.traitType.toString(),
+                  // )
+                  //     .then((_) async {
+                  // Call fetchPersonalityReport and fetchTraitReport
+                  await Future.wait([
+                    controller.fetchPersonalityReport(),
+                    controller.fetchTraitReport(),
+                  ]);
+                  // });
 
                   // Navigate to AIMCETResultScreen
-                  Get.off(() =>
-                      AIMCETResultScreen(userName: userName, uId: userId));
+                  Get.off(() => AIMCETResultScreen(userName: userName));
                 } catch (e) {
                   Get.snackbar(
                     'Error',

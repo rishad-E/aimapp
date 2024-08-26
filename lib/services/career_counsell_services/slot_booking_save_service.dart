@@ -7,24 +7,26 @@ class SlotBookingService {
   Dio dio = Dio();
 
   Future<String?> slotBooking({
-    required String uId,
+    required String token,
     required String appointDate,
     required String appointTime,
     required List<String> microAim,
   }) async {
     String path = Apis().aimUrl + Apis().saveSlote;
-    log('id=>$uId appointDate=>$appointDate appointTime=>$appointTime  microAim=>$microAim',
+    log('token=>${token.isNotEmpty} appointDate=>$appointDate appointTime=>$appointTime  microAim=>$microAim',
         name: 'reviewBooking servie');
     try {
       Response response = await dio.post(
         path,
         data: {
-          "user_id": uId,
           "appoint_date": appointDate,
           "appoint_time": appointTime,
           "career_class": microAim
         },
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       if (response.data is Map) {
         Map<String, dynamic> resData = response.data;

@@ -9,9 +9,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AIMCETGuideLinePage extends StatelessWidget {
-  final String uId;
   final String uName;
-  const AIMCETGuideLinePage({super.key, required this.uId, required this.uName});
+  const AIMCETGuideLinePage({super.key, required this.uName});
 
   @override
   Widget build(BuildContext context) {
@@ -231,11 +230,10 @@ class AIMCETGuideLinePage extends StatelessWidget {
                           onTap: () async {
                             if (controller.guideSelect == true) {
                               try {
-                                await controller.fetchAllTestQuestions(
-                                    userId: uId);
+                                await controller.fetchAllTestQuestions();
                                 if (controller.allQuestions != null &&
                                     controller.allQuestions!.isNotEmpty) {
-                                  Get.to(() => AIMCETTestPage(uId: uId,uName: uName));
+                                  Get.to(() => AIMCETTestPage(uName: uName));
                                 }
                               } catch (e) {
                                 Get.snackbar(

@@ -7,13 +7,12 @@ class AIMCETTestService {
   Dio dio = Dio();
 
   Future<Map<String, dynamic>?> getTestQuestions(
-      {required String userId, required String token}) async {
+      {required String token}) async {
     String path = Apis().aimUrl + Apis().aimcetTest;
 
     try {
       Response response = await dio.post(
         path,
-        data: {"user_id": userId},
         options: Options(
           validateStatus: (status) => status! < 599,
           headers: {'Authorization': 'Bearer $token'},
@@ -38,7 +37,7 @@ class AIMCETTestService {
   }
 
   Future<String?> sumbitAceTest({
-    required String userId,
+    // required String userId,
     required String questionId,
     required String cAnswer,
     required String sectionId,
@@ -49,13 +48,13 @@ class AIMCETTestService {
     required String token,
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log('userId=>$userId questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer subsecId=>$subSectionId  secQusCount=>$sectionQusCount subQusCount=>$subQuesCount  totalQus=>$totalQues token=>${token.isNotEmpty}',
+    log(' questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer subsecId=>$subSectionId  secQusCount=>$sectionQusCount subQusCount=>$subQuesCount  totalQus=>$totalQues token=>${token.isNotEmpty}',
         name: 'serviceeeeeee');
     try {
       Response response = await dio.post(
         path,
         data: {
-          "user_id": userId,
+          // "user_id": userId,
           "qid": questionId,
           "answer": cAnswer,
           "section_id": sectionId,
@@ -115,15 +114,16 @@ class AIMCETTestService {
   }
 
   Future<dynamic> aimcetTestResult(
-      {required String userId, required String userName}) async {
+      {required String token, required String userName}) async {
     String path = Apis().aimUrl + Apis().aimcetResult;
-    log('userId=>$userId  userName=>$userName',
-        name: 'aimcettest res serv func params');
     try {
       Response response = await dio.post(
         path,
-        data: {"user_id": userId, "username": userName},
-        options: Options(validateStatus: (status) => status! < 599),
+        data: {"username": userName},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       if (response.statusCode == 200) {
         // log(response.data.toString(), name: 'aimcet result submit');
@@ -145,12 +145,15 @@ class AIMCETTestService {
   }
 
   Future<Map<String, dynamic>?> checkAimcetTestTaken(
-      {required String userId}) async {
+      {required String token}) async {
     String path = Apis().aimUrl + Apis().checkAimcet;
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": userId},
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> res = response.data;
@@ -202,7 +205,7 @@ class AIMCETTestService {
   // }
 
   Future<String?> submitTestReview(
-      {required String uId,
+      {required String token,
       required String testId,
       required String rating,
       required String review}) async {
@@ -211,12 +214,14 @@ class AIMCETTestService {
       Response response = await dio.post(
         path,
         queryParameters: {
-          'user_id': uId,
           'test_id': testId,
           'rating': rating,
           'review': review
         },
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       Map<String, dynamic> resData = response.data;
       if (resData.containsKey('message')) {

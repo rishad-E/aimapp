@@ -124,7 +124,6 @@ class CareerReviewBookingScreen extends StatelessWidget {
                                   log('id=>$userId name=>${controller.nameController.text} email=>${controller.emailController.text} phone=>${controller.mobNumberController.text} role=${controller.roleController.text} appointDate=>${controller.selectedDate} appointTime=>${controller.selectedTime} } microAim=>$selectedIds',
                                       name: 'reviewBooking screen');
                                   controller.careerBokingSlotSaveFucntion(
-                                    uId: userId.toString(),
                                     appointDate:
                                         controller.selectedDate.toString(),
                                     appointTime:

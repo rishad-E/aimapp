@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/signup_role_model/role_models.dart';
 import 'package:aimshala/services/signup_service/signup_service.dart';
+import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/signup/signup_amy_screen.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
 import 'package:dio/dio.dart';
@@ -59,13 +59,28 @@ class SignUpController extends GetxController {
           role: role,
           submit: submit);
       if (res != null) {
-        if (res.containsKey('message')) {
-          User? user = User.fromJson(res["user"]);
-          String? id = user.id.toString();
-          String? phone = user.phone.toString();
-          storage.write(key: 'phone', value: phone);
-          Get.offAll(() =>
-              SignUpAmyScreen(name: name, email: email, uId: id, phone: phone));
+        if (res.containsKey('redirection')) {
+          //redirection=> Redirect to amy register.
+          //redirection=> Redirect to home page.
+          // message: User registered successfully
+          String msg = res['redirection'];
+          if (msg == 'Redirect to home page.') {
+            storage.write(key: 'phone', value: mobileNo);
+            Get.offAll(() => const SplashScreen());
+          } else if (msg == 'Redirect to amy register.') {
+            User? user = User.fromJson(res["user"]);
+            String? id = user.id.toString();
+            String? phone = user.phone.toString();
+            storage.write(key: 'phone', value: phone);
+            Get.offAll(() => SignUpAmyScreen(
+                name: name, email: email, uId: id, phone: phone));
+          }
+          // User? user = User.fromJson(res["user"]);
+          // String? id = user.id.toString();
+          // String? phone = user.phone.toString();
+          // storage.write(key: 'phone', value: phone);
+          // Get.offAll(() =>
+          //     SignUpAmyScreen(name: name, email: email, uId: id, phone: phone));
           //   Navigator.of(context).pushAndRemoveUntil(
           //   MaterialPageRoute(
           //     builder: (context) => SignUpAmyScreen(name: name, email: email),
@@ -79,23 +94,25 @@ class SignUpController extends GetxController {
             String first = errors.keys.first;
             if (errors[first] is List && (errors[first] as List).isNotEmpty) {
               String errorMessage = errors[first][0].toString();
-              Get.showSnackbar(GetSnackBar(
-                snackStyle: SnackStyle.FLOATING,
-                message: errorMessage,
-                margin: const EdgeInsets.all(10),
-                backgroundColor: Colors.red,
+              Get.snackbar(
+                "Error",
+                errorMessage,
+                snackPosition: SnackPosition.TOP,
                 duration: const Duration(seconds: 2),
-              ));
+                backgroundColor: kred,
+                colorText: Colors.white,
+              );
             }
           } else if (errorData is String) {
             String errorMessage = res['error'];
-            Get.showSnackbar(GetSnackBar(
-              snackStyle: SnackStyle.FLOATING,
-              message: errorMessage,
-              margin: const EdgeInsets.all(10),
-              backgroundColor: Colors.red,
+            Get.snackbar(
+              "Error",
+              errorMessage,
+              snackPosition: SnackPosition.TOP,
               duration: const Duration(seconds: 2),
-            ));
+              backgroundColor: kred,
+              colorText: Colors.white,
+            );
             if (errorMessage == "Phone number already registered") {
               Get.offAll(() => const SplashScreen());
             }
@@ -157,6 +174,7 @@ class SignUpController extends GetxController {
     classController.clear();
     selectedFinalRole = null;
     fetchSubRoles(id);
+    allFieldsSelected();
     update(['update-signupRole']);
   }
 
@@ -220,7 +238,8 @@ class SignUpController extends GetxController {
         emailController.text.isNotEmpty &&
         genderController.text.isNotEmpty &&
         dobController.text.isNotEmpty &&
-        selectedRole.value != null;
+        selectedRole.value != null &&
+        selectedSubRole != null;
     // Update the reactive variable
     areAllFieldsSelected.value = allFieldsSelected;
     buttonTextColor.value = allFieldsSelected

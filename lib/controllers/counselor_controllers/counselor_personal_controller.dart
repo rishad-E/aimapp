@@ -3,6 +3,7 @@ import 'package:aimshala/models/mentor_check_model/mentor_model.dart';
 import 'package:aimshala/services/counselor_reg_service/check_counselor_taken_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -13,19 +14,26 @@ class CounselorPersonalController extends GetxController {
   TextEditingController mobileController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
   DateTime dateTime = DateTime.now();
   RxString selectedGender = 'Please Select'.obs;
-  final List<String> genderOptions = ['Male', 'Female', 'Other', 'Please Select'];
+  final List<String> genderOptions = [
+    'Male',
+    'Female',
+    'Other',
+    'Please Select'
+  ];
   List<QualificationData> statusList = [];
   String isCounselor = 'no';
   final refCounsController = Get.put(CounselorReferenceController());
 
-  Future<void> checkCounselorRegtakenFunction({required String uId}) async {
-    Map<String, dynamic>? resData =
-        await CheckCounselorRegTakenService().checkCounselorRegtaken(uId: uId);
+  Future<void> checkCounselorRegtakenFunction() async {
+    String? token = await storage.read(key: 'token');
+    Map<String, dynamic>? resData = await CheckCounselorRegTakenService()
+        .checkCounselorRegtaken(token: token.toString());
     if (resData != null) {
       if (resData.containsKey('error')) {
         isCounselor = 'error';

@@ -4,6 +4,7 @@ import 'package:aimshala/models/mentor_check_model/mentor_model.dart';
 import 'package:aimshala/services/educator_reg_service/check_educator_reg_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ class EducatorPersonalDetailController extends GetxController {
   TextEditingController mobileController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   final bgEduController = Get.put(EducatorBackgroundDetailController());
   final refEduController = Get.put(EducatorReferenceController());
@@ -28,9 +30,10 @@ class EducatorPersonalDetailController extends GetxController {
 
   String isEducator = 'no';
 
-  Future<void> checkEducatorRegTakenFunction({required String uId}) async {
+  Future<void> checkEducatorRegTakenFunction() async {
+      String? token = await storage.read(key: 'token');
     Map<String, dynamic>? res =
-        await CheckEducatorRegTakenService().checkEducatorRegTaken(uId: uId);
+        await CheckEducatorRegTakenService().checkEducatorRegTaken(token: token.toString());
     if (res != null) {
       if (res.containsKey('error')) {
         isEducator = 'error';

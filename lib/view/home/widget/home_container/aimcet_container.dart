@@ -15,8 +15,7 @@ import 'package:sizer/sizer.dart';
 
 class AimcetContainer extends StatelessWidget {
   final String userName;
-  final String id;
-  const AimcetContainer({super.key, required this.userName, required this.id});
+  const AimcetContainer({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +67,7 @@ class AimcetContainer extends StatelessWidget {
               child: Obx(
                 () {
                   if (controller.testDone.value == 'done') {
-                    controller.aimcetTestResultFunction(
-                        userId: id, userName: userName);
+                    controller.aimcetTestResultFunction(userName: userName);
                     return acecetElevatedButton(
                       bText: "Check AIMCET Result",
                       bIcon: Icons.arrow_forward_ios_sharp,
@@ -85,21 +83,23 @@ class AimcetContainer extends StatelessWidget {
                                     .withOpacity(0.7),
                             colorText: Colors.white,
                           );
-                          await controller
-                              .gpReportSubmitFunction(
-                                  uId: id,
-                                  personality: controller.personality[0],
-                                  trait: controller.traitType.toString())
-                              .then((_) {
-                            controller.fetchPersonalityReport(userId: id);
-                            controller.fetchTraitReport(userId: id);
-                          });
+                          // await controller
+                          //     .gpReportSubmitFunction(
+                          //         personality: controller.personality[0],
+                          //         trait: controller.traitType.toString())
+                          //     .then((_) {
+                          //   controller.fetchPersonalityReport();
+                          //   controller.fetchTraitReport();
+                          // });
+                          await Future.wait([
+                            controller.fetchPersonalityReport(),
+                            controller.fetchTraitReport(),
+                          ]);
                           await Future.delayed(const Duration(seconds: 1));
                           // Navigator.of(context).pop();
                           // Get.back();
                           controller.showAllreview = false;
-                          Get.to(() =>
-                              AIMCETResultScreen(userName: userName, uId: id));
+                          Get.to(() => AIMCETResultScreen(userName: userName));
                         } catch (e) {
                           Get.snackbar(
                             "Hi $userName,Error occured",
@@ -113,7 +113,7 @@ class AimcetContainer extends StatelessWidget {
                       },
                     );
                   } else if (controller.testDone.value == 'continue') {
-                    controller.fetchAllTestQuestions(userId: id);
+                    controller.fetchAllTestQuestions();
                     // controller.getTestSectionTextsFunc();
                     return acecetElevatedButton(
                       onPressed: () {
@@ -121,7 +121,7 @@ class AimcetContainer extends StatelessWidget {
                           controller.secID.value =
                               controller.allQuestions![0].sectionId!;
                         }
-                        Get.to(() => AIMCETTestPage(uId: id, uName: userName));
+                        Get.to(() => AIMCETTestPage(uName: userName));
                       },
                       bText: "Continue AIMCET Test",
                       bIcon: Icons.arrow_forward_ios_sharp,
@@ -136,15 +136,13 @@ class AimcetContainer extends StatelessWidget {
                           Get.to(
                               () => SignUpAmyScreen(
                                     name: userName,
-                                    uId: id,
+                                    uId: '',
                                     email: allDataC.userData?.email ?? '',
                                     phone: allDataC.userData?.phone ?? '',
                                   ),
                               transition: Transition.fade);
                         } else {
-                          Get.to(
-                              () =>
-                                  AIMCETGuideLinePage(uId: id, uName: userName),
+                          Get.to(() => AIMCETGuideLinePage(uName: userName),
                               transition: Transition.fade);
                         }
                         // Get.to(() => AIMCETGuideLinePage(uId: id));

@@ -14,7 +14,6 @@ import 'package:sizer/sizer.dart';
 class BookCareerAimPage extends StatelessWidget {
   BookCareerAimPage({super.key});
   final careerController = Get.put(BookCareerCounsellController());
-  final GlobalKey<FormState> careeraimFormKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -28,115 +27,112 @@ class BookCareerAimPage extends StatelessWidget {
           child: SingleChildScrollView(
               child: Padding(
             padding: careerContainerP,
-            child: Form(
-              key: careeraimFormKey,
-              child: careerSecContainer(
-                child: Column(
-                  children: [
-                    boldText(text: "What is your Aim? ", size: 20),
-                    hMBox,
-                    careerHomeField(
-                      text: shrinked,
-                      textField: Obx(
-                        () => GestureDetector(
-                          onTap: () {
-                            careerController.searchAimOptions(query: '');
-                            careerController.searchAims('');
-                            showCareerAimBottomSheet(context);
-                          },
-                          child: careerController.check.isEmpty
-                              ? careerAimContainer(
-                                  child: Row(
-                                    children: [
-                                      careerSearchIcon(leftP: 10, rightP: 10),
-                                      Text(
-                                        'Tell us your Micro aim',
-                                        style: TextStyle(
-                                          color: kblack.withOpacity(0.4),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              : careerAimContainer(
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Wrap(
-                                            spacing: 5,
-                                            runSpacing: 4,
-                                            crossAxisAlignment:
-                                                WrapCrossAlignment.center,
-                                            children: [
-                                              ...List.generate(
-                                                careerController.check.length,
-                                                (index) {
-                                                  final data =
-                                                      careerController.check;
-                                                  return selectedAimContainer(
-                                                    microAim:
-                                                        data[index].microAim,
-                                                    onTap: () {
-                                                      data.removeAt(index);
-                                                      careerController.update(
-                                                          ['button-careerAim']);
-                                                    },
-                                                  );
-                                                },
-                                              ),
-                                              addmoreText()
-                                            ]),
-                                      ),
-                                      const Icon(Icons.keyboard_arrow_down),
-                                    ],
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
-                    hMBox,
-                    Container(
-                      width: double.infinity,
-                      height: 4.5.h,
-                      decoration: boxdecoration(12),
-                      child: GetBuilder<BookCareerCounsellController>(
-                        id: 'button-careerAim',
-                        builder: (c) {
-                          return TextButton(
-                            onPressed: () {
-                              if (careeraimFormKey.currentState!.validate()) {
-                                log(' Microaim=>${c.check}');
-                                Get.to(()=>const CareerDateTimeBookingScreen(),transition: Transition.fade);
-                              }
-                            },
-                            style: ButtonStyle(
-                              shape: buttonShape(round: 8),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                (states) {
-                                  return c.check.isNotEmpty
-                                      ? kpurple
-                                      : buttonColor;
-                                },
-                              ),
-                            ),
-                            child: Text(
-                              "Next",
-                              style: TextStyle(
-                                  color: c.check.isNotEmpty
-                                      ? Colors.white
-                                      : disableText),
-                            ),
-                          );
+            child: careerSecContainer(
+              child: Column(
+                children: [
+                  boldText(text: "What is your Aim? ", size: 20),
+                  hMBox,
+                  careerHomeField(
+                    text: shrinked,
+                    textField: Obx(
+                      () => GestureDetector(
+                        onTap: () {
+                          careerController.searchAimOptions(query: '');
+                          careerController.searchAims('');
+                          showCareerAimBottomSheet(context);
                         },
+                        child: careerController.check.isEmpty
+                            ? careerAimContainer(
+                                child: Row(
+                                  children: [
+                                    careerSearchIcon(leftP: 10, rightP: 10),
+                                    Text(
+                                      'Tell us your Micro aim',
+                                      style: TextStyle(
+                                        color: kblack.withOpacity(0.4),
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            : careerAimContainer(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Wrap(
+                                          spacing: 5,
+                                          runSpacing: 4,
+                                          crossAxisAlignment:
+                                              WrapCrossAlignment.center,
+                                          children: [
+                                            ...List.generate(
+                                              careerController.check.length,
+                                              (index) {
+                                                final data =
+                                                    careerController.check;
+                                                return selectedAimContainer(
+                                                  microAim:
+                                                      data[index].microAim,
+                                                  onTap: () {
+                                                    data.removeAt(index);
+                                                    careerController.update(
+                                                        ['button-careerAim']);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                            addmoreText()
+                                          ]),
+                                    ),
+                                    const Icon(Icons.keyboard_arrow_down),
+                                  ],
+                                ),
+                              ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  hMBox,
+                  Container(
+                    width: double.infinity,
+                    height: 4.5.h,
+                    decoration: boxdecoration(12),
+                    child: GetBuilder<BookCareerCounsellController>(
+                      id: 'button-careerAim',
+                      builder: (c) {
+                        return TextButton(
+                          onPressed: () {
+                            if (c.check.isNotEmpty) {
+                              log(' Microaim=>${c.check}');
+                              Get.to(() => const CareerDateTimeBookingScreen(),
+                                  transition: Transition.fade);
+                            }
+                          },
+                          style: ButtonStyle(
+                            shape: buttonShape(round: 8),
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (states) {
+                                return c.check.isNotEmpty
+                                    ? kpurple
+                                    : buttonColor;
+                              },
+                            ),
+                          ),
+                          child: Text(
+                            "Next",
+                            style: TextStyle(
+                                color: c.check.isNotEmpty
+                                    ? Colors.white
+                                    : disableText),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           )),
@@ -161,22 +157,4 @@ class BookCareerAimPage extends StatelessWidget {
     );
   }
 
-  // void showCareerMicroAimBottomSheet(
-  //     BuildContext context, BookCareerCounsellController controller) {
-  //   showModalBottomSheet(
-  //     backgroundColor: kwhite,
-  //     context: context,
-  //     isScrollControlled: true,
-  //     useSafeArea: false,
-  //     builder: (BuildContext context) {
-  //       controller.searchMicroAimOptions(
-  //           query: '', parentId: controller.aimId.toString());
-  //       return Padding(
-  //         padding:
-  //             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-  //         child: CareerMicroAimBottomsheet(),
-  //       );
-  //     },
-  //   );
-  // }
 }

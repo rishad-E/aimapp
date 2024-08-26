@@ -12,9 +12,7 @@ import 'package:sizer/sizer.dart';
 
 class BookingDialogueBox extends StatelessWidget {
   final String userName;
-  final String id;
-  const BookingDialogueBox(
-      {super.key, required this.userName, required this.id});
+  const BookingDialogueBox({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -93,18 +91,21 @@ class BookingDialogueBox extends StatelessWidget {
                       size: 11.sp,
                       color: const Color.fromARGB(255, 147, 38, 143),
                     ),
-                    onPressed: () {
-                      controller
-                          .gpReportSubmitFunction(
-                              uId: id,
-                              personality: controller.personality[0],
-                              trait: controller.traitType.toString())
-                          .then((_) {
-                        controller.fetchPersonalityReport(userId: id);
-                        controller.fetchTraitReport(userId: id);
-                      });
-                      Get.to(() =>
-                          AIMCETResultScreen(userName: userName, uId: id));
+                    onPressed: () async {
+                      // controller
+                      //     .gpReportSubmitFunction(
+
+                      //         personality: controller.personality[0],
+                      //         trait: controller.traitType.toString())
+                      //     .then((_) {
+                      //   controller.fetchPersonalityReport();
+                      //   controller.fetchTraitReport();
+                      // });
+                      await Future.wait([
+                        controller.fetchPersonalityReport(),
+                        controller.fetchTraitReport(),
+                      ]);
+                      Get.to(() => AIMCETResultScreen(userName: userName));
                     },
                   );
                 } else if (controller.testDone.value == 'continue') {
@@ -114,7 +115,7 @@ class BookingDialogueBox extends StatelessWidget {
                         side: MaterialStatePropertyAll(
                             BorderSide(color: mainPurple))),
                     onPressed: () => Get.to(
-                      () => AIMCETGuideLinePage(uId: id, uName: userName),
+                      () => AIMCETGuideLinePage(uName: userName),
                     ),
                     icon: Text(
                       "Continue Psychometric Test",
@@ -132,7 +133,7 @@ class BookingDialogueBox extends StatelessWidget {
                         shape: buttonShape(round: 8),
                         backgroundColor: MaterialStatePropertyAll(mainPurple)),
                     onPressed: () => Get.to(
-                      () => AIMCETGuideLinePage(uId: id, uName: userName),
+                      () => AIMCETGuideLinePage(uName: userName),
                     ),
                     icon: Text(
                       "Take Psychometric Test",

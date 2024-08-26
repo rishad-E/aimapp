@@ -91,7 +91,7 @@ class SplashController extends GetxController {
                   email: email2.toString(),
                   uId: id,
                   phone: phone.toString()));
-            }else{
+            } else {
               Get.offAll(() => const LoginScreen());
             }
           } else {
@@ -116,17 +116,14 @@ class SplashController extends GetxController {
           if (loginController.userData != null) {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();
-            log('userID=>$id  name=>$uName ', name: 'userid and username');
-            alldataController.getUserallData(uId: id.toString());
-            bookingController.checkCounsellcallBookingFuntion(
-                userId: id.toString());
-            aimtestController
-                .checkAimcetTestTakenFunction(userId: id.toString())
-                .then((value) {
+            log('userID=>$id  name=>$uName ', name: 'userid and username splash');
+            alldataController.getUserallData();
+            bookingController.checkCounsellcallBookingFuntion();
+            aimtestController.checkAimcetTestTakenFunction().then((value) {
               if (aimtestController.testDone.value == 'done') {
                 log('aimcet test done', name: 'spalsh done');
                 aimtestController.aimcetTestResultFunction(
-                    userId: id.toString(), userName: uName.toString());
+                    userName: uName.toString());
                 // aimtestController.getTestSectionTextsFunc();
               }
             });

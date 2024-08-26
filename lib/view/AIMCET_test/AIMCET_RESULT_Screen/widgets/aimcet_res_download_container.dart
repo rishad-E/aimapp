@@ -9,8 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
 class TestResDownloadPage extends StatelessWidget {
-  final String uId;
-  const TestResDownloadPage({super.key, required this.uId});
+  const TestResDownloadPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +74,8 @@ class TestResDownloadPage extends StatelessWidget {
                             color: const Color.fromARGB(255, 147, 38, 143),
                           ),
                           onPressed: () async {
-                            final String pdfUrl =
-                                'http://154.26.130.161/elearning/api/result-pdf/$uId';
+                            const String pdfUrl =
+                                'http://154.26.130.161/elearning/api/result-pdf';
                             const fileName = 'ACE Test result.pdf';
 
                             try {

@@ -5,16 +5,19 @@ import 'package:dio/dio.dart';
 class CheckEducatorRegTakenService {
   Dio dio = Dio();
 
-  Future<Map<String, dynamic>?> checkEducatorRegTaken({required String uId}) async {
+  Future<Map<String, dynamic>?> checkEducatorRegTaken(
+      {required String token}) async {
     String path = 'http://154.26.130.161/elearning/api/get-educator-data';
 
     try {
       Response response = await dio.get(
         path,
-        queryParameters: {"user_id": uId},
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
-      Map<String,dynamic>resData = response.data;
+      Map<String, dynamic> resData = response.data;
       // log(resData.toString(),name: 'educator check res');
       return resData;
     } on DioException catch (e) {

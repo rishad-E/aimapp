@@ -6,13 +6,12 @@ import 'package:aimshala/controllers/educator_controllers/educator_personal_deta
 import 'package:aimshala/controllers/educator_controllers/educator_reference_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_subject_course_select_controller.dart';
 import 'package:aimshala/controllers/educator_controllers/educator_work_preferences_controller.dart';
-import 'package:aimshala/controllers/login_controller.dart';
-import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/educator_reg_service/educator_registration_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/educator_registration/submitted_section/submitted_final_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class EducatorMediaAddController extends GetxController {
@@ -20,7 +19,7 @@ class EducatorMediaAddController extends GetxController {
   TextEditingController mediaLinkController = TextEditingController();
   Rx<Color> nextText = Rx<Color>(textFieldColor);
   Rx<Color> nextBG = Rx<Color>(buttonColor);
-
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   RxBool agree = false.obs;
   RxString filePath = ''.obs;
   RxString fileName = ''.obs;
@@ -124,7 +123,7 @@ class EducatorMediaAddController extends GetxController {
   void fetchAlldatas() async {
     try {
       saveDataLoading.value = true;
-
+      String? token = await storage.read(key: 'token');
       String name = pController.nameController.text;
       String email = pController.emailController.text;
       String dob = pController.dobController.text;
@@ -153,11 +152,11 @@ class EducatorMediaAddController extends GetxController {
       List<String> refRelations = referenceController.referenceRelation;
       List<String> refPhones = referenceController.referencePhone;
       List<String?> otherRelations = referenceController.otherRelation;
-      String? id;
-      final UserModel? userData = Get.put(LoginController()).userData;
-      if (userData != null) {
-        id = userData.user?.id.toString() ?? '';
-      }
+      // String? id;
+      // final UserModel? userData = Get.put(LoginController()).userData;
+      // if (userData != null) {
+      //   id = userData.user?.id.toString() ?? '';
+      // }
 
       log('''name=>$name email=>$email location=>$address phone=>$phone dob=>$dob gender=>$gender status=>$status
          highDegree=>$highDegree experties=>$experties otherDegree=>$otherDegree
@@ -166,7 +165,7 @@ class EducatorMediaAddController extends GetxController {
          refnames=>$refNames refRel=>$refRelations refPhones=>$refPhones refOther=>$otherRelations
          linkedIn=>${linkedInController.text}  resume=>$cv
          videoLink=>${mediaLinkController.text} videoFile=>$videoFile
-         id=>$id
+         token=>${token?.isNotEmpty}
          ''', name: 'all-fields');
       String? res =
           await EducatorRegistrationService().saveEducatorRegistration(
@@ -199,6 +198,7 @@ class EducatorMediaAddController extends GetxController {
         videoLink: mediaLinkController.text,
         cv: cv,
         videoFile: videoFile,
+        token: token.toString(),
       );
       saveDataLoading.value = false;
       if (res == "Educator created successfully.") {
@@ -226,9 +226,6 @@ class EducatorMediaAddController extends GetxController {
           ),
         );
       }
-      // await Future.delayed(const Duration(seconds: 2));
-      // Get.to(() => EducatorSubmitFinalPage(name: name));
-      // deleteAllEducatorControllers();
     } catch (e) {
       saveDataLoading.value = false;
       log(e.toString(), name: 'educator submit data error');

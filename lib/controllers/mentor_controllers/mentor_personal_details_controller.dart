@@ -4,6 +4,7 @@ import 'package:aimshala/models/mentor_check_model/mentor_model.dart';
 import 'package:aimshala/services/mentor_reg_service/check_mentor_taken_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ class MentorPersonalDetailController extends GetxController {
   TextEditingController mobileController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController statusController = TextEditingController();
+  FlutterSecureStorage storage = const  FlutterSecureStorage();
 
   final bgControllerMentor = Get.put(MentorBackgroundDetailController());
   final refmentroController = Get.put(MentorReferencesController());
@@ -29,9 +31,10 @@ class MentorPersonalDetailController extends GetxController {
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
 
-  Future<void> checkMentorRegtakenFunction({required String uId}) async {
+  Future<void> checkMentorRegtakenFunction() async {
+      String? token = await storage.read(key: 'token');
     Map<String, dynamic>? resData =
-        await CheckMentorRegTakenService().checkMentorRegtaken(uId: uId);
+        await CheckMentorRegTakenService().checkMentorRegtaken(token:token.toString());
     if (resData != null) {
       if (resData.containsKey('error')) {
         isMentor = 'error';

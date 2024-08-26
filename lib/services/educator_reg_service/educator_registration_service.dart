@@ -37,6 +37,7 @@ class EducatorRegistrationService {
     required String videoLink,
     PlatformFile? cv,
     PlatformFile? videoFile,
+    required String token
   }) async {
     String path = Apis().aimUrl + Apis().educator;
     log(name);
@@ -97,7 +98,10 @@ class EducatorRegistrationService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token'
+          },
         ),
       );
       log(response.data.toString(), name: 'educator response');

@@ -13,9 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AIMCETTestPage extends StatelessWidget {
-  final String uId;
   final String uName;
-  const AIMCETTestPage({super.key, required this.uId, required this.uName});
+  const AIMCETTestPage({super.key, required this.uName});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class AIMCETTestPage extends StatelessWidget {
     return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {
-          controller.checkAimcetTestTakenFunction(userId: uId);
+          controller.checkAimcetTestTakenFunction();
           Get.offAll(() => const HomeScreen());
         });
       },
@@ -38,7 +37,7 @@ class AIMCETTestPage extends StatelessWidget {
             child: controller.allQuestions == null
                 ? const ErrorWarning()
                 : controller.allQuestions?.isEmpty == true
-                    ? CompletedWarningBox(uId: uId, uName: uName)
+                    ? CompletedWarningBox(uName: uName)
                     : PageView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: controller.allQuestions?.length,
@@ -76,18 +75,17 @@ class AIMCETTestPage extends StatelessWidget {
                                             if (index == length - 1) {
                                               showAIMCETDialogFunction(
                                                   context: context,
-                                                  userId: uId,
                                                   userName: uName);
                                               c.aimcetTestResultFunction(
-                                                  userId: uId, userName: uName);
+                                                  userName: uName);
                                             }
                                             c.secID.value = data.sectionId!;
                                             c.updateTestFileds(data.sectionId!);
-                                            log('uId=>$uId qusID=>${data.id} c_answer=>$answerText  subsectionID=>${data.subSectionId} sectionID==>${data.sectionId} totalQus=>${c.totalQ} subQuesCount=>${c.subQusCount} sectionqusCount=>${c.sectionQusCount}',
+                                            log(' qusID=>${data.id} c_answer=>$answerText  subsectionID=>${data.subSectionId} sectionID==>${data.sectionId} totalQus=>${c.totalQ} subQuesCount=>${c.subQusCount} sectionqusCount=>${c.sectionQusCount}',
                                                 name: 'items');
                                             c.update(['aimcet-test']);
                                             c.submitAceTestQuestion(
-                                              userId: uId,
+                                              // userId: uId,
                                               questionId: data.id.toString(),
                                               cAnswer: answerText,
                                               sectionId:
@@ -107,19 +105,6 @@ class AIMCETTestPage extends StatelessWidget {
                                                       milliseconds: 800),
                                                   curve: Curves.ease);
                                             }
-                                            // if (c.totalQ == 40) {
-                                            //   log('userId=>$uId  secId=>1',
-                                            //       name: '40th index');
-                                            //   c.careerResultSubmittion(
-                                            //       userId: uId, secId: '1');
-                                            // }
-                                            // if (c.totalQ == 55) {
-                                            //   log('userId=>$uId  secId=>3',
-                                            //       name: '55th index');
-                                            //   c.careerResultSubmittion(
-                                            //       userId: uId, secId: '3');
-                                            // }
-
                                             if (length - 2 == index ||
                                                 length - 1 == index) {
                                               log('sectionid=>${data.sectionId}   index=>$index',
@@ -252,14 +237,11 @@ class AIMCETTestPage extends StatelessWidget {
   }
 
   void showAIMCETDialogFunction(
-      {required BuildContext context,
-      required String userId,
-      required String userName}) {
+      {required BuildContext context, required String userName}) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) =>
-          AIMCETDialogueBox(userId: userId, userName: userName),
+      builder: (context) => AIMCETDialogueBox(userName: userName),
     );
   }
 }
