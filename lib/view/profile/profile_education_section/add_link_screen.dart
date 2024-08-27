@@ -14,9 +14,8 @@ import 'package:sizer/sizer.dart';
 
 class AddEducationLinkScreen extends StatelessWidget {
   final ProfileEducationController controller;
-  final String uId;
   final Education? edu;
-  AddEducationLinkScreen({super.key, required this.controller, required this.uId, this.edu});
+  AddEducationLinkScreen({super.key, required this.controller, this.edu});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -48,11 +47,9 @@ class AddEducationLinkScreen extends StatelessWidget {
                                 controller.mediaTitleController.clear();
                                 controller.mediaDescriptionController.clear();
                                 Get.to(() => AddProfileMediaScreen(
-                                      image: value,
-                                      uId: uId,
-                                      controller: controller,
-                                      edu: edu,
-                                    ));
+                                    image: value,
+                                    controller: controller,
+                                    edu: edu));
                               }
                             });
                           }
@@ -68,7 +65,6 @@ class AddEducationLinkScreen extends StatelessWidget {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                   ),
                 ),
-                
               ],
             ),
           ),

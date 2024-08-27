@@ -12,9 +12,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExperienceSkillScreen extends StatelessWidget {
-  final String uId;
   final Experience? ex;
-  const AddExperienceSkillScreen({super.key, required this.uId, this.ex});
+  const AddExperienceSkillScreen({super.key,  this.ex});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class AddExperienceSkillScreen extends StatelessWidget {
         title: 'Skills',
         doneWidget: TextButton(
             onPressed: () =>
-                Get.off(() => AddExperienceScreen(uId: uId, experience: ex)),
+                Get.off(() => AddExperienceScreen( experience: ex)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

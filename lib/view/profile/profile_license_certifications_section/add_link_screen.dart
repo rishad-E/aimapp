@@ -11,11 +11,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddLicenseLinkScreen extends StatelessWidget {
-  final String uId;
   final ProfileLicenseCertificationController controller;
   final License? license;
-  AddLicenseLinkScreen(
-      {super.key, required this.uId, required this.controller, this.license});
+  AddLicenseLinkScreen({super.key, required this.controller, this.license});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class AddLicenseLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
-                      hintText:  'Enter Link URL',
+                      hintText: 'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -47,7 +45,6 @@ class AddLicenseLinkScreen extends StatelessWidget {
                                 controller.mediaDescriptionController.clear();
                                 Get.to(() => AddLicenseMediaScreen(
                                       image: value,
-                                      uId: uId,
                                       controller: controller,
                                       license: license,
                                     ));

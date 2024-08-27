@@ -13,14 +13,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExperienceLinkScreen extends StatelessWidget {
-  final String uId;
   final Experience? experience;
   final ProfileExperienceController controller;
   AddExperienceLinkScreen(
-      {super.key,
-      required this.uId,
-      this.experience,
-      required this.controller});
+      {super.key, this.experience, required this.controller});
   final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
@@ -54,7 +50,6 @@ class AddExperienceLinkScreen extends StatelessWidget {
                                 controller.mediaDescriptionController.clear();
                                 Get.to(() => AddExperienceMediaScreen(
                                       image: value,
-                                      uId: uId,
                                       controller: controller,
                                       ex: experience,
                                     ));

@@ -8,7 +8,7 @@ class UpdateLicenseCertificationService {
   Dio dio = Dio();
 
   Future<String?> saveLicenseCertificationInfo({
-    required String uId,
+    required String token,
     required String name,
     required String organization,
     required String issueDate,
@@ -22,11 +22,10 @@ class UpdateLicenseCertificationService {
     required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveLicense;
-    log('uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
+    log(' name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'license-service save');
 
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "name": name,
       "organization": organization,
       "issue_date": issueDate,
@@ -55,7 +54,10 @@ class UpdateLicenseCertificationService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;
@@ -94,7 +96,7 @@ class UpdateLicenseCertificationService {
 
   Future<String?> updateLicenseCertificationInfo({
     required String lcID,
-    required String uId,
+    required String token,
     required String name,
     required String organization,
     required String issueDate,
@@ -109,12 +111,11 @@ class UpdateLicenseCertificationService {
     required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveLicense;
-    log('lcID=>$lcID uID=>$uId name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
+    log('lcID=>$lcID name=>$name organization=>$organization issueDate=>$issueDate expiryDate=>$expiryDate credID=>$credID credURL=>$credURL skills=>$skills media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'license-service update');
 
     FormData formData = FormData.fromMap({
       "license_id": lcID,
-      "user_id": uId,
       "name": name,
       "organization": organization,
       "issue_date": issueDate,
@@ -152,7 +153,10 @@ class UpdateLicenseCertificationService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;

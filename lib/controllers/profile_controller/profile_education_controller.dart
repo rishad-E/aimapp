@@ -9,6 +9,7 @@ import 'package:aimshala/services/profile_section/update_skill_info_service.dart
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +26,7 @@ class ProfileEducationController extends GetxController {
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   DateTime dateTime = DateTime.now();
   RxList<String> addedSkill = <String>[].obs;
@@ -40,7 +42,6 @@ class ProfileEducationController extends GetxController {
   RxBool isSaving = false.obs;
 
   Future<void> saveEducationInfo({
-    required String uId,
     required String school,
     required String degree,
     required String studyfield,
@@ -57,8 +58,9 @@ class ProfileEducationController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateEducationInfoService().saveEducationInfo(
-        uId: uId,
+        token: token.toString(),
         school: school,
         degree: degree,
         studyfield: studyfield,
@@ -84,7 +86,7 @@ class ProfileEducationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -105,7 +107,6 @@ class ProfileEducationController extends GetxController {
 
   Future<void> updateEducationInfo(
       {required String edID,
-      required String uId,
       required String school,
       required String degree,
       required String studyfield,
@@ -122,9 +123,10 @@ class ProfileEducationController extends GetxController {
       required List<String> mediaUrl}) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateEducationInfoService().updateEducationInfo(
           edID: edID,
-          uId: uId,
+          token: token.toString(),
           school: school,
           degree: degree,
           studyfield: studyfield,
@@ -150,7 +152,7 @@ class ProfileEducationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -169,9 +171,7 @@ class ProfileEducationController extends GetxController {
   }
 
   Future<void> deleteEducationFunction(
-      {required String eduID,
-      required String uId,
-      required String school}) async {
+      {required String eduID, required String school}) async {
     String? res =
         await UpdateEducationInfoService().deleteEducationInfo(eduID: eduID);
     final awardC = Get.put(ProfileHonorsAwardsController());
@@ -189,7 +189,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
       awardC.assosiatedListdata.removeWhere((i) => i.contains(school));
       projectC.associatedListdata.removeWhere((i) => i.contains(school));
       courseC.associatedListdata.removeWhere((i) => i.contains(school));
@@ -204,7 +204,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     }
   }
 

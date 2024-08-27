@@ -12,9 +12,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddLanguageScreen extends StatelessWidget {
-  final String uId;
   final Language? language;
-  ProfileAddLanguageScreen({super.key, required this.uId, this.language});
+  ProfileAddLanguageScreen({super.key, this.language});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -31,8 +30,8 @@ class ProfileAddLanguageScreen extends StatelessWidget {
       controller.update(['update-LanguageInfo']);
     });
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Language', doneWidget: shrinked),
         body: Container(
@@ -130,11 +129,10 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                                   ),
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('ID=>$uId language=>${c.languageController.text} proficiency=>${c.proficiencyController.text}',
+                                      log('language=>${c.languageController.text} proficiency=>${c.proficiencyController.text}',
                                           name: 'language-screen');
                                       language == null
                                           ? c.saveLanguageFunction(
-                                              uId: uId,
                                               language:
                                                   c.languageController.text,
                                               proficiency:
@@ -142,7 +140,6 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                                             )
                                           : c.updateLanguageFunction(
                                               languageID: languageID.toString(),
-                                              uId: uId,
                                               language:
                                                   c.languageController.text,
                                               proficiency:
@@ -160,8 +157,7 @@ class ProfileAddLanguageScreen extends StatelessWidget {
                           : deleteSectionWidget(
                               onPressed: () {
                                 controller.deleteLanguageFunction(
-                                    languageID: languageID.toString(),
-                                    uId: uId);
+                                    languageID: languageID.toString());
                               },
                               section: 'Language',
                             )

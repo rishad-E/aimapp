@@ -16,15 +16,13 @@ import 'package:sizer/sizer.dart';
 
 class ProjectSectionScreen extends StatelessWidget {
   final RxList<Project> project;
-  final String uId;
-  const ProjectSectionScreen(
-      {super.key, required this.project, required this.uId});
+  const ProjectSectionScreen({super.key, required this.project});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Projects', doneWidget: shrinked),
         body: Container(
@@ -36,8 +34,7 @@ class ProjectSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                   section: "Projects",
-                  onTapAdd: () =>
-                      Get.to(() => ProfileAddProjectScreen(uId: uId)),
+                  onTapAdd: () => Get.to(() => ProfileAddProjectScreen()),
                   child: List.generate(
                     project.length,
                     (index) {
@@ -49,11 +46,11 @@ class ProjectSectionScreen extends StatelessWidget {
                             data.startDate.toString(), data.endDate),
                         assosiated: data.associated.toString(),
                         description: data.description.toString(),
-                        skills:data.skills.toString(),
+                        skills: data.skills.toString(),
                         project: data,
                         end: index == project.length - 1,
-                        onTap: () => Get.to(() => ProfileAddProjectScreen(
-                              uId: data.userId.toString(), project: data)),
+                        onTap: () => Get.to(
+                            () => ProfileAddProjectScreen(project: data)),
                       );
                     },
                   ),
@@ -116,8 +113,7 @@ Widget projectSectionWidget(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              
-                regularText(assosiated, 8.sp,color: kblack),
+                regularText(assosiated, 8.sp, color: kblack),
                 skills.isEmpty
                     ? shrinked
                     : regularText("Skills: $skills", 8.2.sp),
@@ -194,11 +190,9 @@ Widget projectSectionWidget(
               ],
             ),
           ),
-        
         ],
       ),
       end ? shrinked : const Divider(thickness: 0.2)
     ],
   );
-
 }

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_license_certification_controller.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -12,9 +11,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddLicenseSkillScreen extends StatelessWidget {
-  final String uId;
   final License? license;
-  const AddLicenseSkillScreen({super.key, required this.uId, this.license});
+  const AddLicenseSkillScreen({super.key, this.license});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +23,7 @@ class AddLicenseSkillScreen extends StatelessWidget {
         title: 'Skills',
         doneWidget: TextButton(
             onPressed: () => Get.off(() =>
-                AddLicenseCertificationsScreen(uId: uId, license: license)),
+                AddLicenseCertificationsScreen( license: license)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

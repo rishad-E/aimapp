@@ -14,9 +14,8 @@ import 'package:intl/intl.dart';
 class AmySignUpController extends GetxController {
   final String name;
   final String email;
-  final String uId;
   final String phone;
-  AmySignUpController(this.name, this.email, this.uId, this.phone);
+  AmySignUpController(this.name, this.email, this.phone);
   TextEditingController chatController = TextEditingController();
   TextEditingController idController = TextEditingController();
   ScrollController scrollController = ScrollController();
@@ -96,7 +95,7 @@ class AmySignUpController extends GetxController {
 
       scrollController.animateTo(0.0,
           duration: const Duration(seconds: 1), curve: Curves.easeOut);
-      log('item=>$userMessage id=>$optionId type=>$isMultiSelect quesId=>$qusId uid=>$uId',
+      log('item=>$userMessage id=>$optionId type=>$isMultiSelect quesId=>$qusId',
           name: 'selected item');
 
       isTyping = true;

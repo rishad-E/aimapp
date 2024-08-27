@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class UpdateProjectInfoService {
   Dio dio = Dio();
   Future<String?> saveProjectInfo({
-    required String uId,
+    required String token,
     required String proName,
     required String startDate,
     required String endDate,
@@ -21,10 +21,9 @@ class UpdateProjectInfoService {
     required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveProject;
-    log('uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated curretly=>$currentlyWorking skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
+    log('projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated curretly=>$currentlyWorking skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription mediaLinks=>$mediaLink',
         name: 'project-service save');
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "title": proName,
       "start_date": startDate,
       "end_date": endDate,
@@ -52,7 +51,10 @@ class UpdateProjectInfoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;
@@ -80,29 +82,27 @@ class UpdateProjectInfoService {
     return null;
   }
 
-  Future<String?> updateProjectInfo({
-    required String prID,
-    required String uId,
-    required String proName,
-    required String startDate,
-    required String endDate,
-    required String description,
-    required String assosiated,
-    required String currentlyWorking,
-    required List<String> skills,
-    required List<File> medias,
-    required List<String> mediaTitle,
-    required List<String> mediaDescription,
-    required List<String> mediaLink,
-    required List<String> mediaUrl
-  }) async {
+  Future<String?> updateProjectInfo(
+      {required String prID,
+      required String token,
+      required String proName,
+      required String startDate,
+      required String endDate,
+      required String description,
+      required String assosiated,
+      required String currentlyWorking,
+      required List<String> skills,
+      required List<File> medias,
+      required List<String> mediaTitle,
+      required List<String> mediaDescription,
+      required List<String> mediaLink,
+      required List<String> mediaUrl}) async {
     String path = Apis().aimUrl + Apis().saveProject;
-    log('prID=>$prID uid=>$uId projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription currenty=>$currentlyWorking mediaLinks=>$mediaLink',
+    log('prID=>$prID  projectName=>$proName startdate=>$startDate endDate=>$endDate description=>$description assosiated=>$assosiated skills=>$skills media=>$medias mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription currenty=>$currentlyWorking mediaLinks=>$mediaLink',
         name: 'project-service update');
 
     FormData formData = FormData.fromMap({
       "project_id": prID,
-      "user_id": uId,
       "title": proName,
       "start_date": startDate,
       "end_date": endDate,
@@ -134,25 +134,17 @@ class UpdateProjectInfoService {
         index++;
       }
     }
-    // if (medias.isNotEmpty) {
-    //   for (int i = 0; i < medias.length; i++) {
-    //     File media = medias[i];
-    //     formData.files.add(MapEntry(
-    //       'images[$i]',
-    //       await MultipartFile.fromFile(media.path,
-    //           filename: media.path.split('/').last),
-    //     ));
-    //   }
-    // } else {
-    //   formData.fields.add(const MapEntry('images[]', ''));
-    // }
+   
     try {
       Response response = await dio.post(
         path,
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;

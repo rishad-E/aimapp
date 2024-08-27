@@ -67,14 +67,13 @@ class LoginController extends GetxController {
           String errorMessage = res["error"];
           if (errorMessage == "Please fill first three questions.") {
             User? user = User.fromJson(res["user"]);
-            String? id = user.id.toString();
             String? name = user.name.toString();
             String? email = user.email.toString();
             String? phone = user.phone.toString();
             storage.write(key: 'email', value: email);
             // log('name=>$name email=>$email id=>$id');
-            Get.offAll(() => SignUpAmyScreen(
-                name: name, email: email, uId: id, phone: phone));
+            Get.offAll(
+                () => SignUpAmyScreen(name: name, email: email, phone: phone));
           } else {
             storage.write(key: 'phone', value: mobileWithoutCountryCode);
             Get.offAll(() => SignUpScreen(mobileNo: mobileNo));

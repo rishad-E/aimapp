@@ -10,9 +10,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddProjectSkillScreen extends StatelessWidget {
-  final String uId;
   final Project? project;
-  const AddProjectSkillScreen({super.key, required this.uId, this.project});
+  const AddProjectSkillScreen({super.key, this.project});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +22,7 @@ class AddProjectSkillScreen extends StatelessWidget {
         title: 'Skills',
         doneWidget: TextButton(
             onPressed: () {
-              Get.off(
-                  () => ProfileAddProjectScreen(uId: uId, project: project));
+              Get.off(() => ProfileAddProjectScreen(project: project));
             },
             child: const Text(
               'Done',

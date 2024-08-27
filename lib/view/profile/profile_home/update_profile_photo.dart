@@ -11,8 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class UpdateProfilePhotoScreen extends StatelessWidget {
-  final String uId;
-  UpdateProfilePhotoScreen({super.key, required this.uId});
+  UpdateProfilePhotoScreen({super.key});
   final profileC = Get.find<ProfileHomeController>();
 
   @override
@@ -57,9 +56,9 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              GestureDetector(
-                onTap: () async => await profileC.selectProfilePic(
-                    source: ImageSource.camera, uId: uId),
+              InkWell(
+                onTap: () async =>
+                    await profileC.selectProfilePic(source: ImageSource.camera),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,9 +72,9 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              GestureDetector(
+              InkWell(
                 onTap: () async => await profileC.selectProfilePic(
-                    source: ImageSource.gallery, uId: uId),
+                    source: ImageSource.gallery),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,8 +88,8 @@ class UpdateProfilePhotoScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () async => await profileC.deleteProfilePic(uId: uId),
+              InkWell(
+                onTap: () async => await profileC.deleteProfilePic(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,

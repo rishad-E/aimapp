@@ -7,22 +7,24 @@ class UpdateLanguageInfoService {
   Dio dio = Dio();
 
   Future<String?> saveLanguageInfo(
-      {required String uId,
+      {required String token,
       required String language,
       required String proficiency}) async {
     String path = Apis().aimUrl + Apis().saveLanguage;
-    log('ID=>$uId language=>$language proficiency=>$proficiency',
+    log('language=>$language proficiency=>$proficiency',
         name: 'language-service save');
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": uId,
-            "language": language,
-            "proficiency": proficiency,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "language": language,
+          "proficiency": proficiency,
+        },
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       Map<String, dynamic> responseData = response.data;
 
       if (responseData.containsKey('success')) {
@@ -49,24 +51,26 @@ class UpdateLanguageInfoService {
 
   Future<String?> updateLanguageInfo({
     required String languageID,
-    required String uId,
+    required String token,
     required String language,
     required String proficiency,
   }) async {
     String path = Apis().aimUrl + Apis().saveLanguage;
-    log('languageID=>$languageID  ID=>$uId language=>$language proficiency=>$proficiency',
+    log('languageID=>$languageID   language=>$language proficiency=>$proficiency',
         name: 'language-service update');
     try {
-      Response response = await dio.post(path,
-          data: {
-            "language_id": languageID,
-            "user_id": uId,
-            "language": language,
-            "proficiency": proficiency,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "language_id": languageID,
+          "language": language,
+          "proficiency": proficiency,
+        },
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       Map<String, dynamic> responseData = response.data;
 
       if (responseData.containsKey('success')) {

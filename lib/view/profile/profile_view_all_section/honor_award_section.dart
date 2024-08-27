@@ -16,16 +16,13 @@ import 'package:sizer/sizer.dart';
 
 class AwardHonorSectionScreen extends StatelessWidget {
   final RxList<Award> award;
-  final String uId;
-
-  const AwardHonorSectionScreen(
-      {super.key, required this.award, required this.uId});
+  const AwardHonorSectionScreen({super.key, required this.award});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Honors & awards', doneWidget: shrinked),
         body: Container(
@@ -36,8 +33,7 @@ class AwardHonorSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                 section: "Honors & awards",
-                onTapAdd: () =>
-                    Get.to(() => ProfileAddHonorsandAwardsScreen(uId: uId)),
+                onTapAdd: () => Get.to(() => ProfileAddHonorsandAwardsScreen()),
                 child: List.generate(
                   award.length,
                   (index) {
@@ -52,8 +48,8 @@ class AwardHonorSectionScreen extends StatelessWidget {
                       award: data,
                       end: index == award.length - 1,
                       onTap: () {
-                        Get.to(() => ProfileAddHonorsandAwardsScreen(
-                            uId: data.userId.toString(), award: data));
+                        Get.to(
+                            () => ProfileAddHonorsandAwardsScreen(award: data));
                       },
                     );
                   },
@@ -189,5 +185,4 @@ Widget awarSectionWidget({
       end ? shrinked : const Divider(thickness: 0.2)
     ],
   );
-  
 }

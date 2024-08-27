@@ -20,9 +20,9 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddLicenseCertificationsScreen extends StatelessWidget {
-  final String uId;
+ 
   final License? license;
-  AddLicenseCertificationsScreen({super.key, required this.uId, this.license});
+  AddLicenseCertificationsScreen({super.key,  this.license});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id:''))),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Add license or certification', doneWidget: shrinked),
@@ -169,8 +169,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                     licenseAdditional(
                       onTap: () {
                         controller.getSuggestedSkills();
-                        Get.to(() =>
-                            AddLicenseSkillScreen(uId: uId, license: license));
+                        Get.to(() => AddLicenseSkillScreen(license: license));
                       },
                       heading: 'Skills',
                       subText:
@@ -270,7 +269,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                       .toList();
                                   license == null
                                       ? c.saveLicenseCertificationFunction(
-                                          uId: uId,
                                           name: c.nameController.text,
                                           organization:
                                               c.organizationController.text,
@@ -288,7 +286,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                                           mediaLink: mediaLinks)
                                       : c.updateLicenseCertificationFunction(
                                           lcID: liID.toString(),
-                                          uId: uId,
                                           name: c.nameController.text,
                                           organization:
                                               c.organizationController.text,
@@ -318,7 +315,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                         ? shrinked
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteLicenseFunction(
-                                licenseID: liID.toString(), uId: uId),
+                                licenseID: liID.toString()),
                             section: 'License',
                           )
                   ],
@@ -350,7 +347,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddLicenseLinkScreen(
-                        uId: uId,
                         controller: controller,
                         license: license,
                       ));
@@ -365,7 +361,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                     controller.mediaDescriptionController.clear();
                     Get.to(() => AddLicenseMediaScreen(
                           image: value,
-                          uId: uId,
                           controller: controller,
                           license: license,
                         ));
@@ -381,7 +376,6 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
                     controller.mediaDescriptionController.clear();
                     Get.to(() => AddLicenseMediaScreen(
                           image: value,
-                          uId: uId,
                           controller: controller,
                           license: license,
                         ));

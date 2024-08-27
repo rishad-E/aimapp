@@ -12,16 +12,13 @@ import 'package:sizer/sizer.dart';
 
 class LanguageSectionScreen extends StatelessWidget {
   final RxList<Language> language;
-  final String uId;
-
-  const LanguageSectionScreen(
-      {super.key, required this.language, required this.uId});
+  const LanguageSectionScreen({super.key, required this.language});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Language', doneWidget: shrinked),
         body: Container(
@@ -32,8 +29,7 @@ class LanguageSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "Language",
-                  onTapAdd: () =>
-                      Get.to(() => ProfileAddLanguageScreen(uId: uId)),
+                  onTapAdd: () => Get.to(() => ProfileAddLanguageScreen()),
                   child: List.generate(
                     language.length,
                     (index) {
@@ -49,9 +45,8 @@ class LanguageSectionScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(() => ProfileAddLanguageScreen(
-                                      uId: data.userId.toString(),
-                                      language: data));
+                                  Get.to(() =>
+                                      ProfileAddLanguageScreen(language: data));
                                 },
                                 child: Icon(
                                   Icons.edit,

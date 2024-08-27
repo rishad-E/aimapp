@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:aimshala/controllers/profile_controller/profile_honoraward_controller.dart';
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/models/profile_model/profile_section_data_model.dart';
@@ -21,9 +20,8 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
-  final String uId;
   final Award? award;
-  ProfileAddHonorsandAwardsScreen({super.key, required this.uId, this.award});
+  ProfileAddHonorsandAwardsScreen({super.key, this.award});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id:''))),
       child: Scaffold(
         appBar:
             profileAppBar(title: 'Add honors & awards', doneWidget: shrinked),
@@ -241,7 +239,6 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                       .toList();
                                   award == null
                                       ? c.saveHonorAwardFunction(
-                                          uId: uId,
                                           title: c.titileController.text,
                                           assosiated:
                                               c.assosiatedController.text,
@@ -256,7 +253,6 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                                           mediaLink: mediaLinks)
                                       : c.updateHonorAwardFunction(
                                           awardID: awardID.toString(),
-                                          uId: uId,
                                           title: c.titileController.text,
                                           assosiated:
                                               c.assosiatedController.text,
@@ -283,7 +279,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                         ? shrinked
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteAwardFunction(
-                                awardID: awardID.toString(), uId: uId),
+                                awardID: awardID.toString()),
                             section: 'Award',
                           )
                   ],
@@ -384,7 +380,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddAwardLinkScreen(
-                        uId: uId,
+                       
                         controller: controller,
                         award: award,
                       ));
@@ -400,7 +396,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                       controller.mediaDescriptionController.clear();
                       return Get.to(() => AddHonorAwardsMediaScreen(
                           image: value,
-                          uId: uId,
+                         
                           controller: controller,
                           award: award));
                     }
@@ -417,7 +413,7 @@ class ProfileAddHonorsandAwardsScreen extends StatelessWidget {
                       controller.mediaDescriptionController.clear();
                       return Get.to(() => AddHonorAwardsMediaScreen(
                           image: value,
-                          uId: uId,
+                     
                           controller: controller,
                           award: award));
                     }

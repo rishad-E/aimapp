@@ -21,9 +21,8 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddProjectScreen extends StatelessWidget {
-  final String uId;
   final Project? project;
-  ProfileAddProjectScreen({super.key, required this.uId, this.project});
+  ProfileAddProjectScreen({super.key,  this.project});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Project', doneWidget: shrinked),
         body: Container(
@@ -97,8 +96,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                     projectAdditional(
                         onTap: () {
                           controller.getSuggestedSkills();
-                          Get.to(() => AddProjectSkillScreen(
-                              uId: uId, project: project));
+                          Get.to(() => AddProjectSkillScreen(project: project));
                         },
                         heading: 'Skills',
                         subText:
@@ -288,7 +286,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             : 'No';
                                     project == null
                                         ? c.saveProjectFunction(
-                                            uId: uId,
                                             proName:
                                                 c.projectnameController.text,
                                             startDate:
@@ -309,7 +306,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                                             mediaLink: mediaLink)
                                         : c.updateProjectFunction(
                                             prID: prID,
-                                            uId: uId,
                                             proName:
                                                 c.projectnameController.text,
                                             startDate:
@@ -341,7 +337,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
                         ? shrinked
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteProjectFunction(
-                                prID: prID.toString(), uId: uId),
+                                prID: prID.toString()),
                             section: 'Project')
                   ],
                 ),
@@ -378,7 +374,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddProjectLinkScreen(
-                        uId: uId,
                         controller: controller,
                         project: project,
                       ));
@@ -394,7 +389,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                       controller.mediaDescriptionController.clear();
                       Get.to(() => AddProjectMediaScreen(
                           image: value,
-                          uId: uId,
                           controller: controller,
                           project: project));
                     }
@@ -411,7 +405,6 @@ class ProfileAddProjectScreen extends StatelessWidget {
                       controller.mediaDescriptionController.clear();
                       return Get.to(() => AddProjectMediaScreen(
                           image: value,
-                          uId: uId,
                           controller: controller,
                           project: project));
                     }

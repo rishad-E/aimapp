@@ -22,9 +22,8 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExperienceScreen extends StatelessWidget {
-  final String uId;
   final Experience? experience;
-  AddExperienceScreen({super.key, required this.uId, this.experience});
+  AddExperienceScreen({super.key, this.experience});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -37,8 +36,8 @@ class AddExperienceScreen extends StatelessWidget {
       initializeFormFields(controller, experience);
     });
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Experience', doneWidget: shrinked),
         body: Container(
@@ -253,8 +252,7 @@ class AddExperienceScreen extends StatelessWidget {
                           'We recommend adding your top 5 used in this experience. They’ll also appear in your Skills section.',
                       onTap: () {
                         controller.getSuggestedSkills();
-                        Get.to(() =>
-                            AddExperienceSkillScreen(uId: uId, ex: experience));
+                        Get.to(() => AddExperienceSkillScreen(ex: experience));
                       },
                       selected: Obx(
                         () => controller.addedSkillEX.isEmpty
@@ -364,7 +362,6 @@ class AddExperienceScreen extends StatelessWidget {
                                           : 'No';
                                   experience == null
                                       ? c.saveExperienceInfoFunction(
-                                          uId: uId,
                                           title: c.titleController.text,
                                           employee: c.employmentController.text,
                                           company: c.companyController.text,
@@ -386,7 +383,6 @@ class AddExperienceScreen extends StatelessWidget {
                                         )
                                       : c.updateExperienceFunction(
                                           exID: exID.toString(),
-                                          uId: uId,
                                           title: c.titleController.text,
                                           employee: c.employmentController.text,
                                           company: c.companyController.text,
@@ -419,7 +415,6 @@ class AddExperienceScreen extends StatelessWidget {
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteExperienceSection(
                                 exID: exID.toString(),
-                                uId: uId,
                                 company: controller.companyController.text),
                             section: 'Experience',
                           ),
@@ -571,7 +566,7 @@ class AddExperienceScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddExperienceLinkScreen(
-                      controller: controller, experience: ex, uId: uId));
+                      controller: controller, experience: ex));
                 },
               ),
               mediaListTileEX(
@@ -583,10 +578,7 @@ class AddExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => AddExperienceMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          ex: ex));
+                          image: value, controller: controller, ex: ex));
                     }
                   });
                   Navigator.pop(context);
@@ -601,10 +593,7 @@ class AddExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => AddExperienceMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          ex: ex));
+                          image: value, controller: controller, ex: ex));
                     }
                   });
                   Navigator.pop(context);

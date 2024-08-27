@@ -8,7 +8,7 @@ class UpdateEducationInfoService {
   Dio dio = Dio();
 
   Future<String?> saveEducationInfo({
-    required String uId,
+    required String token,
     required String school,
     required String degree,
     required String studyfield,
@@ -25,11 +25,10 @@ class UpdateEducationInfoService {
   }) async {
     String path = Apis().aimUrl + Apis().saveEducation;
 
-    log('uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription  mediaLinks=>$mediaLinks',
+    log('token:${token.isNotEmpty} school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription  mediaLinks=>$mediaLinks',
         name: 'add-education save');
     // log(path, name: 'path');
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "school": school,
       "degree": degree,
       "study_field": studyfield,
@@ -59,7 +58,10 @@ class UpdateEducationInfoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
 
@@ -107,7 +109,7 @@ class UpdateEducationInfoService {
 
   Future<String?> updateEducationInfo(
       {required String edID,
-      required String uId,
+      required String token,
       required String school,
       required String degree,
       required String studyfield,
@@ -122,13 +124,13 @@ class UpdateEducationInfoService {
       required List<File> images,
       required List<String> skills,
       required List<String> mediaUrl}) async {
-    log('edID=>$edID uid:$uId school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription mediaLink=>$mediaLinks',
+    log('edID=>$edID  token:${token.isNotEmpty} school: $school degree:$degree studyfiled: $studyfield start: $startDate end: $endDate grade: $grade activities: $activities description: $description skills:$skills media:$images mediaTitle:$mediaTitle  mediaDesc:$mediaDescription mediaLink=>$mediaLinks',
         name: 'add-education update');
 
     String path = Apis().aimUrl + Apis().saveEducation;
     FormData formData = FormData.fromMap({
       "education_id": edID,
-      "user_id": uId,
+    
       "school": school,
       "degree": degree,
       "study_field": studyfield,
@@ -170,7 +172,10 @@ class UpdateEducationInfoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;

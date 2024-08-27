@@ -12,9 +12,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddSkillScreen extends StatelessWidget {
-  final String uId;
   final Skill? skill;
-  ProfileAddSkillScreen({super.key, required this.uId, this.skill});
+  ProfileAddSkillScreen({super.key, this.skill});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -365,7 +364,6 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                         name: 'all Ids-screen');
                                     skill == null
                                         ? c.saveSkillInfoFunction(
-                                            uId: uId,
                                             skill: c.skillController.text,
                                             exIDs: c.exSkillIdList,
                                             edIDs: c.edSchoolIdList,
@@ -377,7 +375,6 @@ class ProfileAddSkillScreen extends StatelessWidget {
                                           )
                                         : c.updateSkillFunction(
                                             skID: skID.toString(),
-                                            uId: uId,
                                             skill: c.skillController.text,
                                             exIDs: c.exSkillIdList,
                                             edIDs: c.edSchoolIdList,
@@ -400,7 +397,7 @@ class ProfileAddSkillScreen extends StatelessWidget {
                             alignment: Alignment.center,
                             child: deleteSectionWidget(
                                 onPressed: () => controller.deleteSkillFuntion(
-                                    skID: skID.toString(), uId: uId),
+                                    skID: skID.toString()),
                                 section: 'Skill'),
                           )
                   ],

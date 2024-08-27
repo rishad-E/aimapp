@@ -11,9 +11,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddProfileSkillsScreen extends StatelessWidget {
-  final String uId;
   final Education? edu;
-  const AddProfileSkillsScreen({super.key, required this.uId, this.edu});
+  const AddProfileSkillsScreen({super.key, this.edu});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,7 @@ class AddProfileSkillsScreen extends StatelessWidget {
       appBar: profileAppBar(
         title: 'Skills',
         doneWidget: TextButton(
-            onPressed: () =>
-                Get.off(() => AddEducationScreen(uId: uId, edu: edu)),
+            onPressed: () => Get.off(() => AddEducationScreen(edu: edu)),
             child: const Text(
               'Done',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),

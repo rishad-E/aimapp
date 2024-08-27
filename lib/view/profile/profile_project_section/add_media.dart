@@ -15,13 +15,11 @@ import 'package:sizer/sizer.dart';
 
 class AddProjectMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
   final Project? project;
   final ProfileProjectController controller;
   AddProjectMediaScreen(
       {super.key,
       this.image,
-      required this.uId,
       this.project,
       required this.controller});
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -41,7 +39,7 @@ class AddProjectMediaScreen extends StatelessWidget {
                       link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() =>
-                      ProfileAddProjectScreen(uId: uId, project: project));
+                      ProfileAddProjectScreen( project: project));
                   log(controller.allProjectMedias.toString(),
                       name: 'project Media');
                 }

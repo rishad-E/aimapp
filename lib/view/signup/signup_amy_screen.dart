@@ -10,19 +10,17 @@ import 'package:get/get.dart';
 class SignUpAmyScreen extends StatelessWidget {
   final String name;
   final String email;
-  final String uId;
+
   final String phone;
   const SignUpAmyScreen(
       {super.key,
       required this.name,
       required this.email,
-      required this.uId,
       required this.phone});
   @override
   Widget build(BuildContext context) {
-    log('uId=>$uId name=>$name email=>$email phone=>$phone',
-        name: 'amy screeeeeeeeen');
-    final controller = Get.put(AmySignUpController(name, email, uId, phone));
+    log(' name=>$name email=>$email phone=>$phone', name: 'amy screeeeeeeeen');
+    final controller = Get.put(AmySignUpController(name, email, phone));
     return Scaffold(
       appBar: signupAmyAppbar(),
       body: Padding(

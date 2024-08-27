@@ -11,10 +11,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddProjectLinkScreen extends StatelessWidget {
-  final String uId;
   final ProfileProjectController controller;
   final Project? project;
-  AddProjectLinkScreen({super.key, required this.uId, required this.controller, this.project});
+  AddProjectLinkScreen({super.key, required this.controller, this.project});
   final GlobalKey<FormState> formKey = GlobalKey();
 
   @override
@@ -37,7 +36,7 @@ class AddProjectLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
-                      hintText:  'Enter Link URL',
+                      hintText: 'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -46,11 +45,9 @@ class AddProjectLinkScreen extends StatelessWidget {
                                 controller.mediaTitleController.clear();
                                 controller.mediaDescriptionController.clear();
                                 Get.to(() => AddProjectMediaScreen(
-                                      image: value,
-                                      uId: uId,
-                                      controller: controller,
-                                      project: project,
-                                    ));
+                                    image: value,
+                                    controller: controller,
+                                    project: project));
                               }
                             });
                           }

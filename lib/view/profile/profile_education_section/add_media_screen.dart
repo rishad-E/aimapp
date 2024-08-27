@@ -14,15 +14,11 @@ import 'package:sizer/sizer.dart';
 
 class AddProfileMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
+
   final Education? edu;
   final ProfileEducationController controller;
   AddProfileMediaScreen(
-      {super.key,
-      this.image,
-      required this.uId,
-      required this.controller,
-      this.edu});
+      {super.key, this.image, required this.controller, this.edu});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class AddProfileMediaScreen extends StatelessWidget {
                       title: controller.mediaTitleController.text,
                       description: controller.mediaDescriptionController.text,
                       link: controller.mediaLinkController.text);
-                  Get.off(() => AddEducationScreen(uId: uId, edu: edu));
+                  Get.off(() => AddEducationScreen(edu: edu));
                   log(controller.allMediasModel.toString());
                 }
               },
@@ -56,8 +52,7 @@ class AddProfileMediaScreen extends StatelessWidget {
                 educationInfoFiled(
                   text: primarytxt3('Title', 9.5.sp),
                   textField: TextFormField(
-                    decoration:
-                        infoFieldDecoration(hintText: 'Enter Title'),
+                    decoration: infoFieldDecoration(hintText: 'Enter Title'),
                     style: const TextStyle(fontSize: 13),
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.filedValidation(value),

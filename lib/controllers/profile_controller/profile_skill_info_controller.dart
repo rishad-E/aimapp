@@ -9,6 +9,7 @@ import 'package:aimshala/utils/common/snackbar/snackbar.dart';
 import 'package:aimshala/view/profile/profile_add_skill_section/model/skill_models.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class ProfileSkillController extends GetxController {
@@ -18,7 +19,7 @@ class ProfileSkillController extends GetxController {
   RxBool loading = true.obs;
   RxBool profileDataLoading = true.obs;
   RxString? error;
-
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   /*------- model class lists------*/
   RxList<Education> education = <Education>[].obs;
   RxList<Experience> experience = <Experience>[].obs;
@@ -56,7 +57,6 @@ class ProfileSkillController extends GetxController {
   RxBool isSaving = false.obs;
   /*------- funtion to save and update skill info ------*/
   Future<void> saveSkillInfoFunction({
-    required String uId,
     required String skill,
     required List<String> exIDs,
     required List<String> edIDs,
@@ -68,8 +68,9 @@ class ProfileSkillController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateSkillInfoService().saveAddSkillService(
-        uId: uId,
+        token: token.toString(),
         skill: skill,
         exIDs: exIDs,
         edIDs: edIDs,
@@ -90,7 +91,7 @@ class ProfileSkillController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -110,7 +111,6 @@ class ProfileSkillController extends GetxController {
 
   Future<void> updateSkillFunction({
     required String skID,
-    required String uId,
     required String skill,
     required List<String> exIDs,
     required List<String> edIDs,
@@ -122,9 +122,10 @@ class ProfileSkillController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateSkillInfoService().updateAddedSkillService(
         skID: skID,
-        uId: uId,
+        token: token.toString(),
         skill: skill,
         exIDs: exIDs,
         edIDs: edIDs,
@@ -145,7 +146,7 @@ class ProfileSkillController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -163,8 +164,7 @@ class ProfileSkillController extends GetxController {
     }
   }
 
-  Future<void> deleteSkillFuntion(
-      {required String skID, required String uId}) async {
+  Future<void> deleteSkillFuntion({required String skID}) async {
     String? res = await UpdateSkillInfoService().deleteSkillInfo(skID: skID);
     if (res == 'skill deleted successfully') {
       Get.showSnackbar(
@@ -177,7 +177,7 @@ class ProfileSkillController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -189,18 +189,19 @@ class ProfileSkillController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     }
   }
 
   /*------- funtion to save and update skill info ------*/
 
   /*------- functions to extract items needed to pass with skill section ------*/
-  Future<void> getProfileAlldataFunction({required String uId}) async {
+  Future<void> getProfileAlldataFunction() async {
     try {
       profileDataLoading.value = true;
-
-      dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
+      String? token = await storage.read(key: 'token');
+      dynamic alldata = await GetProfileAllData()
+          .fetchProfileAlldata(token: token.toString());
       if (alldata != null) {
         /* -------extracting experience---------- */
         List<dynamic> experiencedata = alldata["experiences"];

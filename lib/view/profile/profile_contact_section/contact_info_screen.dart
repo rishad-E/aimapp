@@ -17,9 +17,8 @@ import 'package:pinput/pinput.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileContactInfoScreen extends StatelessWidget {
-  final String id;
   final User? user;
-  ProfileContactInfoScreen({super.key, required this.id, this.user});
+  ProfileContactInfoScreen({super.key, this.user});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -400,7 +399,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                               if (c.canSave.value &&
                                   !c.isNumChangedAfterVerification.value) {
                                 c.saveContactInfoFunction(
-                                  uId: id.toString(),
                                   userName: c.usernameController.text,
                                   mobNumber: c.mobController.text,
                                   email: c.emailController.text,
@@ -414,22 +412,6 @@ class ProfileContactInfoScreen extends StatelessWidget {
                                   twitter: c.twitterController.text,
                                 );
                               }
-                              // c.canSave.value == false&& !c.isNumChangedAfterVerification.value
-                              //     ? null
-                              //     : c.saveContactInfoFunction(
-                              //         uId: id.toString(),
-                              //         userName: c.usernameController.text,
-                              //         mobNumber: c.mobController.text,
-                              //         email: c.emailController.text,
-                              //         address: c.addressController.text,
-                              //         pincode: c.pincodeController.text,
-                              //         city: c.cityController.text,
-                              //         state: c.stateController.text,
-                              //         country: c.countryController.text,
-                              //         facebook: c.facebookController.text,
-                              //         instagram: c.instagramController.text,
-                              //         twitter: c.twitterController.text,
-                              //       );
                             },
                           ),
                         ],

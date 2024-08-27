@@ -34,7 +34,7 @@ class UpdateSkillInfoService {
   }
 
   Future<String?> saveAddSkillService({
-    required String uId,
+    required String token,
     required String skill,
     required List<String> exIDs,
     required List<String> edIDs,
@@ -48,27 +48,29 @@ class UpdateSkillInfoService {
     log('Skill=>$skill ExperienceList=>$exIDs educationList=>$edIDs LicenseList=>$liIDs projectList=>$prIDs CourseList=>$crsIds awardList=>$awIDs permission=>$permission',
         name: 'all Ids-service save');
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": uId,
-            "skill": skill,
-            "experience_ids": exIDs,
-            "education_ids": edIDs,
-            "license_ids": liIDs,
-            "project_ids": prIDs,
-            "course_ids": crsIds,
-            "award_ids": awIDs,
-            "permission": permission,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "skill": skill,
+          "experience_ids": exIDs,
+          "education_ids": edIDs,
+          "license_ids": liIDs,
+          "project_ids": prIDs,
+          "course_ids": crsIds,
+          "award_ids": awIDs,
+          "permission": permission,
+        },
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       Map<String, dynamic> responseData = response.data;
       // log(responseData.toString(), name: 'response data-save skill');
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
-        
+
         return successMessage;
       } else if (responseData.containsKey('error')) {
         // String errorMessage = responseData['error'];
@@ -95,7 +97,7 @@ class UpdateSkillInfoService {
 
   Future<String?> updateAddedSkillService({
     required String skID,
-    required String uId,
+    required String token,
     required String skill,
     required List<String> exIDs,
     required List<String> edIDs,
@@ -106,13 +108,12 @@ class UpdateSkillInfoService {
     required String permission,
   }) async {
     String path = Apis().aimUrl + Apis().saveSkill;
-    log('skID=>$skID uid=>$uId Skill=>$skill ExperienceList=>$exIDs educationList=>$edIDs LicenseList=>$liIDs projectList=>$prIDs CourseList=>$crsIds awardList=>$awIDs permission=>$permission',
+    log('skID=>$skID Skill=>$skill ExperienceList=>$exIDs educationList=>$edIDs LicenseList=>$liIDs projectList=>$prIDs CourseList=>$crsIds awardList=>$awIDs permission=>$permission',
         name: 'all Ids-service update');
     try {
       Response response = await dio.post(path,
           data: {
             "skill_id": skID,
-            "user_id": uId,
             "skill": skill,
             "experience_ids": exIDs,
             "education_ids": edIDs,
@@ -124,6 +125,7 @@ class UpdateSkillInfoService {
           },
           options: Options(
             validateStatus: (status) => status! < 599,
+            headers: {'Authorization': 'Bearer $token'},
           ));
       Map<String, dynamic> responseData = response.data;
       // log(responseData.toString(), name: 'response data-update skill');
@@ -162,7 +164,6 @@ class UpdateSkillInfoService {
             validateStatus: (status) => status! < 599,
           ));
       Map<String, dynamic> responseData = response.data;
-     
 
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];

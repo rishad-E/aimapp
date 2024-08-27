@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/profile_controller/profile_personal_info_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
@@ -14,16 +12,11 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfilePersonalInfoScreen extends StatelessWidget {
-  final String id;
   final String dob;
   final String gender;
   final User? user;
   ProfilePersonalInfoScreen(
-      {super.key,
-      required this.id,
-      this.user,
-      required this.dob,
-      required this.gender});
+      {super.key, this.user, required this.dob, required this.gender});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -181,10 +174,7 @@ class ProfilePersonalInfoScreen extends StatelessWidget {
                                     )),
                               onTap: () {
                                 if (formKey.currentState!.validate()) {
-                                  log('name=>${c.nameController.text} username=>${c.userNameController.text} date=> ${c.dateController.text} UID=>$id gender=>${c.genderController.text} about=>${c.aboutController.text}',
-                                      name: 'personal-info screen');
                                   c.savepersonalInfoFunction(
-                                    uId: id,
                                     fullName: c.nameController.text,
                                     userName: c.userNameController.text,
                                     dOB: c.dateController.text,

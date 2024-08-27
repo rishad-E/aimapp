@@ -20,23 +20,22 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class AddEducationScreen extends StatelessWidget {
-  final String uId;
+  // final String uId;
   final Education? edu;
-  AddEducationScreen({super.key, required this.uId, this.edu});
+  AddEducationScreen({super.key, this.edu});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileEducationController());
     String? eduID;
-    log(edu.toString(), name: 'educational data');
-
+    // log(edu.toString(), name: 'educational data');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       eduID = edu?.id.toString();
       initializeFormFields(controller, edu);
     });
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Education', doneWidget: shrinked),
         body: Container(
@@ -205,7 +204,7 @@ class AddEducationScreen extends StatelessWidget {
                       onTap: () {
                         controller.getSuggestedSkills();
                         Get.to(
-                          () => AddProfileSkillsScreen(uId: uId, edu: edu),
+                          () => AddProfileSkillsScreen(edu: edu),
                         );
                       },
                       heading: 'Skills',
@@ -265,13 +264,6 @@ class AddEducationScreen extends StatelessWidget {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // actionContainer(
-                              //   text: 'Cancel',
-                              //   textColor: mainPurple,
-                              //   boxColor: kwhite,
-                              //   borderColor: mainPurple,
-                              //   onTap: () => Get.back(),
-                              // ),
                               saveContainer(
                                 boxColor: kwhite,
                                 borderColor: mainPurple,
@@ -317,10 +309,8 @@ class AddEducationScreen extends StatelessWidget {
                                         .where((mediaLink) => mediaLink != null)
                                         .cast<String>()
                                         .toList();
-                                    // log('ImageList=>$imagesList  mediatitle=>$mediaTitles  mediaDesc=>$mediaDesc  url=>$mediaUrl');
                                     edu == null
                                         ? c.saveEducationInfo(
-                                            uId: uId,
                                             school: c.schoolController.text,
                                             degree: c.degreeController.text,
                                             studyfield:
@@ -342,7 +332,6 @@ class AddEducationScreen extends StatelessWidget {
                                           )
                                         : c.updateEducationInfo(
                                             edID: eduID.toString(),
-                                            uId: uId,
                                             school: c.schoolController.text,
                                             degree: c.degreeController.text,
                                             studyfield:
@@ -373,9 +362,9 @@ class AddEducationScreen extends StatelessWidget {
                         ? shrinked
                         : deleteSectionWidget(
                             onPressed: () => controller.deleteEducationFunction(
-                                school: controller.schoolController.text,
-                                eduID: eduID.toString(),
-                                uId: uId),
+                              school: controller.schoolController.text,
+                              eduID: eduID.toString(),
+                            ),
                             section: 'Education',
                           ),
                   ],
@@ -503,7 +492,6 @@ class AddEducationScreen extends StatelessWidget {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddEducationLinkScreen(
                         controller: controller,
-                        uId: uId,
                         edu: edu,
                       ));
                 },
@@ -517,10 +505,7 @@ class AddEducationScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       return Get.to(() => AddProfileMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          edu: edu));
+                          image: value, controller: controller, edu: edu));
                     }
                   });
                 },
@@ -534,10 +519,7 @@ class AddEducationScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       return Get.to(() => AddProfileMediaScreen(
-                          image: value,
-                          uId: uId,
-                          controller: controller,
-                          edu: edu));
+                          image: value, controller: controller, edu: edu));
                     }
                   });
                 },

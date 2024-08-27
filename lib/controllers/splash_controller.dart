@@ -42,6 +42,7 @@ class SplashController extends GetxController {
         colorText: Colors.white,
       );
     } else {
+      // await storage.deleteAll();
       // storage.write(key: 'name', value: 'Rishad E');
       // String? checkLogin = await storage.read(key: 'token');
       // log(checkLogin.toString(), name: 'splash checklogin');
@@ -89,7 +90,6 @@ class SplashController extends GetxController {
               Get.offAll(() => SignUpAmyScreen(
                   name: name2.toString(),
                   email: email2.toString(),
-                  uId: id,
                   phone: phone.toString()));
             } else {
               Get.offAll(() => const LoginScreen());
@@ -99,24 +99,21 @@ class SplashController extends GetxController {
           }
         } else if (res.containsKey('status')) {
           User? user = User.fromJson(res["user"]);
-          String? id = user.id.toString();
           String? phone = user.phone.toString();
           String? email2 = user.email;
           String? name2 = user.name;
-          log("phone=>$phone email=>$email2 name=>$name2 id=>$id",
+          log("phone=>$phone email=>$email2 name=>$name2",
               name: 'splash mobile and email status section');
           Get.offAll(() => SignUpAmyScreen(
-              name: name2.toString(),
-              email: email2.toString(),
-              uId: id,
-              phone: phone));
+              name: name2.toString(), email: email2.toString(), phone: phone));
         } else if (res.containsKey('token')) {
           storage.write(key: 'token', value: res['token']);
           loginController.userData = UserModel.fromJson(res);
           if (loginController.userData != null) {
             String? id = loginController.userData?.user?.id.toString();
             String? uName = loginController.userData?.user?.name.toString();
-            log('userID=>$id  name=>$uName ', name: 'userid and username splash');
+            log('userID=>$id  name=>$uName ',
+                name: 'userid and username splash');
             alldataController.getUserallData();
             bookingController.checkCounsellcallBookingFuntion();
             aimtestController.checkAimcetTestTakenFunction().then((value) {
@@ -124,7 +121,6 @@ class SplashController extends GetxController {
                 log('aimcet test done', name: 'spalsh done');
                 aimtestController.aimcetTestResultFunction(
                     userName: uName.toString());
-                // aimtestController.getTestSectionTextsFunc();
               }
             });
             Get.off(() => const HomeScreen());

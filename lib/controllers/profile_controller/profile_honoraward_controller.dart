@@ -4,6 +4,7 @@ import 'package:aimshala/services/profile_section/update_honoraward_info_service
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +18,7 @@ class ProfileHonorsAwardsController extends GetxController {
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   DateTime dateTime = DateTime.now();
   File? selectedImage;
@@ -31,7 +33,6 @@ class ProfileHonorsAwardsController extends GetxController {
   RxBool isSaving = false.obs;
 
   Future<void> saveHonorAwardFunction({
-    required String uId,
     required String title,
     required String assosiated,
     required String issuer,
@@ -44,8 +45,9 @@ class ProfileHonorsAwardsController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateHonorAwardService().saveHonorAwardInfo(
-        uId: uId,
+        token: token.toString(),
         title: title,
         assosiated: assosiated,
         issuer: issuer,
@@ -67,7 +69,7 @@ class ProfileHonorsAwardsController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -87,7 +89,6 @@ class ProfileHonorsAwardsController extends GetxController {
 
   Future<void> updateHonorAwardFunction({
     required String awardID,
-    required String uId,
     required String title,
     required String assosiated,
     required String issuer,
@@ -101,9 +102,10 @@ class ProfileHonorsAwardsController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateHonorAwardService().updateHonorAwardInfo(
           awardID: awardID,
-          uId: uId,
+          token: token.toString(),
           title: title,
           assosiated: assosiated,
           issuer: issuer,
@@ -125,7 +127,7 @@ class ProfileHonorsAwardsController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -143,8 +145,7 @@ class ProfileHonorsAwardsController extends GetxController {
     }
   }
 
-  Future<void> deleteAwardFunction(
-      {required String awardID, required String uId}) async {
+  Future<void> deleteAwardFunction({required String awardID}) async {
     String? res =
         await UpdateHonorAwardService().deleteAwardInfo(awardID: awardID);
     if (res == 'Award deleted successfully') {
@@ -158,7 +159,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id:''));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -170,7 +171,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     }
   }
 

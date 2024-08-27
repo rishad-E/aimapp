@@ -18,15 +18,16 @@ import 'package:sizer/sizer.dart';
 
 class ExperienceSectionScreen extends StatelessWidget {
   final RxList<Experience> experience;
-  final String uId;
-  const ExperienceSectionScreen(
-      {super.key, required this.experience, required this.uId});
+  const ExperienceSectionScreen({
+    super.key,
+    required this.experience,
+  });
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Experience', doneWidget: shrinked),
         body: Container(
@@ -38,7 +39,7 @@ class ExperienceSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                   section: "Experience",
-                  onTapAdd: () => Get.to(() => AddExperienceScreen(uId: uId)),
+                  onTapAdd: () => Get.to(() => AddExperienceScreen()),
                   child: List.generate(
                     experience.length,
                     (index) {
@@ -55,8 +56,8 @@ class ExperienceSectionScreen extends StatelessWidget {
                           description: data.description.toString(),
                           experience: data,
                           end: experience.length - 1 == index,
-                          onTap: () => Get.to(() => AddExperienceScreen(
-                              uId: data.userId.toString(), experience: data)));
+                          onTap: () => Get.to(
+                              () => AddExperienceScreen(experience: data)));
                     },
                   ),
                 ),

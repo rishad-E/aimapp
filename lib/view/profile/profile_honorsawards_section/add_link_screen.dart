@@ -11,11 +11,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddAwardLinkScreen extends StatelessWidget {
-  final String uId;
   final ProfileHonorsAwardsController controller;
   final Award? award;
-  AddAwardLinkScreen(
-      {super.key, required this.uId, required this.controller, this.award});
+  AddAwardLinkScreen({super.key, required this.controller, this.award});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class AddAwardLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
-                      hintText:  'Enter Link URL',
+                      hintText: 'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
@@ -48,7 +46,7 @@ class AddAwardLinkScreen extends StatelessWidget {
                                 controller.mediaDescriptionController.clear();
                                 Get.to(() => AddHonorAwardsMediaScreen(
                                       image: value,
-                                      uId: uId,
+                                     
                                       controller: controller,
                                       award: award,
                                     ));

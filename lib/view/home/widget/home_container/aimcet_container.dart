@@ -136,7 +136,6 @@ class AimcetContainer extends StatelessWidget {
                           Get.to(
                               () => SignUpAmyScreen(
                                     name: userName,
-                                    uId: '',
                                     email: allDataC.userData?.email ?? '',
                                     phone: allDataC.userData?.phone ?? '',
                                   ),

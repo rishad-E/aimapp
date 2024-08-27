@@ -13,15 +13,10 @@ import 'package:sizer/sizer.dart';
 
 class AddLicenseMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
   final License? license;
   final ProfileLicenseCertificationController controller;
   AddLicenseMediaScreen(
-      {super.key,
-      this.image,
-      required this.uId,
-      required this.controller,
-      this.license});
+      {super.key, this.image, required this.controller, this.license});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -38,8 +33,8 @@ class AddLicenseMediaScreen extends StatelessWidget {
                       desc: controller.mediaDescriptionController.text,
                       link: controller.mediaLinkController.text,
                       file: image);
-                  Get.off(() => AddLicenseCertificationsScreen(
-                      uId: uId, license: license));
+                  Get.off(
+                      () => AddLicenseCertificationsScreen(license: license));
                   controller.updateLicenseButton();
                   controller.update(['update-licenseButton']);
                 }
@@ -59,8 +54,7 @@ class AddLicenseMediaScreen extends StatelessWidget {
                   textField: TextFormField(
                     controller: controller.mediaTitleController,
                     validator: (value) => controller.fieldValidation(value),
-                    decoration:
-                        infoFieldDecoration(hintText: 'Enter Title'),
+                    decoration: infoFieldDecoration(hintText: 'Enter Title'),
                     style: const TextStyle(fontSize: 13),
                   ),
                 ),

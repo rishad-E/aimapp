@@ -15,13 +15,11 @@ import 'package:sizer/sizer.dart';
 
 class AddExperienceMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
   final Experience? ex;
   final ProfileExperienceController controller;
   AddExperienceMediaScreen(
       {super.key,
       required this.image,
-      required this.uId,
       required this.controller,
       this.ex});
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -41,7 +39,7 @@ class AddExperienceMediaScreen extends StatelessWidget {
                       description: controller.mediaDescriptionController.text,
                       link: controller.mediaLinkController.text,
                       file: image);
-                  Get.off(() => AddExperienceScreen(uId: uId, experience: ex));
+                  Get.off(() => AddExperienceScreen( experience: ex));
                   log(controller.allMediasEX.toString(),
                       name: 'all mediamodel');
                 }

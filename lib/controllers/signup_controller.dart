@@ -69,11 +69,10 @@ class SignUpController extends GetxController {
             Get.offAll(() => const SplashScreen());
           } else if (msg == 'Redirect to amy register.') {
             User? user = User.fromJson(res["user"]);
-            String? id = user.id.toString();
             String? phone = user.phone.toString();
             storage.write(key: 'phone', value: phone);
-            Get.offAll(() => SignUpAmyScreen(
-                name: name, email: email, uId: id, phone: phone));
+            Get.offAll(
+                () => SignUpAmyScreen(name: name, email: email, phone: phone));
           }
           // User? user = User.fromJson(res["user"]);
           // String? id = user.id.toString();

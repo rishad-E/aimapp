@@ -21,7 +21,6 @@ class AIMCETController extends GetxController {
   TextEditingController qualificationController = TextEditingController();
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  RxString qualify = 'Your qualification'.obs;
   String? qualifyId;
   bool guideSelect = false;
   RxBool guidebutton = false.obs;
@@ -273,6 +272,7 @@ class AIMCETController extends GetxController {
 
   Future<void> fetchPersonalityReport() async {
     try {
+       gp.value = 'wait';
       String? token = await storage.read(key: 'token');
       PersonalityReportModel? report = await PersonalityReportService()
           .getPersonalityReport(token: token.toString());
@@ -290,6 +290,7 @@ class AIMCETController extends GetxController {
 
   Future<void> fetchTraitReport() async {
     try {
+       gp.value = 'wait';
       String? token = await storage.read(key: 'token');
       TraitReportModel? report =
           await TraitReportService().getTraitReport(token: token.toString());

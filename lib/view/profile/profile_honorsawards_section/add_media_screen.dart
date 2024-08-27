@@ -14,15 +14,10 @@ import 'package:sizer/sizer.dart';
 
 class AddHonorAwardsMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
   final Award? award;
   final ProfileHonorsAwardsController controller;
   AddHonorAwardsMediaScreen(
-      {super.key,
-      this.image,
-      required this.uId,
-      required this.controller,
-      this.award});
+      {super.key, this.image, required this.controller, this.award});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -39,8 +34,7 @@ class AddHonorAwardsMediaScreen extends StatelessWidget {
                       desc: controller.mediaDescriptionController.text,
                       file: image,
                       link: controller.mediaLinkController.text);
-                  Get.off(() =>
-                      ProfileAddHonorsandAwardsScreen(uId: uId, award: award));
+                  Get.off(() => ProfileAddHonorsandAwardsScreen(award: award));
                   log(controller.allAwardMedias.toString(),
                       name: 'award media');
                 }

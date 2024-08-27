@@ -17,15 +17,16 @@ import 'package:sizer/sizer.dart';
 
 class EducationSectionScreen extends StatelessWidget {
   final RxList<Education> education;
-  final String uId;
-  const EducationSectionScreen(
-      {super.key, required this.education, required this.uId});
+  const EducationSectionScreen({
+    super.key,
+    required this.education,
+  });
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Education', doneWidget: shrinked),
         body: Container(
@@ -37,7 +38,7 @@ class EducationSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                   section: "Education",
-                  onTapAdd: () => Get.to(() => AddEducationScreen(uId: uId)),
+                  onTapAdd: () => Get.to(() => AddEducationScreen()),
                   child: List.generate(
                     education.length,
                     (index) {
@@ -53,8 +54,8 @@ class EducationSectionScreen extends StatelessWidget {
                         description: data.description.toString(),
                         edu: data,
                         end: education.length - 1 == index,
-                        onTap: () => Get.to(() => AddEducationScreen(
-                            uId: data.userId.toString(), edu: data)),
+                        onTap: () =>
+                            Get.to(() => AddEducationScreen(edu: data)),
                       );
                     },
                   ),

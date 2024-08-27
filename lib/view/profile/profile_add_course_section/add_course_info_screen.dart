@@ -14,9 +14,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddCourseScreen extends StatelessWidget {
-  final String uId;
   final Course? course;
-  ProfileAddCourseScreen({super.key, required this.uId, this.course});
+  ProfileAddCourseScreen({super.key, this.course});
 
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
@@ -29,8 +28,8 @@ class ProfileAddCourseScreen extends StatelessWidget {
       courseID = course?.id.toString();
     });
     return PopScope(
-      onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+      onPopInvoked: (didPop) => Future.microtask(
+          () => Get.off(() => const ProfileHomeScreen(id: ''))),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Course', doneWidget: shrinked),
         body: Container(
@@ -140,11 +139,10 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                   ),
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
-                                      log('courseID=>${course?.id}  ID=>$uId course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} ',
+                                      log('courseID=>${course?.id} course=>${c.courseController.text} number=>${c.courseNoController.text} assosiated=>${c.courseAssosiatedController.text} ',
                                           name: 'course-screen');
                                       course == null
                                           ? c.saveCourseFunction(
-                                              uId: uId,
                                               course: c.courseController.text,
                                               courseNo:
                                                   c.courseNoController.text,
@@ -153,7 +151,6 @@ class ProfileAddCourseScreen extends StatelessWidget {
                                                   .text,
                                             )
                                           : c.updateCourseInfo(
-                                              uId: uId,
                                               courseID: courseID.toString(),
                                               course: c.courseController.text,
                                               courseNo:
@@ -173,7 +170,7 @@ class ProfileAddCourseScreen extends StatelessWidget {
                           ? shrinked
                           : deleteSectionWidget(
                               onPressed: () => controller.deleteCourseInfo(
-                                  uId: uId, courseID: courseID.toString()),
+                                  courseID: courseID.toString()),
                               section: 'Courses',
                             )
                     ],

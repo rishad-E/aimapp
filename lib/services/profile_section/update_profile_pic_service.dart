@@ -8,11 +8,10 @@ class UpdateProfilePhotoService {
   Dio dio = Dio();
 
   Future<Map<String, dynamic>?> updateProfile(
-      {required String uId, required File file}) async {
+      {required String token, required File file}) async {
     String path = Apis().aimUrl + Apis().updateProfilePic;
-    log('UID=>$uId  file=>$file path=>$path', name: 'update profile service');
+    log('token=>${token.isNotEmpty}  file=>$file path=>$path', name: 'update profile service');
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "user_profile": await MultipartFile.fromFile(file.path,
           filename: file.path.split('/').last),
     });
@@ -22,7 +21,10 @@ class UpdateProfilePhotoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token'
+          },
         ),
       );
       log(response.data.toString(), name: 'update profile res');
@@ -49,15 +51,16 @@ class UpdateProfilePhotoService {
     return null;
   }
 
-  Future<dynamic> deleteProfilePicService({required String uId}) async {
+  Future<dynamic> deleteProfilePicService({required String token}) async {
     String path = Apis().aimUrl + Apis().deleteProfilePic;
-    log('UID=>$uId', name: 'remove profile pic service');
+    log('token=>${token.isNotEmpty}', name: 'remove profile pic service');
     try {
       Response response = await dio.post(
         path,
-        data: {"user_id": uId},
+      
         options: Options(
           validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
         ),
       );
       // log(response.data.toString(), name: 'remove profilepic res');

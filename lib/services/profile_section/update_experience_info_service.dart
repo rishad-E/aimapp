@@ -8,7 +8,7 @@ class UpdateExperienceInfoService {
   Dio dio = Dio();
 
   Future<String?> saveExperienceInfo({
-    required String uId,
+    required String token,
     required String title,
     required String employee,
     required String company,
@@ -30,7 +30,6 @@ class UpdateExperienceInfoService {
         name: 'add-EX service save');
 
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "title": title,
       "employment_type": employee,
       "company_name": company,
@@ -62,7 +61,10 @@ class UpdateExperienceInfoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;
@@ -101,7 +103,7 @@ class UpdateExperienceInfoService {
 
   Future<String?> updateExperienceInfo({
     required String exID,
-    required String uId,
+    required String token,
     required String title,
     required String employee,
     required String company,
@@ -125,7 +127,6 @@ class UpdateExperienceInfoService {
 
     FormData formData = FormData.fromMap({
       "experience_id": exID,
-      "user_id": uId,
       "title": title,
       "employment_type": employee,
       "company_name": company,
@@ -167,7 +168,10 @@ class UpdateExperienceInfoService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;

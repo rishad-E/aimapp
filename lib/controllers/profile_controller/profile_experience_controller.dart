@@ -9,6 +9,7 @@ import 'package:aimshala/services/profile_section/update_skill_info_service.dart
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +27,7 @@ class ProfileExperienceController extends GetxController {
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   RxBool currentlyWorking = false.obs;
 
@@ -51,7 +53,6 @@ class ProfileExperienceController extends GetxController {
   }
 
   Future<void> saveExperienceInfoFunction({
-    required String uId,
     required String title,
     required String employee,
     required String company,
@@ -70,8 +71,9 @@ class ProfileExperienceController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateExperienceInfoService().saveExperienceInfo(
-        uId: uId,
+        token: token.toString(),
         title: title,
         employee: employee,
         company: company,
@@ -99,7 +101,7 @@ class ProfileExperienceController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -119,7 +121,6 @@ class ProfileExperienceController extends GetxController {
 
   Future<void> updateExperienceFunction({
     required String exID,
-    required String uId,
     required String title,
     required String employee,
     required String company,
@@ -139,9 +140,10 @@ class ProfileExperienceController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateExperienceInfoService().updateExperienceInfo(
           exID: exID,
-          uId: uId,
+          token: token.toString(),
           title: title,
           employee: employee,
           company: company,
@@ -169,7 +171,7 @@ class ProfileExperienceController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -188,9 +190,7 @@ class ProfileExperienceController extends GetxController {
   }
 
   Future<void> deleteExperienceSection(
-      {required String exID,
-      required String uId,
-      required String company}) async {
+      {required String exID, required String company}) async {
     String? res =
         await UpdateExperienceInfoService().deleteExperienceInfo(exID: exID);
     final awardC = Get.put(ProfileHonorsAwardsController());
@@ -210,7 +210,7 @@ class ProfileExperienceController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id:''));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -222,7 +222,7 @@ class ProfileExperienceController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id:''));
     }
   }
 

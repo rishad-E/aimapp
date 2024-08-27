@@ -2,6 +2,7 @@ import 'package:aimshala/services/profile_section/update_course_info_service.dar
 import 'package:aimshala/services/profile_section/update_language_info_service.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class LanguageAndCourseController extends GetxController {
@@ -10,6 +11,7 @@ class LanguageAndCourseController extends GetxController {
   TextEditingController courseController = TextEditingController();
   TextEditingController courseNoController = TextEditingController();
   TextEditingController courseAssosiatedController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   RxList<String> associatedListdata = <String>[].obs;
   RxBool isSavingLanguage = false.obs;
@@ -17,14 +19,14 @@ class LanguageAndCourseController extends GetxController {
 
 /*-----------save and update course---------- */
   Future<void> saveLanguageFunction({
-    required String uId,
     required String language,
     required String proficiency,
   }) async {
     try {
       isSavingLanguage.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateLanguageInfoService().saveLanguageInfo(
-        uId: uId,
+        token: token.toString(),
         language: language,
         proficiency: proficiency,
       );
@@ -39,7 +41,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -59,15 +61,15 @@ class LanguageAndCourseController extends GetxController {
 
   Future<void> updateLanguageFunction({
     required String languageID,
-    required String uId,
     required String language,
     required String proficiency,
   }) async {
     try {
       isSavingLanguage.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateLanguageInfoService().updateLanguageInfo(
           languageID: languageID,
-          uId: uId,
+          token: token.toString(),
           language: language,
           proficiency: proficiency);
       if (res == 'Language updated successfully.') {
@@ -81,7 +83,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -99,8 +101,7 @@ class LanguageAndCourseController extends GetxController {
     }
   }
 
-  Future<void> deleteLanguageFunction(
-      {required String languageID, required String uId}) async {
+  Future<void> deleteLanguageFunction({required String languageID}) async {
     String? res = await UpdateLanguageInfoService()
         .deleteLanguageInfo(languageID: languageID);
     if (res == 'Language deleted successfully') {
@@ -114,7 +115,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -126,21 +127,21 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     }
   }
 
 /*-----------save and update course---------- */
   Future<void> saveCourseFunction({
-    required String uId,
     required String course,
     required String courseNo,
     required String courseAssosiated,
   }) async {
     try {
       isSavingCourse.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateCourseInfoService().saveCourseInfo(
-        uId: uId,
+        token: token.toString(),
         course: course,
         courseNo: courseNo,
         courseAssosiated: courseAssosiated,
@@ -156,7 +157,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -175,7 +176,6 @@ class LanguageAndCourseController extends GetxController {
   }
 
   Future<void> updateCourseInfo({
-    required String uId,
     required String courseID,
     required String course,
     required String courseNo,
@@ -183,8 +183,9 @@ class LanguageAndCourseController extends GetxController {
   }) async {
     try {
       isSavingCourse.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateCourseInfoService().updateCourseInfo(
-        uId: uId,
+        token: token.toString(),
         courseID: courseID,
         course: course,
         courseNo: courseNo,
@@ -201,7 +202,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id: ''));
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -219,8 +220,7 @@ class LanguageAndCourseController extends GetxController {
     }
   }
 
-  Future<void> deleteCourseInfo(
-      {required String uId, required String courseID}) async {
+  Future<void> deleteCourseInfo({required String courseID}) async {
     String? res =
         await UpdateCourseInfoService().deleteCourseInfo(courseID: courseID);
     if (res == 'course deleted successfully') {
@@ -234,7 +234,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -246,7 +246,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen(id: ''));
     }
   }
 /*-----------save and update course---------- */

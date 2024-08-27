@@ -7,24 +7,26 @@ class UpdateCourseInfoService {
   Dio dio = Dio();
 
   Future<String?> saveCourseInfo({
-    required String uId,
+    required String token,
     required String course,
     required String courseNo,
     required String courseAssosiated,
   }) async {
-    log('ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
+    log(' course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
         name: 'course-service save');
     String path = Apis().aimUrl + Apis().saveCourse;
     try {
       Response response = await dio.post(
         path,
         data: {
-          "user_id": uId,
           "course_name": course,
           "course_number": courseNo,
           "associated": courseAssosiated,
         },
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       Map<String, dynamic> responseData = response.data;
 
@@ -55,14 +57,14 @@ class UpdateCourseInfoService {
   }
 
   Future<String?> updateCourseInfo({
-    required String uId,
+    required String token,
     required String courseID,
     required String course,
     required String courseNo,
     required String courseAssosiated,
     // required String working,
   }) async {
-    log('courseID=>$courseID ID=>$uId course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
+    log('courseID=>$courseID course=>$course number=>$courseNo assosiated=>$courseAssosiated ',
         name: 'course-service update');
     String path = Apis().aimUrl + Apis().saveCourse;
     try {
@@ -70,12 +72,14 @@ class UpdateCourseInfoService {
         path,
         data: {
           "course_id": courseID,
-          "user_id": uId,
           "course_name": course,
           "course_number": courseNo,
           "associated": courseAssosiated,
         },
-        options: Options(validateStatus: (status) => status! < 599),
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
       Map<String, dynamic> responseData = response.data;
       // log(responseData.toString(), name: 'save course success');

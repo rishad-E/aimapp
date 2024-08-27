@@ -7,6 +7,7 @@ import 'package:aimshala/services/profile_section/update_contact_info_service.da
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class UpdateContactInfo extends GetxController {
@@ -24,6 +25,7 @@ class UpdateContactInfo extends GetxController {
 
   TextEditingController otpController = TextEditingController();
   TextEditingController searchController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   Rx<Color> saveText = Rx<Color>(textFieldColor);
   Rx<Color> saveBG = Rx<Color>(buttonColor);
@@ -53,7 +55,6 @@ class UpdateContactInfo extends GetxController {
   /*-----phone number changing----*/
 
   Future<void> saveContactInfoFunction({
-    required String uId,
     required String userName,
     required String mobNumber,
     required String email,
@@ -68,8 +69,9 @@ class UpdateContactInfo extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateContactInfoService().updateContactInfo(
-        uId: uId,
+        token: token.toString(),
         userName: userName,
         mobNumber: mobNumber,
         email: email,
@@ -89,7 +91,7 @@ class UpdateContactInfo extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
             margin: const EdgeInsets.all(5));
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen(id:''));
       } else {
         Get.snackbar("Error", '$res',
             snackPosition: SnackPosition.BOTTOM,

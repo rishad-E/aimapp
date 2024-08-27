@@ -8,7 +8,7 @@ class UpdateHonorAwardService {
   Dio dio = Dio();
 
   Future<String?> saveHonorAwardInfo({
-    required String uId,
+    required String token,
     required String title,
     required String assosiated,
     required String issuer,
@@ -20,10 +20,9 @@ class UpdateHonorAwardService {
     required List<File> media,
   }) async {
     String path = Apis().aimUrl + Apis().saveHonorAwards;
-    log('uid=>$uId  title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
+    log('  title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription',
         name: 'add honor-service save');
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "title": title,
       "associated": assosiated,
       "issuer": issuer,
@@ -50,11 +49,14 @@ class UpdateHonorAwardService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer $token',
+          },
         ),
       );
       Map<String, dynamic> responseData = response.data;
-      log(responseData.toString(),name: 'awaaaaaaaaaaard');
+      log(responseData.toString(), name: 'awaaaaaaaaaaard');
       if (responseData.containsKey('success')) {
         String successMessage = responseData['success'];
         return successMessage;
@@ -88,7 +90,7 @@ class UpdateHonorAwardService {
 
   Future<String?> updateHonorAwardInfo({
     required String awardID,
-    required String uId,
+    required String token,
     required String title,
     required String assosiated,
     required String issuer,
@@ -101,11 +103,11 @@ class UpdateHonorAwardService {
     required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveHonorAwards;
-    log('uid=>$uId awardID=>$awardID title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription  mediaUrl=>$mediaUrl',
+    log(' awardID=>$awardID title=>$title assosiated=>$assosiated issuer=>$issuer startdate=>$startdate description=>$description media=>$media mediaTitle=>$mediaTitle mediaDesc=>$mediaDescription  mediaUrl=>$mediaUrl',
         name: 'add honor-service update');
     FormData formData = FormData.fromMap({
       "award_id": awardID,
-      "user_id": uId,
+   
       "title": title,
       "associated": assosiated,
       "issuer": issuer,
@@ -141,7 +143,7 @@ class UpdateHonorAwardService {
         data: formData,
         options: Options(
           validateStatus: (status) => status! < 599,
-          headers: {'Content-Type': 'multipart/form-data'},
+          headers: {'Content-Type': 'multipart/form-data','Authorization': 'Bearer $token',},
         ),
       );
       log(response.data.toString());

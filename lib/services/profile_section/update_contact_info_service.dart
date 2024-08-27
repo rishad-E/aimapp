@@ -8,7 +8,7 @@ class UpdateContactInfoService {
   Dio dio = Dio();
 
   Future<String?> updateContactInfo(
-      {required String uId,
+      {required String token,
       required String userName,
       required String mobNumber,
       required String email,
@@ -21,28 +21,30 @@ class UpdateContactInfoService {
       required String instagram,
       required String twitter}) async {
     String path = Apis().aimUrl + Apis().saveContactInfo;
-    log('mob: $mobNumber username:$userName email: $email address: $address pincode=>$pincode city: $city state: $state country=>$country facebook: $facebook instagram: $instagram twitter: $twitter UID: $uId ',
+    log('mob: $mobNumber username:$userName email: $email address: $address pincode=>$pincode city: $city state: $state country=>$country facebook: $facebook instagram: $instagram twitter: $twitter UID: ${token.isNotEmpty} ',
         name: 'update contact info');
 
     try {
-      Response response = await dio.post(path,
-          data: {
-            "user_id": uId,
-            "mobile_number": mobNumber,
-            "username": userName,
-            "email": email,
-            "address": address,
-            "pin_code": pincode,
-            "state": state,
-            "city": city,
-            "country": country,
-            "facebook": facebook,
-            "twitter": twitter,
-            "instagram": instagram,
-          },
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: {
+          "mobile_number": mobNumber,
+          "username": userName,
+          "email": email,
+          "address": address,
+          "pin_code": pincode,
+          "state": state,
+          "city": city,
+          "country": country,
+          "facebook": facebook,
+          "twitter": twitter,
+          "instagram": instagram,
+        },
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       log(response.data.toString(), name: 'save contact info res');
 
       if (response.data is Map) {
@@ -155,7 +157,8 @@ class UpdateContactInfoService {
     } on DioException catch (e) {
       if (e.response?.statusCode == 500) {
         // Handle status code 500 here
-        log('Server error: ${e.message}', name: 'profile verifyNewNumber error');
+        log('Server error: ${e.message}',
+            name: 'profile verifyNewNumber error');
         // You can throw a custom exception or return an empty list as needed
         throw Exception('Server error occurred');
       }

@@ -4,6 +4,7 @@ import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/profile_section/profile_get_all_data.dart';
 import 'package:aimshala/services/profile_section/update_profile_pic_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -15,11 +16,14 @@ class ProfileHomeController extends GetxController {
   Rx<User?> userData = Rx<User?>(null);
   RxBool isLoading = false.obs;
   RxBool isDataLoading = false.obs;
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  Future<void> fetchAlluserData({required String uId}) async {
+  Future<void> fetchAlluserData() async {
     try {
+      String? token = await storage.read(key: 'token');
       isDataLoading.value = true;
-      dynamic alldata = await GetProfileAllData().fetchProfileAlldata(uId: uId);
+      dynamic alldata = await GetProfileAllData()
+          .fetchProfileAlldata(token: token.toString());
       if (alldata != null) {
         /* ------- extracting user data ---------- */
         Map<String, dynamic> userDeatails = alldata["user"];
@@ -39,9 +43,9 @@ class ProfileHomeController extends GetxController {
     }
   }
 
-  Future<void> selectProfilePic(
-      {required ImageSource source, required String uId}) async {
+  Future<void> selectProfilePic({required ImageSource source}) async {
     try {
+      String? token = await storage.read(key: 'token');
       final pickedImage = await ImagePicker().pickImage(source: source);
       if (pickedImage == null) {
         isLoading.value = false;
@@ -50,7 +54,7 @@ class ProfileHomeController extends GetxController {
       isLoading.value = true;
       File image = File(pickedImage.path);
       Map<String, dynamic>? data = await UpdateProfilePhotoService()
-          .updateProfile(uId: uId, file: image);
+          .updateProfile(token: token.toString(), file: image);
       if (data == null) {
         isLoading.value = false;
         return;
@@ -62,21 +66,35 @@ class ProfileHomeController extends GetxController {
         log(profilePic, name: 'update profilepic co');
         selectedImage.value = profilePic;
       } else if (data.containsKey("error")) {
-        Map<String, dynamic> errors = data['error'];
-        String first = errors.keys.first;
-        if (errors[first] is List && (errors[first] as List).isNotEmpty) {
-          String errorMessage = errors[first][0].toString();
-          log(errorMessage, name: 'update pro pic error co');
+        if (data['error'] is Map) {
+          Map<String, dynamic> errors = data['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+            log(errorMessage, name: 'update pro pic error co');
 
-          if (errorMessage ==
-              "The user_profile may not be greater than 2048 kilobytes.") {
-            errorMessage = "Image should not be greater than 2MB";
+            if (errorMessage ==
+                "The user_profile may not be greater than 2048 kilobytes.") {
+              errorMessage = "Image should not be greater than 2MB";
+            }
+
+            Get.showSnackbar(
+              GetSnackBar(
+                snackStyle: SnackStyle.FLOATING,
+                message: errorMessage,
+                borderRadius: 4,
+                margin: const EdgeInsets.all(10),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 2),
+              ),
+            );
           }
-
+        } else if (data['error'] is String) {
+          String errorMsg = data['error'];
           Get.showSnackbar(
             GetSnackBar(
               snackStyle: SnackStyle.FLOATING,
-              message: errorMessage,
+              message: errorMsg,
               borderRadius: 4,
               margin: const EdgeInsets.all(10),
               backgroundColor: Colors.red,
@@ -93,10 +111,11 @@ class ProfileHomeController extends GetxController {
     }
   }
 
-  Future<void> deleteProfilePic({required String uId}) async {
+  Future<void> deleteProfilePic() async {
     try {
+       String? token = await storage.read(key: 'token');
       dynamic data =
-          await UpdateProfilePhotoService().deleteProfilePicService(uId: uId);
+          await UpdateProfilePhotoService().deleteProfilePicService(token: token.toString());
       if (data != null) {
         String msg = data["message"];
         String resImage = data["user"]["image"];
