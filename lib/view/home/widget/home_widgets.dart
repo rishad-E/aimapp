@@ -17,7 +17,7 @@ ShapeBorder appBarBorder() {
   ));
 }
 
-PreferredSizeWidget appbarHome({String? name, required String uId}) {
+PreferredSizeWidget appbarHome({String? name}) {
   return AppBar(
     surfaceTintColor: Colors.transparent,
     shape: appBarBorder(),

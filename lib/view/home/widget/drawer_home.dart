@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:aimshala/view/splash_screen/splash_screen.dart';
@@ -7,8 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class HomeDrawer extends StatelessWidget {
-  final  String uId;
-  const HomeDrawer({super.key, required this.uId});
+  const HomeDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +24,9 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   DrawerTile(
                     ontap1: () {
-                      log(uId);
                       // GetProfileAllData().fetchProfileAlldata(uId: uId);
                       // Get.put(ProfileSkillController()).getProfileAlldataFunction(uId: uId);
-                      Get.to(() => ProfileHomeScreen(id: uId));
+                      Get.to(() => const ProfileHomeScreen());
                     },
                     icon1: Icons.person_2_outlined,
                     text1: "Your Profile",
@@ -81,7 +78,7 @@ class DrawerTile extends StatelessWidget {
         width: double.infinity,
         child: ListTile(
           dense: true,
-          iconColor: kblack, 
+          iconColor: kblack,
           textColor: textFieldColor,
           leading: Icon(icon1),
           title: Text(

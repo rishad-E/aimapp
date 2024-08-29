@@ -21,22 +21,18 @@ import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     String? name;
-    String? id;
     final UserModel? userData = Get.put(LoginController()).userData;
     if (userData != null) {
       name = userData.user?.name ?? '';
-      id = userData.user?.id.toString();
     }
-
     return Scaffold(
       extendBodyBehindAppBar: true,
-      drawer: HomeDrawer(uId: id.toString()),
+      drawer: const HomeDrawer(),
       backgroundColor: const Color.fromARGB(255, 237, 233, 237),
-      appBar: appbarHome(name: name, uId: id.toString()),
+      appBar: appbarHome(name: name),
       body: SingleChildScrollView(
         child: Stack(
           clipBehavior: Clip.none,
@@ -158,10 +154,7 @@ class HomeScreen extends StatelessWidget {
           init: HomeController(),
           id: 'bottom-nav',
           builder: (c) {
-            return homeBottomNav(
-              currentIndex: c.currentStep,
-              // onTap: (index) => c.toggelNav(index),
-            );
+            return homeBottomNav(currentIndex: c.currentStep);
           },
         ),
       ),

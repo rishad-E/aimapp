@@ -35,7 +35,7 @@ class ProfileAddProjectScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id: ''))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Project', doneWidget: shrinked),
         body: Container(

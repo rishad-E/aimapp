@@ -16,16 +16,13 @@ import 'package:sizer/sizer.dart';
 
 class VolunteerSectionScreen extends StatelessWidget {
   final RxList<VolunteerExperience> volunteer;
-  final String uId;
-
-  const VolunteerSectionScreen(
-      {super.key, required this.volunteer, required this.uId});
+  const VolunteerSectionScreen({super.key, required this.volunteer});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar:
             profileAppBar(title: 'volunteer experiences', doneWidget: shrinked),
@@ -37,8 +34,8 @@ class VolunteerSectionScreen extends StatelessWidget {
             children: [
               sectionMainContainer(
                   section: "volunteer experiences",
-                  onTapAdd: () => Get.to(
-                      () => ProfileAddVolunteerExperienceScreen(uId: uId)),
+                  onTapAdd: () =>
+                      Get.to(() => ProfileAddVolunteerExperienceScreen()),
                   child: List.generate(
                     volunteer.length,
                     (index) {
@@ -53,8 +50,9 @@ class VolunteerSectionScreen extends StatelessWidget {
                         description: data.description.toString(),
                         volunteer: data,
                         end: volunteer.length - 1 == index,
-                        onTap: () => Get.to(() => ProfileAddVolunteerExperienceScreen(
-                              uId: data.userId.toString(), volunteer: data)),
+                        onTap: () => Get.to(() =>
+                            ProfileAddVolunteerExperienceScreen(
+                                volunteer: data)),
                       );
                     },
                   )),

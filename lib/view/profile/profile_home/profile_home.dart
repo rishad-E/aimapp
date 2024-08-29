@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:aimshala/controllers/profile_controller/profile_contact_info_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_education_controller.dart';
 import 'package:aimshala/controllers/profile_controller/profile_experience_controller.dart';
@@ -44,8 +43,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProfileHomeScreen extends StatelessWidget {
-  final String id;
-  const ProfileHomeScreen({super.key, required this.id});
+  const ProfileHomeScreen({super.key});
   final double coverHeight = 240;
   final double profileHeight = 130;
   @override
@@ -53,7 +51,7 @@ class ProfileHomeScreen extends StatelessWidget {
     final controller = Get.put(ProfileSkillController());
     final profileC = Get.put(ProfileHomeController());
     WidgetsBinding.instance.addPostFrameCallback((time) {
-      log(id, name: 'callback uid profile Home');
+      // log(id, name: 'callback uid profile Home');
       controller.getProfileAlldataFunction();
       profileC.fetchAlluserData();
     });
@@ -775,8 +773,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onPressed: () {
                                       vlController.clearControllers();
                                       Get.to(() =>
-                                          ProfileAddVolunteerExperienceScreen(
-                                              uId: id));
+                                          ProfileAddVolunteerExperienceScreen());
                                     },
                                   )
                                 : profileDataContainer(
@@ -784,18 +781,17 @@ class ProfileHomeScreen extends StatelessWidget {
                                     onTapAdd: () {
                                       vlController.clearControllers();
                                       Get.to(() =>
-                                          ProfileAddVolunteerExperienceScreen(
-                                              uId: id));
+                                          ProfileAddVolunteerExperienceScreen());
                                     },
                                     onTapEdit: () {
                                       vlController.clearControllers();
                                       if (data.length < 2) {
                                         Get.to(() =>
                                             ProfileAddVolunteerExperienceScreen(
-                                                uId: id, volunteer: data[0]));
+                                                volunteer: data[0]));
                                       } else {
                                         Get.to(() => VolunteerSectionScreen(
-                                            uId: id, volunteer: data));
+                                            volunteer: data));
                                       }
                                     },
                                     viewAll: data.length < 2
@@ -803,7 +799,7 @@ class ProfileHomeScreen extends StatelessWidget {
                                         : viewAllButton(onPressedViewAll: () {
                                             vlController.clearControllers();
                                             Get.to(() => VolunteerSectionScreen(
-                                                uId: id, volunteer: data));
+                                                volunteer: data));
                                           }),
                                     sectionData: List.generate(
                                       data.length < 2 ? data.length : 2,
@@ -842,26 +838,26 @@ class ProfileHomeScreen extends StatelessWidget {
                                     subText: "No Publications included yet",
                                     onPressed: () {
                                       pbController.clearControllers();
-                                      Get.to(() =>
-                                          ProfileAddPublicationScreen(uId: id));
+                                      Get.to(
+                                          () => ProfileAddPublicationScreen());
                                     },
                                   )
                                 : profileDataContainer(
                                     section: "Publications",
                                     onTapAdd: () {
                                       pbController.clearControllers();
-                                      Get.to(() =>
-                                          ProfileAddPublicationScreen(uId: id));
+                                      Get.to(
+                                          () => ProfileAddPublicationScreen());
                                     },
                                     onTapEdit: () {
                                       pbController.clearControllers();
                                       if (data.length < 2) {
                                         Get.to(() =>
                                             ProfileAddPublicationScreen(
-                                                uId: id, publication: data[0]));
+                                                publication: data[0]));
                                       } else {
                                         Get.to(() => PublicationsSectionScreen(
-                                            uId: id, publication: data));
+                                            publication: data));
                                       }
                                     },
                                     viewAll: data.length < 2
@@ -870,7 +866,6 @@ class ProfileHomeScreen extends StatelessWidget {
                                             pbController.clearControllers();
                                             Get.to(() =>
                                                 PublicationsSectionScreen(
-                                                    uId: id,
                                                     publication: data));
                                           }),
                                     sectionData: List.generate(

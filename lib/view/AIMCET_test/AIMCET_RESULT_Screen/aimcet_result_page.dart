@@ -21,14 +21,12 @@ import 'package:get/get.dart';
 
 class AIMCETResultScreen extends StatelessWidget {
   final String userName;
-  // final String uId;
   const AIMCETResultScreen({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
     int initialVal = 0;
     final controller = Get.put(AIMCETController());
-    // controller.fetchAllTestReviews();
     return PopScope(
       onPopInvoked: (didPop) {
         Future.microtask(() {

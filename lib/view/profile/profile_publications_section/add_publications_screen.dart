@@ -13,9 +13,8 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddPublicationScreen extends StatelessWidget {
-  final String uId;
   final Publication? publication;
-  ProfileAddPublicationScreen({super.key, required this.uId, this.publication});
+  ProfileAddPublicationScreen({super.key, this.publication});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(title: 'Add Publications', doneWidget: shrinked),
         body: Container(
@@ -190,7 +189,6 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                     if (formKey.currentState!.validate()) {
                                       publication == null
                                           ? c.savePublicationFuntion(
-                                              uId: uId,
                                               title: c.titleController.text,
                                               publication:
                                                   c.publicationController.text,
@@ -203,7 +201,6 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                                             )
                                           : c.updatePublicationFuntion(
                                               pbID: pbID.toString(),
-                                              uId: uId,
                                               title: c.titleController.text,
                                               publication:
                                                   c.publicationController.text,
@@ -226,7 +223,7 @@ class ProfileAddPublicationScreen extends StatelessWidget {
                           : deleteSectionWidget(
                               onPressed: () =>
                                   controller.deletePublicationFuntion(
-                                      pbID: pbID.toString(), uId: uId),
+                                      pbID: pbID.toString()),
                               section: 'Publication',
                             )
                     ],

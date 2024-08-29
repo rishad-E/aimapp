@@ -70,6 +70,7 @@ class SignUpController extends GetxController {
           } else if (msg == 'Redirect to amy register.') {
             User? user = User.fromJson(res["user"]);
             String? phone = user.phone.toString();
+            storage.write(key: 'token', value: res['token']);
             storage.write(key: 'phone', value: phone);
             Get.offAll(
                 () => SignUpAmyScreen(name: name, email: email, phone: phone));

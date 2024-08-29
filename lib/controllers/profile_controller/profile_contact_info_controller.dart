@@ -91,7 +91,7 @@ class UpdateContactInfo extends GetxController {
             backgroundColor: Colors.green,
             colorText: Colors.white,
             margin: const EdgeInsets.all(5));
-        Get.off(() => const ProfileHomeScreen(id:''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.snackbar("Error", '$res',
             snackPosition: SnackPosition.BOTTOM,

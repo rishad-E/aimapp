@@ -22,7 +22,7 @@ class AwardHonorSectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id: ''))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(title: 'Honors & awards', doneWidget: shrinked),
         body: Container(

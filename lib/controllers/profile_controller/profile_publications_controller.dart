@@ -1,6 +1,7 @@
 import 'package:aimshala/services/profile_section/update_publication_info.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -11,12 +12,12 @@ class ProfilePublicationController extends GetxController {
   TextEditingController publicationURLController = TextEditingController();
   TextEditingController publicationDescriptionController =
       TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   DateTime dateTime = DateTime.now();
   String? publishDate;
   RxBool isSaving = false.obs;
   Future<void> savePublicationFuntion({
-    required String uId,
     required String title,
     required String publication,
     required String pubDate,
@@ -25,8 +26,9 @@ class ProfilePublicationController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdatePublicationService().savePublicationService(
-        uId: uId,
+        token: token.toString(),
         title: title,
         publication: publication,
         pubDate: pubDate,
@@ -44,7 +46,7 @@ class ProfilePublicationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -64,7 +66,6 @@ class ProfilePublicationController extends GetxController {
 
   Future<void> updatePublicationFuntion({
     required String pbID,
-    required String uId,
     required String title,
     required String publication,
     required String pubDate,
@@ -73,9 +74,10 @@ class ProfilePublicationController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdatePublicationService().updatePublicationInfo(
         pbID: pbID,
-        uId: uId,
+        token: token.toString(),
         title: title,
         publication: publication,
         pubDate: pubDate,
@@ -93,7 +95,7 @@ class ProfilePublicationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -111,8 +113,7 @@ class ProfilePublicationController extends GetxController {
     }
   }
 
-  Future<void> deletePublicationFuntion(
-      {required String pbID, required String uId}) async {
+  Future<void> deletePublicationFuntion({required String pbID}) async {
     String? res =
         await UpdatePublicationService().deletePublicationInfo(pbID: pbID);
     if (res == 'Publication deleted successfully') {
@@ -126,7 +127,7 @@ class ProfilePublicationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen());
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -138,7 +139,7 @@ class ProfilePublicationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 

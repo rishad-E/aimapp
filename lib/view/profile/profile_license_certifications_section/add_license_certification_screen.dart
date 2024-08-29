@@ -35,7 +35,7 @@ class AddLicenseCertificationsScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => const ProfileHomeScreen(id:''))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Add license or certification', doneWidget: shrinked),

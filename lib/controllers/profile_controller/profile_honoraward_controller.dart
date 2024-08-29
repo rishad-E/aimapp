@@ -69,7 +69,7 @@ class ProfileHonorsAwardsController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -127,7 +127,7 @@ class ProfileHonorsAwardsController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -159,7 +159,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id:''));
+      Get.off(() => const ProfileHomeScreen());
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -171,7 +171,7 @@ class ProfileHonorsAwardsController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 

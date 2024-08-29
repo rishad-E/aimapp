@@ -104,7 +104,7 @@ Widget tabItems({void Function()? onTap, required bool selected}) {
     onTap: onTap,
     child: Container(
       width: 96,
-      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: .8),
       decoration: const BoxDecoration(
           border: Border(
               right: BorderSide(color: Color.fromARGB(255, 222, 219, 219)))),

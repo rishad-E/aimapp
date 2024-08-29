@@ -40,7 +40,7 @@ class PerosnalInfoController extends GetxController {
           gender: gender,
           statement: statement);
       if (res == true) {
-        Get.off(() => const ProfileHomeScreen(id:''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           const GetSnackBar(

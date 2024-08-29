@@ -14,16 +14,13 @@ import 'package:sizer/sizer.dart';
 
 class PublicationsSectionScreen extends StatelessWidget {
   final RxList<Publication> publication;
-  final String uId;
-
-  const PublicationsSectionScreen(
-      {super.key, required this.publication, required this.uId});
+  const PublicationsSectionScreen({super.key, required this.publication});
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(title: 'Publications', doneWidget: shrinked),
         body: Container(
@@ -35,8 +32,7 @@ class PublicationsSectionScreen extends StatelessWidget {
               children: [
                 sectionMainContainer(
                     section: "Publications",
-                    onTapAdd: () =>
-                        Get.to(() => ProfileAddPublicationScreen(uId: uId)),
+                    onTapAdd: () => Get.to(() => ProfileAddPublicationScreen()),
                     child: List.generate(
                       publication.length,
                       (index) {
@@ -50,9 +46,8 @@ class PublicationsSectionScreen extends StatelessWidget {
                           description: data.description.toString(),
                           end: publication.length - 1 == index,
                           onTap: () {
-                            Get.to(() => ProfileAddPublicationScreen(
-                                uId: data.userId.toString(),
-                                publication: data));
+                            Get.to(() =>
+                                ProfileAddPublicationScreen(publication: data));
                           },
                         );
                       },

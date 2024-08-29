@@ -20,10 +20,9 @@ import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
-  final String uId;
   final VolunteerExperience? volunteer;
   ProfileAddVolunteerExperienceScreen(
-      {super.key, required this.uId, this.volunteer});
+      {super.key, this.volunteer});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
     });
     return PopScope(
       onPopInvoked: (didPop) =>
-          Future.microtask(() => Get.off(() => ProfileHomeScreen(id: uId))),
+          Future.microtask(() => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(
             title: 'Add volunteer experience', doneWidget: shrinked),
@@ -280,7 +279,6 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                         .toList();
                                     volunteer == null
                                         ? c.saveVolunteerInfoFuntion(
-                                            uId: uId,
                                             organization:
                                                 c.organizationController.text,
                                             volRole:
@@ -300,7 +298,6 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                                           )
                                         : c.updateVolunteerFunction(
                                             vtID: vtID.toString(),
-                                            uId: uId,
                                             organization:
                                                 c.organizationController.text,
                                             volRole:
@@ -331,7 +328,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                           : deleteSectionWidget(
                               onPressed: () =>
                                   controller.deleteVolunteerFunction(
-                                      vtID: vtID.toString(), uId: uId),
+                                      vtID: vtID.toString()),
                               section: 'Volunteer',
                             )
                     ],
@@ -370,10 +367,7 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                 onTap: () {
                   controller.mediaLinkController.clear();
                   Get.to(() => AddVolunteerLinkScreen(
-                        uId: uId,
-                        controller: controller,
-                        volunteer: volunteer,
-                      ));
+                      controller: controller, volunteer: volunteer));
                 },
               ),
               mediaListTileVol(
@@ -385,11 +379,9 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => VolunteerMediaScreen(
-                            image: value,
-                            uId: uId,
-                            controller: controller,
-                            vol: volunteer,
-                          ));
+                          image: value,
+                          controller: controller,
+                          vol: volunteer));
                     }
                   });
                   Navigator.pop(context);
@@ -404,11 +396,9 @@ class ProfileAddVolunteerExperienceScreen extends StatelessWidget {
                       controller.mediaTitleController.clear();
                       controller.mediaDescriptionController.clear();
                       Get.to(() => VolunteerMediaScreen(
-                            image: value,
-                            uId: uId,
-                            controller: controller,
-                            vol: volunteer,
-                          ));
+                          image: value,
+                          controller: controller,
+                          vol: volunteer));
                     }
                   });
                   Navigator.pop(context);

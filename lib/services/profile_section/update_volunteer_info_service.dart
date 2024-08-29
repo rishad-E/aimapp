@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class UpdateVolunteerInfoService {
   Dio dio = Dio();
   Future<String?> saveVolunteerInfo({
-    required String uId,
+    required String token,
     required String organization,
     required String volRole,
     required String volCause,
@@ -21,10 +21,9 @@ class UpdateVolunteerInfoService {
     required List<String> mediaLink,
   }) async {
     String path = Apis().aimUrl + Apis().saveVolunteer;
-    log('ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
+    log(' organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
         name: 'volunteer-service save');
     FormData formData = FormData.fromMap({
-      "user_id": uId,
       "organization": organization,
       "role": volRole,
       "cause": volCause,
@@ -47,11 +46,14 @@ class UpdateVolunteerInfoService {
       }
     }
     try {
-      Response response = await dio.post(path,
-          data: formData,
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: formData,
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       Map<String, dynamic> responseData = response.data;
 
       if (responseData.containsKey('success')) {
@@ -79,7 +81,7 @@ class UpdateVolunteerInfoService {
 
   Future<String?> updateVolunteerInfo({
     required String vtID,
-    required String uId,
+    required String token,
     required String organization,
     required String volRole,
     required String volCause,
@@ -94,11 +96,10 @@ class UpdateVolunteerInfoService {
     required List<String> mediaUrl,
   }) async {
     String path = Apis().aimUrl + Apis().saveVolunteer;
-    log('volunteerID=>$vtID ID=>$uId organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
+    log('volunteerID=>$vtID organization=>$organization role=>$volRole cause=>$volCause startDate=>$startDate endDate=>$endDate description=>$description currently=>$currentlyWorking media=>$media mediaTitle=>$mediaTitle  mediaDesc=>$mediaDesc mediaLinks=>$mediaLink',
         name: 'volunteer-service update');
     FormData formData = FormData.fromMap({
       "volunteer_experience_id": vtID,
-      "user_id": uId,
       "organization": organization,
       "role": volRole,
       "cause": volCause,
@@ -131,11 +132,14 @@ class UpdateVolunteerInfoService {
     }
 
     try {
-      Response response = await dio.post(path,
-          data: formData,
-          options: Options(
-            validateStatus: (status) => status! < 599,
-          ));
+      Response response = await dio.post(
+        path,
+        data: formData,
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
       Map<String, dynamic> responseData = response.data;
 
       if (responseData.containsKey('success')) {

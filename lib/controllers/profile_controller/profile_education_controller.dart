@@ -86,7 +86,7 @@ class ProfileEducationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -152,7 +152,7 @@ class ProfileEducationController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -189,7 +189,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
       awardC.assosiatedListdata.removeWhere((i) => i.contains(school));
       projectC.associatedListdata.removeWhere((i) => i.contains(school));
       courseC.associatedListdata.removeWhere((i) => i.contains(school));
@@ -204,7 +204,7 @@ class ProfileEducationController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 

@@ -41,7 +41,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -83,7 +83,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -115,7 +115,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -127,7 +127,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 
@@ -157,7 +157,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -202,7 +202,7 @@ class LanguageAndCourseController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => const ProfileHomeScreen(id: ''));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -234,7 +234,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -246,7 +246,7 @@ class LanguageAndCourseController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => const ProfileHomeScreen(id: ''));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 /*-----------save and update course---------- */

@@ -11,10 +11,9 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 class AddVolunteerLinkScreen extends StatelessWidget {
-  final String uId;
   final ProfileVolunteerController controller;
   final VolunteerExperience? volunteer;
-  AddVolunteerLinkScreen({super.key, required this.uId, required this.controller, this.volunteer});
+  AddVolunteerLinkScreen({super.key, required this.controller, this.volunteer});
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -36,22 +35,20 @@ class AddVolunteerLinkScreen extends StatelessWidget {
                     validator: (value) => controller.mediaLinkValidation(value),
                     controller: controller.mediaLinkController,
                     decoration: infoFieldDecoration(
-                      hintText:  'Enter Link URL',
+                      hintText: 'Enter Link URL',
                       suffixWidget: TextButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                              controller.pickImageMediaVl().then((value) {
-                                if (value != null) {
-                                  controller.mediaTitleController.clear();
-                                  controller.mediaDescriptionController.clear();
-                                  Get.to(() => VolunteerMediaScreen(
-                                        image: value,
-                                        uId: uId,
-                                        controller: controller,
-                                        vol: volunteer,
-                                      ));
-                                }
-                              });
+                            controller.pickImageMediaVl().then((value) {
+                              if (value != null) {
+                                controller.mediaTitleController.clear();
+                                controller.mediaDescriptionController.clear();
+                                Get.to(() => VolunteerMediaScreen(
+                                    image: value,
+                                    controller: controller,
+                                    vol: volunteer));
+                              }
+                            });
                           }
                         },
                         child: const Text(

@@ -26,7 +26,6 @@ class AmySignUpController extends GetxController {
   bool otherSelected = false;
   int qusId = 0;
   RxBool skipQuestion = false.obs;
-  // RxBool isAllSubmitted = false.obs;
   String isMultiSelect = 'single-select';
 
   List<Option> singleSelecMapList = [];
@@ -50,10 +49,17 @@ class AmySignUpController extends GetxController {
     Map<String, dynamic>? res = await AmySignUpService()
         .sendToAmyRegister(token: token.toString(), msg: 'hai', qusId: '019');
     if (res != null) {
-      qusId = int.tryParse(res["upd_ques_index"])!;
+      // qusId = int.tryParse(res["upd_ques_index"])!;
+      if (res["upd_ques_index"] is int) {
+        qusId = res["upd_ques_index"];
+      } else if (res["upd_ques_index"] is String) {
+        qusId = int.tryParse(res["upd_ques_index"]) ?? 0;
+      }
       String resMsg = res["bot_reply"];
       isMultiSelect = res["select_type"];
-      List<Option> list = [];
+      //List<Option> list = [];
+      singleSelecMapList = [];
+      multiselectList = [];
       List<String> msgParts = resMsg.split('#');
       for (int i = 0; i < msgParts.length; i++) {
         String part = msgParts[i];
@@ -67,15 +73,28 @@ class AmySignUpController extends GetxController {
           }
         }
       }
-      Map<String, dynamic> data = res['options'];
+      if (res["options"] is Map<String, dynamic>) {
+        Map<String, dynamic> data = res['options'];
+        data.forEach((key, value) {
+          singleSelecMapList.add(Option(id: int.tryParse(key), item: value));
+        });
+      } else if (res["options"] is List<dynamic>) {
+        List<dynamic> data = res["options"];
+        for (int i = 0; i < data.length; i++) {
+          multiselectList.add(data[i]);
+        }
+      }
+      /* Map<String, dynamic> data = res['options'];
       data.forEach((key, value) {
         list.add(Option(id: int.tryParse(key), item: value));
       });
       singleSelecMapList.addAll(list);
+      */
       // isTyping = false;
       update(['send-to-amy']);
     }
     // isAskingDOB = true;
+    // log(isMultiSelect,name: 'chkeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
   }
 
   void sendMessage(BuildContext context) async {
@@ -138,7 +157,7 @@ class AmySignUpController extends GetxController {
         if (qusId > 3 && qusId < 15) {
           verifyUser(phone);
         }
-        update(['send-to-amy']);
+        // update(['send-to-amy']);
       } else {
         Get.showSnackbar(
           const GetSnackBar(
@@ -149,6 +168,9 @@ class AmySignUpController extends GetxController {
             duration: Duration(seconds: 2),
           ),
         );
+        msgs.insert(0, ChatMessageSignup(false, 'Some error occurred, please try again!', currentTime, true));
+        isTyping = false;
+        update(['send-to-amy']);
       }
     }
   }

@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:aimshala/models/profile_model/add_media_model.dart';
 import 'package:aimshala/services/profile_section/update_volunteer_info_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/view/profile/profile_home/profile_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +19,7 @@ class ProfileVolunteerController extends GetxController {
   TextEditingController mediaTitleController = TextEditingController();
   TextEditingController mediaDescriptionController = TextEditingController();
   TextEditingController mediaLinkController = TextEditingController();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   RxList<AddMediaModel> volunteerMedia = <AddMediaModel>[].obs;
   File? selectedImageVl;
@@ -33,7 +34,6 @@ class ProfileVolunteerController extends GetxController {
   RxBool isSaving = false.obs;
 
   Future<void> saveVolunteerInfoFuntion({
-    required String uId,
     required String organization,
     required String volRole,
     required String volCause,
@@ -48,8 +48,9 @@ class ProfileVolunteerController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateVolunteerInfoService().saveVolunteerInfo(
-        uId: uId,
+        token: token.toString(),
         organization: organization,
         volRole: volRole,
         volCause: volCause,
@@ -73,7 +74,7 @@ class ProfileVolunteerController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -93,7 +94,6 @@ class ProfileVolunteerController extends GetxController {
 
   Future<void> updateVolunteerFunction({
     required String vtID,
-    required String uId,
     required String organization,
     required String volRole,
     required String volCause,
@@ -109,9 +109,10 @@ class ProfileVolunteerController extends GetxController {
   }) async {
     try {
       isSaving.value = true;
+      String? token = await storage.read(key: 'token');
       String? res = await UpdateVolunteerInfoService().updateVolunteerInfo(
         vtID: vtID,
-        uId: uId,
+        token: token.toString(),
         organization: organization,
         volRole: volRole,
         volCause: volCause,
@@ -136,7 +137,7 @@ class ProfileVolunteerController extends GetxController {
             duration: const Duration(seconds: 2),
           ),
         );
-        Get.off(() => ProfileHomeScreen(id: uId));
+        Get.off(() => const ProfileHomeScreen());
       } else {
         Get.showSnackbar(
           GetSnackBar(
@@ -154,8 +155,7 @@ class ProfileVolunteerController extends GetxController {
     }
   }
 
-  Future<void> deleteVolunteerFunction(
-      {required String vtID, required String uId}) async {
+  Future<void> deleteVolunteerFunction({required String vtID}) async {
     String? res = await UpdateVolunteerInfoService()
         .deleteVolunteerExperienceInfo(volunteerID: vtID);
     if (res == 'Volunteer Experience deleted successfully') {
@@ -169,7 +169,7 @@ class ProfileVolunteerController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen());
     } else {
       Get.showSnackbar(
         GetSnackBar(
@@ -181,7 +181,7 @@ class ProfileVolunteerController extends GetxController {
           duration: const Duration(seconds: 2),
         ),
       );
-      Get.off(() => ProfileHomeScreen(id: uId));
+      Get.off(() => const ProfileHomeScreen());
     }
   }
 

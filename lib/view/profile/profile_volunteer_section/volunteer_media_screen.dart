@@ -15,13 +15,13 @@ import 'package:sizer/sizer.dart';
 
 class VolunteerMediaScreen extends StatelessWidget {
   final File? image;
-  final String uId;
+  
   final VolunteerExperience? vol;
   final ProfileVolunteerController controller;
   VolunteerMediaScreen(
       {super.key,
       this.image,
-      required this.uId,
+     
       this.vol,
       required this.controller});
 
@@ -42,7 +42,7 @@ class VolunteerMediaScreen extends StatelessWidget {
                       link: controller.mediaLinkController.text,
                       file: image);
                   Get.off(() => ProfileAddVolunteerExperienceScreen(
-                      uId: uId, volunteer: vol));
+                      volunteer: vol));
                     log(controller.volunteerMedia.toString(),name: 'volunteer media');
                 }
               },

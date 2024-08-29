@@ -22,7 +22,7 @@ class ProjectSectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (didPop) => Future.microtask(
-          () => Get.off(() => const ProfileHomeScreen(id: ''))),
+          () => Get.off(() => const ProfileHomeScreen())),
       child: Scaffold(
         appBar: profileAppBar(title: 'Projects', doneWidget: shrinked),
         body: Container(
