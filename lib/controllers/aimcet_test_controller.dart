@@ -434,6 +434,8 @@ class AIMCETController extends GetxController {
         testDone.value = 'continue';
       } else if (data['Test Status'] == 'Test Given') {
         testDone.value = 'done';
+      } else if (data['Test Status'] == 'The result was incomplete') {
+        testDone.value = 'resultincomplete';
       }
     }
   }

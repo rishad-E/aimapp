@@ -62,7 +62,8 @@ class AimcetContainer extends StatelessWidget {
               child: Obx(
                 () {
                   c.fetchAllTestQuestions();
-                  if (c.testDone.value == 'done') {
+                  if (c.testDone.value == 'done' ||
+                      c.testDone.value == 'resultincomplete') {
                     // c.aimcetTestResultFunction();
                     return acecetElevatedButton(
                       bText: "Check AIMCET Result",
@@ -98,16 +99,16 @@ class AimcetContainer extends StatelessWidget {
                     // if (c.testDone.value == 'continue' &&
                     //     c.allQuestions != null &&
                     //     c.allQuestions!.isNotEmpty) {
-                      return acecetElevatedButton(
-                        onPressed: () {
-                          c.secID.value = c.allQuestions![0].sectionId!;
-                          // c.previousSecID = c.allQuestions![0].sectionId!;
-                          // log('previousID=>${c.previousSecID}', name: 'previousID container');
-                          Get.to(() => AIMCETTestPage(uName: userName));
-                        },
-                        bText: "Continue AIMCET Test",
-                        bIcon: Icons.arrow_forward_ios_sharp,
-                      );
+                    return acecetElevatedButton(
+                      onPressed: () {
+                        c.secID.value = c.allQuestions![0].sectionId!;
+                        // c.previousSecID = c.allQuestions![0].sectionId!;
+                        // log('previousID=>${c.previousSecID}', name: 'previousID container');
+                        Get.to(() => AIMCETTestPage(uName: userName));
+                      },
+                      bText: "Continue AIMCET Test",
+                      bIcon: Icons.arrow_forward_ios_sharp,
+                    );
                     // } else {
                     //   // Show test completed button if all questions are empty
                     //   return acecetElevatedButton(
