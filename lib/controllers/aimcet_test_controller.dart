@@ -170,14 +170,14 @@ class AIMCETController extends GetxController {
         }
       }
     } else {
-      // previousSecID = secionID;
-      // for (var item in aimcetSectionName) {
-      //   if (item.id == previousSecID) {
-      //     sectionTotalQus = 0;
-      //     // sectionQusCount = sectionQusCount ;
-      //     sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
-      //   }
-      // }
+      previousSecID = secionID;
+      for (var item in aimcetSectionName) {
+        if (item.id == previousSecID) {
+          sectionTotalQus = 0;
+          // sectionQusCount = sectionQusCount ;
+          sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
+        }
+      }
     }
 
     if (sectionQusCount < sectionTotalQus) {
