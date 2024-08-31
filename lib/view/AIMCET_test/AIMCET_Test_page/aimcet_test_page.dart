@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
@@ -74,10 +75,7 @@ class AIMCETTestPage extends StatelessWidget {
                                             isSelected = pageIndex;
                                             if (index == length - 1) {
                                               showAIMCETDialogFunction(
-                                                  context: context,
-                                                  userName: uName);
-                                              c.aimcetTestResultFunction(
-                                                  userName: uName);
+                                                  context: context);
                                             }
                                             c.secID.value = data.sectionId!;
                                             c.updateTestFileds(data.sectionId!);
@@ -85,7 +83,6 @@ class AIMCETTestPage extends StatelessWidget {
                                                 name: 'items');
                                             c.update(['aimcet-test']);
                                             c.submitAceTestQuestion(
-                                              // userId: uId,
                                               questionId: data.id.toString(),
                                               cAnswer: answerText,
                                               sectionId:
@@ -151,7 +148,7 @@ class AIMCETTestPage extends StatelessWidget {
                                         .toString())]
                                 : controller.end.value == 'yes'
                                     ? controller.aimcetList[int.parse(
-                                        controller.secID.value.toString())]
+                                        controller.secID.value.toString())-1]
                                     : controller.aimcetList[int.parse(
                                             controller.secID.value.toString()) -
                                         1],
@@ -236,12 +233,11 @@ class AIMCETTestPage extends StatelessWidget {
     );
   }
 
-  void showAIMCETDialogFunction(
-      {required BuildContext context, required String userName}) {
+  void showAIMCETDialogFunction({required BuildContext context}) {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AIMCETDialogueBox(userName: userName),
+      builder: (context) => const AIMCETDialogueBox(),
     );
   }
 }

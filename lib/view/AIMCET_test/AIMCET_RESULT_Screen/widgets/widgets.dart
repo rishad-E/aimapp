@@ -110,7 +110,7 @@ Widget tabItems({void Function()? onTap, required bool selected}) {
               right: BorderSide(color: Color.fromARGB(255, 222, 219, 219)))),
       child: Column(
         children: [
-          Icon(Icons.done, color: selected ? mainPurple : kblack),
+          Image.asset('assets/images/trait-logo.png', height: 24),
           Text(
             "Traits Report",
             style: TextStyle(

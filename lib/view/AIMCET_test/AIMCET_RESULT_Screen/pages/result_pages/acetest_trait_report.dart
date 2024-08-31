@@ -4,6 +4,7 @@ import 'package:aimshala/utils/widgets/widgets_common.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/pages/result_widgets/result_widgets.dart';
 import 'package:aimshala/view/profile/common/widgets/texts.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class TraitsReportPage extends StatelessWidget {
   const TraitsReportPage({super.key});
@@ -36,42 +37,9 @@ class TraitsReportPage extends StatelessWidget {
               ),
             ),
             choiceSizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: kwhite,
-                  border: Border.all(
-                      color: textFieldColor.withOpacity(.2), width: 1)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  boldText(text: 'Realistic (R)', size: 14),
-                  Container(height: 15, color: Colors.yellow),
-                  Row(
-                    children: [
-                      semiBoldChoiceText(
-                          text: 'Traits:',
-                          color: const Color.fromARGB(255, 122, 122, 122)),
-                      regularText(
-                          ' Practical, hands-on, enjoys physical objects. ', 12,
-                          color: const Color.fromARGB(255, 116, 118, 119))
-                    ],
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      semiBoldChoiceText(
-                          text: 'Activities:',
-                          color: const Color.fromARGB(255, 122, 122, 122)),
-                      Expanded(
-                        child: regularText(
-                            ' Mechanical skills, physical strength, coordination.', 12,
-                            color: const Color.fromARGB(255, 116, 118, 119)),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+            ...List.generate(
+              6,
+              (index) => raisecItems(),
             ),
             hLBox
           ],
@@ -79,4 +47,73 @@ class TraitsReportPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget raisecItems() {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 4),
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+        color: kwhite,
+        border: Border.all(color: textFieldColor.withOpacity(.2), width: 1)),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        boldText(text: 'Realistic (R)', size: 14),
+        choiceSizedBox(height: 3),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Container(
+            width: double.infinity,
+            color: Colors.yellow,
+            height: 15,
+            child: LinearPercentIndicator(
+              lineHeight: 17,
+              padding: EdgeInsets.zero,
+              percent: .85,
+              progressColor: const Color.fromARGB(255, 34, 180, 110),
+              animation: true,
+              fillColor: const Color.fromARGB(255, 231, 230, 240),
+              center: const Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 5),
+                  child: Text(
+                    '85%',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Row(
+          children: [
+            semiBoldChoiceText(
+                text: 'Traits:',
+                color: const Color.fromARGB(255, 122, 122, 122)),
+            regularText(' Practical, hands-on, enjoys physical objects. ', 12,
+                color: const Color.fromARGB(255, 116, 118, 119))
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            semiBoldChoiceText(
+                text: 'Activities:',
+                color: const Color.fromARGB(255, 122, 122, 122)),
+            Expanded(
+              child: regularText(
+                  ' Mechanical skills, physical strength, coordination.', 12,
+                  color: const Color.fromARGB(255, 116, 118, 119)),
+            )
+          ],
+        ),
+      ],
+    ),
+  );
 }

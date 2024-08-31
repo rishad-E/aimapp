@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/models/amy_register_model/amy_register_model.dart';
@@ -94,23 +93,26 @@ class AmySignUpController extends GetxController {
       update(['send-to-amy']);
     }
     // isAskingDOB = true;
-    // log(isMultiSelect,name: 'chkeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
   }
 
   void sendMessage(BuildContext context) async {
     String? token = await storage.read(key: 'token');
     DateTime time = DateTime.now();
     String currentTime = DateFormat('h:mm a').format(time);
-    String optionId = isMultiSelect == 'single-select'
+    String optionId = isMultiSelect == 'single-select' || otherSelected
         ? idController.text
         : checkMulti.join(', ');
     String userMessage = isMultiSelect == 'single-select'
         ? chatController.text
         : checkMulti.join(', ');
     chatController.clear();
-    if (userMessage.isNotEmpty) {
+    if (userMessage.isNotEmpty || optionId.isNotEmpty) {
       isTyping = false;
-      msgs.insert(0, ChatMessageSignup(true, userMessage, currentTime, true));
+      otherSelected
+          ? msgs.insert(
+              0, ChatMessageSignup(true, optionId, currentTime, true))
+          : msgs.insert(
+              0, ChatMessageSignup(true, userMessage, currentTime, true));
 
       scrollController.animateTo(0.0,
           duration: const Duration(seconds: 1), curve: Curves.easeOut);
@@ -118,60 +120,81 @@ class AmySignUpController extends GetxController {
           name: 'selected item');
 
       isTyping = true;
-      Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
-          token: token.toString(), msg: optionId, qusId: qusId.toString());
-      checkMulti.clear();
-      if (res != null) {
-        singleSelecMapList = [];
-        multiselectList = [];
-        qusId = res["upd_ques_index"];
-        String resMsg = res["bot_reply"];
-        isMultiSelect = res["select_type"];
-        if (res["options"] is Map<String, dynamic>) {
-          Map<String, dynamic> data = res['options'];
-          data.forEach((key, value) {
-            singleSelecMapList.add(Option(id: int.tryParse(key), item: value));
-          });
-        } else if (res["options"] is List<dynamic>) {
-          List<dynamic> data = res["options"];
-          for (int i = 0; i < data.length; i++) {
-            multiselectList.add(data[i]);
-          }
-        }
-        List<String> parts = resMsg.split('#');
-        for (int i = 0; i < parts.length; i++) {
-          String part = parts[i].trim();
-          if (part.isNotEmpty) {
-            if (i == parts.length - 1) {
+        Map<String, dynamic>? res = await AmySignUpService().sendToAmyRegister(
+            token: token.toString(), msg: optionId, qusId: qusId.toString());
+        checkMulti.clear();
+        if (res != null) {
+          if (res.containsKey('errors')) {
+            idController.clear();
+            isTyping = false;
+            otherSelected = true;
+            Map<String, dynamic> errors = res['errors'];
+            String first = errors.keys.first;
+            if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+              String errorMessage = errors[first][0].toString();
+              // return errorMessage;
+              log(errorMessage);
               msgs.insert(
-                  0, ChatMessageSignup(false, part, currentTime, false));
-            } else if (i == 0) {
-              msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
-            } else {
-              msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+                  0, ChatMessageSignup(false, errorMessage, currentTime, true));
+            }
+            update(['send-to-amy']);
+          } else {
+            otherSelected = false;
+            singleSelecMapList = [];
+            multiselectList = [];
+            qusId = res["upd_ques_index"];
+            String resMsg = res["bot_reply"];
+            isMultiSelect = res["select_type"];
+            if (res["options"] is Map<String, dynamic>) {
+              Map<String, dynamic> data = res['options'];
+              data.forEach((key, value) {
+                singleSelecMapList
+                    .add(Option(id: int.tryParse(key), item: value));
+              });
+            } else if (res["options"] is List<dynamic>) {
+              List<dynamic> data = res["options"];
+              for (int i = 0; i < data.length; i++) {
+                multiselectList.add(data[i]);
+              }
+            }
+            List<String> parts = resMsg.split('#');
+            for (int i = 0; i < parts.length; i++) {
+              String part = parts[i].trim();
+              if (part.isNotEmpty) {
+                if (i == parts.length - 1) {
+                  msgs.insert(
+                      0, ChatMessageSignup(false, part, currentTime, false));
+                } else if (i == 0) {
+                  msgs.insert(0, ChatMessageSignup(false, part, 'no', true));
+                } else {
+                  msgs.insert(0, ChatMessageSignup(false, part, 'no', false));
+                }
+              }
+            }
+            isTyping = false;
+            update(['send-to-amy']);
+            if (qusId > 3 && qusId < 15) {
+              verifyUser(phone);
             }
           }
+          // update(['send-to-amy']);
+        } else {
+          Get.showSnackbar(
+            const GetSnackBar(
+              snackStyle: SnackStyle.FLOATING,
+              message: 'Some error occurred, please try again!',
+              margin: EdgeInsets.all(10),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 2),
+            ),
+          );
+          msgs.insert(
+              0,
+              ChatMessageSignup(false, 'Some error occurred, please try again!',
+                  currentTime, true));
+          isTyping = false;
+          update(['send-to-amy']);
         }
-        isTyping = false;
-        update(['send-to-amy']);
-        if (qusId > 3 && qusId < 15) {
-          verifyUser(phone);
-        }
-        // update(['send-to-amy']);
-      } else {
-        Get.showSnackbar(
-          const GetSnackBar(
-            snackStyle: SnackStyle.FLOATING,
-            message: 'Some error occurred, please try again!',
-            margin: EdgeInsets.all(10),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
-          ),
-        );
-        msgs.insert(0, ChatMessageSignup(false, 'Some error occurred, please try again!', currentTime, true));
-        isTyping = false;
-        update(['send-to-amy']);
-      }
     }
   }
 

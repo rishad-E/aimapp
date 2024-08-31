@@ -119,8 +119,9 @@ class SplashController extends GetxController {
             aimtestController.checkAimcetTestTakenFunction().then((value) {
               if (aimtestController.testDone.value == 'done') {
                 log('aimcet test done', name: 'spalsh done');
-                aimtestController.aimcetTestResultFunction(
-                    userName: uName.toString());
+                // aimtestController.aimcetTestResultFunction();
+              } else if (aimtestController.testDone.value == 'continue') {
+                aimtestController.fetchAllTestQuestions();
               }
             });
             Get.off(() => const HomeScreen());

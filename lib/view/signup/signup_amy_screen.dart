@@ -40,11 +40,6 @@ class SignUpAmyScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Obx(
                   () {
-                    // if (controller.skipQuestion.value) {
-                    //   return thnksSkipText(name);
-                    // } else if (controller.isAllSubmitted.value) {
-                    //   return thnksAllSubmittedText(name);
-                    // } else {
                     return ListView.builder(
                       controller: controller.scrollController,
                       shrinkWrap: true,
@@ -85,11 +80,6 @@ class SignUpAmyScreen extends StatelessWidget {
               id: 'send-to-amy',
               builder: (c) {
                 if (c.skipQuestion.value || c.qusId == 17) {
-                  // if (c.qusId == 17) {
-                  //   WidgetsBinding.instance.addPostFrameCallback((time) {
-                  //     c.allQusSubmittedText();
-                  //   });
-                  // }
                   return GestureDetector(
                     onTap: () async {
                       c.verifyUser(phone);
@@ -101,100 +91,129 @@ class SignUpAmyScreen extends StatelessWidget {
                   );
                 } else {
                   return Row(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: amySignupTextfield(
-                          child: c.multiselectList.isEmpty
-                              ? constrainedOptionContainer(
-                                  context,
-                                  SingleChildScrollView(
-                                    child: Wrap(
-                                        spacing: 5,
-                                        runSpacing: 5,
-                                        children: [
-                                          c.qusId == 0
-                                              ? skipText(
-                                                  onTap: () =>
-                                                      c.skipTextMessage(),
-                                                )
-                                              : shrinked,
-                                          ...List.generate(
-                                            c.singleSelecMapList.length,
-                                            (index) {
-                                              final data =
-                                                  c.singleSelecMapList[index];
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  if (c.isMultiSelect ==
-                                                      'single-select') {
-                                                    c.chatController.text =
-                                                        data.item.toString();
-                                                    c.idController.text =
-                                                        data.id.toString();
-                                                    c.sendMessage(context);
-                                                  } else {
-                                                    concateMultiSelect(
-                                                        data.item.toString(),
-                                                        c);
-                                                  }
-                                                },
-                                                child: amyOptionContainer(
-                                                  option: data.item.toString(),
-                                                  multiselect: c.checkMulti
-                                                      .contains(data.item),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ]),
-                                  ),
-                                )
-                              : constrainedOptionContainer(
-                                  context,
-                                  SingleChildScrollView(
-                                    child: Wrap(
-                                      spacing: 5,
-                                      runSpacing: 5,
-                                      children: List.generate(
-                                        c.multiselectList.length,
-                                        (index) {
-                                          final data = c.multiselectList[index];
-                                          return GestureDetector(
-                                            onTap: () {
-                                              if (c.isMultiSelect ==
-                                                  'single-select') {
-                                                c.chatController.text = data;
-                                                c.idController.text = data;
-                                                c.sendMessage(context);
-                                              } else {
-                                                concateMultiSelect(data, c);
-                                              }
-                                            },
-                                            child: amyOptionContainer(
-                                              multiselect:
-                                                  c.checkMulti.contains(data),
-                                              option: data,
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
+                        child: c.otherSelected
+                            ? amySignupTextfield(
+                                child: TextFormField(
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  controller: c.idController,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.send,
+                                  style: const TextStyle(fontSize: 13),
+                                  decoration: amyTextfieldDecor(),
+                                  onFieldSubmitted: (value) {
+                                    log(c.idController.text);
+                                    c.sendMessage(context);
+                                  },
                                 ),
-                        ),
+                              )
+                            : amySignupTextfield(
+                                child: c.multiselectList.isEmpty
+                                    ? constrainedOptionContainer(
+                                        context,
+                                        SingleChildScrollView(
+                                          child: Wrap(
+                                              spacing: 5,
+                                              runSpacing: 5,
+                                              children: [
+                                                c.qusId == 0
+                                                    ? skipText(
+                                                        onTap: () =>
+                                                            c.skipTextMessage(),
+                                                      )
+                                                    : shrinked,
+                                                ...List.generate(
+                                                  c.singleSelecMapList.length,
+                                                  (index) {
+                                                    final data =
+                                                        c.singleSelecMapList[
+                                                            index];
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        if (c.isMultiSelect ==
+                                                            'single-select') {
+                                                          c.chatController
+                                                                  .text =
+                                                              data.item
+                                                                  .toString();
+                                                          c.idController.text =
+                                                              data.id
+                                                                  .toString();
+                                                          c.sendMessage(
+                                                              context);
+                                                        } else {
+                                                          concateMultiSelect(
+                                                              data.item
+                                                                  .toString(),
+                                                              c);
+                                                        }
+                                                      },
+                                                      child: amyOptionContainer(
+                                                        option: data.item
+                                                            .toString(),
+                                                        multiselect: c
+                                                            .checkMulti
+                                                            .contains(
+                                                                data.item),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ]),
+                                        ),
+                                      )
+                                    : constrainedOptionContainer(
+                                        context,
+                                        SingleChildScrollView(
+                                          child: Wrap(
+                                            spacing: 5,
+                                            runSpacing: 5,
+                                            children: List.generate(
+                                              c.multiselectList.length,
+                                              (index) {
+                                                final data =
+                                                    c.multiselectList[index];
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    if (c.isMultiSelect ==
+                                                        'single-select') {
+                                                      c.chatController.text =
+                                                          data;
+                                                      c.idController.text =
+                                                          data;
+                                                      c.sendMessage(context);
+                                                    } else {
+                                                      concateMultiSelect(
+                                                          data, c);
+                                                    }
+                                                  },
+                                                  child: amyOptionContainer(
+                                                    multiselect: c.checkMulti
+                                                        .contains(data),
+                                                    option: data,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                              ),
                       ),
                       InkWell(
                         onTap: () {
-                          // if (c.chatController.text.isNotEmpty ||
-                          //     c.multiselectList.isNotEmpty) {
-                          // log(c.chatController.text, name: 'chat controller');
                           c.sendMessage(context);
-                          // }
                         },
-                        child: c.isMultiSelect == 'single-select'
-                            ? shrinked
-                            : sendMsgContainer(),
+                        child:
+                            c.otherSelected || c.isMultiSelect == 'multi-select'
+                                ? sendMsgContainer()
+                                : shrinked,
+                        // child: c.otherSelected == false ||
+                        //         c.isMultiSelect == 'single-select'
+                        //     ? shrinked
+                        //     : sendMsgContainer(),
                       ),
                     ],
                   );
@@ -208,14 +227,27 @@ class SignUpAmyScreen extends StatelessWidget {
   }
 
   void concateMultiSelect(String item, AmySignUpController c) {
-    log(item);
-    if (c.checkMulti.length < 3) {
-      if (!c.checkMulti.contains(item)) {
-        c.checkMulti.add(item);
-      } else {
-        c.checkMulti.remove(item);
+    if (item.trim() == 'Other' || item.trim() == 'Others') {
+      log(item);
+      c.checkMulti.clear();
+      c.checkMulti.add(item);
+      // c.update(['send-to-amy']);
+    } else {
+      if (!c.checkMulti.contains('Other')) {
+        if (c.checkMulti.length < 3) {
+          if (!c.checkMulti.contains(item)) {
+            c.checkMulti.add(item);
+          } else {
+            c.checkMulti.remove(item);
+          }
+        } else {
+          if (c.checkMulti.contains(item)) {
+            c.checkMulti.remove(item);
+          }
+        }
       }
-    } else {}
+    }
+    log(c.checkMulti.toString());
     c.update(['send-to-amy']);
   }
 }

@@ -20,8 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AIMCETResultScreen extends StatelessWidget {
-  final String userName;
-  const AIMCETResultScreen({super.key, required this.userName});
+  const AIMCETResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

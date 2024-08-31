@@ -1,15 +1,17 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:aimshala/controllers/login_controller.dart';
 import 'package:aimshala/models/AIMCET_TEST/AIMCET_Test_model/test_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Personality_model/personality_report_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/Trait_model/trait_report_model.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_all_reviews/test_all_reviews.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_res_userdetails/test_res_user_details.dart';
 import 'package:aimshala/models/AIMCET_TEST/test_section_texts/section_texts.dart';
+import 'package:aimshala/models/UserModel/user_model.dart';
 import 'package:aimshala/services/AIMCET_TEST/aimcet_test_service.dart';
-import 'package:aimshala/services/AIMCET_TEST/personality_career_report_service.dart';
-import 'package:aimshala/services/AIMCET_TEST/trait_career_result.dart';
+import 'package:aimshala/services/login_service/login_service.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
+import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -54,6 +56,9 @@ class AIMCETController extends GetxController {
   bool showAllreview = false;
   AimcetReviewData? aimcetReviewData;
   int? previousSecID;
+  Dio dio = Dio();
+  RxBool isResLoading = false.obs;
+  final loginController = Get.put(LoginController());
 
   Future<void> fetchAllTestQuestions() async {
     String? token = await storage.read(key: 'token');
@@ -87,29 +92,40 @@ class AIMCETController extends GetxController {
             aimcetList.add(item.name.toString());
           }
         }
+        if (data['data'] is Map<String, dynamic>) {
+          Map<String, dynamic>? questionData = data['data'];
+          if (data['indexval'] == null || data['indexval'] == 0) {
+            totalQ = 0;
+          } else {
+            totalQ = data['indexval'];
+          }
+          if (questionData != null) {
+            Map<String, List<Question>> res = {};
+            questionData.forEach((key, value) {
+              res[key] =
+                  List<Question>.from(value.map((x) => Question.fromJson(x)));
+            });
+            testRes = res;
+            allQuestions = [];
+            for (var questions in testRes!.values) {
+              allQuestions!.addAll(questions);
+            }
 
-        Map<String, dynamic>? questionData = data['data'];
-        if (data['indexval'] == null || data['indexval'] == 0) {
-          totalQ = 0;
+            if (allQuestions!.isEmpty) {
+              end.value = 'done';
+            }
+          }
         } else {
-          totalQ = data['indexval'];
-        }
-        if (questionData != null) {
-          Map<String, List<Question>> res = {};
-          questionData.forEach((key, value) {
-            res[key] =
-                List<Question>.from(value.map((x) => Question.fromJson(x)));
-          });
-          testRes = res;
-          allQuestions = [];
-          for (var questions in testRes!.values) {
-            allQuestions!.addAll(questions);
+          List<dynamic> qus = data['data'];
+          if (qus.isNotEmpty) {
+            List<Question> qusItems =
+                qus.map((e) => Question.fromJson(e)).toList();
+            allQuestions!.addAll(qusItems);
+          } else {
+            allQuestions = [];
           }
+        }
 
-          if (allQuestions!.isEmpty) {
-            end.value = 'done';
-          }
-        }
         /*--------------changes----------- */
         if (data['sec_question_attempt'] == null ||
             data['sec_question_attempt'] == 0) {
@@ -126,39 +142,54 @@ class AIMCETController extends GetxController {
           subQusCount = data['sub_question_attempt'];
         }
       }
+      update(['aimcet-test']);
     }
+    // update(['aimcet-test']);
     isLoading.value = false;
     log('length====>${allQuestions?.length} subQuesCount=>$subQusCount sectionqusCount=>$sectionQusCount submittedQus=>$totalQ',
         name: 'fetch allqus func');
   }
 
-  void updateTestFileds(int secionID) {
+  void updateTestFileds(int secionID) async {
     totalQ = totalQ! + 1;
     if (subQusCount < 6) {
       subQusCount = subQusCount + 1;
     } else {
       subQusCount = 1;
     }
-    if (previousSecID != secionID) {
-      previousSecID = secionID;
-      for (var item in aimcetSectionName) {
-        // if (aimcetSectionName.any((i) => i.id == previousSecID)) {}
-        if (item.id == previousSecID) {
-          sectionTotalQus = 0;
-          sectionQusCount = 0;
-          sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
+    if (previousSecID != null) {
+      if (previousSecID != secionID) {
+        previousSecID = secionID;
+        await storage.write(key: 'previousID', value: secionID.toString());
+        for (var item in aimcetSectionName) {
+          if (item.id == previousSecID) {
+            sectionTotalQus = 0;
+            sectionQusCount = 0;
+            sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
+          }
         }
       }
+    } else {
+      // previousSecID = secionID;
+      // for (var item in aimcetSectionName) {
+      //   if (item.id == previousSecID) {
+      //     sectionTotalQus = 0;
+      //     // sectionQusCount = sectionQusCount ;
+      //     sectionTotalQus = int.tryParse(item.totalQuestion.toString()) ?? 0;
+      //   }
+      // }
     }
+
     if (sectionQusCount < sectionTotalQus) {
       sectionQusCount = sectionQusCount + 1;
+    } else {
+      sectionQusCount = 1;
     }
 
     update(['aimcet-test']);
   }
 
   Future<void> submitAceTestQuestion({
-    // required String userId,
     required String questionId,
     required String cAnswer,
     required String sectionId,
@@ -169,7 +200,6 @@ class AIMCETController extends GetxController {
   }) async {
     String? token = await storage.read(key: 'token');
     await AIMCETTestService().sumbitAceTest(
-      // userId: userId,
       questionId: questionId,
       cAnswer: cAnswer,
       sectionId: sectionId,
@@ -182,80 +212,167 @@ class AIMCETController extends GetxController {
     update(['aimcet-test']);
   }
 
-  // Future<void> careerResultSubmittion(
-  //     {required String userId, required String secId}) async {
-  //   log('career result at 40th and 55th qustion====secid=>$secId',
-  //       name: '40th and 55th');
-  //   await AIMCETTestService().careerResultPost(userId: userId, secId: secId);
-  // }
-
-  Future<void> aimcetTestResultFunction({required String userName}) async {
-    String? token = await storage.read(key: 'token');
-
-    dynamic result = await AIMCETTestService()
-        .aimcetTestResult(token: token.toString(), userName: userName);
-
-    if (result is Map) {
-      //extracting personality types
-      if (result.isNotEmpty) {
-        List<dynamic> resultData = result['result'];
-
-        for (String item in resultData) {
-          if (item.startsWith('Personality Type')) {
-            if (!personality.contains(item.split(': ')[1])) {
-              personality.add(item.split(': ')[1]);
+  Future<void> aceTestResultFunction() async {
+    try {
+      isResLoading.value = true;
+      await fetchToken();
+      // await Future.delayed(const Duration(seconds: 3));
+      String? token = await storage.read(key: 'token');
+      String? res = await AIMCETTestService()
+          .testResultLoaderService(token: token.toString());
+      // log(res.toString(), name: 'ressssssssssssssssssssssss');
+      if (res == 'result') {
+        int retryCount = 0;
+        bool resultLoaded = false;
+        while (retryCount < 2 && !resultLoaded) {
+          Map<String, dynamic>? res =
+              await AIMCETTestService().aceTestResult(token: token.toString());
+          if (res != null) {
+            if (res.containsKey('data') &&
+                res['data']['experiential'] != null) {
+              log('Experiential is not null');
+              resultLoaded = true;
+              Get.to(() => const AIMCETResultScreen());
+            } else {
+              retryCount++;
             }
           }
-          if (item.startsWith('Trait Type')) {
-            traitType = item.split(': ')[1];
-          }
         }
-
-        // Extracting degrees
-        if (result['degree'] != null) {
-          List<dynamic> degreeData = result['degree'];
-
-          for (String item in degreeData) {
-            if (!degrees.contains(item.split('. ')[1])) {
-              degrees.add(item.split('. ')[1]);
-            }
-          }
-        } else {
-          degrees = [];
+        if (!resultLoaded) {
+          Get.snackbar(
+            "Result Fetch Failed",
+            "Error fetching: Try after sometimes",
+            snackPosition: SnackPosition.TOP,
+            duration: const Duration(seconds: 2),
+            backgroundColor: kred.withOpacity(0.7),
+            colorText: Colors.white,
+          );
         }
-
-        // Extract careers
-        if (result['career'] != null) {
-          List<dynamic> data = result['career'];
-          List<dynamic> careerData = [];
-          // List<dynamic> careerData = data.removeAt(0);
-          for (int i = 2; i < data.length; i++) {
-            if (i != 0 || i != 1) {
-              careerData.add(data[i]);
-            }
-          }
-          for (String item in careerData) {
-            if (!careers.contains(item.split('. ')[1])) {
-              careers.add(item.split('. ')[1]);
-            }
-          }
-        } else {
-          careers = [];
-        }
-        if (result['userDetails'] != null) {
-          testuserDetails = TestuserDetails.fromJson(result['userDetails']);
-        }
-        fetchAllTestReviews();
-        // log(personality.toString(), name: 'personality');
-        // log(degrees.toString(), name: 'degree');
-        // log(careers.toString(), name: 'careers');
       }
-    } else if (result is String) {
-      log('result is string');
-    } else {
-      throw 'Result is null =>$result';
+    } catch (e) {
+      isResLoading.value = false;
+      Get.snackbar(
+        "Result Fetch Failed",
+        "Error fetching: $e",
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 2),
+        backgroundColor: kred.withOpacity(0.7),
+        colorText: Colors.white,
+      );
+    } finally {
+      isResLoading.value = false;
     }
   }
+
+  Future<void> fetchToken() async {
+    String? phone = await storage.read(key: 'phone');
+    Map<String, dynamic>? res =
+        await LoginService().verifyUserExist(mobileNo: phone.toString());
+    if (res != null) {
+      if (res.containsKey('error')) {
+        if (res['error'] is Map) {
+          Map<String, dynamic> errors = res['error'];
+          String first = errors.keys.first;
+          if (errors[first] is List && (errors[first] as List).isNotEmpty) {
+            String errorMessage = errors[first][0].toString();
+
+            Get.snackbar(
+              "Error",
+              errorMessage,
+              snackPosition: SnackPosition.TOP,
+              duration: const Duration(seconds: 2),
+              backgroundColor: kred,
+              colorText: Colors.white,
+            );
+          }
+        } else if (res['error'] is String) {
+          String errorMessage = res["error"];
+          Get.snackbar(
+            "Error",
+            errorMessage,
+            snackPosition: SnackPosition.TOP,
+            duration: const Duration(seconds: 2),
+            backgroundColor: kred,
+            colorText: Colors.white,
+          );
+        }
+      } else if (res.containsKey('token')) {
+        storage.write(key: 'token', value: res['token']);
+        loginController.userData = UserModel.fromJson(res);
+      }
+    }
+
+    String? token = await storage.read(key: 'token');
+    log('phone=>$phone token=>${token?.isNotEmpty}');
+  }
+
+  // Future<void> aimcetTestResultFunction() async {
+  //   String? token = await storage.read(key: 'token');
+
+  //   dynamic result =
+  //       await AIMCETTestService().aimcetTestResult(token: token.toString());
+
+  //   if (result is Map) {
+  //     //extracting personality types
+  //     if (result.isNotEmpty) {
+  //       List<dynamic> resultData = result['result'];
+
+  //       for (String item in resultData) {
+  //         if (item.startsWith('Personality Type')) {
+  //           if (!personality.contains(item.split(': ')[1])) {
+  //             personality.add(item.split(': ')[1]);
+  //           }
+  //         }
+  //         if (item.startsWith('Trait Type')) {
+  //           traitType = item.split(': ')[1];
+  //         }
+  //       }
+
+  //       // Extracting degrees
+  //       if (result['degree'] != null) {
+  //         List<dynamic> degreeData = result['degree'];
+
+  //         for (String item in degreeData) {
+  //           if (!degrees.contains(item.split('. ')[1])) {
+  //             degrees.add(item.split('. ')[1]);
+  //           }
+  //         }
+  //       } else {
+  //         degrees = [];
+  //       }
+
+  //       // Extract careers
+  //       if (result['career'] != null) {
+  //         List<dynamic> data = result['career'];
+  //         List<dynamic> careerData = [];
+  //         // List<dynamic> careerData = data.removeAt(0);
+  //         for (int i = 2; i < data.length; i++) {
+  //           if (i != 0 || i != 1) {
+  //             careerData.add(data[i]);
+  //           }
+  //         }
+  //         for (String item in careerData) {
+  //           if (!careers.contains(item.split('. ')[1])) {
+  //             careers.add(item.split('. ')[1]);
+  //           }
+  //         }
+  //       } else {
+  //         careers = [];
+  //       }
+  //       if (result['userDetails'] != null) {
+  //         testuserDetails = TestuserDetails.fromJson(result['userDetails']);
+  //       }
+  //       fetchAllTestReviews();
+  //       // log(personality.toString(), name: 'personality');
+  //       // log(degrees.toString(), name: 'degree');
+  //       // log(careers.toString(), name: 'careers');
+  //     }
+  //   } else if (result is String) {
+  //     log('result is string');
+  //   } else {
+  //     throw 'Result is null =>$result';
+  //   }
+  // }
 
   // Future<void> gpReportSubmitFunction(
   //     {required String personality, required String trait}) async {
@@ -270,41 +387,41 @@ class AIMCETController extends GetxController {
   //   }
   // }
 
-  Future<void> fetchPersonalityReport() async {
-    try {
-       gp.value = 'wait';
-      String? token = await storage.read(key: 'token');
-      PersonalityReportModel? report = await PersonalityReportService()
-          .getPersonalityReport(token: token.toString());
-      if (report != null) {
-        // personalityReport = report;
-        personalityReort.value = report;
-        gp.value = 'sucess';
-        // update();
-      }
-    } catch (e) {
-      gp.value = 'personality-e';
-      log(e.toString(), name: 'fetch personality-c');
-    }
-  }
+  // Future<void> fetchPersonalityReport() async {
+  //   try {
+  //     gp.value = 'wait';
+  //     String? token = await storage.read(key: 'token');
+  //     PersonalityReportModel? report = await PersonalityReportService()
+  //         .getPersonalityReport(token: token.toString());
+  //     if (report != null) {
+  //       personalityReport = report;
+  //       personalityReort.value = report;
+  //       gp.value = 'sucess';
+  //       // update();
+  //     }
+  //   } catch (e) {
+  //     gp.value = 'personality-e';
+  //     log(e.toString(), name: 'fetch personality-c');
+  //   }
+  // }
 
-  Future<void> fetchTraitReport() async {
-    try {
-       gp.value = 'wait';
-      String? token = await storage.read(key: 'token');
-      TraitReportModel? report =
-          await TraitReportService().getTraitReport(token: token.toString());
-      if (report != null) {
-        traitReport.value = report;
-        log(traitType.toString(), name: 'report trait controller');
-        gp.value = 'sucess';
-        // update();
-      }
-    } catch (e) {
-      gp.value = 'trait-e';
-      log(e.toString(), name: 'fetch trait-c');
-    }
-  }
+  // Future<void> fetchTraitReport() async {
+  //   try {
+  //     gp.value = 'wait';
+  //     String? token = await storage.read(key: 'token');
+  //     TraitReportModel? report =
+  //         await TraitReportService().getTraitReport(token: token.toString());
+  //     if (report != null) {
+  //       traitReport.value = report;
+  //       log(traitType.toString(), name: 'report trait controller');
+  //       gp.value = 'sucess';
+  //       // update();
+  //     }
+  //   } catch (e) {
+  //     gp.value = 'trait-e';
+  //     log(e.toString(), name: 'fetch trait-c');
+  //   }
+  // }
 
   Future<void> checkAimcetTestTakenFunction() async {
     String? token = await storage.read(key: 'token');
@@ -371,7 +488,7 @@ class AIMCETController extends GetxController {
       }
       String savePath = '${directory.path}/$fileName';
       log(savePath);
-      Dio dio = Dio();
+      // Dio dio = Dio();
       try {
         await dio.download(
           pdfUrl,

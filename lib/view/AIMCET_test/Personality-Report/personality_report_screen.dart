@@ -16,7 +16,7 @@ class PersonalityReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = controller.personalityReort.value;
     if (data == null) {
-      controller.fetchPersonalityReport();
+      // controller.fetchPersonalityReport();
       return Center(
         child: CircularProgressIndicator(strokeWidth: 1, color: textFieldColor),
       );

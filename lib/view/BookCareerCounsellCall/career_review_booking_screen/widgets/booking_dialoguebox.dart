@@ -2,7 +2,6 @@ import 'package:aimshala/controllers/aimcet_test_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/common/widgets/text_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/chatbot/widgets/amy_radial_gradient.dart';
 import 'package:aimshala/view/home/home.dart';
@@ -91,22 +90,7 @@ class BookingDialogueBox extends StatelessWidget {
                       size: 11.sp,
                       color: const Color.fromARGB(255, 147, 38, 143),
                     ),
-                    onPressed: () async {
-                      // controller
-                      //     .gpReportSubmitFunction(
-
-                      //         personality: controller.personality[0],
-                      //         trait: controller.traitType.toString())
-                      //     .then((_) {
-                      //   controller.fetchPersonalityReport();
-                      //   controller.fetchTraitReport();
-                      // });
-                      await Future.wait([
-                        controller.fetchPersonalityReport(),
-                        controller.fetchTraitReport(),
-                      ]);
-                      Get.to(() => AIMCETResultScreen(userName: userName));
-                    },
+                    onPressed: () async => await controller.aceTestResultFunction(),
                   );
                 } else if (controller.testDone.value == 'continue') {
                   return ElevatedButton.icon(

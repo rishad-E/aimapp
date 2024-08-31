@@ -20,7 +20,7 @@ class TraitReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = controller.traitReport.value;
     if (data == null) {
-      controller.fetchTraitReport();
+      // controller.fetchTraitReport();
       return Center(
         child: CircularProgressIndicator(strokeWidth: 1, color: textFieldColor),
       );

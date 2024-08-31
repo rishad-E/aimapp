@@ -150,7 +150,7 @@ Widget sendMsgContainer() {
 InputDecoration amyTextfieldDecor({bool isAskingDOB = false}) {
   return InputDecoration(
       border: InputBorder.none,
-      hintText: isAskingDOB ? "DD/MM/YYYY" : "Type here...",
+      hintText: "Type here...",
       hintStyle: TextStyle(
         fontSize: 13,
         color: textFieldColor,

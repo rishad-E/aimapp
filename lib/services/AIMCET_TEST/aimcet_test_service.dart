@@ -18,7 +18,7 @@ class AIMCETTestService {
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      // log(response.data.toString());
+      // log(response.data['data'].toString(), name: 'fetch question servicve');
       if (response.data is Map) {
         Map<String, dynamic> data = response.data;
         return data;
@@ -48,8 +48,8 @@ class AIMCETTestService {
     required String token,
   }) async {
     String path = Apis().aimUrl + Apis().sumbitTest;
-    log(' questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer subsecId=>$subSectionId  secQusCount=>$sectionQusCount subQusCount=>$subQuesCount  totalQus=>$totalQues token=>${token.isNotEmpty}',
-        name: 'serviceeeeeee');
+    // log(' questionId=>$questionId sectionId=>$sectionId cAnswer=>$cAnswer subsecId=>$subSectionId  secQusCount=>$sectionQusCount subQusCount=>$subQuesCount  totalQus=>$totalQues token=>${token.isNotEmpty}',
+    //     name: 'serviceeeeeee');
     try {
       Response response = await dio.post(
         path,
@@ -98,51 +98,135 @@ class AIMCETTestService {
     return null;
   }
 
-  Future<void> careerResultPost(
-      {required String userId, required String secId}) async {
-    String path = Apis().aimUrl + Apis().careerresultsubmit;
+  Future<String?> testResultLoaderService({required String token}) async {
     try {
-      Response response = await dio.post(
+      String path = 'http://154.26.130.161/elearning/api/load-result';
+      Response response = await dio.get(
         path,
-        data: {"user_id": userId, "secid": secId},
-        options: Options(validateStatus: (status) => status! < 599),
-      );
-      log(response.data.toString(), name: 'career result submit');
-    } catch (e) {
-      log(e.toString(), name: 'career result submit error');
-    }
-  }
-
-  Future<dynamic> aimcetTestResult(
-      {required String token, required String userName}) async {
-    String path = Apis().aimUrl + Apis().aimcetResult;
-    try {
-      Response response = await dio.post(
-        path,
-        data: {"username": userName},
         options: Options(
           validateStatus: (status) => status! < 599,
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      if (response.statusCode == 200) {
-        // log(response.data.toString(), name: 'aimcet result submit');
-        return response.data;
-      } else if (response.statusCode == 422) {
-        log(response.data.toString(), name: 'aimcet test result');
-        return 'failed';
-      } else if (response.statusCode == 500) {
+      // log(response.data.toString(), name: 'test resultLoader');
+      if (response.data is Map) {
+        Map<String, dynamic> resData = response.data;
+        if (resData.containsKey('data')) {
+          if (resData['data']['resultnotload'] != null) {
+            String resMsg = 'result';
+            return resMsg;
+          } else {
+            String resMsg = 'no result';
+            return resMsg;
+          }
+        }
+      } else if (response.data is String) {
+        String errorMsg = response.data;
+        return errorMsg;
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        // log('Server error: ${e.message}', name: 'save education info error');
+        log('Exception: ${e.toString()}', name: 'aimcet resultLoader error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      } else {
+        log('Exception: ${e.toString()}', name: 'aimcet resultLoader error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      }
+      // Handle other exceptions
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> aceTestResult({required String token}) async {
+    try {
+      String path = 'http://154.26.130.161/elearning/api/test-result';
+      Dio dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(minutes: 4), // 4 minutes
+          receiveTimeout: const Duration(minutes: 4), // 4 minutes
+          sendTimeout: const Duration(minutes: 4), // 4 minutes
+        ),
+      );
+
+      Response response = await dio.get(
+        path,
+        options: Options(
+          validateStatus: (status) => status! < 599,
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      log(response.data.toString(), name: 'test result');
+      if (response.data is Map<String, dynamic>) {
+        Map<String, dynamic> resData = response.data;
+        return resData;
+      } else if (response.data is String) {
+        // String msg = response.data;
         SnackbarPopUps.popUpB(
             'Error fetching data...Please try after sometime');
       }
-      return null;
     } on DioException catch (e) {
+      if (e.response?.statusCode == 500) {
+        // log('Server error: ${e.message}', name: 'save education info error');
+        log('Exception: ${e.toString()}', name: 'aimcet result error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      } else {
+        log('Exception: ${e.toString()}', name: 'aimcet result error');
+        throw SnackbarPopUps.popUpB(
+            'Error fetching data...Please try after sometime');
+      }
       // Handle other exceptions
-      log('Exception: ${e.toString()}', name: 'aimcet test result error');
-      throw SnackbarPopUps.popUpB(
-          'Error fetching data...Please try after sometime');
     }
+    return null;
   }
+
+  // Future<void> careerResultPost(
+  //     {required String userId, required String secId}) async {
+  //   String path = Apis().aimUrl + Apis().careerresultsubmit;
+  //   try {
+  //     Response response = await dio.post(
+  //       path,
+  //       data: {"user_id": userId, "secid": secId},
+  //       options: Options(validateStatus: (status) => status! < 599),
+  //     );
+  //     log(response.data.toString(), name: 'career result submit');
+  //   } catch (e) {
+  //     log(e.toString(), name: 'career result submit error');
+  //   }
+  // }
+
+  // Future<dynamic> aimcetTestResult({required String token}) async {
+  //   String path = Apis().aimUrl + Apis().aimcetResult;
+  //   try {
+  //     Response response = await dio.post(
+  //       path,
+  //       // data: {"username": userName},
+  //       options: Options(
+  //         validateStatus: (status) => status! < 599,
+  //         headers: {'Authorization': 'Bearer $token'},
+  //       ),
+  //     );
+  //     if (response.statusCode == 200) {
+  //       // log(response.data.toString(), name: 'aimcet result submit');
+  //       return response.data;
+  //     } else if (response.statusCode == 422) {
+  //       log(response.data.toString(), name: 'aimcet test result');
+  //       return 'failed';
+  //     } else if (response.statusCode == 500) {
+  //       SnackbarPopUps.popUpB(
+  //           'Error fetching data...Please try after sometime');
+  //     }
+  //     return null;
+  //   } on DioException catch (e) {
+  //     // Handle other exceptions
+  //     log('Exception: ${e.toString()}', name: 'aimcet test result error');
+  //     throw SnackbarPopUps.popUpB(
+  //         'Error fetching data...Please try after sometime');
+  //   }
+  // }
 
   Future<Map<String, dynamic>?> checkAimcetTestTaken(
       {required String token}) async {
@@ -289,21 +373,3 @@ class AIMCETTestService {
     return null;
   }
 }
-
-
-
-// {
-//   "message": "Review saved successfully",
-//   "data": {
-//     "user_id": "583",
-//     "test_id": "1084",
-//     "ratings": "4",
-//     "review": "checking",
-//     "updated_at": "2024-08-01T12:53:34.000000Z",
-//     "created_at": "2024-08-01T12:53:34.000000Z",
-//     "id": 27
-//   },
-//   "userName": "Rishad E",
-//   "Nameinitials": "RE",
-//   "timeElapsed": "1 second ago"
-// }

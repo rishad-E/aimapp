@@ -1,14 +1,9 @@
-import 'dart:developer';
-
 import 'package:aimshala/controllers/aimcet_test_controller.dart';
-import 'package:aimshala/controllers/all_data_controller.dart';
 import 'package:aimshala/utils/common/widgets/colors_common.dart';
 import 'package:aimshala/utils/widgets/widgets_common.dart';
-import 'package:aimshala/view/AIMCET_test/AIMCET_RESULT_Screen/aimcet_result_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_Test_page/aimcet_test_page.dart';
 import 'package:aimshala/view/AIMCET_test/AIMCET_guideline_page/aimcet_guideline_screen.dart';
 import 'package:aimshala/view/home/widget/texts.dart';
-import 'package:aimshala/view/signup/signup_amy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -20,8 +15,8 @@ class AimcetContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // bool isLoading = false;
-    final controller = Get.put(AIMCETController());
-    final allDataC = Get.put(AllDataController());
+    final c = Get.put(AIMCETController());
+    c.fetchAllTestQuestions();
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 18),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -66,8 +61,9 @@ class AimcetContainer extends StatelessWidget {
               height: 4.2.h,
               child: Obx(
                 () {
-                  if (controller.testDone.value == 'done') {
-                    controller.aimcetTestResultFunction(userName: userName);
+                  c.fetchAllTestQuestions();
+                  if (c.testDone.value == 'done') {
+                    // c.aimcetTestResultFunction();
                     return acecetElevatedButton(
                       bText: "Check AIMCET Result",
                       bIcon: Icons.arrow_forward_ios_sharp,
@@ -83,23 +79,8 @@ class AimcetContainer extends StatelessWidget {
                                     .withOpacity(0.7),
                             colorText: Colors.white,
                           );
-                          // await controller
-                          //     .gpReportSubmitFunction(
-                          //         personality: controller.personality[0],
-                          //         trait: controller.traitType.toString())
-                          //     .then((_) {
-                          //   controller.fetchPersonalityReport();
-                          //   controller.fetchTraitReport();
-                          // });
-                          await Future.wait([
-                            controller.fetchPersonalityReport(),
-                            controller.fetchTraitReport(),
-                          ]);
-                          await Future.delayed(const Duration(seconds: 1));
-                          // Navigator.of(context).pop();
-                          // Get.back();
-                          controller.showAllreview = false;
-                          Get.to(() => AIMCETResultScreen(userName: userName));
+                          await c.aceTestResultFunction();
+                          c.showAllreview = false;
                         } catch (e) {
                           Get.snackbar(
                             "Hi $userName,Error occured",
@@ -112,39 +93,59 @@ class AimcetContainer extends StatelessWidget {
                         }
                       },
                     );
-                  } else if (controller.testDone.value == 'continue') {
-                    controller.fetchAllTestQuestions();
-                    // controller.getTestSectionTextsFunc();
-                    return acecetElevatedButton(
-                      onPressed: () {
-                        if (controller.allQuestions != null) {
-                          controller.secID.value =
-                              controller.allQuestions![0].sectionId!;
-                        }
-                        Get.to(() => AIMCETTestPage(uName: userName));
-                      },
-                      bText: "Continue AIMCET Test",
-                      bIcon: Icons.arrow_forward_ios_sharp,
-                    );
+                  } else if (c.testDone.value == 'continue') {
+                    // c.fetchAllTestQuestions();
+                    // if (c.testDone.value == 'continue' &&
+                    //     c.allQuestions != null &&
+                    //     c.allQuestions!.isNotEmpty) {
+                      return acecetElevatedButton(
+                        onPressed: () {
+                          c.secID.value = c.allQuestions![0].sectionId!;
+                          // c.previousSecID = c.allQuestions![0].sectionId!;
+                          // log('previousID=>${c.previousSecID}', name: 'previousID container');
+                          Get.to(() => AIMCETTestPage(uName: userName));
+                        },
+                        bText: "Continue AIMCET Test",
+                        bIcon: Icons.arrow_forward_ios_sharp,
+                      );
+                    // } else {
+                    //   // Show test completed button if all questions are empty
+                    //   return acecetElevatedButton(
+                    //     onPressed: () {
+                    //       c.aceTestResultFunction();
+                    //       Get.snackbar(
+                    //         "Hi $userName",
+                    //         "Fetching your AIMCET result...Please Wait",
+                    //         snackPosition: SnackPosition.TOP,
+                    //         duration: const Duration(seconds: 2),
+                    //         backgroundColor:
+                    //             const Color.fromARGB(255, 86, 21, 171)
+                    //                 .withOpacity(0.7),
+                    //         colorText: Colors.white,
+                    //       );
+                    //     },
+                    //     bText: "Check AIMCET Result",
+                    //     bIcon: Icons.arrow_forward_ios_sharp,
+                    //   );
+                    // }
+                    // c.fetchAllTestQuestions();
+                    // // c.getTestSectionTextsFunc();
+                    // return acecetElevatedButton(
+                    //   onPressed: () {
+                    //     if (c.allQuestions != null) {
+                    //       c.secID.value = c.allQuestions![0].sectionId!;
+                    //     }
+                    //     Get.to(() => AIMCETTestPage(uName: userName));
+                    //   },
+                    //   bText: "Continue AIMCET Test",
+                    //   bIcon: Icons.arrow_forward_ios_sharp,
+                    // );
                   } else {
                     return acecetElevatedButton(
-                      onPressed: () async {
-                        log("career aim=>${allDataC.userDetails?.aim}",
-                            name: 'takecha');
-                        if (allDataC.userDetails?.aim?.isEmpty == true) {
-                          // await Future.delayed(Duration(seconds: 1));
-                          Get.to(
-                              () => SignUpAmyScreen(
-                                    name: userName,
-                                    email: allDataC.userData?.email ?? '',
-                                    phone: allDataC.userData?.phone ?? '',
-                                  ),
-                              transition: Transition.fade);
-                        } else {
-                          Get.to(() => AIMCETGuideLinePage(uName: userName),
-                              transition: Transition.fade);
-                        }
-                        // Get.to(() => AIMCETGuideLinePage(uId: id));
+                      onPressed: () {
+                        //  c.fetchToken();
+                        Get.to(() => AIMCETGuideLinePage(uName: userName),
+                            transition: Transition.fade);
                       },
                       bText: "Take Psychometric Test",
                       bIcon: Icons.arrow_forward_ios_sharp,
